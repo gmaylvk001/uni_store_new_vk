@@ -14,10 +14,10 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Bharath Electronics & Appliances",
-  description: "Barath Electronics",
+  title: "Best Electronics & Home Appliance Deals, Shop in Bangalore | Unilet Stores",
+  description: "Find top electronics and home appliance deals in Vijaynagar, Banashankari, and more. Unilet Stores offers unbeatable offers across Bangalore locations near you.",
   icons: {
-    icon: "/images/logo/bea-favi.png",
+    icon: "/images/logo/cropped-favicon-32x32.webp",
   },
 };
 

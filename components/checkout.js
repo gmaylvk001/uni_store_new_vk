@@ -327,7 +327,7 @@ const handleOnlinePayment = async (totalAmount) => {
         key: process.env.NEXT_PUBLIC_RAZORPAY_TEST_KEY,
         amount: order.amount,
         currency: "INR",
-        name: "BEA",
+        name: "UNILETSTORES",
         description: "Product Purchase",
         order_id: order.id,
         handler: async function (response) {
@@ -361,7 +361,7 @@ const handleOnlinePayment = async (totalAmount) => {
           contact: formData.phonenumber
         },
         theme: {
-          color: "#F37254"
+          color: "#4b41d8ff"
         },
         modal: {
           ondismiss: () => {
@@ -386,78 +386,7 @@ const handleOnlinePayment = async (totalAmount) => {
     throw error;
   }
 };
-  // const handleOnlinePayment = async (totalAmount) => {
-  //   try {
-  //     const razorpayLoaded = await initializeRazorpay();
-  //     if (!razorpayLoaded) {
-  //       toast.error('Razorpay SDK failed to load');
-  //       setIsSubmitting(false);
-  //       return;
-  //     }
-  
-  //     const orderResponse = await createRazorpayOrder(totalAmount);
-  //     const { order } = orderResponse;
-  
-  //     return new Promise((resolve, reject) => {
-  //       const options = {
-  //         key: process.env.NEXT_PUBLIC_RAZORPAY_TEST_KEY,
-  //         amount: order.amount,
-  //         currency: "INR",
-  //         name: "BEA",
-  //         description: "Product Purchase",
-  //         order_id: order.id,
-  //         handler: async function (response) {
-  //           try {
-  //             const verificationRes = await fetch('/api/verify-payment', {
-  //               method: 'POST',
-  //               headers: { 'Content-Type': 'application/json' },
-  //               body: JSON.stringify({
-  //                 razorpay_payment_id: response.razorpay_payment_id,
-  //                 razorpay_order_id: response.razorpay_order_id,
-  //                 razorpay_signature: response.razorpay_signature
-  //               })
-  //             });
-  
-  //             if (verificationRes.ok) {
-  //               resolve({
-  //                 paymentId: response.razorpay_payment_id,
-  //                 status: "paid",
-  //                 mode: "online"
-  //               });
-  //             } else {
-  //               reject(new Error('Payment verification failed'));
-  //             }
-  //           } catch (err) {
-  //             reject(err);
-  //           }
-  //         },
-  //         prefill: {
-  //           name: `${formData.firstName} ${formData.lastName}`,
-  //           email: formData.email,
-  //           contact: formData.phonenumber
-  //         },
-  //         theme: {
-  //           color: "#F37254"
-  //         }
-  //       };
-  
-  //       const razorpay = new window.Razorpay(options);
-  //       razorpay.open();
-  
-  //       razorpay.on('payment.failed', function (response) {
-  //          setIsSubmitting(false);
-  //         reject(new Error(response.error.description));
-  //       });
-  //        razorpay.on('modal.close', function() {
-  //       setIsSubmitting(false);
-  //     });
-  //     });
-  //   } catch (error) {
-  //     console.error('Razorpay error:', error);
-  //     toast.error('Payment processing failed');
-  //     throw error;
-  //   }
-  // };
+
 // Calculate totals
 const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 const totalDiscount = cartItems.reduce((sum, item) => sum + (item.discount || 0), 0);
@@ -641,35 +570,6 @@ const grandTotal = subtotal - totalDiscount;
       }
 
 
-      // if(orderRes.ok){
-        // const responsedata = await orderRes.json();
-        // const order_id = responsedata.order._id.toString();
-        // const orderhistory1 = await fetch('/api/orderhistory',{
-        //   method:'POST',
-        //   headers: { 'Content-Type': 'application/json' },
-        //   body: JSON.stringify({orderId : order_id})
-        // });
-
-        // if(formData.deliveryType == 'store'){
-        //  const storeorderid = await fetch('/api/sender_orderid',{
-        //   method:'POST',
-        //   headers: { 'Content-Type': 'application/json' },
-        //   body: JSON.stringify({orderId : order_id})
-        //  });
-
-        //  if(storeorderid.ok){
-        //     const storeresponsedata = await storeorderid.json();
-        //   const storeorderid_status = storeresponsedata.status;
-        //     const orderhistory = await fetch('/api/orderhistory',{
-        //       method:'PUT',
-        //       headers: { 'Content-Type': 'application/json' },
-        //       body: JSON.stringify({orderId : order_id,status:storeorderid_status})
-        //     });
-        //  }
-
-        // }
-      // }
-
       // Clear cart after successful order
       const cartdelte = await fetch('/api/cart', {
         method: 'DELETE',
@@ -691,23 +591,7 @@ const grandTotal = subtotal - totalDiscount;
         localStorage.removeItem('checkoutData');
         localStorage.removeItem('appliedCoupon')
         const orderData = await orderRes.json()
-        // Prepare email data
-        // console.log(orderData,orderData.order.order_number);
-        // const emailData = {
-        //   orderDetails: {
-        //     order_number: orderData.order.order_number || "ORD" + Date.now(),
-        //     order_amount: totalAmount,
-        //     payment_method: paymentMethod === 'Cash on Delivery' ? 'Cash on Delivery' : 'Online Payment',
-        //     order_item: cartItems,
-        //     order_username: `${addressData.firstName} ${addressData.lastName}`,
-        //     order_phonenumber: addressData.phonenumber,
-        //     order_deliveryaddress: deliveryAddress
-        //   },
-        //   customerEmail: addressData.email,
-        //   adminEmail: 'msivaranjani2036@gmail.com'
-        // };
- 
-       // console.log(cartItems);
+
  
         const proresponse = await fetch(`/api/product/get/${cartItems[0].productId}`);
        
@@ -796,9 +680,10 @@ const grandTotal = subtotal - totalDiscount;
           JSON.stringify([name,addressData.email,addressData.phonenumber,deliveryAddress, adminItemsTableHtml])
         );
 
-        const emailadmin = ["arunkarthik@bharathelectronics.in","ecom@bharathelectronics.in","itadmin@bharathelectronics.in","telemarketing@bharathelectronics.in","sekarcorp@bharathelectronics.in","siva96852@gmail.com"];
+        // const emailadmin = ["arunkarthik@bharathelectronics.in","ecom@bharathelectronics.in","itadmin@bharathelectronics.in","telemarketing@bharathelectronics.in","sekarcorp@bharathelectronics.in","siva96852@gmail.com"];
 
         // const emailadmin = ["siva96852@gmail.com"];
+        const emailadmin = ["sorambeeviuit@gmail.com"];
         emailadmin.forEach(async (adminEmail) => {
           adminemailFormData.set("email", adminEmail);
         let adminresponse = await fetch("https://bea.eygr.in/api/email/send-msg", {

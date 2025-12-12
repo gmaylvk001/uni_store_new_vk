@@ -12,6 +12,11 @@ import { FaShoppingBag } from "react-icons/fa";
 import { IoLogOut } from "react-icons/io5";
 
 const Footer = () => {
+  const [years, setYears] = useState("");
+  useEffect(() => {
+    const currentYear = new Date().getFullYear();
+    setYears(`${currentYear}`);
+  }, []);
   const [categories, setCategories] = useState([]);
   const [groupedCategories, setGroupedCategories] = useState({ main: [], subs: {} });
     const [stores, setStores] = useState([]);
@@ -276,26 +281,26 @@ const capitalizeFirstLetter = (str) =>
             <div className="w-full container mx-auto px-3  grid grid-cols-1 md:grid-cols-3 gap-16 justify-between">
               {/* Corporate Office */}
               <div className="space-y-3">
-                <h3 className="text-white font-semibold text-lg mb-4">Corporate Office</h3>
+                <h3 className="text-white font-semibold text-lg mb-4">Our Address</h3>
                 <p>
-                  26/1 Dr. Alagappa Chettiyar Rd, Tatabad, Near Kovai Scan Centre,
-                  Coimbatore-641012
+                  #60, 1st Floor, Near ICICI Bank, Sahakar Nagar, Bangaluru, Karnataka 560092
                 </p>
                 <hr className="border-gray-600 my-3" />
+                <h3 className="text-white font-semibold text-lg mb-4">Contact Information</h3>
                 <div className="flex items-center gap-2">
                   <FiPhone />
-                  <a href="tel:9842344323" className="text-blue-600 hover:underline">
-                    9842344323
+                  <a href="tel:9243585858" className="text-blue-600 hover:underline">
+                    +91 9243585858
                   </a>
                 </div>
                 <hr className="border-gray-600 my-3" />
                 <div className="flex items-center gap-2">
                   <FiMail />
                   <a
-                    href="mailto:customercare@bharatelectronics.in"
+                    href="mailto:info@uniletstores.com"
                     className="text-blue-600 hover:underline"
                   >
-                    customercare@bharatelectronics.in
+                    info@uniletstores.com
                   </a>
                 </div>
                 <hr className="border-gray-600 my-3" />
@@ -315,14 +320,14 @@ const capitalizeFirstLetter = (str) =>
                             <FaShoppingBag /> My Orders
                           </Link>
                         </li>
-                        <li>
+                        {/* <li>
                           <button 
                             onClick={handleLogout}
                             className="hover:underline hover:text-white flex items-center gap-2"
                           >
                             <IoLogOut /> Logout
                           </button>
-                        </li>
+                        </li> */}
                       </>
                     ) : (
                       <li>
@@ -340,9 +345,11 @@ const capitalizeFirstLetter = (str) =>
                   <h3 className="text-white font-semibold text-lg mb-4">Policy</h3>
                   <ul className="space-y-2">
                     <li><Link href="/privacypolicy" className="hover:underline hover:text-white">Privacy Policy</Link></li>
-                    <li><Link href="/shipping" className="hover:underline hover:text-white">Shipping Policy</Link></li>
-                    <li><Link href="/terms-and-condition" className="hover:underline hover:text-white">Terms and Conditions</Link></li>
-                    <li><Link href="/cancellation-refund-policy" className="hover:underline hover:text-white">Cancellation and Refund Policy</Link></li>
+                     <li><Link href="/return-cancellation" className="hover:underline hover:text-white">Return and Cancellation</Link></li>
+                     <li><Link href="/terms-and-condition" className="hover:underline hover:text-white">Terms and Conditions</Link></li>
+                    {/* <li><Link href="/shipping" className="hover:underline hover:text-white">Shipping Policy</Link></li> */}
+                    
+                    {/* <li><Link href="/cancellation-refund-policy" className="hover:underline hover:text-white">Cancellation and Refund Policy</Link></li> */}
                   </ul>
                 </div>
               </div>
@@ -354,31 +361,30 @@ const capitalizeFirstLetter = (str) =>
                     <li><Link href="/aboutus" className="hover:underline hover:text-white">About Us</Link></li>
                     <li><Link href="/contact" className="hover:underline hover:text-white">Contact Us</Link></li>
                     <li><Link href="/blog" className="hover:underline hover:text-white">Blogs</Link></li>
-                    <li><Link href="/careers" className="hover:underline hover:text-white">Careers</Link></li>
-                    <li><Link href="/feedback" className="hover:underline hover:text-white">Feedback</Link></li> 
+                    
                   </ul>
                 </div>
               <div>
                   <h3 className="text-white font-semibold text-lg mb-4">Connect With Us</h3>
                   <div className="flex flex-wrap justify-center md:justify-start gap-4">
-                    <Link href="https://web.whatsapp.com/send?phone=919842344323&amp;text=Hi">
+                    <Link href="https://web.whatsapp.com/send?phone=919243585858&amp;text=Hi" target="_blank" rel="noopener noreferrer">
                       <FaWhatsapp className="text-xl text-green-500" />
                     </Link>
-                    <Link href="https://www.facebook.com/BharathElectronics/">
+                    <Link href="https://www.facebook.com/uniletappliances/" target="_blank" rel="noopener noreferrer">
                       <FaFacebookF className="text-xl text-customBlue" />
                     </Link>
-                    <Link href="https://www.instagram.com/bharathelectronics/">
+                    <Link href="https://www.instagram.com/uniletstores/" target="_blank" rel="noopener noreferrer">
                       <FaInstagram className="text-xl text-pink-500" />
                     </Link>
-                    <Link href="https://www.youtube.com/@bharathelectronicsandappli3074">
+                    <Link href="https://www.youtube.com/channel/UC4haxoyc5LXJjGqdHdA3zrA/videos" target="_blank" rel="noopener noreferrer">
                       <FaYoutube className="text-xl text-red-500" />
                     </Link>
-                    <Link href="https://twitter.com/bharath_bea">
+                    <Link href="https://x.com/StoresUnil99523" target="_blank" rel="noopener noreferrer">
                       <FaXTwitter className="text-xl text-black" />
                     </Link>
-                    <Link href="https://in.linkedin.com/company/bharath-electronics-and-appliances">
+                    {/* <Link href="https://in.linkedin.com/company/bharath-electronics-and-appliances">
                       <FaLinkedinIn className="text-xl text-customBlue" />
-                    </Link>
+                    </Link> */}
                   </div>
                 </div>
               </div>
@@ -387,16 +393,16 @@ const capitalizeFirstLetter = (str) =>
         </div>
       {/* Bottom Section */}
       <div className="bg-[#2e2a2a] text-gray-400 mt-10 pt-5 border-t border-white">
-        <div className="container mx-auto px-2 grid grid-cols-1 md:grid-cols-[55%_45%] gap-8">
+        <div className="container mx-auto px-2 grid grid-cols-1 md:grid-cols-[70%_30%] gap-8">
           {/* LEFT SECTION (Categories + Brands) */}
           <div>
             <div className="mb-2  flex flex-col md:flex-row justify-between items-center gap-6">
               <div className="text-center md:text-left ml-1 mb-1">
                 <p>
                   <a href="#" className="hover:underline text-white">
-                    Bharath Electronics ©
+                    Unilet Appliances Pvt Ltd &copy;
                   </a>{" "}
-                  2025 All rights reserved.
+                  {years} All rights reserved.
                 </p>
               </div>
             </div>

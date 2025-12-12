@@ -20,6 +20,7 @@ import Addtocart from "@/components/AddToCart";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Autoplay } from "swiper/modules";
 import RecentlyViewedProducts from '@/components/RecentlyViewedProducts';
+import StatusBar from '@/components/StatusBar';
 import CategoryProducts from '@/components/CategoryProducts';
 import { ChevronRight } from "lucide-react";
 import 'swiper/css';
@@ -35,7 +36,7 @@ export default function HomeComponent() {
         .replace(/\-\-+/g, "-");
     }
     const features = [
-      { image: "/images/delivery-truck.png", title: "Free Shipping", description: "Free shipping all over the US" },
+      { image: "/images/delivery-truck.png", title: "Free Delivery", description: "Free delivery for all Products" },
       { image: "/images/reputation.png", title: "100% Satisfaction", description: "Guaranteed satisfaction with every order" },
       { image: "/images/payment-protection.png", title: "Secure Payments", description: "We ensure secure transactions" },
       { image: "/images/support.png", title: "24/7 Support", description: "We're here to help anytime" },
@@ -1703,6 +1704,7 @@ return (
                 <ToastContainer />
                 <RecentlyViewedProducts /> 
             </div>
+            <StatusBar /> 
         </>
     ); 
 }

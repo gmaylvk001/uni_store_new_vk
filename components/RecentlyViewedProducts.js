@@ -185,30 +185,29 @@ const RecentlyViewedProducts = () => {
       
       
       <section className="mb-14 px-0 sm:px-0 md:px-0 pt-14">
-      <div className="max-w-7xl mx-auto flex gap-6"> 
+      <div className="max-w-7xl mx-auto flex gap-6 rounded-xl border border-gray-200 p-3 sm:p-6 shadow-sm"> 
         {/* Left Banner */}
-        <div className="hidden md:block w-1/4" style={{ height: "591px" }}>
+        {/* <div className="hidden md:block w-1/4" style={{ height: "591px" }}>
           <div className="relative rounded-xl overflow-hidden h-full group cursor-pointer">
-            {/* Background Image */}
+            // Background Image
             <img
               src="/uploads/designs/recently-visit-banner.webp"
               alt="Promo"
               className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
             />
 
-            {/* Overlay text (always visible) */}
+            // Overlay text (always visible)
             <div className="absolute inset-0 flex flex-col items-start p-6">
               <h2 className="text-gray-900 text-xl font-semibold mb-3 leading-snug">
                 Fresh Picks<br /> for You
               </h2>
 
-              {/* <button className="flex items-center gap-2 text-sm font-medium text-gray-900">
-                Shop Now →
-              </button> */}
-              
+              // <button className="flex items-center gap-2 text-sm font-medium text-gray-900">
+              //   Shop Now →
+              // </button>
             </div>
           </div>
-        </div>
+        </div> */}
 
 
         {/* Right Side */}
@@ -237,7 +236,7 @@ const RecentlyViewedProducts = () => {
                 </div>
 
                 {/* Products Row */}
-                <div className="flex grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-20 overflow-x-auto sm:overflow-visible px-0">
+                <div className="flex grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 overflow-x-auto sm:overflow-visible px-0">
                   {visibleProducts.map((product) => (
                     <div
                       key={product._id}
@@ -368,7 +367,7 @@ const RecentlyViewedProducts = () => {
                             className="w-full text-xs sm:text-sm py-1.5"
                           />
                           <a
-                            href={`https://wa.me/919865555000?text=${encodeURIComponent(`Check Out This Product: ${apiUrl}/product/${product.slug}`)}`} 
+                            href={`https://wa.me/919243585858?text=${encodeURIComponent(`Check Out This Product: ${apiUrl}/product/${product.slug}`)}`} 
                             target="_blank"
                             rel="noopener noreferrer"
                             className="bg-green-500 hover:bg-green-600 text-white p-1 rounded-full transition-colors duration-300 flex items-center justify-center"
@@ -393,7 +392,7 @@ const RecentlyViewedProducts = () => {
                 </div>
 
                 {/* Fake Pagination Dots */}
-                <div className="flex justify-end mt-6 space-x-2">
+                {/* <div className="flex justify-end mt-6 space-x-2">
                   {clickElement === "next" ? (
                     <>
                       <span className="w-2.5 h-2.5 bg-gray-300 rounded-full"></span>
@@ -405,7 +404,7 @@ const RecentlyViewedProducts = () => {
                       <span className="w-2.5 h-2.5 bg-gray-300 rounded-full"></span>
                     </>
                   )}
-                </div>
+                </div> */}
 
         </div>
       </div>

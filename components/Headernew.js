@@ -1561,12 +1561,12 @@ const Header = () => {
                @keyframes shimmer{from{left:-120%}to{left:120%}}
                @media (max-width:900px){:root{--height:36px}.search-btn{width:48px;color:#2453d3;}.search-select{min-width:100px}}
             `}</style>
-            {/* Main Header */}
-            <div className={`${isMobileMenuOpen ? "fixed inset-0 mt-0 pt-0 z-50 overflow-y-auto" : "bg-white px-4 sm:px-6 md:px-6 py-1 sticky top-0 z-40"}`}>
+            {/* Main Header bg-white */}
+            <div className={`${isMobileMenuOpen ? "fixed inset-0 mt-0 pt-0 z-50 overflow-y-auto" : "px-4 sm:px-6 md:px-6 py-1 sticky top-0 z-40"}`} style={{ backgroundColor: "#424242" }}>
                 {/* NEW MOBILE TOP ROW (from reference) */}
                 <div className="sm:hidden flex items-center justify-between w-full relative">
                     <Link href="/" className="p-1 rounded-lg">
-                      <img src="/user/bea-new.png" alt="Logo" width={70} height={45} className="h-auto" />
+                      <img src="/user/unilet-logo.webp" alt="Logo" width={70} height={45} className="h-auto" />
                     </Link>
                     <div className="flex items-center gap-3 pr-1 text-customBlue">
                       {/* Feedback Icon */}
@@ -1723,15 +1723,15 @@ const Header = () => {
                 )}
                 {/* DESKTOP ROW (unchanged original content) */}
                 <div className="hidden sm:flex justify-between items-center gap-4">
-                    {/* Logo (Hidden on mobile) */}
-                    <div className="hidden sm:block bg-white py-2 rounded-lg">
+                    {/* Logo (Hidden on mobile) bg-white */}
+                    <div className="hidden sm:block py-2 rounded-lg">
                         <Link href="/index" className="mx-auto">
-                            <img src="/user/bea-new.png" alt="Logo" className="h-auto" width={80} height={45} />
+                            <img src="/user/unilet-logo.webp" alt="Logo" className="h-auto" width={80} height={45} />
                         </Link>
                     </div>
 
                     {/* Search Bar (Hidden on mobile - will show in mobile menu) */}
-                    <div className="search-bar relative hidden sm:flex flex-1 w-full max-w-[900px] mx-auto items-center bg-white rounded-lg shadow-sm overflow-hidden border border-gray-200" role="search" style={{minHeight: '40px', display: 'flex',
+                    <div className="search-bar relative hidden sm:flex flex-1 w-full max-w-[900px] mx-auto items-center bg-white rounded-lg shadow-sm overflow-hidden border border-gray-200" role="search" style={{minHeight: '40px', display: 'flex',height: "32px", 
                         alignItems: 'center',
                         gap: '10px',
                         background: 'var(--bg)',
@@ -1742,7 +1742,7 @@ const Header = () => {
                         transition:
                           'box-shadow .25s ease, transform .12s ease, border-color .18s ease',
                         width: '100%',
-                        maxWidth: '900px',
+                        maxWidth: '600px',
                         margin: '0 auto',}}>
                       <div className="search-bar-inner" style={{ position: 'relative', width: '100%' }}>
                         <div className="select-wrap">
@@ -1817,25 +1817,25 @@ const Header = () => {
 
                         {/* Feedback Icon */}
                         <Link href="/feedback" className="hidden sm:flex items-center relative">
-                            <FiMessageSquare size={18} className="text-customBlue" />
+                            <FiMessageSquare size={18} className="text-white" />
                         </Link>
 
                         {/* Contact Icon */}
                         <Link href="/contact" className="hidden sm:flex items-center relative">
-                            <FiPhoneCall size={18} className="text-customBlue" />
+                            <FiPhoneCall size={18} className="text-white" />
                         </Link>
 
                         {/* Location (Hidden on mobile) */}
                         <Link href="/location" className="hidden sm:flex items-center relative">
-                            <FiMapPin size={18} className="text-customBlue" />
+                            <FiMapPin size={18} className="text-white" />
                                 {/* <span className="ml-1 text-xs sm:text-sm text-customBlue hidden lg:inline">Location</span> */}
                         </Link>
 
                         {/* Wishlist */}
                         <Link href="/wishlist" className="flex items-center relative p-1 sm:p-0">
-                            <FiHeart size={18} className="text-customBlue" />
+                            <FiHeart size={18} className="text-white" />
                             {/* {wishlistCount > 0 && ( */}
-                                <span className="absolute -top-2 -right-2 text-[10px] bg-customBlue text-white rounded-full w-4 h-4 flex items-center justify-center">
+                                <span className="absolute -top-2 -right-2 text-[10px] bg-white text-black rounded-full w-4 h-4 flex items-center justify-center">
                                     {wishlistCount}
                                 </span>
                             {/* )} */}
@@ -1844,8 +1844,8 @@ const Header = () => {
 
                         {/* Cart */}
                         <Link href="/cart" className="flex items-center relative p-1 sm:p-0 ">
-                            <FiShoppingCart size={18} className="text-customBlue" />
-                            <span className="absolute -top-2 -right-2 text-[10px] bg-customBlue text-white rounded-full w-4 h-4 flex items-center justify-center">
+                            <FiShoppingCart size={18} className="text-white" />
+                            <span className="absolute -top-2 -right-2 text-[10px] bg-white text-black rounded-full w-4 h-4 flex items-center justify-center">
                                 {cartCount}
                             </span>
                             {/* <span className="ml-1 text-xs sm:text-sm text-customBlue hidden lg:inline">Cart</span> */}
@@ -1856,8 +1856,8 @@ const Header = () => {
                             {isLoggedIn ? (
                                 <>
                                     <button onClick={() => setDropdownOpen(!dropdownOpen)} className="flex items-center text-black focus:outline-none p-1 sm:p-0">
-                                        <FiUser size={18} className="text-customBlue" />
-                                        <span className="ml-1 font-bold text-xs sm:text-sm text-customBlue hidden lg:inline">
+                                        <FiUser size={18} className="text-white" />
+                                        <span className="ml-1 font-bold text-xs sm:text-sm hidden lg:inline" style={{color : "#2a74ed"}}>
                                             Hi, {userData?.name || userData?.username || "User"}
                                         </span>
                                     </button>
@@ -1890,7 +1890,7 @@ const Header = () => {
                                 </>
                             ) : (
                                 <button onClick={() => setShowAuthModal(true)} className="flex items-center text-black p-1 sm:p-0">
-                                    <FiUser size={18} className="text-customBlue" />
+                                    <FiUser size={18} className="text-white" />
                                     {/* <span className="ml-1 font-bold text-xs sm:text-sm text-customBlue hidden lg:inline">Sign In</span> */}
                                 </button>
                             )}
