@@ -1211,372 +1211,192 @@ const fetchBrand = async () => {
   </div>
 )}
 
-{/* Extended Warranty Section */}
 
-{/* Extended Warranty Section */}
-{Array.isArray(product.extend_warranty) &&
- product.extend_warranty.some(w => w.year > 0 || w.amount > 0) && (
-  <div className="mt-4 bg-white p-4 border border-gray-300 rounded-md shadow-sm">
-    {/* Top heading section */}
-    <div className="flex items-center text-lg text-blue-800 font-bold mb-4 gap-2">
-      <FaShield className="w-6 h-6 text-blue-800" />
-      <span className="font-bold">BEA Care</span>
-      <span className="text-gray-700 font-normal text-sm">Add extra protection to your products</span>
-    </div>
 
-    {/* Divider */}
-    <div className="border-t border-gray-300 mb-4"></div>
 
-    {/* Main content section */}
-    <div className="flex flex-col md:flex-row items-start gap-6">
-      {/* Left side - Image */}
-      <div className="flex-shrink-0 mx-auto md:mx-0">
-        <img
-          src="/images/beashield.png"
-          alt="Sathya Shield"
-          className="w-36 h-36 object-contain"
-        />
-      </div>
-
-      {/* Right side - Content */}
-      <div className="flex-1">
-        <p className="font-semibold text-gray-900 mb-3 text-md">
-          Brand Authorised Repair/Replacement Guarantee As Per Manufacturer.
-        </p>
-        
-        <p className="text-gray-700 text-sm mb-4">
-          If you would like to cover your product under extended warranty for additional years. You may choose the plans as given below.
-        </p>
-
-        {/* Warranty Options */}
-        <div className="space-y-3 mb-6">
-          {product.extend_warranty.map((warranty, index) => (
-            <label 
-              key={warranty._id || index}
-              className="flex items-center gap-3 p-3 border border-gray-300 rounded-md cursor-pointer hover:bg-gray-50 transition-colors"
-            >
-              <input
-                type="radio"
-                name="extendedWarranty"
-                value={warranty.amount}
-                checked={selectedWarrantyAmount === warranty.amount}
-                onChange={() => setSelectedWarrantyAmount(warranty.amount)}
-                className="w-4 h-4 accent-blue-800"
-              />
-              <span className="text-gray-700 text-sm">
-                Include {warranty.year} Year{warranty.year > 1 ? "s" : ""} for 
-                <span className="font-semibold"> ₹{warranty.amount.toLocaleString()}</span>
-              </span>
-            </label>
-          ))}
-
-          <label className="flex items-center gap-3 p-3 border border-gray-300 rounded-md cursor-pointer hover:bg-gray-50 transition-colors">
-            <input
-              type="radio"
-              name="extendedWarranty"
-              value={0}
-              checked={selectedWarrantyAmount === 0}
-              onChange={() => setSelectedWarrantyAmount(0)}
-              className="w-4 h-4 accent-blue-800"
-            />
-            <span className="text-gray-700 text-sm">No Extended Warranty</span>
-          </label>
-        </div>
-
-        {/* Calculation Box - Only show when warranty is selected */}
-        {selectedWarrantyAmount > 0 && (
-          <div className="bg-gray-100 border border-gray-300 rounded-lg p-4">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b border-gray-300">
-                  <th className="text-left pb-2 font-semibold text-gray-700">Product</th>
-                  <th className="text-left pb-2 font-semibold text-gray-700">Warranty</th>
-                  <th className="text-right pb-2 font-semibold text-gray-700">Total</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td className="py-2 font-semibold text-gray-900">
-                    ₹{(product.special_price || product.price).toLocaleString()}
-                  </td>
-                  <td className="py-2 font-semibold text-gray-900">
-                    ₹{selectedWarrantyAmount.toLocaleString()}
-                  </td>
-                  <td className="py-2 text-right font-bold text-blue-800 text-lg">
-                    ₹{((product.special_price || product.price) + selectedWarrantyAmount).toLocaleString()}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-            
-            {/* Mobile View */}
-            <div className="md:hidden mt-3 space-y-2">
-              <div className="flex justify-between">
-                <span className="text-gray-700">Product:</span>
-                <span className="font-semibold">₹{(product.special_price || product.price).toLocaleString()}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-700">Warranty:</span>
-                <span className="font-semibold">₹{selectedWarrantyAmount.toLocaleString()}</span>
-              </div>
-              <div className="flex justify-between border-t border-gray-300 pt-2">
-                <span className="font-semibold text-gray-900">Total:</span>
-                <span className="font-bold text-blue-800 text-lg">
-                  ₹{((product.special_price || product.price) + selectedWarrantyAmount).toLocaleString()}
-                </span>
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
-    </div>
-  </div>
-)}
 
 
 
             {/* Product More Info */}
 
-            <div className="mt-4 bg-gray-50 p-4 rounded-md">
-  {/* Static Title */}
-  <h3 className="text-sm font-semibold text-gray-900 mb-3">MORE INFO</h3>
-
-  <div className="flex flex-row gap-4">
-    {/* Image Section (Left) */}
-    <div className="w-[30%] flex-shrink-0">
-      <img
-        src={resolveImagePath(mainImage) || "/no-image.jpg"}
-        alt={product?.name || "Product"}
-        className="w-full h-auto max-w-[150px] max-h-[150px] object-contain rounded-md border border-gray-200 mx-auto"
-      />
-    </div>
-    
-    {/* Content Section (Right) */}
-    <div className="w-[70%] flex flex-col">
-      {/* Brand Information */}
-      <div className="mb-4">
-        <h4 className="text-sm font-semibold text-gray-900 mb-1">Brand</h4>
-        <p className="text-gray-700 text-sm">
-          {brand.find((b) => b.value === product.brand)?.label || "No Brand Info Available"}
-        </p>
-      </div>
-
-      {/* Quantity Information */}
-      <div className="mb-4">
-        <h4 className="text-sm font-semibold text-gray-900 mb-1">Available Quantity</h4>
-        <p className="text-gray-700 text-sm">
-          {product.quantity ? `${product.quantity} units available` : "Out of stock"}
-        </p>
-        {product.quantity && (
-          <div className="w-full bg-gray-200 rounded-full h-1.5 mt-1">
-            <div 
-              className="bg-green-600 h-1.5 rounded-full" 
-              style={{ width: `${Math.min(100, product.quantity)}%` }}
-            ></div>
-          </div>
-        )}
-      </div>
-    </div>
-  </div>
-</div>
-
-
-            <div className="border-b border-gray-400 mt-2"></div>
-
-            {/* Product feature section */}
-
-            <div className="mt-4 bg-gray-50 p-4 rounded-md">
-  {/* Static Title */}
-  <h3 className="text-sm font-semibold text-gray-900 mb-3">PRODUCT FEATURES</h3>
-
-  <div className="mt-3">
-    {(() => {
-      let features = [];
-
-      if (product?.key_specifications) {
-        if (Array.isArray(product.key_specifications)) {
-          features = product.key_specifications.flatMap(item =>
-            // 🔥 Smart split: split by comma NOT inside parentheses
-            item.split(/,(?![^(]*\))/)
-          );
-        } else if (typeof product.key_specifications === "string") {
-          features = product.key_specifications.split(/,(?![^(]*\))/);
-        }
-      }
-
-      // 🔥 Clean & filter
-      const cleanedFeatures = features
-        .map(f => String(f).replace(/[{}\[\]"]/g, "").trim())
-        .filter(f => f.length > 0);
-
-      return cleanedFeatures.length > 0 ? (
-        <ul className="list-disc list-inside text-sm text-gray-700 space-y-1">
-          {cleanedFeatures.map((feature, index) => (
-            <li key={index}>
-              {feature.charAt(0).toUpperCase() + feature.slice(1)}
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <span className="text-xs text-gray-500">No features available.</span>
-      );
-    })()}
-  </div>
-</div>
-
-            <div className="border-b border-gray-400 mt-2"></div>
-
-            {/* Product highlight section */}
             {/* <div className="mt-4 bg-gray-50 p-4 rounded-md">
-                <div 
-                  className="flex items-center justify-between cursor-pointer"
-                  onClick={() => setShowHighlights(!showHighlights)}
-                >
-                  <h3 className="text-sm font-semibold text-gray-900">PRODUCT HIGHLIGHTS</h3>
-                  <svg 
-                    className={`w-4 h-4 text-gray-500 transition-transform duration-200 ${showHighlights ? 'transform rotate-180' : ''}`} 
-                    fill="none" 
-                    stroke="currentColor" 
-                    viewBox="0 0 24 24"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
+              Static Title
+              <h3 className="text-sm font-semibold text-gray-900 mb-3">MORE INFO</h3>
+
+              <div className="flex flex-row gap-4">
+                // Image Section (Left)
+                <div className="w-[30%] flex-shrink-0">
+                  <img
+                    src={resolveImagePath(mainImage) || "/no-image.jpg"}
+                    alt={product?.name || "Product"}
+                    className="w-full h-auto max-w-[150px] max-h-[150px] object-contain rounded-md border border-gray-200 mx-auto"
+                  />
                 </div>
+                
+                // Content Section (Right)
+                <div className="w-[70%] flex flex-col">
+                  Brand Information
+                  <div className="mb-4">
+                    <h4 className="text-sm font-semibold text-gray-900 mb-1">Brand</h4>
+                    <p className="text-gray-700 text-sm">
+                      {brand.find((b) => b.value === product.brand)?.label || "No Brand Info Available"}
+                    </p>
+                  </div>
 
-                  {showHighlights && (
-                    <div className="mt-3">
-                      {product.highlights && product.highlights.trim() !== '' ? (
-                        <ol className="list-decimal pl-5 space-y-1 text-xs text-gray-600">
-                          {product.highlights
-                            .split('\n')
-                            .filter(item => item.trim() !== '')
-                            .map((item, index) => (
-                              <li key={index}>{item.trim()}</li>
-                            ))}
-                        </ol>
-                      ) : (
-                        <p className="text-xs text-gray-500">No highlights available.</p>
-                      )}
-                    </div>
-                  )}
-            </div> */}
-            <div className="mt-4 bg-gray-50 p-4 rounded-md">
-  {/* Static Title */}
-  <h3 className="text-sm font-semibold text-gray-900 mb-3">PRODUCT HIGHLIGHTS</h3>
-
-  <div className="mt-3 overflow-auto">
-    {Array.isArray(product.product_highlights) &&
-    product.product_highlights
-      .flatMap(item => item.split(/[\n,]+/).map(i => i.trim()))
-      .filter(item => item.length > 0).length > 0 ? (
-      <table className="w-full text-xs text-left text-gray-700 border border-gray-200">
-        <thead className="bg-gray-100">
-          <tr>
-            <th className="border px-3 py-2">Key</th>
-            <th className="border px-3 py-2">Value</th>
-          </tr>
-        </thead>
-        <tbody>
-          {product.product_highlights
-            .flatMap(item => item.split(/[\n,]+/).map(i => i.trim()))
-            .filter(item => item.length > 0)
-            .map((item, index) => {
-              const cleanedItem = item
-                .replace(/[\[\]{}"]/g, '') // remove braces, brackets, quotes
-                .replace(/\s+/g, ' ')
-                .trim();
-              const [key, ...rest] = cleanedItem.split(':');
-              const value = rest.join(':').trim();
-              return (
-                <tr key={index} className="bg-white even:bg-gray-50">
-                  <td className="border px-3 py-2 font-medium">{key?.trim()}</td>
-                  <td className="border px-3 py-2">{value || '-'}</td>
-                </tr>
-              );
-            })}
-        </tbody>
-      </table>
-    ) : (
-      <p className="text-gray-500 text-xs">No highlights available.</p>
-    )}
-  </div>
-</div>
-
-
-          <div className="border-b border-gray-400 mt-2"></div>
-
-            {/* Coupons */}
-            {/* <div className="mt-4">
-              <div className="flex items-center justify-between border border-blue-400 rounded-md p-2 mb-3">
-                <div className="flex items-center gap-1">
-                  //  <span className="text-gray-600 text-sm">➕</span> 
-                  <span className="inline-flex items-center justify-center w-4 h-4 text-white bg-gray-600 rounded-full text-lg">+</span>
-
-                  <span className="text-gray-700 text-xs">Mfr. coupon. $3.00 off 5</span>
+                  // Quantity Information
+                  <div className="mb-4">
+                    <h4 className="text-sm font-semibold text-gray-900 mb-1">Available Quantity</h4>
+                    <p className="text-gray-700 text-sm">
+                      {product.quantity ? `${product.quantity} units available` : "Out of stock"}
+                    </p>
+                    {product.quantity && (
+                      <div className="w-full bg-gray-200 rounded-full h-1.5 mt-1">
+                        <div 
+                          className="bg-green-600 h-1.5 rounded-full" 
+                          style={{ width: `${Math.min(100, product.quantity)}%` }}
+                        ></div>
+                      </div>
+                    )}
+                  </div>
                 </div>
-                <button className="text-blue-500 text-xs font-semibold hover:underline">
-                  View Details
-                </button>
-              </div>
-              <div className="mt-1 text-gray-900 text-xs font-medium">
-                <p>Buy 1, Get 1 FREE</p>
-                <p>Buy 1, Get 1 FREE</p>
               </div>
             </div> */}
+            {/* <div className="border-b border-gray-400 mt-2"></div> */}
+            {/* Product feature section */}
+           {/*  <div className="mt-4 bg-gray-50 p-4 rounded-md">
+              // Static Title
+              <h3 className="text-sm font-semibold text-gray-900 mb-3">PRODUCT FEATURES</h3>
 
-       <div className="mt-4">
+              <div className="mt-3">
+                {(() => {
+                  let features = [];
+
+                  if (product?.key_specifications) {
+                    if (Array.isArray(product.key_specifications)) {
+                      features = product.key_specifications.flatMap(item =>
+                        // 🔥 Smart split: split by comma NOT inside parentheses
+                        item.split(/,(?![^(]*\))/)
+                      );
+                    } else if (typeof product.key_specifications === "string") {
+                      features = product.key_specifications.split(/,(?![^(]*\))/);
+                    }
+                  }
+
+                  // 🔥 Clean & filter
+                  const cleanedFeatures = features
+                    .map(f => String(f).replace(/[{}\[\]"]/g, "").trim())
+                    .filter(f => f.length > 0);
+
+                  return cleanedFeatures.length > 0 ? (
+                    <ul className="list-disc list-inside text-sm text-gray-700 space-y-1">
+                      {cleanedFeatures.map((feature, index) => (
+                        <li key={index}>
+                          {feature.charAt(0).toUpperCase() + feature.slice(1)}
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <span className="text-xs text-gray-500">No features available.</span>
+                  );
+                })()}
+              </div>
+            </div> */}
+            {/* <div className="border-b border-gray-400 mt-2"></div> */}
+            {/* <div className="mt-4 bg-gray-50 p-4 rounded-md">
+              Static Title
+              <h3 className="text-sm font-semibold text-gray-900 mb-3">PRODUCT HIGHLIGHTS</h3>
+
+              <div className="mt-3 overflow-auto">
+                {Array.isArray(product.product_highlights) &&
+                product.product_highlights
+                  .flatMap(item => item.split(/[\n,]+/).map(i => i.trim()))
+                  .filter(item => item.length > 0).length > 0 ? (
+                  <table className="w-full text-xs text-left text-gray-700 border border-gray-200">
+                    <thead className="bg-gray-100">
+                      <tr>
+                        <th className="border px-3 py-2">Key</th>
+                        <th className="border px-3 py-2">Value</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {product.product_highlights
+                        .flatMap(item => item.split(/[\n,]+/).map(i => i.trim()))
+                        .filter(item => item.length > 0)
+                        .map((item, index) => {
+                          const cleanedItem = item
+                            .replace(/[\[\]{}"]/g, '') // remove braces, brackets, quotes
+                            .replace(/\s+/g, ' ')
+                            .trim();
+                          const [key, ...rest] = cleanedItem.split(':');
+                          const value = rest.join(':').trim();
+                          return (
+                            <tr key={index} className="bg-white even:bg-gray-50">
+                              <td className="border px-3 py-2 font-medium">{key?.trim()}</td>
+                              <td className="border px-3 py-2">{value || '-'}</td>
+                            </tr>
+                          );
+                        })}
+                    </tbody>
+                  </table>
+                ) : (
+                  <p className="text-gray-500 text-xs">No highlights available.</p>
+                )}
+              </div>
+            </div>
+          <div className="border-b border-gray-400 mt-2"></div> */}
+
+          <div className="mt-4">
 	   
+            {/* Responsive 3 Boxes Section */}
+            <div className="mt-3 flex flex-col md:flex-row md:justify-between gap-2 space-y-2 md:space-y-0">
+              {/* Replacement Box 
+              <div
+                className="flex items-start bg-blue-50 border border-blue-200 rounded-md p-4 w-full md:w-1/3 shadow-sm cursor-pointer"
+                onClick={() => setShowReplacementModal(true)}
+              >
+              <span className="text-3xl mr-3 mt-1">
+            <Icon icon="mdi:refresh" className="text-blue-600" />
+          </span>
+                <div>
+                  <div className="text-sm font-semibold text-blue-800">Replacement</div>
+                  <div className="text-xs text-blue-600">in 7 days</div>
+                </div>
+              </div>
+            
+            */}
 
-  {/* Responsive 3 Boxes Section */}
-  <div className="mt-3 flex flex-col md:flex-row md:justify-between gap-2 space-y-2 md:space-y-0">
-    {/* Replacement Box 
-    <div
-      className="flex items-start bg-blue-50 border border-blue-200 rounded-md p-4 w-full md:w-1/3 shadow-sm cursor-pointer"
-      onClick={() => setShowReplacementModal(true)}
-    >
-     <span className="text-3xl mr-3 mt-1">
-  <Icon icon="mdi:refresh" className="text-blue-600" />
-</span>
-      <div>
-        <div className="text-sm font-semibold text-blue-800">Replacement</div>
-        <div className="text-xs text-blue-600">in 7 days</div>
-      </div>
-    </div>
-	
-	*/}
+              {/* Warranty Box 
+              <div
+                className="flex items-start bg-blue-50 border border-blue-200 rounded-md p-4 w-full md:w-1/3 shadow-sm cursor-pointer"
+                onClick={() => setshowWarrantyModal(true)}
+              >
+                <span className="text-3xl mr-3 mt-1">
+            <Icon icon="mdi:shield" className="text-blue-500" />
+          </span>
+                <div>
+                  <div className="text-sm font-semibold text-blue-800">Warranty</div>
+                  <div className="text-xs text-blue-600">in 1 Year</div>
+                </div>
+              </div>
+            
+            */}
 
-    {/* Warranty Box 
-    <div
-      className="flex items-start bg-blue-50 border border-blue-200 rounded-md p-4 w-full md:w-1/3 shadow-sm cursor-pointer"
-      onClick={() => setshowWarrantyModal(true)}
-    >
-      <span className="text-3xl mr-3 mt-1">
-  <Icon icon="mdi:shield" className="text-blue-500" />
-</span>
-      <div>
-        <div className="text-sm font-semibold text-blue-800">Warranty</div>
-        <div className="text-xs text-blue-600">in 1 Year</div>
-      </div>
-    </div>
-	
-	*/}
-
-    {/* GST Invoice Box 
-    <div
-      className="flex items-start bg-blue-50 border border-blue-200 rounded-md p-4 w-full md:w-1/3 shadow-sm cursor-pointer"
-      onClick={() => setshowGstInvoiceModal(true)}
-    >
-      <span className="text-yellow-500 text-xl mr-3 mt-1">📄</span>
-      <div>
-        <div className="text-sm font-semibold text-blue-800">GST Invoice</div>
-        <div className="text-xs text-blue-600">Available</div>
-      </div>
-	  
-	  
-    </div>
-	*/}
-	
-  </div>
+              {/* GST Invoice Box 
+              <div
+                className="flex items-start bg-blue-50 border border-blue-200 rounded-md p-4 w-full md:w-1/3 shadow-sm cursor-pointer"
+                onClick={() => setshowGstInvoiceModal(true)}
+              >
+                <span className="text-yellow-500 text-xl mr-3 mt-1">📄</span>
+                <div>
+                  <div className="text-sm font-semibold text-blue-800">GST Invoice</div>
+                  <div className="text-xs text-blue-600">Available</div>
+                </div>
+              
+              
+              </div>
+            */}
+            
+            </div>
 
             {/* Modal */}
             {showReplacementModal && (
@@ -1704,8 +1524,8 @@ const fetchBrand = async () => {
                 </div>
               </div>
             )}
-  {/* Modals - Keep your existing code for modals */}
-</div>
+            {/* Modals - Keep your existing code for modals */}
+          </div>
 
 
 
@@ -2095,7 +1915,107 @@ const fetchBrand = async () => {
         
        
       </div>
-     
+     {/* changed code for 3 boxes 13-12-25 */}
+      <div className="container mx-auto px-1 py-0 w-full grid grid-cols-1 md:grid-cols-3 gap-3 -mt-7">
+        <div className="bg-gray-50 p-4 rounded-md shadow-md h-full">
+          <h3 className="text-sm font-semibold text-gray-900 mb-3">MORE INFO</h3>
+
+          <div className="flex flex-row gap-4">
+            <div className="w-[30%] flex-shrink-0">
+              <img
+                src={resolveImagePath(mainImage) || "/no-image.jpg"}
+                alt={product?.name || "Product"}
+                className="w-full h-auto max-w-[150px] max-h-[150px] object-contain rounded-md border border-gray-200 mx-auto"
+              />
+            </div>
+
+            <div className="w-[70%] flex flex-col">
+              <div className="mb-4">
+                <h4 className="text-sm font-semibold text-gray-900 mb-1">Brand</h4>
+                <p className="text-gray-700 text-sm">
+                  {brand.find((b) => b.value === product.brand)?.label || "No Brand Info Available"}
+                </p>
+              </div>
+
+              <div className="mb-4">
+                <h4 className="text-sm font-semibold text-gray-900 mb-1">Available Quantity</h4>
+                <p className="text-gray-700 text-sm">
+                  {product.quantity ? `${product.quantity} units available` : "Out of stock"}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-gray-50 p-4 rounded-md shadow-md h-full">
+          <h3 className="text-sm font-semibold text-gray-900 mb-3">PRODUCT FEATURES</h3>
+
+          <div className="mt-2">
+            {(() => {
+              let features = [];
+
+              if (product?.key_specifications) {
+                if (Array.isArray(product.key_specifications)) {
+                  features = product.key_specifications.flatMap(item =>
+                    item.split(/,(?![^(]*\))/)
+                  );
+                } else if (typeof product.key_specifications === "string") {
+                  features = product.key_specifications.split(/,(?![^(]*\))/);
+                }
+              }
+
+              const cleanedFeatures = features
+                .map(f => String(f).replace(/[{}\[\]"]/g, "").trim())
+                .filter(f => f.length > 0);
+
+              return cleanedFeatures.length > 0 ? (
+                <ul className="list-disc list-inside text-sm text-gray-700 space-y-1">
+                  {cleanedFeatures.map((feature, index) => (
+                    <li key={index}>{feature.charAt(0).toUpperCase() + feature.slice(1)}</li>
+                  ))}
+                </ul>
+              ) : (
+                <span className="text-xs text-gray-500">No features available.</span>
+              );
+            })()}
+          </div>
+        </div>
+
+        <div className="bg-gray-50 p-4 rounded-md shadow-md h-full">
+          <h3 className="text-sm font-semibold text-gray-900 mb-3">PRODUCT HIGHLIGHTS</h3>
+
+          <div className="mt-3 overflow-auto">
+            {Array.isArray(product.product_highlights) &&
+            product.product_highlights.flatMap(item => item.split(/[\n,]+/)).length > 0 ? (
+              <table className="w-full text-xs text-left text-gray-700 border border-gray-200">
+                <thead className="bg-gray-100">
+                  <tr>
+                    <th className="border px-3 py-2">Key</th>
+                    <th className="border px-3 py-2">Value</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {product.product_highlights
+                    .flatMap(item => item.split(/[\n,]+/))
+                    .map((item, index) => {
+                      const [key, ...rest] = item.split(':');
+                      const value = rest.join(':').trim();
+                      return (
+                        <tr key={index} className="bg-white even:bg-gray-50">
+                          <td className="border px-3 py-2 font-medium">{key?.trim()}</td>
+                          <td className="border px-3 py-2">{value || '-'}</td>
+                        </tr>
+                      );
+                    })}
+                </tbody>
+              </table>
+            ) : (
+              <p className="text-gray-500 text-xs">No highlights available.</p>
+            )}
+          </div>
+        </div>
+      </div>
+
 
         <div className="space-y-8">
           <ProductDetailsSection 
