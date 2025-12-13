@@ -11,11 +11,12 @@ import { FaHeart } from "react-icons/fa6";
 
 export default function Profile() {
   const [profileData, setProfileData] = useState({
-    firstName: 'BEA',
+    firstName: 'UNILETSTORES',
     lastName: 'Admin',
-    email: 'ecom@bharathelectronics.in',
-    mobile: '9842248610',
-    store: '100 FEET ROAD'
+    //email: 'ecom@bharathelectronics.in',
+    email: 'sorambeeviuit@gmail.com',
+    mobile: '9243585858',
+    store: '#60, 1st Floor, Near ICICI Bank, Sahakar Nagar, Bangaluru, Karnataka.'
   });
 
   // Profile functions

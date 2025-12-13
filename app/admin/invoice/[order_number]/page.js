@@ -169,11 +169,11 @@ const handlePrint = () => {
             <p className="text-sm text-gray-600">Date Due: {/* Insert due date */}</p>
           </div>
           <div>
-            <h2 className="font-bold text-lg">Bharath Electronics</h2>
+            <h2 className="font-bold text-lg">UNILET STORES</h2>
             <p className="text-sm text-gray-600">
-              26/1 Dr.Alagappa Chettiyar Rd, Tatabad, Near Kovai Scan Centre,
+              #60, 1st Floor, Near ICICI Bank, Sahakar Nagar, Bangaluru
             </p>
-            <p className="text-sm text-gray-600">Coimbatore-641012</p>
+            <p className="text-sm text-gray-600">Karnataka 560092</p>
           </div>
         </div>
 

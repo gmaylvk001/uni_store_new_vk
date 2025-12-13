@@ -99,8 +99,12 @@ const CancellationRefundPolicy = () => {
               <p className="text-gray-600 mb-6">
                 In case of any Refunds approved by Bharath Electronics and Appliances, it'll take 9-15 days for the refund to be processed to the end customer.
               </p>
-              <a 
+              {/* <a 
                 href="mailto:customercare@bharathelectronics.in" 
+                className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-300"
+              > */}
+              <a 
+                href="mailto:sorambeeviuit@gmail.com" 
                 className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-300"
               >
                 Contact Customer Care

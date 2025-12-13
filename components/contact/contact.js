@@ -115,13 +115,13 @@ export default function ContactForm() {
       <section className="relative w-full h-[200px] md:h-[300px] lg:h-[250px] flex items-center justify-center bg-gradient-to-r from-gray-800 to-black text-white">
         <div className="absolute inset-0">
           <img
-            src="uploads/about-bea.png"
+            src="uploads/contact-us.webp"
             alt="Contact Us"
             className="w-full h-full object-cover opacity-40"
           />
         </div>
         <div className="relative text-left px-4">
-          <h1 className="text-3xl md:text-5xl font-bold">Contact BEA</h1>
+          <h1 className="text-3xl md:text-5xl font-bold">Contact UNILETSTORES</h1>
         </div>
       </section>
 
@@ -131,6 +131,9 @@ export default function ContactForm() {
           {/* Contact Details (Moved to Left) */}
           <div className="bg-gray-50 p-6 rounded-lg shadow-md">
             <h2 className="text-3xl font-bold mb-6 text-gray-800">Contact Us</h2>
+            <p className="font-semibold text-gray-700 mb-4">
+              Let’s get in touch!
+            </p>
             <p className="font-semibold text-gray-700 mb-4">
               You may contact us using the information below:
             </p>
@@ -143,22 +146,11 @@ export default function ContactForm() {
                   <circle cx="12" cy="9" r="2.5" fill="currentColor" />
                 </svg>
                 <p>
-                  <b>Registered Address:</b><span className="text-gray-600"> 383, 100 Feet Road, Gandhipuram,
-                  Coimbatore, Tamilnadu 641012</span>
+                  <b>Our Corporate Office Manika :</b><span className="text-gray-600"> #60, 1st Floor, 60 ft Road, G Block, Sahakaranagar, Bangalore, 560092.</span>
                 </p>
               </div>
 
-              {/* Operational Address */}
-              <div className="flex items-start">
-                <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 2C8.134 2 5 5.134 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.866-3.134-7-7-7z" />
-                  <circle cx="12" cy="9" r="2.5" fill="currentColor" />
-                </svg>
-                <p>
-                  <b>Operational Address:</b><span className="text-gray-600"> 383, 100 Feet Road, Gandhipuram,
-                  Coimbatore, Tamilnadu 641012</span>
-                </p>
-              </div>
+              
 
               {/* Phone */}
               <div className="flex items-center">
@@ -167,8 +159,8 @@ export default function ContactForm() {
                 </svg>
                 <p>
                   <b>Telephone No:</b>{" "}
-                  <a href="tel:9842344323" className="hover:underline text-gray-600">
-                    9842344323
+                  <a href="tel:9243585858" className="hover:underline text-gray-600">
+                    +91 9243585858
                   </a>
                 </p>
               </div>
@@ -182,21 +174,11 @@ export default function ContactForm() {
                 <p>
                   <b>E-Mail ID:</b>{" "}
                   <a
-                    href="mailto:customercare@bharathelectronics.in"
+                    href="mailto:info@uniletstores.com"
                     className="hover:underline text-gray-600"
                   >
-                    customercare@bharathelectronics.in
+                    info@uniletstores.com
                   </a>
-                </p>
-              </div>
-
-              {/* Merchant Name */}
-              <div className="flex items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 7h18M3 7a2 2 0 012-2h14a2 2 0 012 2M3 7v10a2 2 0 002 2h14a2 2 0 002-2V7" />
-                </svg>
-                <p>
-                  <b>Merchant Legal Entity Name:</b><span className="text-gray-600"> Bharath Electronics and Appliances</span>
                 </p>
               </div>
             </div>
@@ -300,7 +282,7 @@ export default function ContactForm() {
         </div>
 
         {/** --- Coimbatore --- */}
-        {storeGroups
+        {/* {storeGroups
           .filter(group => group.city.toLowerCase() === "coimbatore")
           .map((group, idx) => (
             <section key={idx} className="bg-white py-6">
@@ -315,9 +297,6 @@ export default function ContactForm() {
                         {store.organisation_name}
                       </h3>
                       <p className="text-sm text-gray-700">{store.address},</p>
-                      {/* <p className="text-sm text-gray-700">
-                        {store.city} - {store.zipcode}.
-                      </p> */}
                       <p className="text-sm text-gray-800">{store.phone}</p>
                       <p className="text-sm text-blue-600 underline mb-4">
                         <a
@@ -328,24 +307,16 @@ export default function ContactForm() {
                           {store.email}
                         </a>
                       </p>
-                      {/* <a
-                        href={`https://wa.me/${store.phone}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center px-4 py-2 bg-green-600 text-white text-sm font-semibold rounded"
-                      >
-                        Whatsapp
-                      </a> */}
                     </div>
                   ))}
                 </div>
               </div>
             </section>
           ))
-        }
+        } */}
 
         {/** --- Salem --- */}
-        {storeGroups
+        {/* {storeGroups
           .filter(group => group.city.toLowerCase() === "salem")
           .map((group, idx) => (
             <section key={idx} className="bg-white py-6">
@@ -360,9 +331,6 @@ export default function ContactForm() {
                         {store.organisation_name}
                       </h3>
                       <p className="text-sm text-gray-700">{store.address},</p>
-                      {/* <p className="text-sm text-gray-700">
-                        {store.city} - {store.zipcode}.
-                      </p> */}
                       <p className="text-sm text-gray-800">{store.phone}</p>
                       <p className="text-sm text-blue-600 underline mb-4">
                         <a
@@ -373,24 +341,16 @@ export default function ContactForm() {
                           {store.email}
                         </a>
                       </p>
-                      {/* <a
-                        href={`https://wa.me/${store.phone}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center px-4 py-2 bg-green-600 text-white text-sm font-semibold rounded"
-                      >
-                        Whatsapp
-                      </a> */}
                     </div>
                   ))}
                 </div>
               </div>
             </section>
           ))
-        }
+        } */}
 
         {/** --- Remaining Cities as "Around Tamilnadu" --- */}
-        <section className="bg-white py-6">
+        {/* <section className="bg-white py-6">
           <div className="max-w-7xl mx-auto px-4">
             <h2 className="text-2xl font-bold text-center mb-3">
               SHOWROOMS AROUND TAMILNADU
@@ -408,9 +368,6 @@ export default function ContactForm() {
                       {store.organisation_name}
                     </h3>
                     <p className="text-sm text-gray-700">{store.address},</p>
-                    {/* <p className="text-sm text-gray-700">
-                      {store.city} - {store.zipcode}.
-                    </p> */}
                     <p className="text-sm text-gray-800">{store.phone}</p>
                     <p className="text-sm text-blue-600 underline mb-4">
                       <a
@@ -421,19 +378,11 @@ export default function ContactForm() {
                         {store.email}
                       </a>
                     </p>
-                    {/* <a
-                      href={`https://wa.me/${store.phone}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center px-4 py-2 bg-green-600 text-white text-sm font-semibold rounded"
-                    >
-                      Whatsapp
-                    </a> */}
                   </div>
                 ))}
             </div>
           </div>
-        </section>     
+        </section>      */}
 
       </div>
     </>

@@ -82,16 +82,16 @@ const ShippingPolicy = () => {
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <a 
-                  href="tel:9842344323" 
+                  href="tel:9243585858" 
                   className="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-300"
                 >
-                  <FiPhone /> 9842344323
+                  <FiPhone /> 9243585858
                 </a>
                 <a 
-                  href="mailto:customercare@bharathelectronics.in" 
+                  href="mailto:info@uniletstores.com" 
                   className="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-300"
                 >
-                  <FiMail /> customercare@bharathelectronics.in
+                  <FiMail /> info@uniletstores.com
                 </a>
               </div>
             </div>

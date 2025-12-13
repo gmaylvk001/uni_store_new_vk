@@ -73,19 +73,19 @@ export default function BlogComponent() {
         {visibleBlogs.length > 0 ? (
           visibleBlogs.map((blog) => (
             <div key={blog._id} className="bg-white rounded-xl shadow-md overflow-hidden flex flex-col">
-              <img
-                src={blog.image || "/default-blog.jpg"}
-                alt={blog.blog_name}
-                className="h-48 w-full object-cover"
-              />
+              <Link href={`/blog/${blog.blog_slug}`} className="mt-4 text-orange-500 hover:underline text-sm font-medium">
+              <img src={blog.image || "/default-blog.jpg"} alt={blog.blog_name} className="h-48 w-full object-cover" />
               <span className="text-orange-500 text-xs bg-orange-100 px-2 rounded w-max mb-2">
                 {new Date(blog.createdAt).toLocaleDateString('en-GB')}
               </span>
+              </Link>
               <div className="p-3 flex flex-col flex-1">
+                <Link href={`/blog/${blog.blog_slug}`} className="mt-4 text-sm font-medium">
                 <h3 className="text-lg font-semibold text-gray-800 mb-2">
                   {blog.blog_name}
                 </h3>
                 <p className="text-gray-600 flex-1">{blog.description.slice(0, 100)}...</p>
+                </Link>
                 <Link
                   href={`/blog/${blog.blog_slug}`}
                   className="mt-4 text-orange-500 hover:underline text-sm font-medium"
