@@ -1934,7 +1934,7 @@ const shouldShowArrow = (item, allItems = []) => {
             onMouseEnter={cancelHide}
             onMouseLeave={() => startHide(120)}
           >
-            <div className="flex flex-wrap bg-white h-[390px]" style={{ width: "100%" }}>
+            <div className="flex flex-nowrap bg-white h-[390px] overflow-hidden" style={{ width: "100%" }}>
               {/* Render only non-empty columns in order (gap-free) */}
               {columns.map((chunk, index) => {
                 const bgClass = index % 2 === 0 ? "bg-[#f2f2f2]" : "bg-white";
