@@ -189,12 +189,12 @@ export default function StoreDetail() {
 
 <section class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
     <div class="bg-gray-200 border border-gray-300 rounded-xl p-4">
-      <h3 class="font-semibold text-lg mb-2">Parking Options</h3>
+      <h3 className="font-semibold text-lg">Parking Options</h3>
       <p class="text-xs text-slate-600 font-medium">Free parking on site</p>
     </div>
 
     <div class="bg-gray-200 border border-gray-300 rounded-xl p-4">
-      <h3 class="font-semibold text-lg mb-2">Payment Methods</h3>
+      <h3 className="font-semibold text-lg">Payment Methods</h3>
       <p class="text-xs text-slate-600 font-medium">Cash, Credit Card, Debit Card, Online Payment</p>
     </div>
 
