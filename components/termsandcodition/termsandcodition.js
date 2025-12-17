@@ -231,10 +231,10 @@ const TermsAndConditions = () => {
                 Contact Numer: +91 9243585858
               </p>
               <a 
-                href="mailto:info@unilestores.com" 
+                href="mailto:info@uniletstores.com" 
                 className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-300"
               >
-              info@unilestores.com
+              info@uniletstores.com
               </a>
             </div>
           </div>
