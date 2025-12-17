@@ -53,7 +53,7 @@ const CancellationRefundPolicy = () => {
                 Cancellations will be considered only if the request is made immediately after placing the order: however, the cancellation request may not be entertained if the orders have been communicated to the vendors/merchants and they have initated the process of shipping them.
               </p>
               <p className="text-gray-600">
-                Bharath Electronics and Appliances does not accept cancellation requests for perishable items etc. However, refund/replacement can be made if the customer establishes that the quality of product delivered is not good.
+                Unilet Stores does not accept cancellation requests for perishable items etc. However, refund/replacement can be made if the customer establishes that the quality of product delivered is not good.
               </p>
             </div>
 
@@ -97,12 +97,8 @@ const CancellationRefundPolicy = () => {
                 Refund Processing Time
               </h3>
               <p className="text-gray-600 mb-6">
-                In case of any Refunds approved by Bharath Electronics and Appliances, it'll take 9-15 days for the refund to be processed to the end customer.
+                In case of any Refunds approved by Unilet Stores, it'll take 9-15 days for the refund to be processed to the end customer.
               </p>
-              {/* <a 
-                href="mailto:customercare@bharathelectronics.in" 
-                className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-300"
-              > */}
               <a 
                 href="mailto:sorambeeviuit@gmail.com" 
                 className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-300"

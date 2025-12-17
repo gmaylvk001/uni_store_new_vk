@@ -64,7 +64,7 @@ const ShippingPolicy = () => {
                 Delivery Timeline
               </h3>
               <p className="text-gray-600">
-                Bharath Electronics and Appliances is not liable for any delay in delivery by the courier company / postal authorities and only guarantees to hand over the consignment to the courier company or postal authorities within 3-5 days from the date of the order and payment or as per the delivery date agreed at the time of order confirmation.
+                Unilet Stores is not liable for any delay in delivery by the courier company / postal authorities and only guarantees to hand over the consignment to the courier company or postal authorities within 3-5 days from the date of the order and payment or as per the delivery date agreed at the time of order confirmation.
               </p>
             </div>
 

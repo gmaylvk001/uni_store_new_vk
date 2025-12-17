@@ -1135,14 +1135,37 @@ const Header = () => {
             setForgotPasswordLoading(false);
         }
     };
+
+const shouldShowArrow = (item, allItems = []) => {
+  if (!Array.isArray(allItems)) return false;
+
+  // Brands header always has children
+  if (item.type === "brands-header") return true;
+
+  // Only main categories
+  if (item.level !== 0) return false;
+
+  // Check if any sub-category belongs to this category
+  return allItems.some(
+    (i) =>
+      i.level === 1 &&
+      i.rootCategory === item.category_slug
+  );
+};
+
+
+
     // Render flattened category/brand item
-    const renderFlatItem = (item, hoveredCategory) => {
+    const renderFlatItem = (item, hoveredCategory, allItems = []) => {
         const itemKey = item.uniqueKey || item._id;
         const paddingLeft = `${(item.level || 0) * 12}px`;
+
+         const showArrow = shouldShowArrow(item, allItems);
+
         let content = null;
         if (item.type === "brands-header") {
           content = (
-              <h3 className="flex items-center justify-between mb-1 text-sm font-semibold text-blue-600 ml-1">
+              <h3 className="flex items-center justify-between mb-1 text-sm font-semibold text-[#1688c8] ml-1">
                   {item.category_name}
               </h3>
           );
@@ -1168,20 +1191,20 @@ const Header = () => {
                 href={href}
                 className={`flex items-center justify-between mb-1 text-sm ${
                   item.level === 0
-                    ? "font-semibold text-blue-600"
-                    : "text-[#8c8c8c] !p-[5px] hover:text-[#0e54e6]"
+                    ? "font-semibold text-[#1688c8]"
+                    : "text-[#8c8c8c] !p-[5px] hover:text-[#1688c8]"
                 }`}
               >
                 <span className={item.level === 0 ? "font-bold" : "font-normal"}>
                   {item.category_name}
                 </span>
-                {item.level === 0 && (
-                  <Play
-                    size={14}
-                    strokeWidth={0}
-                    className="text-blue-600 fill-blue-600"
-                  />
-                )}
+                {showArrow && (
+          <Play
+            size={14}
+            strokeWidth={0}
+            className="text-blue-600 fill-blue-600 ml-2"
+          />
+        )}
               </Link>
             );
         }
@@ -1562,7 +1585,7 @@ const Header = () => {
                @media (max-width:900px){:root{--height:36px}.search-btn{width:48px;color:#2453d3;}.search-select{min-width:100px}}
             `}</style>
             {/* Main Header bg-white */}
-            <div className={`${isMobileMenuOpen ? "fixed inset-0 mt-0 pt-0 z-50 overflow-y-auto" : "px-4 sm:px-6 md:px-6 py-1 sticky top-0 z-40"}`} style={{ backgroundColor: "#424242" }}>
+            <div className={`${isMobileMenuOpen ? "fixed inset-0 mt-0 pt-0 z-50 overflow-y-auto" : "px-4 sm:px-6 md:px-0 py-0 sticky top-0 z-40"}`} style={{ backgroundColor: "#424242" }}>
                 {/* NEW MOBILE TOP ROW (from reference) */}
                 <div className="sm:hidden flex items-center justify-between w-full relative">
                     <Link href="/" className="p-1 rounded-lg">
@@ -1722,143 +1745,272 @@ const Header = () => {
                   </div>
                 )}
                 {/* DESKTOP ROW (unchanged original content) */}
-                <div className="hidden sm:flex justify-between items-center gap-4">
-                    {/* Logo (Hidden on mobile) bg-white */}
-                    <div className="hidden sm:block py-2 rounded-lg">
-                        <Link href="/index" className="mx-auto">
-                            <img src="/user/unilet-logo.webp" alt="Logo" className="h-auto" width={80} height={45} />
-                        </Link>
-                    </div>
+                <div className="hidden sm:grid grid-cols-12 items-center px-0 py-2">
 
-                    {/* Search Bar (Hidden on mobile - will show in mobile menu) */}
-                    <div className="search-bar relative hidden sm:flex flex-1 w-full max-w-[900px] mx-auto items-center bg-white rounded-lg shadow-sm overflow-hidden border border-gray-200" role="search" style={{minHeight: '40px', display: 'flex',height: "32px", 
-                        alignItems: 'center',
-                        gap: '10px',
-                        background: 'var(--bg)',
-                        borderRadius: '10px',
-                        padding: '4px 8px',
-                        border: '3px solid var(--outline)',
-                        boxShadow: 'var(--shadow)',
-                        transition:
-                          'box-shadow .25s ease, transform .12s ease, border-color .18s ease',
-                        width: '100%',
-                        maxWidth: '600px',
-                        margin: '0 auto',}}>
-                      <div className="search-bar-inner" style={{ position: 'relative', width: '100%' }}>
-                        <div className="select-wrap">
-                          <select
-                            value={selectedCategory}
-                            onChange={(e) => setSelectedCategory(e.target.value)}
-                            className="search-select"
-                            aria-label="Search category"
-                          >
-                            <option value="All Category">All Category</option>
-                            {categories.map((cat) => (
-                              <option key={cat._id} value={cat.category_name}>
-                                {cat.category_name}
-                              </option>
-                            ))}
-                          </select>
-                        </div>
-                        {/* input wrapper with absolute overlay */}
-                        <div className="relative flex-1">
-                          <input
-                            type="search"
-                            name="q"
-                            id="q"
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                            ref={searchInputRef}
-                            onFocus={() => {
-                              setSearchContext('desktop'); // ADDED
-                              if (searchInputRef.current) {
-                                const rect = searchInputRef.current.getBoundingClientRect();
-                                setSearchDropdownLeft(rect.left);
-                                setSearchDropdownTop(rect.bottom + window.scrollY);
-                                setSearchDropdownWidth(rect.width);
-                              }
-                              if (searchQuery.trim().length >= 2) fetchSuggestions(searchQuery);
-                              setSearchDropdownVisible(true);
-                            }}
-                            onKeyDown={handleDesktopKeyDown}  // correct usage
-                            className={`search-input ${searchQuery.trim() ? 'has-value' : ''}`}
-                            placeholder=" "
-                            aria-label="Search query"
-                          />
-                          {/* typed-overlay: "Search for" light gray, typedPreview black */}
-                          {searchQuery.trim() === "" && (
-                            <div className="absolute left-4 top-1/2 -translate-y-1/2 flex items-center gap-2 pointer-events-none z-10">
-                              <span className="text-gray-400 text-sm">Search for</span>
-                              <span className="text-black text-sm">"{typedPreview }"</span>
-                            </div>
-                          )}
-                        </div>
-                        {/* CHANGE: wire desktop .search-btn to immediate redirect handler */}
-                        <button
-                          type="button"
-                          className="search-btn"
-                          style={{color:'#2453d3'}}
-                          onClick={handleSearchBtnClick}
-                          aria-label="Search"
-                        >
-                          <FaSearch />
-                        </button>
-                        <div className="shimmer" aria-hidden="true"></div>
-                        {/* DROPDOWN MOVED OUTSIDE TO SUPPORT MOBILE */ }
-                        {/* (was here previously) */}
-                      </div>                    
-                    </div>
-                    {/* Icons Group */}
-                    <div className="flex items-center gap-[2rem] sm:gap-4">
-                        {/* Mobile Search Button (Hidden on desktop) */}
-                        <button onClick={toggleMobileMenu} className="sm:hidden text-customBlue">
-                            <FiSearch size={20} />
-                        </button>
+  {/* ========== COL 1 : LOGO (3) ========== */}
+  <div className="col-span-3 flex justify-center items-center">
+    <Link href="/index">
+      <img
+        src="/user/unilet-logo.webp"
+        alt="Logo"
+        width={120}
+        height={100}
+        className="h-auto"
+      />
+    </Link>
+  </div>
 
-                        {/* Feedback Icon */}
-                        <Link href="/feedback" className="hidden sm:flex items-center relative">
-                            <FiMessageSquare size={18} className="text-white" />
-                        </Link>
+  {/* ========== COL 2 : SEARCH + CATEGORY (6) ========== */}
+  <div className="col-span-6 flex flex-col items-center gap-3">
 
-                        {/* Contact Icon */}
-                        <Link href="/contact" className="hidden sm:flex items-center relative">
-                            <FiPhoneCall size={18} className="text-white" />
-                        </Link>
+    {/* --- ROW 1 : SEARCH BAR --- */}
+    <div className="w-full flex justify-center">
+      <div className="search-bar relative flex w-full max-w-[600px] items-center bg-white rounded-lg border-2 border-[#2453d3] px-3 py-1 shadow">
+        
+        {/* CATEGORY SELECT */}
+        {/* <select
+          value={selectedCategory}
+          onChange={(e) => setSelectedCategory(e.target.value)}
+          className="text-sm outline-none bg-transparent pr-2 border-r"
+        >
+          <option>All Category</option>
+          {categories.map((cat) => (
+            <option key={cat._id} value={cat.category_name}>
+              {cat.category_name}
+            </option>
+          ))}
+        </select> */}
 
-                        {/* Location (Hidden on mobile) */}
-                        <Link href="/location" className="hidden sm:flex items-center relative">
-                            <FiMapPin size={18} className="text-white" />
-                                {/* <span className="ml-1 text-xs sm:text-sm text-customBlue hidden lg:inline">Location</span> */}
-                        </Link>
+        {/* SEARCH INPUT */}
+        {/* <input
+          type="search"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="flex-1 px-3 outline-none text-sm"
+          placeholder='Search for "Sou"'
+        /> */}
 
-                        {/* Wishlist */}
-                        <Link href="/wishlist" className="flex items-center relative p-1 sm:p-0">
-                            <FiHeart size={18} className="text-white" />
-                            {/* {wishlistCount > 0 && ( */}
-                                <span className="absolute -top-2 -right-2 text-[10px] bg-white text-black rounded-full w-4 h-4 flex items-center justify-center">
-                                    {wishlistCount}
-                                </span>
-                            {/* )} */}
-                            {/* <span className="ml-1 text-xs sm:text-sm text-customBlue hidden lg:inline">Wishlist</span> */}
-                        </Link>
+        <input
+		type="search"
+		name="q"
+		id="q"
+		value={searchQuery}
+		onChange={(e) => setSearchQuery(e.target.value)}
+		ref={searchInputRef}
+		onFocus={() => {
+		  setSearchContext('desktop'); // ADDED
+		  if (searchInputRef.current) {
+			const rect = searchInputRef.current.getBoundingClientRect();
+			setSearchDropdownLeft(rect.left);
+			setSearchDropdownTop(rect.bottom + window.scrollY);
+			setSearchDropdownWidth(rect.width);
+		  }
+		  if (searchQuery.trim().length >= 2) fetchSuggestions(searchQuery);
+		  setSearchDropdownVisible(true);
+		}}
+		onKeyDown={handleDesktopKeyDown}  // correct usage
+		className={`search-input ${searchQuery.trim() ? 'has-value' : ''}`}
+		placeholder=" "
+		aria-label="Search query"
+	  />
+	  {/* typed-overlay: "Search for" light gray, typedPreview black */}
+	  {searchQuery.trim() === "" && (
+		<div className="absolute left-4 top-1/2 -translate-y-1/2 flex items-center gap-2 pointer-events-none z-10">
+		  <span className="text-gray-400 text-sm">Search for</span>
+		  <span className="text-black text-sm">"{typedPreview }"</span>
+		</div>
+	  )}
+		
 
-                        {/* Cart */}
-                        <Link href="/cart" className="flex items-center relative p-1 sm:p-0 ">
-                            <FiShoppingCart size={18} className="text-white" />
-                            <span className="absolute -top-2 -right-2 text-[10px] bg-white text-black rounded-full w-4 h-4 flex items-center justify-center">
-                                {cartCount}
-                            </span>
-                            {/* <span className="ml-1 text-xs sm:text-sm text-customBlue hidden lg:inline">Cart</span> */}
-                        </Link>
+        {/* SEARCH ICON */}
+        <button onClick={handleSearchBtnClick} className="text-[#2453d3]">
+          <FaSearch />
+        </button>
+      </div>
+    </div>
 
-                        {/* User Account */}
-                        <div className="relative" >
-                            {isLoggedIn ? (
+    {/* --- ROW 2 : CATEGORY SWIPER --- */}
+    <div className="w-full rounded-md py-2">
+      <Swiper modules={[Navigation]} navigation={{ prevEl: ".custom-swiper-prev", nextEl: ".custom-swiper-next", }} spaceBetween={20} slidesPerView="auto" watchOverflow={true} className="pl-10 pr-14">
+        {categories.map((category) => (
+          <SwiperSlide key={category._id} className="!w-auto">
+              <div ref={(el) => (slideRefs.current[category._id] = el)} onMouseEnter={() => handleMouseEnter(category._id)} onMouseLeave={() => startHide(120)} className="text-sm text-white hover:text-[#1688c8] whitespace-nowrap px-3">
+                  <Link href={`/category/${category.category_slug}`} className="text-sm text-base text-white hover:text-[#1688c8] whitespace-nowrap" >
+                      {category.category_name}
+                  </Link>
+              </div>
+          </SwiperSlide>
+        ))}
+      </Swiper>
+      {/* DROPDOWN OUTSIDE SWIPER (fixed so it won't be clipped) */}
+      {hoveredCategory && hoveredCategory.subcategories?.length > 0 && (() => {
+        // 1) Strict alphabetical sort for hovered subcategories
+        const sortedSubcategories = [...hoveredCategory.subcategories]
+          .filter(Boolean)
+          .sort((a, b) => alphaSortString(a?.category_name, b?.category_name));
+
+        // 2) Flatten (existing logic) then alphabetize the final list
+        const flatAll = flattenAllCategories(
+          sortedSubcategories,
+          hoveredCategory.category_slug
+        );
+
+        // Remove items missing display names
+        const sanitizedFlat = (flatAll || []).filter((item) =>
+          item?.type === "brand"
+            ? !!item?.brand_name
+            : !!item?.category_name
+        );
+
+        // New: level-aware alphabetical output
+        const flatAlpha = prepareFlatListAlpha(sanitizedFlat);
+
+        // 3) Chunk and drop empty chunks to avoid gaps
+        let dropdownChunksLocal = chunkFlatList(flatAlpha, 11);
+        const filteredChunks = dropdownChunksLocal.filter(
+          (chunk) =>
+            Array.isArray(chunk) &&
+            chunk.length > 0 &&
+            chunk.some(Boolean)
+        );
+
+        // --- Image columns logic (unchanged) ---
+        let navImages = [];
+        if (hoveredCategory?.navImage) {
+          if (typeof hoveredCategory.navImage === "string") {
+            navImages = hoveredCategory.navImage
+              .split(",")
+              .map((s) => s.trim())
+              .filter(Boolean);
+          } else if (Array.isArray(hoveredCategory.navImage)) {
+            navImages = hoveredCategory.navImage.filter(Boolean);
+          }
+        }
+        const imageCols = navImages.length;
+
+        // Layout constraints
+        const maxCols = 6;
+        const columnWidth = 220;
+        const screenWidth =
+          typeof window !== "undefined" ? window.innerWidth : 1200;
+        const maxAllowedWidth = Math.max(300, screenWidth - 20);
+
+        // Fit non-empty columns without gaps
+        const maxDataBySlots = Math.max(0, maxCols - imageCols);
+        const maxDataByViewport = Math.max(
+          0,
+          Math.floor(maxAllowedWidth / columnWidth) - imageCols
+        );
+        const allowedDataCols = Math.max(
+          0,
+          Math.min(filteredChunks.length, maxDataBySlots, maxDataByViewport)
+        );
+
+        const columns = filteredChunks.slice(0, allowedDataCols);
+
+        let computedWidth = (columns.length + imageCols) * columnWidth;
+        if (computedWidth > maxAllowedWidth) computedWidth = maxAllowedWidth;
+
+        const styleLeft =
+          dropdownUseTranslate && dropdownCenterX
+            ? `${dropdownCenterX + 15}px`
+            : `${dropdownLeft + 15}px`;
+        const styleTransform =
+          dropdownUseTranslate && dropdownCenterX ? "translateX(-50%)" : "none";
+
+        if (columns.length === 0 && imageCols === 0) return null;
+
+        return (
+          <div
+            ref={dropdownRef}
+            className="fixed z-50 border-t border-gray-200 shadow-xl"
+            style={{
+              top: `${dropdownTop}px`,
+              left: styleLeft,
+              transform: styleTransform,
+              width: `${computedWidth}px`,
+              maxWidth: "calc(100% - 20px)",
+            }}
+            onMouseEnter={cancelHide}
+            onMouseLeave={() => startHide(120)}
+          >
+            <div className="flex flex-wrap bg-white h-[390px]" style={{ width: "100%" }}>
+              {/* Render only non-empty columns in order (gap-free) */}
+              {columns.map((chunk, index) => {
+                const bgClass = index % 2 === 0 ? "bg-[#f2f2f2]" : "bg-white";
+                return (
+                  <div
+                    key={`col-${index}`}
+                    className={`min-w-[220px] max-w-[250px] p-3 flex flex-col justify-start self-start ${bgClass}`}
+                    style={{ height: "100%" }}
+                  >
+                    {chunk.map((item) => renderFlatItem(item, hoveredCategory, flatAlpha))}
+                  </div>
+                );
+              })}
+
+              {/* Image columns (unchanged) */}
+              {Array.isArray(navImages) &&
+                navImages.length > 0 &&
+                navImages.map((img, idx) => (
+                  <div
+                    key={`nav-image-panel-${idx}`}
+                    className={`w-[220px] h-[390px] flex items-center justify-center ${
+                      ((columns.length + idx) % 2 === 0) ? "bg-gray-50" : "bg-white"
+                    }`}
+                  >
+                    <Link
+                      href={`/category/${hoveredCategory?.category_slug || ""}`}
+                      className="block w-full h-full"
+                    >
+                      <Image
+                        src={img}
+                        alt={hoveredCategory.category_name || "Category Image"}
+                        width={220}
+                        height={390}
+                        className="object-cover w-full h-full"
+                        style={{ boxShadow: "0px -1px 0px #2453d3" }}
+                      />
+                    </Link>
+                  </div>
+                ))}
+            </div>
+          </div>
+        );
+      })()}
+    </div>
+
+  </div>
+
+  {/* ========== COL 3 : ICONS (3) ========== */}
+  <div className="col-span-3 flex justify-center items-center gap-6 text-white">
+
+  {/* <Link href="/feedback"><FiMessageSquare size={18} /></Link> */}
+    <Link href="/contact" className="hover:text-[#1688c8]"><FiPhoneCall size={18} /></Link>
+    <Link href="/location" className="hover:text-[#1688c8]"><FiMapPin size={18} /></Link>
+
+    <Link href="/wishlist" className="relative hover:text-[#1688c8]">
+      <FiHeart size={18} />
+      <span className="absolute -top-2 -right-2 bg-white text-black text-[10px] w-4 h-4 rounded-full flex items-center justify-center">
+        {wishlistCount}
+      </span>
+    </Link>
+
+    <Link href="/cart" className="relative hover:text-[#1688c8]">
+      <FiShoppingCart size={18} />
+      <span className="absolute -top-2 -right-2 bg-white text-black text-[10px] w-4 h-4 rounded-full flex items-center justify-center">
+        {cartCount}
+      </span>
+    </Link>
+<div className="relative" >
+    {/* USER */}
+    {isLoggedIn ? (
                                 <>
                                     <button onClick={() => setDropdownOpen(!dropdownOpen)} className="flex items-center text-black focus:outline-none p-1 sm:p-0">
                                         <FiUser size={18} className="text-white" />
-                                        <span className="ml-1 font-bold text-xs sm:text-sm hidden lg:inline" style={{color : "#2a74ed"}}>
-                                            Hi, {userData?.name || userData?.username || "User"}
+                                        <span className="ml-1 font-bold text-xs sm:text-sm hidden lg:inline" style={{color : "#1688c8"}}>
+                                            Hi, {/* {userData?.name || userData?.username || "User"} */}
+											{userData?.name?.length > 13 ? userData?.name.slice(0, 13) + "..." : userData?.name || (userData?.username?.length > 13 ? userData?.username.slice(0, 13) + "..." : userData?.username || "User")}
                                         </span>
                                     </button>
                                     {dropdownOpen && (
@@ -1894,9 +2046,10 @@ const Header = () => {
                                     {/* <span className="ml-1 font-bold text-xs sm:text-sm text-customBlue hidden lg:inline">Sign In</span> */}
                                 </button>
                             )}
-                        </div>
-                    </div>
-                </div>
+							</div>
+
+  </div>
+</div>
                 {/* Mobile Menu (Hidden on desktop) */}
                 {isMobileMenuOpen && (
                   <div className="sm:hidden bg-white fixed inset-0 z-50 p-4 pt-3 rounded-lg shadow-lg overflow-y-auto transition-all duration-300"
@@ -2230,7 +2383,7 @@ const Header = () => {
                     </div>
                 )}
             </div>
-            <div className="hidden sm:flex relative p-2 mt-0 px-1 bg-[#2453D3] min-h-[64px] border-gray-200 shadow items-center">
+            {/* <div className="hidden sm:flex relative p-2 mt-0 px-1 bg-[#2453D3] min-h-[64px] border-gray-200 shadow items-center">
                 <div className="w-full  relative">
                     <div className="relative">
                         <div className="flex justify-center overflow-x-auto scrollbar-hide">
@@ -2249,7 +2402,6 @@ const Header = () => {
                     </div>
                 </div>
               
-                {/* DROPDOWN OUTSIDE SWIPER (fixed so it won't be clipped) */}
                 {hoveredCategory && hoveredCategory.subcategories?.length > 0 && (() => {
                   // 1) Strict alphabetical sort for hovered subcategories
                   const sortedSubcategories = [...hoveredCategory.subcategories]
@@ -2342,7 +2494,6 @@ const Header = () => {
                       onMouseLeave={() => startHide(120)}
                     >
                       <div className="flex flex-wrap bg-white h-[390px]" style={{ width: "100%" }}>
-                        {/* Render only non-empty columns in order (gap-free) */}
                         {columns.map((chunk, index) => {
                           const bgClass = index % 2 === 0 ? "bg-[#f2f2f2]" : "bg-white";
                           return (
@@ -2356,7 +2507,6 @@ const Header = () => {
                           );
                         })}
 
-                        {/* Image columns (unchanged) */}
                         {Array.isArray(navImages) &&
                           navImages.length > 0 &&
                           navImages.map((img, idx) => (
@@ -2385,7 +2535,7 @@ const Header = () => {
                     </div>
                   );
                 })()}
-            </div>
+            </div> */}
         </header>
         {/* DESKTOP SUGGESTIONS DROPDOWN */}
         {searchDropdownVisible && searchContext === 'desktop' && (

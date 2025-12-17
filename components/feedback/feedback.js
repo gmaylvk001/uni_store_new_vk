@@ -117,7 +117,7 @@ const inputClass = "w-full border rounded-md px-3 py-2 focus:outline-none";
 
     {/* content section */}
     <div className="max-w-7xl mx-auto px-6 py-9">
-      <h2 className="text-3xl font-bold mb-3 text-center text-[#2453d3]">Thank you for Purchasing at Bharath Electronics & Appliances!</h2>
+      <h2 className="text-3xl font-bold mb-3 text-center text-[#2453d3]">Thank you for Purchasing at Unilet Stores</h2>
       <p className="text-center text-lg mb-8">We look forward to a long and mutually beneficial relationship.</p>
       <div className="flex flex-col-reverse md:grid md:grid-cols-2 gap-10 items-center">
         
@@ -142,7 +142,7 @@ const inputClass = "w-full border rounded-md px-3 py-2 focus:outline-none";
 
         {/* Write Us Form (Now on Right) */}
         <div className="p-5 border border-2 rounded">
-          <h2 className="text-3xl font-bold mb-4 pb-2 text-center border-b-2">Bharath Electronics – Feedback</h2>
+          <h2 className="text-3xl font-bold mb-4 pb-2 text-center border-b-2">Unilet Stores – Feedback</h2>
           <form onSubmit={handleSubmit} className="px-8 mt-6 grid grid-cols-2 md:grid-cols-2 gap-4">
             {/* Name */}
             <div >

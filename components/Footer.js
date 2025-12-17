@@ -191,7 +191,7 @@ const Footer = () => {
     setUserData(null);
   };
   const groupedStores = stores.reduce((acc, store) => {
-  const city = store.slug; // or store.store_city based on your API
+  const city = store.city; // or store.store_city based on your API
   if (!acc[city]) {
     acc[city] = [];
   }
@@ -563,60 +563,13 @@ const capitalizeFirstLetter = (str) =>
           {/* RIGHT SECTION (Our Location) */}
           <div className="space-y-4">
             <h3 className="text-white font-semibold text-lg mb-4">Our Location</h3>
-            {Object.entries(groupedStores).map(([slug, orgs], index) => (
-              
+            {Object.entries(groupedStores).map(([city, orgs], index) => (
               <div key={index}>
-                <Link href={`/store/${slug}`} className="hover:text-white hover:underline">
                 <p className="text-sm text-gray-400">{orgs.join(", ")}</p>
-                </Link>
               </div>
-              
             ))}
           </div>
         </div>
-      </div>
-      <div className="bg-[#2e2a2a] text-gray-400 mt-10 pt-5">
-        <div className="container mx-auto px-4 grid grid-cols-1 md:grid-cols-[70%_30%] gap-8">
-          {/* LEFT SECTION */}
-            <div className="space-y-8">
-              {/* SEO Content */}
-                <div className="space-y-8">
-                  <div>
-                    <h2 className="text-white font-semibold">
-                      Buy Best Laptops & Gadgets Online
-                    </h2>
-                    <p className="text-gray-400 py-2">
-                      Unleash the Power of Technology with{" "}
-                      <span className="font-semibold text-white">
-                        Bharath Electronics' Laptop & Computers Collection
-                      </span>
-                      . Find the Perfect Device for Your Computing Needs, including Gaming
-                      Laptops, Everyday Laptops, and Business Laptops. We Offer a Wide
-                      Selection from Top Brands such as Samsung, Asus, Apple, HP, Lenovo, and
-                      More. Our Laptops and Computers Boast Premium Design, High-Capacity RAM,
-                      Latest Processors, Quality Graphics Cards, Excellent Battery Life, and
-                      Incredible Display & Sound Features. Don’t Forget to Check Out our Range
-                      of Smart Watches, Chargers, Power Banks, Headphones, and Bluetooth
-                      Speakers for a Complete Tech Experience.
-                    </p>
-                  </div>
-
-                  <div>
-                    <h2 className="text-white font-semibold">
-                      Buy Kitchen Appliances at Best Prices Online – Shop Now
-                    </h2>
-                    <p className="text-gray-400 py-2">
-                      Revolutionize Your Kitchen with Bharath Electronics' Kitchen Appliances Collection. 
-                      Explore a Wide Range of Colours, Sizes, Manufacturers, and Types to Find the Perfect 
-                      Appliances for Your Culinary Needs. From Multi-Functional Mixer Juicer Grinders to 
-                      Energy-Efficient Electric Cookers, Kitchen Chimneys, Gas Stoves, Induction Stoves, 
-                      Water Purifiers, Microwave Ovens, and Pressure Cookers, we Offer a Diverse Selection. 
-                      Upgrade Your Cooking Experience Today with our Affordable and High-Quality Kitchen Appliances.
-                    </p>
-                  </div>
-                </div>
-            </div>
-          </div>
       </div>
       </footer>
       {/* Auth Modal */}

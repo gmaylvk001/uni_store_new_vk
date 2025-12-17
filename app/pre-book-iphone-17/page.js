@@ -9,7 +9,7 @@ export default function TermsPage() {
       </h1>
       <p className="text-center text-gray-600 mb-10">
         These Terms & Conditions govern the pre-booking of the iPhone 17 through{" "}
-        <span className="font-semibold">Bharath Electronics & Appliances</span>.
+        <span className="font-semibold">UniletStores</span>.
         By placing a pre-booking order, you agree to these Terms.
       </p>
 
