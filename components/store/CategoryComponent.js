@@ -73,7 +73,7 @@ export default function StoreDetail() {
 
         {/* ================= FEATURED PRODUCTS ================= */}
         {store.featuredProducts?.length > 0 && (
-          <section className="p-7 overflow-hidden bg-gradient-to-r from-[#ed3237] to-[#c11116] rounded-xl">
+          <section className="p-7 overflow-hidden bg-blue-600 rounded-xl">
   <h2 className="text-center text-white mb-7 text-xl font-semibold">
     Featured Products
   </h2>
@@ -219,7 +219,7 @@ export default function StoreDetail() {
 
         {/* ================= HIGHLIGHTS ================= */}
         {store.highlights?.length > 0 && (
-          <section className="bg-gradient-to-r from-[#ed3237] to-[#c11116] text-white rounded-xl py-6 px-4 md:px-8">
+          <section className="bg-blue-600 text-white rounded-xl py-6 px-4 md:px-8">
             <h2 className="text-center text-lg md:text-3xl font-semibold mb-4">
               Highlights
             </h2>
@@ -279,7 +279,7 @@ export default function StoreDetail() {
 
         {/* ================= ABOUT ================= */}
         {store.description && (
-          <section className="bg-gradient-to-r from-[#ed3237] to-[#c11116] rounded-xl p-6 text-white">
+          <section className="bg-blue-600 rounded-xl p-6 text-white">
             <h2 className="text-2xl text-center font-semibold">About</h2>
             <p className="text-sm text-center mt-3">{store.description}</p>
           </section>
