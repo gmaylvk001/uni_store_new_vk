@@ -191,7 +191,7 @@ const Footer = () => {
     setUserData(null);
   };
   const groupedStores = stores.reduce((acc, store) => {
-  const city = store.city; // or store.store_city based on your API
+  const city = store.slug; // or store.store_city based on your API
   if (!acc[city]) {
     acc[city] = [];
   }
@@ -563,10 +563,14 @@ const capitalizeFirstLetter = (str) =>
           {/* RIGHT SECTION (Our Location) */}
           <div className="space-y-4">
             <h3 className="text-white font-semibold text-lg mb-4">Our Location</h3>
-            {Object.entries(groupedStores).map(([city, orgs], index) => (
+            {Object.entries(groupedStores).map(([slug, orgs], index) => (
+              
               <div key={index}>
+                <Link href={`/store/${slug}`} className="hover:text-white hover:underline">
                 <p className="text-sm text-gray-400">{orgs.join(", ")}</p>
+                </Link>
               </div>
+              
             ))}
           </div>
         </div>
