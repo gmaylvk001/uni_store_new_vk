@@ -2059,7 +2059,7 @@ const shouldShowArrow = (item, allItems = []) => {
                                     )}
                                 </>
                             ) : (
-                                <button onClick={() => setShowAuthModal(true)} className="flex items-center text-black p-1 sm:p-0">
+                                <button onClick={() => setShowAuthModal(true)} className="flex items-center text-black p-1 sm:p-0 relative w-9 h-9 flex items-center justify-center rounded-full bg-[#2b2b2b] border border-[#4a4a4a] text-white shadow-md   hover:bg-[#1688c8] transition-all">
                                     <FiUser size={18} className="text-white" />
                                     {/* <span className="ml-1 font-bold text-xs sm:text-sm text-customBlue hidden lg:inline">Sign In</span> */}
                                 </button>
