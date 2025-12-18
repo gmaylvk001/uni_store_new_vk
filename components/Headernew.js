@@ -1189,7 +1189,7 @@ const shouldShowArrow = (item, allItems = []) => {
             content = (
               <Link
                 href={href}
-                className={`flex items-center justify-between mb-1 text-sm ${
+                className={`flex items-center justify-between mb-1 text-sm py-1 ${
                   item.level === 0
                     ? "font-semibold text-[#1688c8]"
                     : "text-[#8c8c8c] !p-[5px] hover:text-[#1688c8]"
@@ -1297,6 +1297,9 @@ const shouldShowArrow = (item, allItems = []) => {
         e.preventDefault();
         setActiveSuggestion(p => (p - 1 + suggestions.length) % suggestions.length);
       } else if (e.key === 'Enter') {
+        e.preventDefault();
+        // ✅ CLOSE DROPDOWN FIRST
+        setSearchDropdownVisible(false);
         if (activeSuggestion >= 0) {
           e.preventDefault();
           selectSuggestion(activeSuggestion);
@@ -1829,13 +1832,13 @@ const shouldShowArrow = (item, allItems = []) => {
       </div>
     </div>
 
-    {/* --- ROW 2 : CATEGORY SWIPER --- */}
+    {/* --- ROW 2 : CATEGORY SWIPER --- link 18ffe1hover:text-[#1688c8]*/}
     <div className="w-full rounded-md py-2">
       <Swiper modules={[Navigation]} navigation={{ prevEl: ".custom-swiper-prev", nextEl: ".custom-swiper-next", }} spaceBetween={20} slidesPerView="auto" watchOverflow={true} className="pl-10 pr-14">
         {categories.map((category) => (
           <SwiperSlide key={category._id} className="!w-auto">
               <div ref={(el) => (slideRefs.current[category._id] = el)} onMouseEnter={() => handleMouseEnter(category._id)} onMouseLeave={() => startHide(120)} className="text-sm text-white hover:text-[#1688c8] whitespace-nowrap px-3">
-                  <Link href={`/category/${category.category_slug}`} className="text-sm text-base text-white hover:text-[#1688c8] whitespace-nowrap" >
+                  <Link href={`/category/${category.category_slug}`} className="text-sm text-base text-[#18ffe1] whitespace-nowrap" >
                       {category.category_name}
                   </Link>
               </div>
@@ -1983,20 +1986,32 @@ const shouldShowArrow = (item, allItems = []) => {
   </div>
 
   {/* ========== COL 3 : ICONS (3) ========== */}
-  <div className="col-span-3 flex justify-center items-center gap-6 text-white">
+  <div className="col-span-3 flex justify-center items-center gap-2 text-white">
 
   {/* <Link href="/feedback"><FiMessageSquare size={18} /></Link> */}
-    <Link href="/contact" className="hover:text-[#1688c8]"><FiPhoneCall size={18} /></Link>
-    <Link href="/location" className="hover:text-[#1688c8]"><FiMapPin size={18} /></Link>
+    <Link href="/contact" className="w-9 h-9 flex items-center justify-center rounded-full
+               bg-[#2b2b2b] border border-[#4a4a4a]
+               text-white shadow-md
+               hover:bg-[#1688c8] transition-all"><FiPhoneCall size={18} /></Link>
+    <Link href="/location" className="w-9 h-9 flex items-center justify-center rounded-full
+               bg-[#2b2b2b] border border-[#4a4a4a]
+               text-white shadow-md
+               hover:bg-[#1688c8] transition-all"><FiMapPin size={18} /></Link>
 
-    <Link href="/wishlist" className="relative hover:text-[#1688c8]">
+    <Link href="/wishlist" className="relative w-9 h-9 flex items-center justify-center rounded-full
+               bg-[#2b2b2b] border border-[#4a4a4a]
+               text-white shadow-md
+               hover:bg-[#1688c8] transition-all">
       <FiHeart size={18} />
       <span className="absolute -top-2 -right-2 bg-white text-black text-[10px] w-4 h-4 rounded-full flex items-center justify-center">
         {wishlistCount}
       </span>
     </Link>
 
-    <Link href="/cart" className="relative hover:text-[#1688c8]">
+    <Link href="/cart" className="relative w-9 h-9 flex items-center justify-center rounded-full
+               bg-[#2b2b2b] border border-[#4a4a4a]
+               text-white shadow-md
+               hover:bg-[#1688c8] transition-all">
       <FiShoppingCart size={18} />
       <span className="absolute -top-2 -right-2 bg-white text-black text-[10px] w-4 h-4 rounded-full flex items-center justify-center">
         {cartCount}
@@ -2007,7 +2022,10 @@ const shouldShowArrow = (item, allItems = []) => {
     {isLoggedIn ? (
                                 <>
                                     <button onClick={() => setDropdownOpen(!dropdownOpen)} className="flex items-center text-black focus:outline-none p-1 sm:p-0">
-                                        <FiUser size={18} className="text-white" />
+                                      <div className="relative w-9 h-9 flex items-center justify-center rounded-full bg-[#2b2b2b] border border-[#4a4a4a] text-white shadow-md   hover:bg-[#1688c8] transition-all">
+ <FiUser size={18} className="text-white" />
+                                      </div>
+                                       
                                         <span className="ml-1 font-bold text-xs sm:text-sm hidden lg:inline" style={{color : "#1688c8"}}>
                                             Hi, {/* {userData?.name || userData?.username || "User"} */}
 											{userData?.name?.length > 13 ? userData?.name.slice(0, 13) + "..." : userData?.name || (userData?.username?.length > 13 ? userData?.username.slice(0, 13) + "..." : userData?.username || "User")}
