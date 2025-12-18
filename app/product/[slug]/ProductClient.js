@@ -1947,7 +1947,7 @@ const fetchBrand = async () => {
           </div>
         </div>
 
-        <div className="bg-gray-50 p-4 rounded-md shadow-md h-full">
+        {/* <div className="bg-gray-50 p-4 rounded-md shadow-md h-full">
           <h3 className="text-sm font-semibold text-gray-900 mb-3">PRODUCT FEATURES</h3>
 
           <div className="mt-2">
@@ -1979,7 +1979,70 @@ const fetchBrand = async () => {
               );
             })()}
           </div>
-        </div>
+        </div> */}
+
+        <div className="bg-gray-50 p-4 rounded-md shadow-md h-full">
+  <h3 className="text-sm font-semibold text-gray-900 mb-3">
+    PRODUCT FEATURES
+  </h3>
+
+  <div className="mt-2">
+    {(() => {
+      let features = [];
+
+      if (product?.key_specifications) {
+        const data = product.key_specifications;
+
+        // ✅ CASE 1: HTML UL / LI
+        if (typeof data === "string" && data.includes("<li")) {
+          features = data
+            .replace(/<\/?ul>/gi, "")
+            .split(/<\/li>/gi)
+            .map(item =>
+              item
+                .replace(/<li>/gi, "")
+                .replace(/<[^>]+>/g, "")
+                .trim()
+            )
+            .filter(Boolean);
+        }
+
+        // ✅ CASE 2: Array
+        else if (Array.isArray(data)) {
+          features = data.flatMap(item =>
+            item
+              .replace(/<[^>]+>/g, "")
+              .split(/,(?![^(]*\))/)
+              .map(f => f.trim())
+          );
+        }
+
+        // ✅ CASE 3: Normal string
+        else if (typeof data === "string") {
+          features = data
+            .replace(/<[^>]+>/g, "")
+            .split(/,(?![^(]*\))/)
+            .map(f => f.trim());
+        }
+      }
+
+      return features.length > 0 ? (
+        <ul className="list-disc list-inside text-sm text-gray-700 space-y-1">
+          {features.map((feature, index) => (
+            <li key={index}>
+              {feature.charAt(0).toUpperCase() + feature.slice(1)}
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <span className="text-xs text-gray-500">
+          No features available.
+        </span>
+      );
+    })()}
+  </div>
+</div>
+
 
         <div className="bg-gray-50 p-4 rounded-md shadow-md h-full">
           <h3 className="text-sm font-semibold text-gray-900 mb-3">PRODUCT HIGHLIGHTS</h3>
