@@ -25,6 +25,8 @@ import CategoryProducts from '@/components/CategoryProducts';
 import { ChevronRight } from "lucide-react";
 import 'swiper/css';
 import 'swiper/css/navigation';
+
+
 export default function HomeComponent() {
     function slugify(text) {
       return text
@@ -76,6 +78,10 @@ export default function HomeComponent() {
     const [videos, setVideos] = useState([]);
     const [activeVideo, setActiveVideo] = useState(null);
     const scrollRef = useRef(null);
+    const [products, setProducts] = useState([]);
+
+ 
+   
     const scrollCategories = (direction) => {
       if (categoryScrollRef.current) {
         categoryScrollRef.current.scrollBy({
@@ -128,6 +134,14 @@ export default function HomeComponent() {
         console.error(error.message);
       }
     };
+
+       useEffect(() => {
+    fetch("/api/product/whats-new")
+      .then((res) => res.json())
+      .then(setProducts)
+      .catch(console.error);
+  }, []);
+
     useEffect(() => {
       fetchBrand();
     }, []);
@@ -1001,6 +1015,149 @@ export default function HomeComponent() {
             </div>
           </section>
           );
+          case 'twobanner':
+            return (
+              <section className="bg-gray-50 py-6">
+  
+      <div className="container mx-auto px-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          
+          {/* Banner 1 */}
+          <Link
+            href="/category/large-appliance/air-conditioner"
+            className="group block overflow-hidden rounded-xl shadow-sm"
+          >
+            <Image
+              src="/uploads/1762491617.webp"
+              alt="Air Conditioner Deals"
+              width={640}
+              height={200}
+              className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+              priority
+            />
+          </Link>
+
+          {/* Banner 2 */}
+          <Link
+            href="/category/televisions"
+            className="group block overflow-hidden rounded-xl shadow-sm"
+          >
+            <Image
+              src="/uploads/1757927911.webp"
+              alt="TV Accessories Deals"
+              width={640}
+              height={200}
+              className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+            />
+          </Link>
+
+        </div>
+      </div>
+    </section>
+            );
+            case 'whatsnew':
+            return (
+              <section className="bg-white mb-6">
+  <div className="container mx-auto px-4">
+
+    {/* Title */}
+    <div className="mt-6 mb-4">
+      <h1 className="text-2xl font-bold text-[#d72828]">
+        WHAT&apos;S NEW
+      </h1>
+    </div>
+
+    <div className="relative">
+      <Swiper
+        modules={[Navigation]}
+        navigation={{
+          nextEl: ".whatsnew-next",
+          prevEl: ".whatsnew-prev",
+        }}
+        spaceBetween={40}
+        slidesPerView="auto"
+      >
+        {products.map((product) => {
+          const image = product.images?.[0] || "/placeholder.webp";
+
+          const discount = product.special_price
+            ? Math.round(
+                ((product.price - product.special_price) / product.price) * 100
+              )
+            : null;
+
+          return (
+            <SwiperSlide key={product._id} className="!w-[290px]">
+              {/* CARD */}
+              <div className="relative bg-white border shadow-md rounded-lg overflow-hidden
+                              h-[420px] flex flex-col">
+
+                {/* NEW badge */}
+                <span className="absolute top-2 left-2 z-10 bg-red-600 text-white text-xs px-2 py-1 rounded">
+                  New
+                </span>
+
+                {/* Image */}
+                <div className="relative h-[200px] bg-gray-50 flex items-center justify-center">
+                  <Link href={`/product/${product.slug}`}>
+                    <Image
+                      src={product.images[0].startsWith("http") ? product.images[0] : `/uploads/products/${product.images[0]}`}
+                      alt={product.name}
+                      width={260}
+                      height={200}
+                      className="object-contain transition-transform duration-300 hover:scale-105"
+                    />
+                  </Link>
+                </div>
+
+                {/* Details */}
+                <div className="p-3 text-sm flex flex-col flex-1">
+
+                  {/* Product Name */}
+                  <Link
+                    href={`/product/${product.slug}`}
+                    className="block font-medium text-gray-800 hover:text-blue-600
+                               line-clamp-2 min-h-[40px]"
+                  >
+                    {product.name}
+                  </Link>
+
+                  {/* Price Section - pushed to bottom */}
+                  <div className="mt-auto flex items-center gap-2 pt-3">
+                    <span className="text-lg font-semibold text-gray-900">
+                      ₹{product.special_price || product.price}
+                    </span>
+
+                    {product.special_price && (
+                      <>
+                        <span className="line-through text-gray-400 text-sm">
+                          ₹{product.price}
+                        </span>
+                        <span className="text-green-600 text-xs font-medium">
+                          {discount}% off
+                        </span>
+                      </>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </SwiperSlide>
+          );
+        })}
+      </Swiper>
+
+      {/* Navigation */}
+      <div className="whatsnew-prev absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow rounded-full w-6 h-6 flex items-center justify-center cursor-pointer">
+        ‹
+      </div>
+      <div className="whatsnew-next absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow rounded-full w-6 h-6 flex items-center justify-center cursor-pointer">
+        ›
+      </div>
+    </div>
+  </div>
+</section>
+
+            );
           case 'product':
             return (
               <CategoryProducts/>

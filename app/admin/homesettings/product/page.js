@@ -202,6 +202,8 @@ export default function AllCategoriesPage() {
     }));
   };
 
+  console.log(products);
+
   // ✅ Handle input changes
   const handleInputChange = (subcategoryId, field, value) => {
     setFormData((prev) => ({
