@@ -1787,12 +1787,16 @@ const shouldShowArrow = (item, allItems = []) => {
               </span>
             ))} */}
             {categories?.slice(0, 4).map((cat) => (
+              <Link href={`/category/${cat.category_slug}`}>
+
   <span
     key={cat.category_slug}
     className="text-sm text-gray-200 hover:text-[#1688c8] cursor-pointer"
   >
     {cat.category_name}
   </span>
+              </Link>
+
 ))}
             <span className="bg-sky-500 text-xs px-3 py-1 rounded-full font-medium">
               Xmas & New year Sale
@@ -2015,12 +2019,15 @@ const shouldShowArrow = (item, allItems = []) => {
 
           {categories.map((cat) => (
             <div key={cat} className="flex flex-col items-center min-w-[120px]">
+              <Link href={`/category/${cat.category_slug}`}>
               <div className="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20
                rounded-full overflow-hidden
                flex items-center justify-center border-2 border-[#1688c8]">
                 <img src={cat} alt={cat.category_name} class="w-full h-full object-cover"/>
               </div>
               <span className="text-sm font-semibold hover:text-[#1688c8]">{cat.category_name}</span>
+              </Link>
+              
             </div>
           ))}
 
