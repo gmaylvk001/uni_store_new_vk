@@ -1778,12 +1778,12 @@ const shouldShowArrow = (item, allItems = []) => {
               bg-white/10
               backdrop-blur-md
               border border-white/30">
-            {categories.map((item) => (
+            {categories.map((cat) => (
               <span
-                key={item}
+                key={cat.category_slug}
                 className="text-sm text-gray-200 hover:text-[#1688c8] cursor-pointer"
               >
-                {item}
+                {cat.category_name}
               </span>
             ))}
             <span className="bg-sky-500 text-xs px-3 py-1 rounded-full font-medium">
