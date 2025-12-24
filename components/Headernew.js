@@ -2046,14 +2046,16 @@ const shouldShowArrow = (item, allItems = []) => {
 
           {categories.map((cat) => (
             <div key={cat} className="flex flex-col items-center min-w-[120px]">
-              <Link href={`/category/${cat.category_slug}`}>
               <div className="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20
                rounded-full overflow-hidden
-               flex items-center justify-center border-2 border-[#1688c8]">
+               flex items-center justify-center border-2 border-[#1688c8]"></div>
+              <Link href={`/category/${cat.category_slug}`}>
+              
                 <img src={`${cat.image}`} alt={cat.category_name} class="w-full h-full object-cover"/>
-              </div>
+             
               <span className="text-sm font-semibold hover:text-[#1688c8]">{cat.category_name}</span>
               </Link>
+               </div>
               
             </div>
           ))}
