@@ -2044,7 +2044,7 @@ const shouldShowArrow = (item, allItems = []) => {
       <div className="bg-white py-2">
         <div className="flex items-start lg:justify-center justify-start gap-8 overflow-x-auto px-4 md:px-10">
           {categories.map((cat) => (
-            <div key={cat} className="flex flex-col items-center min-w-[120px]">
+           /*  <div key={cat} className="flex flex-col items-center min-w-[120px]">
               <Link href={`/category/${cat.category_slug}`}>
               <div className="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20
                rounded-full overflow-hidden
@@ -2054,11 +2054,22 @@ const shouldShowArrow = (item, allItems = []) => {
               <span className="text-sm font-semibold hover:text-[#1688c8]">{cat.category_name}</span>
               </Link>
               
-            </div>
+            </div> */
+
+            <div className="flex flex-col items-center min-w-[120px]">
+        <div className="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full overflow-hidden flex items-center justify-center border-2 border-[#1688c8]">
+          <img  className="w-full h-full object-cover" src={`${cat.image}`} alt={cat.category_name} />
+        </div>
+        <Link href={`/category/${cat.category_slug}`}>
+          <span className="text-sm font-semibold hover:text-[#1688c8]">{cat.category_name}</span>
+        </Link>
+        </div>
           ))}
 
         </div>
       </div>
+
+      
 
       {/* Mobile Menu (Hidden on desktop) */}
                       {isMobileMenuOpen && (
