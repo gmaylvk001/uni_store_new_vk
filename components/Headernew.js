@@ -1827,53 +1827,80 @@ const shouldShowArrow = (item, allItems = []) => {
                 </span>
               </Link>
             </div>
-            <div className="w-9 h-9 rounded-full bg-[#2f2f2f] hover:bg-[#1688c8] flex items-center justify-center cursor-pointer transition-all duration-300 relative">
-              {isLoggedIn ? (
-                  <>
-                      <button onClick={() => setDropdownOpen(!dropdownOpen)} className="flex items-center text-black focus:outline-none p-1 sm:p-0">
-                        <div className="relative w-9 h-9 flex items-center justify-center rounded-full bg-[#2b2b2b] border border-[#4a4a4a] text-white shadow-md   hover:bg-[#1688c8] transition-all">
-                          <FiUser size={18} className="text-white" />
-                        </div>
-                          
-                          <span className="ml-1 font-bold text-xs sm:text-sm hidden lg:inline" style={{color : "#1688c8"}}>
-                              Hi, {/* {userData?.name || userData?.username || "User"} */}
-        {userData?.name?.length > 13 ? userData?.name.slice(0, 13) + "..." : userData?.name || (userData?.username?.length > 13 ? userData?.username.slice(0, 13) + "..." : userData?.username || "User")}
-                          </span>
-                      </button>
-                      {dropdownOpen && (
-                          <div ref={dropdownRef} className="absolute right-0 mt-3 w-48 sm:w-56 bg-white rounded-xl shadow-xl z-50 transition-all">
-                              <div className="py-2 px-2">
-                                  {isAdmin && (
-                                      <>
-                                          <Link href="/admin/dashboard" className="flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-2 rounded-md text-xs sm:text-sm text-gray-700 hover:bg-blue-50 transition-colors">
-                                              <span className="w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center rounded-full bg-customBlue text-white">
-                                                  <FaUserShield className="w-3 h-3 sm:w-4 sm:h-4" />
-                                              </span>
-                                              Admin Panel
-                                          </Link>
-                                      </>
-                                  )}
-                                  <Link href="/orders" className="flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-2 rounded-md text-xs sm:text-sm text-gray-700 hover:bg-blue-50 transition-colors">
-                                      <span className="w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center rounded-full bg-customBlue text-white">
-                                          <FaShoppingBag className="w-3 h-3 sm:w-4 sm:h-4" />
-                                      </span>My Orders</Link>
-                                  <hr className="my-2 border-gray-200" />
-                                  <button onClick={handleLogout} className="flex items-center gap-2 sm:gap-3 w-full text-left px-3 sm:px-4 py-2 rounded-md text-xs sm:text-sm text-gray-700 hover:bg-red-50 transition-colors">
-                                      <span className="w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center rounded-full bg-customBlue text-white">
-                                          <IoLogOut className="w-3 h-3 sm:w-4 sm:h-4" />
-                                      </span>Logout
-                                  </button>
-                              </div>
-                          </div>
-                      )}
-                  </>
-              ) : (
-                <button onClick={() => setShowAuthModal(true)} className="flex items-center text-black p-1 sm:p-0 relative w-9 h-9 flex items-center justify-center rounded-full bg-[#2b2b2b] border border-[#4a4a4a] text-white shadow-md   hover:bg-[#1688c8] transition-all">
-                    <FiUser size={18} className="text-white" />
-                    {/* <span className="ml-1 font-bold text-xs sm:text-sm text-customBlue hidden lg:inline">Sign In</span> */}
-                </button>
-              )}
-            </div>
+           <div className="relative flex items-center">
+  {isLoggedIn ? (
+    <>
+      <button
+        onClick={() => setDropdownOpen(!dropdownOpen)}
+        className="flex items-center gap-2 focus:outline-none"
+      >
+        {/* ✅ Single avatar */}
+        <div className="w-9 h-9 flex items-center justify-center rounded-full bg-[#2b2b2b] border border-[#4a4a4a] text-white shadow-md hover:bg-[#1688c8] transition-all">
+          <FiUser size={16} />
+        </div>
+
+        {/* ✅ Username text */}
+        <span
+          className="hidden lg:inline text-xs sm:text-sm font-semibold truncate max-w-[110px]"
+          style={{ color: "#1688c8" }}
+        >
+          Hi,&nbsp;
+          {userData?.name
+            ? userData.name.length > 13
+              ? userData.name.slice(0, 13) + "..."
+              : userData.name
+            : userData?.username || "User"}
+        </span>
+      </button>
+
+      {/* ✅ Dropdown */}
+      {dropdownOpen && (
+        <div
+          ref={dropdownRef}
+          className="absolute right-0 top-12 w-52 bg-white rounded-xl shadow-xl z-50"
+        >
+          <div className="py-2">
+            {isAdmin && (
+              <Link
+                href="/admin/dashboard"
+                className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-blue-50"
+              >
+                <FaUserShield size={14} />
+                Admin Panel
+              </Link>
+            )}
+
+            <Link
+              href="/orders"
+              className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-blue-50"
+            >
+              <FaShoppingBag size={14} />
+              My Orders
+            </Link>
+
+            <hr className="my-2" />
+
+            <button
+              onClick={handleLogout}
+              className="flex items-center gap-3 w-full px-4 py-2 text-sm text-gray-700 hover:bg-red-50"
+            >
+              <IoLogOut size={14} />
+              Logout
+            </button>
+          </div>
+        </div>
+      )}
+    </>
+  ) : (
+    <button
+      onClick={() => setShowAuthModal(true)}
+      className="w-9 h-9 flex items-center justify-center rounded-full bg-[#2b2b2b] border border-[#4a4a4a] text-white shadow-md hover:bg-[#1688c8]"
+    >
+      <FiUser size={16} />
+    </button>
+  )}
+</div>
+
           </div>
         </div>
         </div>
