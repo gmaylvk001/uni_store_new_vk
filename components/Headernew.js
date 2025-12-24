@@ -2043,7 +2043,7 @@ const shouldShowArrow = (item, allItems = []) => {
       {/* ================= ROUND CATEGORY ICONS ================= */}
       <div className="bg-white py-2">
         <div className="flex items-start lg:justify-center justify-start gap-8 overflow-x-auto px-4 md:px-10">
-<div key={cat} className="flex flex-col items-center min-w-[120px]">
+<div className="flex flex-col items-center min-w-[120px]">
           {categories.map((cat) => (
             
               <Link href={`/category/${cat.category_slug}`}>
