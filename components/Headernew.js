@@ -1,7 +1,7 @@
 // 'use client';
 import Link from "next/link";
 import Image from 'next/image';
-import { FiSearch, FiMapPin, FiHeart, FiShoppingCart, FiUser, FiMenu, FiX, FiPhoneCall, FiMessageSquare, FiChevronRight } from "react-icons/fi";
+import { FiSearch, FiMapPin, FiHeart,FiPhone, FiShoppingCart, FiUser, FiMenu, FiX, FiPhoneCall, FiMessageSquare, FiChevronRight } from "react-icons/fi";
 import { FaBars, FaShoppingBag, FaUserShield, FaSearch } from "react-icons/fa";
 import { useState, useRef, useEffect, useLayoutEffect, useCallback, useMemo } from 'react';
 import { IoLogOut } from "react-icons/io5";
@@ -15,6 +15,7 @@ import { Play } from "lucide-react";
 import { Navigation } from 'swiper/modules';
 import { useHeaderdetails } from "@/context/HeaderContext"; 
 import { getProducts } from '@/lib/productApi';
+
 
 // ADD: alphaSortString - case-insensitive, null-safe string comparator
 const alphaSortString = (a, b) => {
@@ -87,7 +88,32 @@ const prepareFlatListAlpha = (flatList = []) => {
 };
 
 const Header = () => {
-    const router = useRouter();
+  const [search, setSearch] = useState("");
+
+  /* const categories = [
+    "Mobiles & Wearables",
+    "Home Appliances",
+    "Home Electronics",
+    "Kitchen Appliances",
+  ]; */
+
+
+  const [open, setOpen] = useState(false);
+  const menuRef = useRef(null);
+
+  // Close menu when clicking outside
+  useEffect(() => {
+    const handler = (e) => {
+      if (menuRef.current && !menuRef.current.contains(e.target)) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
+
+
+  const router = useRouter();
     // REMOVED: unused pathname
     // const pathname = usePathname();
     const [category, setCategory] = useState('All Category');
@@ -1565,101 +1591,334 @@ const shouldShowArrow = (item, allItems = []) => {
       const ids = (Array.isArray(categories) ? categories : []).slice(0, 5).map(c => c._id);
       ids.forEach((id) => { ensureSubcategories(id); });
     }, [isMobileMenuOpen, categories, ensureSubcategories]);
-    return (
-      <>
-        <header className="sticky top-0 z-50">
-            <style jsx global>{`
-              :root{--height:38px;--radius:12px;--outline:#e3e3e9;--bg:#ffffff;--accent:#5b46f0;--muted:#6b7280;--shadow:0 8px 18px rgba(36,83,211,0.04)}
-              .search-bar{display:flex;align-items:center;gap:10px;background:var(--bg);border-radius:10px;padding:4px 8px;border:3px solid var(--outline);box-shadow:var(--shadow);transition:box-shadow .25s ease,transform .12s ease,border-color .18s ease;width:100%;max-width:900px;margin:0 auto}
-              .search-bar:focus-within{box-shadow:0 12px 30px rgba(36,83,211,.04);border-color:rgba(36,83,211,.04)}
-              .search-bar-inner{position:relative;display:flex;align-items:center;gap:10px;width:100%;padding:2px;border-radius:8px}
-               /* select */
-               /* default: no visible border, show only when focused or has value */
-               .search-select{height:var(--height);min-width:140px;max-width:234px;border-radius:10px;border:1px solid transparent;padding:0 36px 0 14px;font-size:15px;color:#111;background:#fff;-webkit-appearance:none;appearance:none;cursor:pointer}
-               .select-wrap{position:relative;display:inline-block;max-width:35%;flex:0 0 auto;}
-               .select-wrap::after{content:'';position:absolute;right:12px;top:50%;transform:translateY(-50%);width:10px;height:10px;background-image:linear-gradient(135deg,#6b7280,#6b7280);clip-path:polygon(50% 70%,0 25%,100% 25%);opacity:.85;pointer-events:none}
-               /* input */
-               .search-input{flex:1 1 auto;height:var(--height);padding:8px 12px;border-radius:10px;border:1px solid transparent;background:#fff;color:#0f172a;font-size:15px;width:100%;}
-               /* when user has typed or on focus, show light border */
-               .search-input.has-value, .search-input:focus, .search-select:focus { border-color: #e3e3e9; box-shadow: 0 6px 20px rgba(36,83,211,0.04); }
-               /* remove default browser outline to avoid black focus ring */
-               .search-input:focus, .search-select:focus { outline: none; }
-               @keyframes shimmer{from{left:-120%}to{left:120%}}
-               @media (max-width:900px){:root{--height:36px}.search-btn{width:48px;color:#2453d3;}.search-select{min-width:100px}}
-            `}</style>
-            {/* Main Header bg-white */}
-            <div className={`${isMobileMenuOpen ? "fixed inset-0 mt-0 pt-0 z-50 overflow-y-auto" : "px-4 sm:px-6 md:px-0 py-0 sticky top-0 z-40"}`} style={{ backgroundColor: "#424242" }}>
-                {/* NEW MOBILE TOP ROW (from reference) */}
-                <div className="sm:hidden flex items-center justify-between w-full relative">
-                    <Link href="/" className="p-1 rounded-lg">
-                      <img src="/user/unilet-logo.webp" alt="Logo" width={70} height={45} className="h-auto" />
-                    </Link>
-                    <div className="flex items-center gap-3 pr-1 text-customBlue">
-                      {/* Feedback Icon */}
-                      <Link href="/feedback" className="relative">
-                          <FiMessageSquare size={16} />
-                      </Link>
+  return (
+    <>
+    <header className="w-full">
 
-                      {/* Contact Icon */}
-                      <Link href="/contact" className="relative">
-                          <FiPhoneCall size={16}  />
-                      </Link>
-                      <Link href="/location">
-                        <FiMapPin size={16} />
-                      </Link>
-                        <Link href="/wishlist" className="relative">
-                          <FiHeart size={16} />
-                          <span className="absolute -top-2 -right-2 text-[10px] bg-customBlue text-white rounded-full w-4 h-4 flex items-center justify-center">
-                            {wishlistCount}
-                          </span>
-                        </Link>
-                        <Link href="/cart" className="relative">
-                          <FiShoppingCart size={16} />
-                          <span className="absolute -top-2 -right-2 text-[10px] bg-customBlue text-white rounded-full w-4 h-4 flex items-center justify-center">
-                            {cartCount}
-                          </span>
-                        </Link>
-                        <div className="relative">
-                          {isLoggedIn ? (
-                            <button onClick={() => setDropdownOpen(!dropdownOpen)}>
-                              <FiUser size={16} />
-                            </button>
-                          ) : (
-                            <button onClick={() => setShowAuthModal(true)}>
-                              <FiUser size={16} />
-                            </button>
-                          )}
-                          {dropdownOpen && isLoggedIn && (
-                            <div className="absolute right-0 mt-2 w-40 bg-white rounded-md shadow-lg z-50">
-                              {isAdmin && (
-                                <Link href="/admin/dashboard" className="block px-3 py-2 text-xs hover:bg-blue-50">
-                                  Admin Panel
-                                </Link>
-                              )}
-                              <Link href="/orders" className="block px-3 py-2 text-xs hover:bg-blue-50">
-                                My Orders
+
+      {/* Main Header bg-white */}
+                  <div className={`${isMobileMenuOpen ? "fixed inset-0 mt-0 pt-0 z-50 overflow-y-auto" : "px-4 sm:px-6 md:px-0 py-0 sticky top-0 z-40"}`} style={{ backgroundColor: "#424242" }}>
+                      {/* NEW MOBILE TOP ROW (from reference) */}
+                      <div className="sm:hidden flex items-center justify-between w-full relative">
+                          <Link href="/" className="p-1 rounded-lg">
+                            <img src="/user/unilet-logo.webp" alt="Logo" width={70} height={45} className="h-auto" />
+                          </Link>
+                          <div className="flex items-center gap-3 pr-1 text-customBlue">
+                            {/* Feedback Icon */}
+                            <Link href="/feedback" className="relative">
+                                <FiMessageSquare size={16} />
+                            </Link>
+      
+                            {/* Contact Icon */}
+                            <Link href="/contact" className="relative">
+                                <FiPhoneCall size={16}  />
+                            </Link>
+                            <Link href="/location">
+                              <FiMapPin size={16} />
+                            </Link>
+                              <Link href="/wishlist" className="relative">
+                                <FiHeart size={16} />
+                                <span className="absolute -top-2 -right-2 text-[10px] bg-customBlue text-white rounded-full w-4 h-4 flex items-center justify-center">
+                                  {wishlistCount}
+                                </span>
                               </Link>
-                              <button onClick={handleLogout} className="w-full text-left px-3 py-2 text-xs hover:bg-red-50">
-                                Logout
+                              <Link href="/cart" className="relative">
+                                <FiShoppingCart size={16} />
+                                <span className="absolute -top-2 -right-2 text-[10px] bg-customBlue text-white rounded-full w-4 h-4 flex items-center justify-center">
+                                  {cartCount}
+                                </span>
+                              </Link>
+                              <div className="relative">
+                                {isLoggedIn ? (
+                                  <button onClick={() => setDropdownOpen(!dropdownOpen)}>
+                                    <FiUser size={16} />
+                                  </button>
+                                ) : (
+                                  <button onClick={() => setShowAuthModal(true)}>
+                                    <FiUser size={16} />
+                                  </button>
+                                )}
+                                {dropdownOpen && isLoggedIn && (
+                                  <div className="absolute right-0 mt-2 w-40 bg-white rounded-md shadow-lg z-50">
+                                    {isAdmin && (
+                                      <Link href="/admin/dashboard" className="block px-3 py-2 text-xs hover:bg-blue-50">
+                                        Admin Panel
+                                      </Link>
+                                    )}
+                                    <Link href="/orders" className="block px-3 py-2 text-xs hover:bg-blue-50">
+                                      My Orders
+                                    </Link>
+                                    <button onClick={handleLogout} className="w-full text-left px-3 py-2 text-xs hover:bg-red-50">
+                                      Logout
+                                    </button>
+                                  </div>
+                                )}
+                              </div>
+                              <button onClick={toggleMobileMenu} aria-label="Menu" className="relative">
+                                {isMobileMenuOpen ? <FiX size={16} /> : <FaBars size={16} />}
                               </button>
+                          </div>
+                      </div>
+                      {/* NEW MOBILE SEARCH BAR */}
+                      <div className="sm:hidden mt-2 -mx-4 px-0">
+                        <div className="bg-[#2453D3] w-full px-3 py-3">
+                          <div className="flex items-center bg-white h-12 rounded-xl border border-gray-300 shadow-sm overflow-hidden w-full transition-all duration-150 focus-within:border-[#2453d3] focus-within:shadow-[0_0_0_2px_rgba(36,83,211,0.15)] flex-nowrap">
+                            
+                            {/* Category select */}
+                            <select
+                              value={selectedCategory}
+                              onChange={(e) => setSelectedCategory(e.target.value)}
+                              className="h-full text-[11px] xs:text-xs bg-white  border-r border-gray-300 outline-none flex-shrink-0 min-w-[120px] w-auto"
+                              aria-label="Category"
+                            >
+                              <option value="All Category">All Category</option>
+                              {categories.map((cat) => (
+                                <option key={cat._id} value={cat.category_name} title={cat.category_name}>
+                                  {cat.category_name}
+                                </option>
+                              ))}
+                            </select>
+                            <div className="flex-1 relative h-full flex items-center">
+                              <input
+                                type="search"
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                                onKeyDown={handleKeyPress}
+                                placeholder=" "
+                                className="w-full h-full text-sm outline-none bg-transparent px-1 focus:text-[#111] placeholder-transparent"
+                                ref={searchInputRef}
+                                onFocus={() => {
+                                  setSearchContext('mobileTop'); // ADDED
+                                  if (searchInputRef.current) {
+                                    const rect = searchInputRef.current.getBoundingClientRect();
+                                    setSearchDropdownLeft(rect.left);
+                                    setSearchDropdownTop(rect.bottom + window.scrollY);
+                                    setSearchDropdownWidth(rect.width);
+                                  }
+                                  if (searchQuery.trim().length >= 1) fetchSuggestions(searchQuery);
+                                  setSearchDropdownVisible(true);
+                                }}
+                              />
+                              {searchQuery.trim() === "" && (
+                                <div className="absolute left-1 top-1/2 -translate-y-1/2 flex items-center gap-1 text-[11px] pointer-events-none z-10">
+                                  <span className="text-gray-400">Search for</span>
+                                  <span className="text-gray-900">"{typedPreview }"</span>
+                                </div>
+                              )}
                             </div>
-                          )}
+                        
+                            <button
+                              onClick={handleSearch}
+                              aria-label="Search"
+                              className="h-full px-4 bg-[#2453D3] text-white flex items-center justify-center active:scale-[0.97] transition"
+                            >
+                              <FaSearch size={16} />
+                            </button>
+                          </div>
                         </div>
-                        <button onClick={toggleMobileMenu} aria-label="Menu" className="relative">
-                          {isMobileMenuOpen ? <FiX size={16} /> : <FaBars size={16} />}
-                        </button>
-                    </div>
-                </div>
-                {/* NEW MOBILE SEARCH BAR */}
-                <div className="sm:hidden mt-2 -mx-4 px-0">
-                  <div className="bg-[#2453D3] w-full px-3 py-3">
-                    <div className="flex items-center bg-white h-12 rounded-xl border border-gray-300 shadow-sm overflow-hidden w-full transition-all duration-150 focus-within:border-[#2453d3] focus-within:shadow-[0_0_0_2px_rgba(36,83,211,0.15)] flex-nowrap">
-                      
-                      {/* Category select */}
+                      </div>
+                      {/* MOBILE TOP SUGGESTIONS (outside menu) */}
+                      {searchDropdownVisible && searchContext === 'mobileTop' && !isMobileMenuOpen && (
+                        <div ref={searchDropdownRef} className="sm:hidden absolute z-[70] left-0 right-0 px-3 mt-1">
+                          <div className="bg-white rounded-lg shadow-lg border max-h-72 overflow-y-auto">
+                            <div className="px-3 pt-2 pb-1 text-[11px] font-semibold tracking-wide text-gray-500">
+                              PRODUCTS
+                            </div>
+                            <div className="px-3 pb-2">
+                              {suggestions.length > 0
+                                ? suggestions.map(renderSuggestionItem)
+                                : (searchQuery.trim() && (
+                                    <div className="py-10 flex flex-col items-center justify-center text-gray-500">
+                                      {/* Icon */}
+                                      <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        className="w-12 h-12 mb-3 text-gray-400"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke="currentColor"
+                                        strokeWidth={1.5}
+                                      >
+                                        <path
+                                          strokeLinecap="round"
+                                          strokeLinejoin="round"
+                                          d="M9 13h6m-3-3v6m9-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                                        />
+                                      </svg>
+      
+                                      {/* Message */}
+                                      <p className="text-sm font-medium">No products found</p>
+                                      <p className="text-xs text-gray-400 mt-1">Try a different keyword</p>
+                                    </div>
+      
+                                  ))
+                              }
+                            </div>
+                          </div>
+                        </div>
+                      )}
+
+
+
+      {/* ================= TOP DARK BAR ================= */}
+      {/* <div className="bg-gradient-to-b from-[#1e1e1e] to-[#2a2a2a] text-white"> */}
+        <div className={`${isMobileMenuOpen ? "fixed inset-0 mt-0 pt-0 z-50 overflow-y-auto" : "w-full text-white sticky top-0 z-[999] bg-[#212529] bg-[url('/user/christmas-garlands.jpg')] bg-repeat-x bg-top bg-[length:auto_140px]"}`}>
+        <div className="bg-black/20 px-4 sm:px-6 md:px-6 md:pt-4">
+        <div className="max-w-7xl mx-auto px-1 py-3 flex items-center justify-between">
+
+          {/* Logo */}
+          <Link href="/" className="text-lg font-semibold">
+           <img src="/user/unilet-logo.webp" alt="Logo" width={100} height={70} className="h-auto" />
+          </Link>
+
+          {/* Top Categories */}
+          <div className=" 
+          hidden lg:flex overflow-x-auto scrollbar-hide text-nowrap items-center gap-5 font-medium px-1 py-1 md:px-2
+              md:py-2
+              rounded-lg lg:rounded-full
+              bg-white/10
+              backdrop-blur-md
+              border border-white/30">
+            {categories.map((item) => (
+              <span
+                key={item}
+                className="text-sm text-gray-200 hover:text-[#1688c8] cursor-pointer"
+              >
+                {item}
+              </span>
+            ))}
+            <span className="bg-sky-500 text-xs px-3 py-1 rounded-full font-medium">
+              Xmas & New year Sale
+            </span>
+          </div>
+
+          {/* Icons */}
+          <div className="flex items-center gap-4">
+            <div className="w-9 h-9 rounded-full bg-[#2f2f2f] hover:bg-[#1688c8] flex items-center justify-center cursor-pointer transition-all duration-300">
+              <Link href="/wishlist" className="relative w-9 h-9 flex items-center justify-center rounded-full
+               bg-[#2b2b2b] border border-[#4a4a4a]
+               text-white shadow-md
+               hover:bg-[#1688c8] transition-all">
+                <FiHeart  />
+                <span className="absolute -top-2 -right-2 bg-white text-black text-[10px] w-4 h-4 rounded-full flex items-center justify-center">
+                  {wishlistCount}
+                </span>
+              </Link>
+            </div>
+            <div className="w-9 h-9 rounded-full bg-[#2f2f2f] hover:bg-[#1688c8] flex items-center justify-center cursor-pointer transition-all duration-300">
+              <Link href="/cart" className="relative w-9 h-9 flex items-center justify-center rounded-full
+               bg-[#2b2b2b] border border-[#4a4a4a]
+               text-white shadow-md
+               hover:bg-[#1688c8] transition-all">
+                <FiShoppingCart  />
+                <span className="absolute -top-2 -right-2 bg-white text-black text-[10px] w-4 h-4 rounded-full flex items-center justify-center">
+                  {cartCount}
+                </span>
+              </Link>
+            </div>
+            <div className="w-9 h-9 rounded-full bg-[#2f2f2f] hover:bg-[#1688c8] flex items-center justify-center cursor-pointer transition-all duration-300 relative">
+              {isLoggedIn ? (
+                  <>
+                      <button onClick={() => setDropdownOpen(!dropdownOpen)} className="flex items-center text-black focus:outline-none p-1 sm:p-0">
+                        <div className="relative w-9 h-9 flex items-center justify-center rounded-full bg-[#2b2b2b] border border-[#4a4a4a] text-white shadow-md   hover:bg-[#1688c8] transition-all">
+                          <FiUser size={18} className="text-white" />
+                        </div>
+                          
+                          <span className="ml-1 font-bold text-xs sm:text-sm hidden lg:inline" style={{color : "#1688c8"}}>
+                              Hi, {/* {userData?.name || userData?.username || "User"} */}
+        {userData?.name?.length > 13 ? userData?.name.slice(0, 13) + "..." : userData?.name || (userData?.username?.length > 13 ? userData?.username.slice(0, 13) + "..." : userData?.username || "User")}
+                          </span>
+                      </button>
+                      {dropdownOpen && (
+                          <div ref={dropdownRef} className="absolute right-0 mt-3 w-48 sm:w-56 bg-white rounded-xl shadow-xl z-50 transition-all">
+                              <div className="py-2 px-2">
+                                  {isAdmin && (
+                                      <>
+                                          <Link href="/admin/dashboard" className="flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-2 rounded-md text-xs sm:text-sm text-gray-700 hover:bg-blue-50 transition-colors">
+                                              <span className="w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center rounded-full bg-customBlue text-white">
+                                                  <FaUserShield className="w-3 h-3 sm:w-4 sm:h-4" />
+                                              </span>
+                                              Admin Panel
+                                          </Link>
+                                      </>
+                                  )}
+                                  <Link href="/orders" className="flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-2 rounded-md text-xs sm:text-sm text-gray-700 hover:bg-blue-50 transition-colors">
+                                      <span className="w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center rounded-full bg-customBlue text-white">
+                                          <FaShoppingBag className="w-3 h-3 sm:w-4 sm:h-4" />
+                                      </span>My Orders</Link>
+                                  <hr className="my-2 border-gray-200" />
+                                  <button onClick={handleLogout} className="flex items-center gap-2 sm:gap-3 w-full text-left px-3 sm:px-4 py-2 rounded-md text-xs sm:text-sm text-gray-700 hover:bg-red-50 transition-colors">
+                                      <span className="w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center rounded-full bg-customBlue text-white">
+                                          <IoLogOut className="w-3 h-3 sm:w-4 sm:h-4" />
+                                      </span>Logout
+                                  </button>
+                              </div>
+                          </div>
+                      )}
+                  </>
+              ) : (
+                <button onClick={() => setShowAuthModal(true)} className="flex items-center text-black p-1 sm:p-0 relative w-9 h-9 flex items-center justify-center rounded-full bg-[#2b2b2b] border border-[#4a4a4a] text-white shadow-md   hover:bg-[#1688c8] transition-all">
+                    <FiUser size={18} className="text-white" />
+                    {/* <span className="ml-1 font-bold text-xs sm:text-sm text-customBlue hidden lg:inline">Sign In</span> */}
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+        </div>
+        
+      </div>
+
+      {/* ================= SEARCH BAR ROW ================= */}
+      <div className="bg-[#4a4a4a]">
+        <div className="max-w-7xl mx-auto px-4 py-4 flex items-center gap-4">
+
+          <div ref={menuRef} className="relative">
+      {/* Menu Button */}
+      <button
+        onClick={() => setOpen(!open)}
+        className="flex items-center gap-2 text-white cursor-pointer px-4 py-2"
+      >
+        <FiMenu size={18} />
+        <span className="font-medium">Menu</span>
+      </button>
+
+      {/* Dropdown */}
+      {open && (
+        <div className="absolute left-0 top-full mt-2 w-56 bg-white text-black rounded-md shadow-lg z-50">
+          <ul className="py-2 text-sm">
+  {categories && categories.length > 0 ? (
+    categories.map((cat) => (
+      <li
+        key={cat._id}
+        className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+      >
+        {cat.category_name}
+      </li>
+    ))
+  ) : (
+    <li className="px-4 py-2 text-gray-400 cursor-not-allowed">
+      No categories available
+    </li>
+  )}
+</ul>
+
+        </div>
+      )}
+    </div>
+
+          {/* Search */}
+          <div className="flex-1 flex bg-white rounded-md overflow-hidden">
+            {/* <select className="px-4 text-sm outline-none border-r">
+              <option>All Categories</option>
+              {categories.map((cat) => (
+                <option key={cat}>{cat}</option>
+              ))}
+            </select> */}
+             {/* Category select */}
                       <select
                         value={selectedCategory}
                         onChange={(e) => setSelectedCategory(e.target.value)}
-                        className="h-full text-[11px] xs:text-xs bg-white  border-r border-gray-300 outline-none flex-shrink-0 min-w-[120px] w-auto"
+                        className="border-r border-gray-300 outline-none flex-shrink-0 min-w-[120px] w-auto px-4 text-sm"
                         aria-label="Category"
                       >
                         <option value="All Category">All Category</option>
@@ -1669,131 +1928,8 @@ const shouldShowArrow = (item, allItems = []) => {
                           </option>
                         ))}
                       </select>
-                      <div className="flex-1 relative h-full flex items-center">
-                        <input
-                          type="search"
-                          value={searchQuery}
-                          onChange={(e) => setSearchQuery(e.target.value)}
-                          onKeyDown={handleKeyPress}
-                          placeholder=" "
-                          className="w-full h-full text-sm outline-none bg-transparent px-1 focus:text-[#111] placeholder-transparent"
-                          ref={searchInputRef}
-                          onFocus={() => {
-                            setSearchContext('mobileTop'); // ADDED
-                            if (searchInputRef.current) {
-                              const rect = searchInputRef.current.getBoundingClientRect();
-                              setSearchDropdownLeft(rect.left);
-                              setSearchDropdownTop(rect.bottom + window.scrollY);
-                              setSearchDropdownWidth(rect.width);
-                            }
-                            if (searchQuery.trim().length >= 1) fetchSuggestions(searchQuery);
-                            setSearchDropdownVisible(true);
-                          }}
-                        />
-                        {searchQuery.trim() === "" && (
-                          <div className="absolute left-1 top-1/2 -translate-y-1/2 flex items-center gap-1 text-[11px] pointer-events-none z-10">
-                            <span className="text-gray-400">Search for</span>
-                            <span className="text-gray-900">"{typedPreview }"</span>
-                          </div>
-                        )}
-                      </div>
-                  
-                      <button
-                        onClick={handleSearch}
-                        aria-label="Search"
-                        className="h-full px-4 bg-[#2453D3] text-white flex items-center justify-center active:scale-[0.97] transition"
-                      >
-                        <FaSearch size={16} />
-                      </button>
-                    </div>
-                  </div>
-                </div>
-                {/* MOBILE TOP SUGGESTIONS (outside menu) */}
-                {searchDropdownVisible && searchContext === 'mobileTop' && !isMobileMenuOpen && (
-                  <div ref={searchDropdownRef} className="sm:hidden absolute z-[70] left-0 right-0 px-3 mt-1">
-                    <div className="bg-white rounded-lg shadow-lg border max-h-72 overflow-y-auto">
-                      <div className="px-3 pt-2 pb-1 text-[11px] font-semibold tracking-wide text-gray-500">
-                        PRODUCTS
-                      </div>
-                      <div className="px-3 pb-2">
-                        {suggestions.length > 0
-                          ? suggestions.map(renderSuggestionItem)
-                          : (searchQuery.trim() && (
-                              <div className="py-10 flex flex-col items-center justify-center text-gray-500">
-                                {/* Icon */}
-                                <svg
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  className="w-12 h-12 mb-3 text-gray-400"
-                                  fill="none"
-                                  viewBox="0 0 24 24"
-                                  stroke="currentColor"
-                                  strokeWidth={1.5}
-                                >
-                                  <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    d="M9 13h6m-3-3v6m9-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                                  />
-                                </svg>
 
-                                {/* Message */}
-                                <p className="text-sm font-medium">No products found</p>
-                                <p className="text-xs text-gray-400 mt-1">Try a different keyword</p>
-                              </div>
-
-                            ))
-                        }
-                      </div>
-                    </div>
-                  </div>
-                )}
-                {/* DESKTOP ROW (unchanged original content) */}
-                <div className="hidden sm:grid grid-cols-12 items-center px-0 py-2">
-
-  {/* ========== COL 1 : LOGO (3) ========== */}
-  <div className="col-span-3 flex justify-center items-center">
-    <Link href="/index">
-      <img
-        src="/user/unilet-logo.webp"
-        alt="Logo"
-        width={120}
-        height={100}
-        className="h-auto"
-      />
-    </Link>
-  </div>
-
-  {/* ========== COL 2 : SEARCH + CATEGORY (6) ========== */}
-  <div className="col-span-6 flex flex-col items-center gap-3">
-
-    {/* --- ROW 1 : SEARCH BAR --- */}
-    <div className="w-full flex justify-center">
-      <div className="search-bar relative flex w-full max-w-[600px] items-center bg-white rounded-lg border-2 border-[#2453d3] px-3 py-1 shadow">
-        
-        {/* CATEGORY SELECT */}
-        {/* <select
-          value={selectedCategory}
-          onChange={(e) => setSelectedCategory(e.target.value)}
-          className="text-sm outline-none bg-transparent pr-2 border-r"
-        >
-          <option>All Category</option>
-          {categories.map((cat) => (
-            <option key={cat._id} value={cat.category_name}>
-              {cat.category_name}
-            </option>
-          ))}
-        </select> */}
-
-        {/* SEARCH INPUT */}
-        {/* <input
-          type="search"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className="flex-1 px-3 outline-none text-sm"
-          placeholder='Search for "Sou"'
-        /> */}
-
-        <input
+<input
 		type="search"
 		name="q"
 		id="q"
@@ -1812,750 +1948,414 @@ const shouldShowArrow = (item, allItems = []) => {
 		  setSearchDropdownVisible(true);
 		}}
 		onKeyDown={handleDesktopKeyDown}  // correct usage
-		className={`search-input ${searchQuery.trim() ? 'has-value' : ''}`}
-		placeholder=" "
+		className={`flex-1 px-4 py-2 outline-none search-input ${searchQuery.trim() ? 'has-value' : ''}`}
+		placeholder="Search"
 		aria-label="Search query"
 	  />
 	  {/* typed-overlay: "Search for" light gray, typedPreview black */}
-	  {searchQuery.trim() === "" && (
+	  {/* {searchQuery.trim() === "" && (
 		<div className="absolute left-4 top-1/2 -translate-y-1/2 flex items-center gap-2 pointer-events-none z-10">
 		  <span className="text-gray-400 text-sm">Search for</span>
 		  <span className="text-black text-sm">"{typedPreview }"</span>
 		</div>
-	  )}
-		
+	  )} */}
 
-        {/* SEARCH ICON */}
-        <button onClick={handleSearchBtnClick} className="text-[#2453d3]">
-          <FaSearch />
-        </button>
-      </div>
-    </div>
+            {/* <input
+              type="text"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search"
+              className="flex-1 px-4 py-2 outline-none"
+            /> */}
 
-    {/* --- ROW 2 : CATEGORY SWIPER --- link 18ffe1hover:text-[#1688c8]*/}
-    <div className="w-full rounded-md py-2">
-      <Swiper modules={[Navigation]} navigation={{ prevEl: ".custom-swiper-prev", nextEl: ".custom-swiper-next", }} spaceBetween={20} slidesPerView="auto" watchOverflow={true} className="pl-10 pr-14">
-        {categories.map((category) => (
-          <SwiperSlide key={category._id} className="!w-auto">
-              <div ref={(el) => (slideRefs.current[category._id] = el)} onMouseEnter={() => handleMouseEnter(category._id)} onMouseLeave={() => startHide(120)} className="text-sm text-white hover:text-[#1688c8] whitespace-nowrap px-3">
-                  <Link href={`/category/${category.category_slug}`} className="text-sm text-base text-[#18ffe1] whitespace-nowrap" >
-                      {category.category_name}
-                  </Link>
-              </div>
-          </SwiperSlide>
-        ))}
-      </Swiper>
-      {/* DROPDOWN OUTSIDE SWIPER (fixed so it won't be clipped) */}
-      {hoveredCategory && hoveredCategory.subcategories?.length > 0 && (() => {
-        // 1) Strict alphabetical sort for hovered subcategories
-        const sortedSubcategories = [...hoveredCategory.subcategories]
-          .filter(Boolean)
-          .sort((a, b) => alphaSortString(a?.category_name, b?.category_name));
+           {/*  <button className="px-5 text-sky-500">
+              <FiSearch size={18} />
+            </button> */}
+            {/* SEARCH ICON */}
+                    <button onClick={handleSearchBtnClick} className="px-5 text-sky-500">
+                      <FiSearch size={18} />
+                    </button>
+          </div>
 
-        // 2) Flatten (existing logic) then alphabetize the final list
-        const flatAll = flattenAllCategories(
-          sortedSubcategories,
-          hoveredCategory.category_slug
-        );
-
-        // Remove items missing display names
-        const sanitizedFlat = (flatAll || []).filter((item) =>
-          item?.type === "brand"
-            ? !!item?.brand_name
-            : !!item?.category_name
-        );
-
-        // New: level-aware alphabetical output
-        const flatAlpha = prepareFlatListAlpha(sanitizedFlat);
-
-        // 3) Chunk and drop empty chunks to avoid gaps
-        let dropdownChunksLocal = chunkFlatList(flatAlpha, 11);
-        const filteredChunks = dropdownChunksLocal.filter(
-          (chunk) =>
-            Array.isArray(chunk) &&
-            chunk.length > 0 &&
-            chunk.some(Boolean)
-        );
-
-        // --- Image columns logic (unchanged) ---
-        let navImages = [];
-        if (hoveredCategory?.navImage) {
-          if (typeof hoveredCategory.navImage === "string") {
-            navImages = hoveredCategory.navImage
-              .split(",")
-              .map((s) => s.trim())
-              .filter(Boolean);
-          } else if (Array.isArray(hoveredCategory.navImage)) {
-            navImages = hoveredCategory.navImage.filter(Boolean);
-          }
-        }
-        const imageCols = navImages.length;
-
-        // Layout constraints
-        const maxCols = 6;
-        const columnWidth = 220;
-        const screenWidth =
-          typeof window !== "undefined" ? window.innerWidth : 1200;
-        const maxAllowedWidth = Math.max(300, screenWidth - 20);
-
-        // Fit non-empty columns without gaps
-        const maxDataBySlots = Math.max(0, maxCols - imageCols);
-        const maxDataByViewport = Math.max(
-          0,
-          Math.floor(maxAllowedWidth / columnWidth) - imageCols
-        );
-        const allowedDataCols = Math.max(
-          0,
-          Math.min(filteredChunks.length, maxDataBySlots, maxDataByViewport)
-        );
-
-        const columns = filteredChunks.slice(0, allowedDataCols);
-
-        let computedWidth = (columns.length + imageCols) * columnWidth;
-        if (computedWidth > maxAllowedWidth) computedWidth = maxAllowedWidth;
-
-        const styleLeft =
-          dropdownUseTranslate && dropdownCenterX
-            ? `${dropdownCenterX + 15}px`
-            : `${dropdownLeft + 15}px`;
-        const styleTransform =
-          dropdownUseTranslate && dropdownCenterX ? "translateX(-50%)" : "none";
-
-        if (columns.length === 0 && imageCols === 0) return null;
-
-        return (
-          <div
-            ref={dropdownRef}
-            className="fixed z-50 border-t border-gray-200 shadow-xl"
-            style={{
-              top: `${dropdownTop}px`,
-              left: styleLeft,
-              transform: styleTransform,
-              width: `${computedWidth}px`,
-              maxWidth: "calc(100% - 20px)",
-            }}
-            onMouseEnter={cancelHide}
-            onMouseLeave={() => startHide(120)}
-          >
-            <div className="flex flex-nowrap bg-white h-[390px] overflow-hidden" style={{ width: "100%" }}>
-              {/* Render only non-empty columns in order (gap-free) */}
-              {columns.map((chunk, index) => {
-                const bgClass = index % 2 === 0 ? "bg-[#f2f2f2]" : "bg-white";
-                return (
-                  <div
-                    key={`col-${index}`}
-                    className={`min-w-[220px] max-w-[250px] p-3 flex flex-col justify-start self-start ${bgClass}`}
-                    style={{ height: "100%" }}
-                  >
-                    {chunk.map((item) => renderFlatItem(item, hoveredCategory, flatAlpha))}
-                  </div>
-                );
-              })}
-
-              {/* Image columns (unchanged) */}
-              {Array.isArray(navImages) &&
-                navImages.length > 0 &&
-                navImages.map((img, idx) => (
-                  <div
-                    key={`nav-image-panel-${idx}`}
-                    className={`w-[220px] h-[390px] flex items-center justify-center ${
-                      ((columns.length + idx) % 2 === 0) ? "bg-gray-50" : "bg-white"
-                    }`}
-                  >
-                    <Link
-                      href={`/category/${hoveredCategory?.category_slug || ""}`}
-                      className="block w-full h-full"
-                    >
-                      <Image
-                        src={img}
-                        alt={hoveredCategory.category_name || "Category Image"}
-                        width={220}
-                        height={390}
-                        className="object-cover w-full h-full"
-                        style={{ boxShadow: "0px -1px 0px #2453d3" }}
-                      />
-                    </Link>
-                  </div>
-                ))}
+          {/* Right Icons */}
+          <div className="hidden md:flex items-center gap-4 text-white">
+            <div className="w-9 h-9 rounded-full bg-[#2f2f2f] hover:bg-[#1688c8] flex items-center justify-center cursor-pointer transition-all duration-300">
+              <Link href="/contact" className="w-9 h-9 flex items-center justify-center rounded-full
+               bg-[#2b2b2b] border border-[#4a4a4a]
+               text-white shadow-md
+               hover:bg-[#1688c8] transition-all">
+                <FiPhone />
+               </Link>
+              
+            </div>
+            <div className="w-9 h-9 rounded-full bg-[#2f2f2f] hover:bg-[#1688c8] flex items-center justify-center cursor-pointer transition-all duration-300">
+              <Link href="/location" className="w-9 h-9 flex items-center justify-center rounded-full
+               bg-[#2b2b2b] border border-[#4a4a4a]
+               text-white shadow-md
+               hover:bg-[#1688c8] transition-all">
+                <FiMapPin />
+               </Link>
+              
             </div>
           </div>
-        );
-      })()}
-    </div>
+        </div>
+      </div>
 
-  </div>
+      {/* ================= ROUND CATEGORY ICONS ================= */}
+      <div className="bg-white py-2">
+        <div className="flex items-start lg:justify-center justify-start gap-8 overflow-x-auto px-4 md:px-10">
 
-  {/* ========== COL 3 : ICONS (3) ========== */}
-  <div className="col-span-3 flex justify-center items-center gap-2 text-white">
-
-  {/* <Link href="/feedback"><FiMessageSquare size={18} /></Link> */}
-    <Link href="/contact" className="w-9 h-9 flex items-center justify-center rounded-full
-               bg-[#2b2b2b] border border-[#4a4a4a]
-               text-white shadow-md
-               hover:bg-[#1688c8] transition-all"><FiPhoneCall size={18} /></Link>
-    <Link href="/location" className="w-9 h-9 flex items-center justify-center rounded-full
-               bg-[#2b2b2b] border border-[#4a4a4a]
-               text-white shadow-md
-               hover:bg-[#1688c8] transition-all"><FiMapPin size={18} /></Link>
-
-    <Link href="/wishlist" className="relative w-9 h-9 flex items-center justify-center rounded-full
-               bg-[#2b2b2b] border border-[#4a4a4a]
-               text-white shadow-md
-               hover:bg-[#1688c8] transition-all">
-      <FiHeart size={18} />
-      <span className="absolute -top-2 -right-2 bg-white text-black text-[10px] w-4 h-4 rounded-full flex items-center justify-center">
-        {wishlistCount}
-      </span>
-    </Link>
-
-    <Link href="/cart" className="relative w-9 h-9 flex items-center justify-center rounded-full
-               bg-[#2b2b2b] border border-[#4a4a4a]
-               text-white shadow-md
-               hover:bg-[#1688c8] transition-all">
-      <FiShoppingCart size={18} />
-      <span className="absolute -top-2 -right-2 bg-white text-black text-[10px] w-4 h-4 rounded-full flex items-center justify-center">
-        {cartCount}
-      </span>
-    </Link>
-<div className="relative" >
-    {/* USER */}
-    {isLoggedIn ? (
-                                <>
-                                    <button onClick={() => setDropdownOpen(!dropdownOpen)} className="flex items-center text-black focus:outline-none p-1 sm:p-0">
-                                      <div className="relative w-9 h-9 flex items-center justify-center rounded-full bg-[#2b2b2b] border border-[#4a4a4a] text-white shadow-md   hover:bg-[#1688c8] transition-all">
- <FiUser size={18} className="text-white" />
-                                      </div>
-                                       
-                                        <span className="ml-1 font-bold text-xs sm:text-sm hidden lg:inline" style={{color : "#1688c8"}}>
-                                            Hi, {/* {userData?.name || userData?.username || "User"} */}
-											{userData?.name?.length > 13 ? userData?.name.slice(0, 13) + "..." : userData?.name || (userData?.username?.length > 13 ? userData?.username.slice(0, 13) + "..." : userData?.username || "User")}
-                                        </span>
-                                    </button>
-                                    {dropdownOpen && (
-                                        <div ref={dropdownRef} className="absolute right-0 mt-3 w-48 sm:w-56 bg-white rounded-xl shadow-xl z-50 transition-all">
-                                            <div className="py-2 px-2">
-                                                {isAdmin && (
-                                                    <>
-                                                        <Link href="/admin/dashboard" className="flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-2 rounded-md text-xs sm:text-sm text-gray-700 hover:bg-blue-50 transition-colors">
-                                                            <span className="w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center rounded-full bg-customBlue text-white">
-                                                                <FaUserShield className="w-3 h-3 sm:w-4 sm:h-4" />
-                                                            </span>
-                                                            Admin Panel
-                                                        </Link>
-                                                    </>
-                                                )}
-                                                <Link href="/orders" className="flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-2 rounded-md text-xs sm:text-sm text-gray-700 hover:bg-blue-50 transition-colors">
-                                                    <span className="w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center rounded-full bg-customBlue text-white">
-                                                        <FaShoppingBag className="w-3 h-3 sm:w-4 sm:h-4" />
-                                                    </span>My Orders</Link>
-                                                <hr className="my-2 border-gray-200" />
-                                                <button onClick={handleLogout} className="flex items-center gap-2 sm:gap-3 w-full text-left px-3 sm:px-4 py-2 rounded-md text-xs sm:text-sm text-gray-700 hover:bg-red-50 transition-colors">
-                                                    <span className="w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center rounded-full bg-customBlue text-white">
-                                                        <IoLogOut className="w-3 h-3 sm:w-4 sm:h-4" />
-                                                    </span>Logout
-                                                </button>
-                                            </div>
-                                        </div>
-                                    )}
-                                </>
-                            ) : (
-                                <button onClick={() => setShowAuthModal(true)} className="flex items-center text-black p-1 sm:p-0 relative w-9 h-9 flex items-center justify-center rounded-full bg-[#2b2b2b] border border-[#4a4a4a] text-white shadow-md   hover:bg-[#1688c8] transition-all">
-                                    <FiUser size={18} className="text-white" />
-                                    {/* <span className="ml-1 font-bold text-xs sm:text-sm text-customBlue hidden lg:inline">Sign In</span> */}
-                                </button>
-                            )}
-							</div>
-
-  </div>
-</div>
-                {/* Mobile Menu (Hidden on desktop) */}
-                {isMobileMenuOpen && (
-                  <div className="sm:hidden bg-white fixed inset-0 z-50 p-4 pt-3 rounded-lg shadow-lg overflow-y-auto transition-all duration-300"
-                    style={{ touchAction: 'auto', userSelect: 'auto', WebkitUserSelect: 'auto' }}
-                  >
-                    {/* Internal sticky header */}
-                    <div className="flex items-center justify-between mb-3 sticky top-0 bg-white pb-2 border-b">
-                      <div className="flex items-center gap-2 text-customBlue font-semibold text-sm">
-                        <FiMenu size={18} />
-                        <span>Menu</span>
-                      </div>
-                      <button
-                        onClick={() => setIsMobileMenuOpen(false)}
-                        aria-label="Close menu"
-                        className="p-2 rounded-full text-customBlue hover:bg-blue-50 active:bg-blue-100 focus:outline-none focus:ring focus:ring-blue-200"
-                      >
-                        <FiX size={22} />
-                      </button>
-                    </div>
-        
-                    {/* Mobile Category Block (accordion) */}
-                      <div className=" bg-white rounded-md border border-gray-200 overflow-hidden">
-                          <div className="px-3 py-4 text-[14px] font-semibold tracking-wide text-white  bg-[#2453D3]">
-                            Browse Category
-                          </div>
-                          {/* Use unified nodes (categories + hoveredCategory subcategories when available) */}
-                          {Array.isArray(nodes) && nodes.length > 0 ? (
-                            renderCategoryLevel(nodes, [], 0)
-                          ) : (
-                            <div className="px-3 py-4 text-sm text-gray-500">
-                              Loading categories…
-                            </div>
-                          )}
-                        </div>
-                  </div>
-                )}
-                {/* Auth Modal */}
-                {showAuthModal && (
-                    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                        <div className="bg-white rounded-lg p-8 w-96 max-w-full relative">
-                            <button onClick={() => { setShowAuthModal(false); setFormError(''); setError(''); setErrors({ login: {}, register: {} }); setLoginData({ email: "", password: "" }); setRegisterData({ name: "", email: "", mobile: "", password: "" }); }} className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 text-2xl">
-                                &times;
-                            </button>
-                            <div className="flex gap-4 mb-6 border-b">
-                                <button className={`pb-2 px-1 ${activeTab === 'login' ? 'border-b-2 border-blue-500 text-blue-600' : 'text-gray-500 hover:text-gray-700'}`} onClick={() => setActiveTab('login')}>
-                                    Login
-                                </button>
-                                <button className={`pb-2 px-1 ${activeTab === 'register' ? 'border-b-2 border-blue-500 text-blue-600' : 'text-gray-500 hover:text-gray-700'}`} onClick={() => setActiveTab('register')}>
-                                    Register
-                                </button>
-                            </div>
-                            <form onSubmit={handleAuthSubmit} className="space-y-4">
-                              {/* Register Name Field */}
-                              {activeTab === "register" && (
-                                <>
-                                  <input
-                                    type="text"
-                                    placeholder="Name"
-                                    value={registerData.name}
-                                    onChange={(e) =>
-                                      setRegisterData({ ...registerData, name: e.target.value })
-                                    }
-                                    className={`w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                                      errors?.register?.name ? "border-red-500" : ""
-                                    }`}
-                                  />
-                                  {errors?.register?.name && (
-                                    <p className="text-red-500 text-sm">{errors.register.name}</p>
-                                  )}
-                                </>
-                              )}
-
-                              {/* Email Field */}
-                              <input
-                                type="text"
-                                placeholder="Email"
-                                value={
-                                  activeTab === "login" ? loginData.email : registerData.email
-                                }
-                                onChange={(e) =>
-                                  activeTab === "login"
-                                    ? setLoginData({ ...loginData, email: e.target.value })
-                                    : setRegisterData({ ...registerData, email: e.target.value })
-                                }
-                                className={`w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                                  errors?.[activeTab]?.email ? "border-red-500" : ""
-                                }`}
-                              />
-                              {errors?.[activeTab]?.email && (
-                                <p className="text-red-500 text-sm">{errors[activeTab].email}</p>
-                              )}
-
-                              {/* Register Mobile Field */}
-                              {activeTab === "register" && (
-                                <>
-                                  <input
-                                    type="tel"
-                                    placeholder="Mobile"
-                                    value={registerData.mobile}
-                                    onChange={(e) =>
-                                      setRegisterData({ ...registerData, mobile: e.target.value })
-                                    }
-                                    className={`w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                                      errors?.register?.mobile ? "border-red-500" : ""
-                                    }`}
-                                  />
-                                  {errors?.register?.mobile && (
-                                    <p className="text-red-500 text-sm">{errors.register.mobile}</p>
-                                  )}
-                                </>
-                              )}
-
-                              {/* Password Field */}
-                              <input
-                                type="password"
-                                placeholder="Password"
-                                value={
-                                  activeTab === "login" ? loginData.password : registerData.password
-                                }
-                                onChange={(e) =>
-                                  activeTab === "login"
-                                    ? setLoginData({ ...loginData, password: e.target.value })
-                                    : setRegisterData({ ...registerData, password: e.target.value })
-                                }
-                                className={`w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                                  errors?.[activeTab]?.password ? "border-red-500" : ""
-                                }`}
-                                minLength={6}
-                              />
-                              {errors?.[activeTab]?.password && (
-                                <p className="text-red-500 text-sm">{errors[activeTab].password}</p>
-                              )}
-
-                              {/* Global Form Error */}
-                              {(formError || error) && (
-                                <div className="text-red-500 text-sm">{formError || error}</div>
-                              )}
-
-                              {/* Submit Button */}
-                              <button
-                                type="submit"
-                                disabled={loadingAuth}
-                                className="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 disabled:bg-gray-400 transition-colors duration-200"
-                              >
-                                {loadingAuth
-                                  ? "Processing..."
-                                  : activeTab === "login"
-                                  ? "Login"
-                                  : "Register"}
-                              </button>
-
-                              {/* Forgot Password (only in login) */}
-                              {activeTab === "login" && (
-                                <div className="text-center mt-2">
-                                  <button
-                                    type="button"
-                                    onClick={() => {
-                                      setShowAuthModal(false);
-                                      setShowForgotPasswordModal(true);
-                                      setForgotStep(1);
-                                      setForgotPasswordEmail(formData?.email || "");
-                                      setForgotOTP("");
-                                      setNewPassword("");
-                                      setConfirmPassword("");
-                                      setForgotPasswordMessage("");
-                                      setForgotPasswordError("");
-                                    }}
-                                    className="text-sm text-blue-500 hover:underline"
-                                  >
-                                    Forgot Password?
-                                  </button>
-                                </div>
-                              )}
-                            </form>
-                        </div>
-                    </div>
-                )}
-                {showForgotPasswordModal && (
-                    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                        <div className="bg-white rounded-lg p-6 w-96 max-w-full relative">
-                            <button onClick={() => setShowForgotPasswordModal(false)} className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
-                            {/* STEP 1: Enter Email */}
-                            {forgotStep === 1 && (
-                                <>
-                                    <h2 className="text-lg font-semibold mb-4">Reset Password</h2>
-                                    <form onSubmit={async (e) => {
-                                        e.preventDefault(); setForgotPasswordError(''); setForgotPasswordMessage(''); setForgotPasswordLoading(true);
-                                        try {
-                                            const res = await fetch('/api/auth/request-reset', {
-                                                method: 'POST',
-                                                headers: { 'Content-Type': 'application/json' },
-                                                body: JSON.stringify({ email: forgotPasswordEmail }),
-                                            });
-                                            const data = await res.json();
-                                            if (!res.ok) throw new Error(data.message || 'Error sending OTP');
-                                            setForgotPasswordMessage('OTP sent to your email.');
-                                            setForgotStep(2);
-                                        } catch (err) {
-                                            setForgotPasswordError(err.message);
-                                        } finally {
-                                            setForgotPasswordLoading(false);
-                                        }
-                                    }} className="space-y-4">
-                                        <input
-                                            type="email"
-                                            placeholder="Enter your email"
-                                            value={forgotPasswordEmail}
-                                            onChange={(e) => setForgotPasswordEmail(e.target.value)}
-                                            required
-                                            className="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                        />
-                                        {forgotPasswordError && (
-                                            <p className="text-red-500 text-sm">{forgotPasswordError}</p>
-                                        )}
-                                        {forgotPasswordMessage && (
-                                            <p className="text-green-500 text-sm">{forgotPasswordMessage}</p>
-                                        )}
-                                        <button
-                                            type="submit"
-                                            disabled={forgotPasswordLoading}
-                                            className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 disabled:bg-gray-400"
-                                        >
-                                            {forgotPasswordLoading ? 'Sending...' : 'Send OTP'}
-                                        </button>
-                                    </form>
-                                </>
-                            )}
-
-                            {/* STEP 2: Enter OTP */}
-                            {forgotStep === 2 && (
-                                <>
-                                    <h2 className="text-lg font-semibold mb-4">Enter OTP</h2>
-                                    <p className="text-sm mb-2">Email: <strong>{forgotPasswordEmail}</strong></p>
-                                    <form onSubmit={async (e) => {
-                                        e.preventDefault(); setForgotPasswordError(''); setForgotPasswordMessage('');
-                                        if (!forgotOTP.trim()) {
-                                            setForgotPasswordError('Please enter OTP.');
-                                            return;
-                                        }
-                                        setForgotPasswordLoading(true);
-                                        try {
-                                            const res = await fetch('/api/auth/verify-otp', {
-                                                method: 'POST',
-                                                headers: { 'Content-Type': 'application/json' },
-                                                body: JSON.stringify({
-                                                    email: forgotPasswordEmail,
-                                                    otp: forgotOTP,
-                                                }),
-                                            });
-                                            const data = await res.json();
-                                            if (!res.ok) throw new Error(data.message || 'Invalid OTP');
-                                            setForgotPasswordMessage('OTP verified. Please set your new password.');
-                                            setForgotStep(3);
-                                        } catch (err) {
-                                            setForgotPasswordError(err.message);
-                                        } finally {
-                                            setForgotPasswordLoading(false);
-                                        }
-                                    }} className="space-y-4">
-                                        <input type="text" placeholder="Enter OTP" value={forgotOTP} onChange={(e) => setForgotOTP(e.target.value)} required className="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500" />
-                                        {forgotPasswordError && (
-                                            <p className="text-red-500 text-sm">{forgotPasswordError}</p>
-                                        )}
-                                        {forgotPasswordMessage && (
-                                            <p className="text-green-500 text-sm">{forgotPasswordMessage}</p>
-                                        )}
-                                        <button type="submit" disabled={forgotPasswordLoading} className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 disabled:bg-gray-400">
-                                            {forgotPasswordLoading ? 'Validating...' : 'Validate OTP'}
-                                        </button>
-                                    </form>
-                                </>
-                            )}
-                            {/* STEP 3: New Password */}
-                            {forgotStep === 3 && (
-                                <>
-                                    <h2 className="text-lg font-semibold mb-4">Set New Password</h2>
-                                    <p className="text-sm mb-2">Email: <strong>{forgotPasswordEmail}</strong></p>
-                                    <form onSubmit={async (e) => {
-                                        e.preventDefault();
-                                        setForgotPasswordError('');
-                                        setForgotPasswordMessage('');
-                                        if (newPassword !== confirmPassword) {
-                                            setForgotPasswordError('Passwords do not match.');
-                                            return;
-                                        }
-                                        setForgotPasswordLoading(true);
-                                        try {
-                                              const res = await fetch('/api/auth/reset-password', {
-                                                method: 'POST',
-                                                headers: { 'Content-Type': 'application/json' },
-                                                body: JSON.stringify({
-                                                    email: forgotPasswordEmail,
-                                                    otp: forgotOTP,
-                                                    newPassword,
-                                                }),
-                                            });
-
-                                            const data = await res.json();
-                                            if (!res.ok) throw new Error(data.message || 'Error resetting password');
-
-                                            setForgotPasswordMessage('Password reset successful.');
-                                            setTimeout(() => {
-                                                setShowForgotPasswordModal(false);
-                                                setShowAuthModal(true); // reopen login
-                                            }, 1500);
-                                        } catch (err) {
-                                            setForgotPasswordError(err.message);
-                                        } finally {
-                                            setForgotPasswordLoading(false);
-                                        }
-                                    }} className="space-y-4">
-                                        <input type="password" placeholder="New Password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} required minLength={6} className="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500" />
-                                        <input type="password" placeholder="Confirm New Password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required minLength={6} className="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500" />
-                                        {forgotPasswordError && (
-                                            <p className="text-red-500 text-sm">{forgotPasswordError}</p>
-                                        )}
-                                        {forgotPasswordMessage && (
-                                            <p className="text-green-500 text-sm">{forgotPasswordMessage}</p>
-                                        )}
-                                        <button
-                                            type="submit"
-                                            disabled={forgotPasswordLoading}
-                                            className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 disabled:bg-gray-400"
-                                        >
-                                            {forgotPasswordLoading ? 'Resetting...' : 'Reset Password'}
-                                        </button>
-                                    </form>
-                                </>
-                            )}
-                        </div>
-                    </div>
-                )}
+          {categories.map((cat) => (
+            <div key={cat} className="flex flex-col items-center min-w-[120px]">
+              <div className="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20
+               rounded-full overflow-hidden
+               flex items-center justify-center border-2 border-[#1688c8]">
+                <img src={cat} alt={cat.category_name} class="w-full h-full object-cover"/>
+              </div>
+              <span className="text-sm font-semibold hover:text-[#1688c8]">{cat.category_name}</span>
             </div>
-            {/* <div className="hidden sm:flex relative p-2 mt-0 px-1 bg-[#2453D3] min-h-[64px] border-gray-200 shadow items-center">
-                <div className="w-full  relative">
-                    <div className="relative">
-                        <div className="flex justify-center overflow-x-auto scrollbar-hide">
-                            <Swiper modules={[Navigation]} navigation={{ prevEl: ".custom-swiper-prev", nextEl: ".custom-swiper-next", }} spaceBetween={20} slidesPerView="auto" watchOverflow={true} className="pl-10 pr-14">
-                                {categories.map((category) => (
-                                    <SwiperSlide key={category._id} className="!w-auto">
-                                        <div ref={(el) => (slideRefs.current[category._id] = el)} onMouseEnter={() => handleMouseEnter(category._id)} onMouseLeave={() => startHide(120)} className="px-5 py-2 flex flex-col items-center text-center" >
-                                            <Link href={`/category/${category.category_slug}`} className="text-sm text-base text-white hover:text-orange-500 whitespace-nowrap" >
-                                                {category.category_name}
-                                            </Link>
-                                        </div>
-                                    </SwiperSlide>
-                                ))}
-                            </Swiper>
-                        </div>
-                    </div>
-                </div>
+          ))}
+
+        </div>
+      </div>
+
+      {/* Mobile Menu (Hidden on desktop) */}
+                      {isMobileMenuOpen && (
+                        <div className="sm:hidden bg-white fixed inset-0 z-50 p-4 pt-3 rounded-lg shadow-lg overflow-y-auto transition-all duration-300"
+                          style={{ touchAction: 'auto', userSelect: 'auto', WebkitUserSelect: 'auto' }}
+                        >
+                          {/* Internal sticky header */}
+                          <div className="flex items-center justify-between mb-3 sticky top-0 bg-white pb-2 border-b">
+                            <div className="flex items-center gap-2 text-customBlue font-semibold text-sm">
+                              <FiMenu size={18} />
+                              <span>Menu</span>
+                            </div>
+                            <button
+                              onClick={() => setIsMobileMenuOpen(false)}
+                              aria-label="Close menu"
+                              className="p-2 rounded-full text-customBlue hover:bg-blue-50 active:bg-blue-100 focus:outline-none focus:ring focus:ring-blue-200"
+                            >
+                              <FiX size={22} />
+                            </button>
+                          </div>
               
-                {hoveredCategory && hoveredCategory.subcategories?.length > 0 && (() => {
-                  // 1) Strict alphabetical sort for hovered subcategories
-                  const sortedSubcategories = [...hoveredCategory.subcategories]
-                    .filter(Boolean)
-                    .sort((a, b) => alphaSortString(a?.category_name, b?.category_name));
+                          {/* Mobile Category Block (accordion) */}
+                            <div className=" bg-white rounded-md border border-gray-200 overflow-hidden">
+                                <div className="px-3 py-4 text-[14px] font-semibold tracking-wide text-white  bg-[#2453D3]">
+                                  Browse Category
+                                </div>
+                                {/* Use unified nodes (categories + hoveredCategory subcategories when available) */}
+                                {Array.isArray(nodes) && nodes.length > 0 ? (
+                                  renderCategoryLevel(nodes, [], 0)
+                                ) : (
+                                  <div className="px-3 py-4 text-sm text-gray-500">
+                                    Loading categories…
+                                  </div>
+                                )}
+                              </div>
+                        </div>
+                      )}
+                      {/* Auth Modal */}
+                      {showAuthModal && (
+                          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                              <div className="bg-white rounded-lg p-8 w-96 max-w-full relative">
+                                  <button onClick={() => { setShowAuthModal(false); setFormError(''); setError(''); setErrors({ login: {}, register: {} }); setLoginData({ email: "", password: "" }); setRegisterData({ name: "", email: "", mobile: "", password: "" }); }} className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 text-2xl">
+                                      &times;
+                                  </button>
+                                  <div className="flex gap-4 mb-6 border-b">
+                                      <button className={`pb-2 px-1 ${activeTab === 'login' ? 'border-b-2 border-blue-500 text-blue-600' : 'text-gray-500 hover:text-gray-700'}`} onClick={() => setActiveTab('login')}>
+                                          Login
+                                      </button>
+                                      <button className={`pb-2 px-1 ${activeTab === 'register' ? 'border-b-2 border-blue-500 text-blue-600' : 'text-gray-500 hover:text-gray-700'}`} onClick={() => setActiveTab('register')}>
+                                          Register
+                                      </button>
+                                  </div>
+                                  <form onSubmit={handleAuthSubmit} className="space-y-4">
+                                    {/* Register Name Field */}
+                                    {activeTab === "register" && (
+                                      <>
+                                        <input
+                                          type="text"
+                                          placeholder="Name"
+                                          value={registerData.name}
+                                          onChange={(e) =>
+                                            setRegisterData({ ...registerData, name: e.target.value })
+                                          }
+                                          className={`w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                                            errors?.register?.name ? "border-red-500" : ""
+                                          }`}
+                                        />
+                                        {errors?.register?.name && (
+                                          <p className="text-red-500 text-sm">{errors.register.name}</p>
+                                        )}
+                                      </>
+                                    )}
+      
+                                    {/* Email Field */}
+                                    <input
+                                      type="text"
+                                      placeholder="Email"
+                                      value={
+                                        activeTab === "login" ? loginData.email : registerData.email
+                                      }
+                                      onChange={(e) =>
+                                        activeTab === "login"
+                                          ? setLoginData({ ...loginData, email: e.target.value })
+                                          : setRegisterData({ ...registerData, email: e.target.value })
+                                      }
+                                      className={`w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                                        errors?.[activeTab]?.email ? "border-red-500" : ""
+                                      }`}
+                                    />
+                                    {errors?.[activeTab]?.email && (
+                                      <p className="text-red-500 text-sm">{errors[activeTab].email}</p>
+                                    )}
+      
+                                    {/* Register Mobile Field */}
+                                    {activeTab === "register" && (
+                                      <>
+                                        <input
+                                          type="tel"
+                                          placeholder="Mobile"
+                                          value={registerData.mobile}
+                                          onChange={(e) =>
+                                            setRegisterData({ ...registerData, mobile: e.target.value })
+                                          }
+                                          className={`w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                                            errors?.register?.mobile ? "border-red-500" : ""
+                                          }`}
+                                        />
+                                        {errors?.register?.mobile && (
+                                          <p className="text-red-500 text-sm">{errors.register.mobile}</p>
+                                        )}
+                                      </>
+                                    )}
+      
+                                    {/* Password Field */}
+                                    <input
+                                      type="password"
+                                      placeholder="Password"
+                                      value={
+                                        activeTab === "login" ? loginData.password : registerData.password
+                                      }
+                                      onChange={(e) =>
+                                        activeTab === "login"
+                                          ? setLoginData({ ...loginData, password: e.target.value })
+                                          : setRegisterData({ ...registerData, password: e.target.value })
+                                      }
+                                      className={`w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                                        errors?.[activeTab]?.password ? "border-red-500" : ""
+                                      }`}
+                                      minLength={6}
+                                    />
+                                    {errors?.[activeTab]?.password && (
+                                      <p className="text-red-500 text-sm">{errors[activeTab].password}</p>
+                                    )}
+      
+                                    {/* Global Form Error */}
+                                    {(formError || error) && (
+                                      <div className="text-red-500 text-sm">{formError || error}</div>
+                                    )}
+      
+                                    {/* Submit Button */}
+                                    <button
+                                      type="submit"
+                                      disabled={loadingAuth}
+                                      className="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 disabled:bg-gray-400 transition-colors duration-200"
+                                    >
+                                      {loadingAuth
+                                        ? "Processing..."
+                                        : activeTab === "login"
+                                        ? "Login"
+                                        : "Register"}
+                                    </button>
+      
+                                    {/* Forgot Password (only in login) */}
+                                    {activeTab === "login" && (
+                                      <div className="text-center mt-2">
+                                        <button
+                                          type="button"
+                                          onClick={() => {
+                                            setShowAuthModal(false);
+                                            setShowForgotPasswordModal(true);
+                                            setForgotStep(1);
+                                            setForgotPasswordEmail(formData?.email || "");
+                                            setForgotOTP("");
+                                            setNewPassword("");
+                                            setConfirmPassword("");
+                                            setForgotPasswordMessage("");
+                                            setForgotPasswordError("");
+                                          }}
+                                          className="text-sm text-blue-500 hover:underline"
+                                        >
+                                          Forgot Password?
+                                        </button>
+                                      </div>
+                                    )}
+                                  </form>
+                              </div>
+                          </div>
+                      )}
+                      {showForgotPasswordModal && (
+                          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                              <div className="bg-white rounded-lg p-6 w-96 max-w-full relative">
+                                  <button onClick={() => setShowForgotPasswordModal(false)} className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
+                                  {/* STEP 1: Enter Email */}
+                                  {forgotStep === 1 && (
+                                      <>
+                                          <h2 className="text-lg font-semibold mb-4">Reset Password</h2>
+                                          <form onSubmit={async (e) => {
+                                              e.preventDefault(); setForgotPasswordError(''); setForgotPasswordMessage(''); setForgotPasswordLoading(true);
+                                              try {
+                                                  const res = await fetch('/api/auth/request-reset', {
+                                                      method: 'POST',
+                                                      headers: { 'Content-Type': 'application/json' },
+                                                      body: JSON.stringify({ email: forgotPasswordEmail }),
+                                                  });
+                                                  const data = await res.json();
+                                                  if (!res.ok) throw new Error(data.message || 'Error sending OTP');
+                                                  setForgotPasswordMessage('OTP sent to your email.');
+                                                  setForgotStep(2);
+                                              } catch (err) {
+                                                  setForgotPasswordError(err.message);
+                                              } finally {
+                                                  setForgotPasswordLoading(false);
+                                              }
+                                          }} className="space-y-4">
+                                              <input
+                                                  type="email"
+                                                  placeholder="Enter your email"
+                                                  value={forgotPasswordEmail}
+                                                  onChange={(e) => setForgotPasswordEmail(e.target.value)}
+                                                  required
+                                                  className="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                              />
+                                              {forgotPasswordError && (
+                                                  <p className="text-red-500 text-sm">{forgotPasswordError}</p>
+                                              )}
+                                              {forgotPasswordMessage && (
+                                                  <p className="text-green-500 text-sm">{forgotPasswordMessage}</p>
+                                              )}
+                                              <button
+                                                  type="submit"
+                                                  disabled={forgotPasswordLoading}
+                                                  className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 disabled:bg-gray-400"
+                                              >
+                                                  {forgotPasswordLoading ? 'Sending...' : 'Send OTP'}
+                                              </button>
+                                          </form>
+                                      </>
+                                  )}
+      
+                                  {/* STEP 2: Enter OTP */}
+                                  {forgotStep === 2 && (
+                                      <>
+                                          <h2 className="text-lg font-semibold mb-4">Enter OTP</h2>
+                                          <p className="text-sm mb-2">Email: <strong>{forgotPasswordEmail}</strong></p>
+                                          <form onSubmit={async (e) => {
+                                              e.preventDefault(); setForgotPasswordError(''); setForgotPasswordMessage('');
+                                              if (!forgotOTP.trim()) {
+                                                  setForgotPasswordError('Please enter OTP.');
+                                                  return;
+                                              }
+                                              setForgotPasswordLoading(true);
+                                              try {
+                                                  const res = await fetch('/api/auth/verify-otp', {
+                                                      method: 'POST',
+                                                      headers: { 'Content-Type': 'application/json' },
+                                                      body: JSON.stringify({
+                                                          email: forgotPasswordEmail,
+                                                          otp: forgotOTP,
+                                                      }),
+                                                  });
+                                                  const data = await res.json();
+                                                  if (!res.ok) throw new Error(data.message || 'Invalid OTP');
+                                                  setForgotPasswordMessage('OTP verified. Please set your new password.');
+                                                  setForgotStep(3);
+                                              } catch (err) {
+                                                  setForgotPasswordError(err.message);
+                                              } finally {
+                                                  setForgotPasswordLoading(false);
+                                              }
+                                          }} className="space-y-4">
+                                              <input type="text" placeholder="Enter OTP" value={forgotOTP} onChange={(e) => setForgotOTP(e.target.value)} required className="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                                              {forgotPasswordError && (
+                                                  <p className="text-red-500 text-sm">{forgotPasswordError}</p>
+                                              )}
+                                              {forgotPasswordMessage && (
+                                                  <p className="text-green-500 text-sm">{forgotPasswordMessage}</p>
+                                              )}
+                                              <button type="submit" disabled={forgotPasswordLoading} className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 disabled:bg-gray-400">
+                                                  {forgotPasswordLoading ? 'Validating...' : 'Validate OTP'}
+                                              </button>
+                                          </form>
+                                      </>
+                                  )}
+                                  {/* STEP 3: New Password */}
+                                  {forgotStep === 3 && (
+                                      <>
+                                          <h2 className="text-lg font-semibold mb-4">Set New Password</h2>
+                                          <p className="text-sm mb-2">Email: <strong>{forgotPasswordEmail}</strong></p>
+                                          <form onSubmit={async (e) => {
+                                              e.preventDefault();
+                                              setForgotPasswordError('');
+                                              setForgotPasswordMessage('');
+                                              if (newPassword !== confirmPassword) {
+                                                  setForgotPasswordError('Passwords do not match.');
+                                                  return;
+                                              }
+                                              setForgotPasswordLoading(true);
+                                              try {
+                                                    const res = await fetch('/api/auth/reset-password', {
+                                                      method: 'POST',
+                                                      headers: { 'Content-Type': 'application/json' },
+                                                      body: JSON.stringify({
+                                                          email: forgotPasswordEmail,
+                                                          otp: forgotOTP,
+                                                          newPassword,
+                                                      }),
+                                                  });
+      
+                                                  const data = await res.json();
+                                                  if (!res.ok) throw new Error(data.message || 'Error resetting password');
+      
+                                                  setForgotPasswordMessage('Password reset successful.');
+                                                  setTimeout(() => {
+                                                      setShowForgotPasswordModal(false);
+                                                      setShowAuthModal(true); // reopen login
+                                                  }, 1500);
+                                              } catch (err) {
+                                                  setForgotPasswordError(err.message);
+                                              } finally {
+                                                  setForgotPasswordLoading(false);
+                                              }
+                                          }} className="space-y-4">
+                                              <input type="password" placeholder="New Password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} required minLength={6} className="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                                              <input type="password" placeholder="Confirm New Password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required minLength={6} className="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                                              {forgotPasswordError && (
+                                                  <p className="text-red-500 text-sm">{forgotPasswordError}</p>
+                                              )}
+                                              {forgotPasswordMessage && (
+                                                  <p className="text-green-500 text-sm">{forgotPasswordMessage}</p>
+                                              )}
+                                              <button
+                                                  type="submit"
+                                                  disabled={forgotPasswordLoading}
+                                                  className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 disabled:bg-gray-400"
+                                              >
+                                                  {forgotPasswordLoading ? 'Resetting...' : 'Reset Password'}
+                                              </button>
+                                          </form>
+                                      </>
+                                  )}
+                              </div>
+                          </div>
+                      )}
+                  </div>
 
-                  // 2) Flatten (existing logic) then alphabetize the final list
-                  const flatAll = flattenAllCategories(
-                    sortedSubcategories,
-                    hoveredCategory.category_slug
-                  );
+    </header>
 
-                  // Remove items missing display names
-                  const sanitizedFlat = (flatAll || []).filter((item) =>
-                    item?.type === "brand"
-                      ? !!item?.brand_name
-                      : !!item?.category_name
-                  );
-
-                  // New: level-aware alphabetical output
-                  const flatAlpha = prepareFlatListAlpha(sanitizedFlat);
-
-                  // 3) Chunk and drop empty chunks to avoid gaps
-                  let dropdownChunksLocal = chunkFlatList(flatAlpha, 11);
-                  const filteredChunks = dropdownChunksLocal.filter(
-                    (chunk) =>
-                      Array.isArray(chunk) &&
-                      chunk.length > 0 &&
-                      chunk.some(Boolean)
-                  );
-
-                  // --- Image columns logic (unchanged) ---
-                  let navImages = [];
-                  if (hoveredCategory?.navImage) {
-                    if (typeof hoveredCategory.navImage === "string") {
-                      navImages = hoveredCategory.navImage
-                        .split(",")
-                        .map((s) => s.trim())
-                        .filter(Boolean);
-                    } else if (Array.isArray(hoveredCategory.navImage)) {
-                      navImages = hoveredCategory.navImage.filter(Boolean);
-                    }
-                  }
-                  const imageCols = navImages.length;
-
-                  // Layout constraints
-                  const maxCols = 6;
-                  const columnWidth = 220;
-                  const screenWidth =
-                    typeof window !== "undefined" ? window.innerWidth : 1200;
-                  const maxAllowedWidth = Math.max(300, screenWidth - 20);
-
-                  // Fit non-empty columns without gaps
-                  const maxDataBySlots = Math.max(0, maxCols - imageCols);
-                  const maxDataByViewport = Math.max(
-                    0,
-                    Math.floor(maxAllowedWidth / columnWidth) - imageCols
-                  );
-                  const allowedDataCols = Math.max(
-                    0,
-                    Math.min(filteredChunks.length, maxDataBySlots, maxDataByViewport)
-                  );
-
-                  const columns = filteredChunks.slice(0, allowedDataCols);
-
-                  let computedWidth = (columns.length + imageCols) * columnWidth;
-                  if (computedWidth > maxAllowedWidth) computedWidth = maxAllowedWidth;
-
-                  const styleLeft =
-                    dropdownUseTranslate && dropdownCenterX
-                      ? `${dropdownCenterX + 15}px`
-                      : `${dropdownLeft + 15}px`;
-                  const styleTransform =
-                    dropdownUseTranslate && dropdownCenterX ? "translateX(-50%)" : "none";
-
-                  if (columns.length === 0 && imageCols === 0) return null;
-
-                  return (
-                    <div
-                      ref={dropdownRef}
-                      className="fixed z-50 border-t border-gray-200 shadow-xl"
-                      style={{
-                        top: `${dropdownTop}px`,
-                        left: styleLeft,
-                        transform: styleTransform,
-                        width: `${computedWidth}px`,
-                        maxWidth: "calc(100% - 20px)",
-                      }}
-                      onMouseEnter={cancelHide}
-                      onMouseLeave={() => startHide(120)}
-                    >
-                      <div className="flex flex-wrap bg-white h-[390px]" style={{ width: "100%" }}>
-                        {columns.map((chunk, index) => {
-                          const bgClass = index % 2 === 0 ? "bg-[#f2f2f2]" : "bg-white";
-                          return (
-                            <div
-                              key={`col-${index}`}
-                              className={`min-w-[220px] max-w-[250px] p-3 flex flex-col justify-start self-start ${bgClass}`}
-                              style={{ height: "100%" }}
-                            >
-                              {chunk.map((item) => renderFlatItem(item, hoveredCategory))}
-                            </div>
-                          );
-                        })}
-
-                        {Array.isArray(navImages) &&
-                          navImages.length > 0 &&
-                          navImages.map((img, idx) => (
-                            <div
-                              key={`nav-image-panel-${idx}`}
-                              className={`w-[220px] h-[390px] flex items-center justify-center ${
-                                ((columns.length + idx) % 2 === 0) ? "bg-gray-50" : "bg-white"
-                              }`}
-                            >
-                              <Link
-                                href={`/category/${hoveredCategory?.category_slug || ""}`}
-                                className="block w-full h-full"
-                              >
-                                <Image
-                                  src={img}
-                                  alt={hoveredCategory.category_name || "Category Image"}
-                                  width={220}
-                                  height={390}
-                                  className="object-cover w-full h-full"
-                                  style={{ boxShadow: "0px -1px 0px #2453d3" }}
-                                />
-                              </Link>
-                            </div>
-                          ))}
-                      </div>
-                    </div>
-                  );
-                })()}
-            </div> */}
-        </header>
-        {/* DESKTOP SUGGESTIONS DROPDOWN */}
+     {/* DESKTOP SUGGESTIONS DROPDOWN */}
         {searchDropdownVisible && searchContext === 'desktop' && (
           <div
             ref={searchDropdownRef}
@@ -2602,7 +2402,8 @@ const shouldShowArrow = (item, allItems = []) => {
             </div>
           </div>
         )}
-      </>
-    );
+        
+        </>
+  );
 };
 export default Header;
