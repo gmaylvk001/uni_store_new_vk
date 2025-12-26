@@ -72,17 +72,19 @@ const subCategoryIds = [
     // Build tree starting from main categories (Air Conditioner in your case)
     let categoryTree = [];
     for (const catId of categoryIds) {
-  if (!catId || catId.toString().trim() === "") continue; // skip invalid IDs
-  
-  const mainCategory = await ecom_category_info.findById(catId).lean();
-  if (!mainCategory) continue;
+      if (!catId || catId.toString().trim() === "") continue; // skip invalid IDs
+      
+      const mainCategory = await ecom_category_info.findOne({_id: catId,parentid: { $nin: [null, "none"] }}).lean();
+      if (!mainCategory) continue;
 
-  const subTree = await getCategoryTree(mainCategory._id, subCategoryIds);
-  categoryTree.push({
-    ...mainCategory,
-    subCategories: subTree
-  });
-}
+      const subTree = await getCategoryTree(mainCategory._id, subCategoryIds);
+      
+      categoryTree.push({
+        ...mainCategory,
+        subCategories: subTree
+      });
+      
+    }
 
 
     
