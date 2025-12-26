@@ -1057,14 +1057,14 @@ export default function HomeComponent() {
             );
             case 'whatsnew':
             return (
-             <section className="bg-white mb-6">
+              <section className="bg-white mb-6">
   <div className="container mx-auto px-4">
 
-    {/* TITLE */}
+    {/* Title */}
     <div className="mt-6 mb-4">
-      <h2 className="text-2xl font-bold text-[#d72828]">
+      <h1 className="text-2xl font-bold text-[#d72828]">
         WHAT&apos;S NEW
-      </h2>
+      </h1>
     </div>
 
     <div className="relative">
@@ -1074,111 +1074,70 @@ export default function HomeComponent() {
           nextEl: ".whatsnew-next",
           prevEl: ".whatsnew-prev",
         }}
-        spaceBetween={30}
+        spaceBetween={40}
         slidesPerView="auto"
       >
         {products.map((product) => {
-          const image = product.images?.[0]
-            ? product.images[0].startsWith("http")
-              ? product.images[0]
-              : `/uploads/products/${product.images[0]}`
-            : "/placeholder.webp";
+          const image = product.images?.[0] || "/placeholder.webp";
 
-          const discount =
-            product.special_price &&
-            Math.round(
-              ((product.price - product.special_price) / product.price) * 100
-            );
-
-          const outOfStock = product.stock === 0;
+          const discount = product.special_price
+            ? Math.round(
+                ((product.price - product.special_price) / product.price) * 100
+              )
+            : null;
 
           return (
-            <SwiperSlide key={product._id} className="!w-[300px]">
+            <SwiperSlide key={product._id} className="!w-[290px]">
               {/* CARD */}
-              <div className="relative bg-white border rounded-lg shadow-sm overflow-hidden flex flex-col h-[460px]">
+              <div className="relative bg-white border shadow-md rounded-lg overflow-hidden
+                              h-[420px] flex flex-col">
 
-                {/* DISCOUNT BADGE */}
-                {discount && (
-                  <span className="absolute top-2 left-2 z-10 bg-orange-500 text-white text-xs font-semibold px-2 py-1 rounded">
-                    -{discount}%
-                  </span>
-                )}
+                {/* NEW badge */}
+                <span className="absolute top-2 left-2 z-10 bg-red-600 text-white text-xs px-2 py-1 rounded">
+                  New
+                </span>
 
-                {/* IMAGE */}
-                <div className="h-[210px] bg-gray-50 flex items-center justify-center">
+                {/* Image */}
+                <div className="relative h-[200px] bg-gray-50 flex items-center justify-center">
                   <Link href={`/product/${product.slug}`}>
                     <Image
-                      src={image}
+                      src={product.images[0].startsWith("http") ? product.images[0] : `/uploads/products/${product.images[0]}`}
                       alt={product.name}
-                      width={220}
+                      width={260}
                       height={200}
-                      className="object-contain hover:scale-105 transition"
+                      className="object-contain transition-transform duration-300 hover:scale-105"
                     />
                   </Link>
                 </div>
 
-                {/* DETAILS */}
-                <div className="p-4 text-sm flex flex-col flex-1">
+                {/* Details */}
+                <div className="p-3 text-sm flex flex-col flex-1">
 
-                  {/* BRAND */}
-                  <span className="text-gray-400 text-xs uppercase mb-1">
-                    {product.brand || "NO BRAND"}
-                  </span>
-
-                  {/* NAME */}
+                  {/* Product Name */}
                   <Link
                     href={`/product/${product.slug}`}
-                    className="font-medium text-gray-800 hover:text-blue-600 line-clamp-2 min-h-[42px]"
+                    className="block font-medium text-gray-800 hover:text-blue-600
+                               line-clamp-2 min-h-[40px]"
                   >
                     {product.name}
                   </Link>
 
-                  {/* PRICE */}
-                  <div className="mt-3">
-                    <span className="text-lg font-semibold text-red-600">
+                  {/* Price Section - pushed to bottom */}
+                  <div className="mt-auto flex items-center gap-2 pt-3">
+                    <span className="text-lg font-semibold text-gray-900">
                       ₹{product.special_price || product.price}
                     </span>
 
                     {product.special_price && (
-                      <span className="ml-2 line-through text-gray-400 text-sm">
-                        ₹{product.price}
-                      </span>
+                      <>
+                        <span className="line-through text-gray-400 text-sm">
+                          ₹{product.price}
+                        </span>
+                        <span className="text-green-600 text-xs font-medium">
+                          {discount}% off
+                        </span>
+                      </>
                     )}
-                  </div>
-
-                  {/* STOCK STATUS */}
-                  {outOfStock && (
-                    <span className="text-red-500 text-sm mt-1">
-                      Out Of Stock
-                    </span>
-                  )}
-
-                  {/* BUTTONS */}
-                  <div className="mt-auto flex items-center gap-3 pt-4">
-                    <button
-                      disabled={outOfStock}
-                      className={`flex-1 border rounded-md py-2 text-sm font-medium flex items-center justify-center gap-2
-                        ${
-                          outOfStock
-                            ? "border-gray-300 text-gray-400 cursor-not-allowed"
-                            : "border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white transition"
-                        }`}
-                    >
-                      🛒 Add to Cart
-                    </button>
-
-                    {/* WHATSAPP */}
-                    <a
-                      href={`https://wa.me/91XXXXXXXXXX?text=I am interested in ${product.name}`}
-                      target="_blank"
-                      className="w-10 h-10 rounded-full bg-green-500 text-white flex items-center justify-center hover:scale-105 transition"
-                    >
-                      <img
-                        src="/icons/whatsapp.svg"
-                        alt="WhatsApp"
-                        className="w-5 h-5"
-                      />
-                    </a>
                   </div>
                 </div>
               </div>
@@ -1187,17 +1146,16 @@ export default function HomeComponent() {
         })}
       </Swiper>
 
-      {/* NAVIGATION */}
-      <div className="whatsnew-prev absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow-md rounded-full w-7 h-7 flex items-center justify-center cursor-pointer">
+      {/* Navigation */}
+      <div className="whatsnew-prev absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow rounded-full w-6 h-6 flex items-center justify-center cursor-pointer">
         ‹
       </div>
-      <div className="whatsnew-next absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow-md rounded-full w-7 h-7 flex items-center justify-center cursor-pointer">
+      <div className="whatsnew-next absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow rounded-full w-6 h-6 flex items-center justify-center cursor-pointer">
         ›
       </div>
     </div>
   </div>
 </section>
-
 
             );
           case 'product':
