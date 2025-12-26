@@ -1,4 +1,5 @@
 "use client";
+import Image from 'next/image';
 import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { useCart } from '@/context/CartContext';
@@ -1190,7 +1191,7 @@ const grandTotal = subtotal - totalDiscount;
 
                       {/* Product Image */}
                       <div className="relative w-16 h-16 flex-shrink-0 border rounded overflow-hidden p-2">
-                        <img
+                        <Image
                           src={`/uploads/products/${item.image}`}
                           alt={item.name}
                           className="w-full h-full object-contain"

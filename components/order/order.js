@@ -1,5 +1,5 @@
 "use client";
-
+import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { jwtDecode } from 'jwt-decode';
@@ -286,7 +286,7 @@ export default function Order() {
                         {/* Product Image */}
                         <div className="w-full sm:w-24 md:w-32 flex-shrink-0">
                           {order.order_item?.[0]?.image ? (
-                            <img
+                            <Image
                               src={`/uploads/products/${order.order_item[0].image}`}
                               alt={order.order_item[0].product_name || 'Product'}
                               className="w-full h-24 sm:h-32 object-contain rounded-lg border border-gray-200"

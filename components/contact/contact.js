@@ -1,5 +1,5 @@
 "use client";
-
+import Image from 'next/image';
 import { useEffect, useState } from "react";
 import { FaPhoneAlt, FaEnvelope } from "react-icons/fa";
 
@@ -114,7 +114,7 @@ export default function ContactForm() {
     <>
       <section className="relative w-full h-[200px] md:h-[300px] lg:h-[250px] flex items-center justify-center bg-gradient-to-r from-gray-800 to-black text-white">
         <div className="absolute inset-0">
-          <img
+          <Image
             src="uploads/contact-us.webp"
             alt="Contact Us"
             className="w-full h-full object-cover opacity-40"

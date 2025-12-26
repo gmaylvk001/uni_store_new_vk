@@ -1,4 +1,5 @@
 "use client";
+import Image from 'next/image';
 import { useEffect, useState } from "react";
 import Select, { components } from "react-select";
 
@@ -451,7 +452,7 @@ const handleSave = async (subcategoryId) => {
                         <label className="block text-sm font-medium mb-2 flex flex-col gap-2">
                           <span>Banner Image</span>
                           {existingData?.bannerImage && (
-                            <img
+                            <Image
                               src={existingData.bannerImage}
                               alt="Banner Preview"
                               className="w-full h-32 rounded object-contain"
@@ -483,7 +484,7 @@ const handleSave = async (subcategoryId) => {
                         <label className="block text-sm font-medium mb-2 flex flex-col gap-2">
                           <span>Category Image</span>
                           {existingData?.categoryImage && (
-                            <img
+                            <Image
                               src={existingData.categoryImage}
                               alt="Category Preview"
                               className="w-full h-32 rounded object-contain"

@@ -80,7 +80,7 @@ const AboutUs = () => {
 
                         {/* LEFT SIDE IMAGE */}
                         <div className="w-full flex justify-center">
-                        <img
+                        <Image
                             src="uploads/aboutus/aboutus-img.webp"   // change your image here
                             alt="Unilet"
                             className="rounded-xl shadow-lg w-full h-auto object-cover"
@@ -177,7 +177,7 @@ const AboutUs = () => {
                 <div className="bg-white rounded-xl shadow-lg p-8 grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
                     {/* LEFT SIDE IMAGE */}
                     <div className="w-full flex justify-center">
-                        <img src="uploads/aboutus/banashankari-lg-600x450.png.webp" alt="Unilet" className="rounded-lg shadow-md w-full h-auto object-cover" />
+                        <Image src="uploads/aboutus/banashankari-lg-600x450.png.webp" alt="Unilet" className="rounded-lg shadow-md w-full h-auto object-cover" />
                     </div>
 
                     {/* RIGHT SIDE TEXT */}
@@ -212,32 +212,32 @@ const AboutUs = () => {
 
                 {/* LG */}
                 <div className="bg-white rounded-xl shadow-md p-6 w-32 h-32 flex items-center justify-center">
-                    <img src="/uploads/aboutus/lg.webp" alt="LG" className="h-12 object-contain" />
+                    <Image src="/uploads/aboutus/lg.webp" alt="LG" className="h-12 object-contain" />
                 </div>
 
                 {/* Samsung */}
                 <div className="bg-white rounded-xl shadow-md p-6 w-32 h-32 flex items-center justify-center">
-                    <img src="/uploads/aboutus/samsung.webp" alt="Samsung" className="h-12 object-contain" />
+                    <Image src="/uploads/aboutus/samsung.webp" alt="Samsung" className="h-12 object-contain" />
                 </div>
 
                 {/* Whirlpool */}
                 <div className="bg-white rounded-xl shadow-md p-6 w-32 h-32 flex items-center justify-center">
-                    <img src="/uploads/aboutus/whirlpool.webp" alt="Whirlpool" className="h-12 object-contain" />
+                    <Image src="/uploads/aboutus/whirlpool.webp" alt="Whirlpool" className="h-12 object-contain" />
                 </div>
 
                 {/* IFB */}
                 <div className="bg-white rounded-xl shadow-md p-6 w-32 h-32 flex items-center justify-center">
-                    <img src="/uploads/aboutus/ifb-300x203.webp" alt="IFB" className="h-12 object-contain" />
+                    <Image src="/uploads/aboutus/ifb-300x203.webp" alt="IFB" className="h-12 object-contain" />
                 </div>
 
                 {/* Bosch */}
                 <div className="bg-white rounded-xl shadow-md p-6 w-32 h-32 flex items-center justify-center">
-                    <img src="/uploads/aboutus/bosch2.webp" alt="Bosch" className="h-12 object-contain" />
+                    <Image src="/uploads/aboutus/bosch2.webp" alt="Bosch" className="h-12 object-contain" />
                 </div>
 
                 {/* Sony */}
                 <div className="bg-white rounded-xl shadow-md p-6 w-32 h-32 flex items-center justify-center">
-                    <img src="/uploads/aboutus/sony-300x203.webp" alt="Sony" className="h-12 object-contain" />
+                    <Image src="/uploads/aboutus/sony-300x203.webp" alt="Sony" className="h-12 object-contain" />
                 </div>
 
                 </div>

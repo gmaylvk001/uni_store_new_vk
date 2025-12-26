@@ -1,3 +1,5 @@
+"use client";
+import Image from 'next/image';
 import React, { useEffect, useState } from "react";
 import Link from 'next/link';
 
@@ -74,7 +76,7 @@ export default function BlogComponent() {
           visibleBlogs.map((blog) => (
             <div key={blog._id} className="bg-white rounded-xl shadow-md overflow-hidden flex flex-col">
               <Link href={`/blog/${blog.blog_slug}`} className="mt-4 text-orange-500 hover:underline text-sm font-medium">
-              <img src={blog.image || "/default-blog.jpg"} alt={blog.blog_name} className="h-48 w-full object-cover" />
+              <Image src={blog.image || "/default-blog.jpg"} alt={blog.blog_name} className="h-48 w-full object-cover" />
               <span className="text-orange-500 text-xs bg-orange-100 px-2 rounded w-max mb-2">
                 {new Date(blog.createdAt).toLocaleDateString('en-GB')}
               </span>
