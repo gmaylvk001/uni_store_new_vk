@@ -1790,7 +1790,6 @@ const shouldShowArrow = (item, allItems = []) => {
               <Link href={`/category/${cat.category_slug}`}>
 
   <span
-    key={cat.category_slug}
     className="text-sm text-gray-200 hover:text-[#1688c8] cursor-pointer"
   >
     {cat.category_name}
