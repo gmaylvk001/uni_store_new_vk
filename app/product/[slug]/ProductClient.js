@@ -1,6 +1,6 @@
 'use client';
 
-import Image from 'next/image';
+
 import ProductDetailsSection from "@/components/ProductDetailsSection";
 // import RelatedProducts from "@/components/RelatedProducts";
 import {  useEffect, useState, useRef, useCallback } from "react";
@@ -761,7 +761,7 @@ const fetchBrand = async () => {
             onClick={() => openLightbox(0)}
             ref={zoomContainerRef}
               >
-                <Image
+                <img
                   src={resolveImagePath(mainImage) || "/no-image.jpg"}
                   alt={product?.name || "Product"}
                   className="w-full h-full object-contain rounded-xl"
@@ -856,7 +856,7 @@ const fetchBrand = async () => {
       .filter(img => img && img.trim() !== "") // remove empty or invalid entries
       .map((image, index) => (
         <div key={index} className="flex-shrink-0">
-          <Image
+          <img
             src={resolveImagePath(image)}
             alt={`Thumbnail ${index + 1}`}
             className="w-20 h-20 border border-gray-400 rounded-lg cursor-pointer hover:scale-110 transition-transform duration-300 object-cover"
@@ -901,7 +901,7 @@ const fetchBrand = async () => {
 
       {/* Main Image */}
      <div className="relative w-full flex items-center justify-center"> 
-    <Image 
+    <img 
     src={resolveImagePath(product.images[selectedImageIndex])} alt={product?.name || "Product"} 
     className="object-contain max-h-[60vh] sm:max-h-[50vh] w-full  rounded-md" /> 
 </div>
@@ -928,7 +928,7 @@ const fetchBrand = async () => {
                     : `/uploads/products/${image}`;
 
                 return (
-                  <Image
+                  <img
                     key={index}
                     src={imgPath}
                     alt={`Thumbnail ${index + 1}`}
@@ -1051,7 +1051,7 @@ const fetchBrand = async () => {
               {product.variants && product.variants.length > 0 ? (
                   product.variants.slice(0, 3).map((variant, index) => (
                     <div key={index} className="w-[80px] h-[80px] flex items-center justify-center">
-                      <Image 
+                      <img 
                         src={variant.image} 
                         alt={`Variant ${index + 1}`} 
                         className="w-full h-full object-cover border border-gray-300 rounded-md"
@@ -1073,7 +1073,7 @@ const fetchBrand = async () => {
                 <div className="flex gap-[10px] mt-1">
                   {product.variants.slice(0, 3).map((variant, index) => (
                     <div key={index} className="w-[80px] h-[80px] flex items-center justify-center">
-                      <Image 
+                      <img 
                         src={variant.image} 
                         alt={`Variant ${index + 1}`} 
                         className="w-full h-full object-cover border border-gray-300 rounded-md"
@@ -1117,7 +1117,7 @@ const fetchBrand = async () => {
                 <div className="p-3">
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-2">
-                      <Image 
+                      <img 
                         src="/emi-bank-logos.png" 
                         alt="Bank Logos" 
                         className="h-6 w-auto"
@@ -1226,7 +1226,7 @@ const fetchBrand = async () => {
               <div className="flex flex-row gap-4">
                 // Image Section (Left)
                 <div className="w-[30%] flex-shrink-0">
-                  <Image
+                  <img
                     src={resolveImagePath(mainImage) || "/no-image.jpg"}
                     alt={product?.name || "Product"}
                     className="w-full h-auto max-w-[150px] max-h-[150px] object-contain rounded-md border border-gray-200 mx-auto"
@@ -1557,7 +1557,7 @@ const fetchBrand = async () => {
           />
           <div className="flex items-start gap-3">
             {item.images?.[0] && (
-              <Image
+              <img
                 src={'/uploads/products/' + item.images[0]}
                 alt={item.name}
                 className="w-16 h-16 object-contain"
@@ -1712,7 +1712,7 @@ const fetchBrand = async () => {
                   onClick={() => handleProductClick(item)}
                 >
               {item.images?.[0] && (
-                <Image
+                <img
                   src={'/uploads/products/' + item.images[0]}
                   alt={item.name}
                   className="w-16 h-16 object-contain flex-shrink-0"
@@ -1793,7 +1793,7 @@ const fetchBrand = async () => {
             )}
               <div className="flex items-start gap-3">
                 {item.images?.[0] && (
-                  <Image
+                  <img
                     src={'/uploads/products/' + item.images[0]}
                     alt={item.name}
                     className="w-16 h-16 object-contain"
@@ -1922,7 +1922,7 @@ const fetchBrand = async () => {
 
           <div className="flex flex-row gap-4">
             <div className="w-[30%] flex-shrink-0">
-              <Image
+              <img
                 src={resolveImagePath(mainImage) || "/no-image.jpg"}
                 alt={product?.name || "Product"}
                 className="w-full h-auto max-w-[150px] max-h-[150px] object-contain rounded-md border border-gray-200 mx-auto"

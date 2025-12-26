@@ -1264,7 +1264,7 @@ const shouldShowArrow = (item, allItems = []) => {
           <div className="flex items-center gap-3 px-3 py-2">
             <div className="w-12 h-12 rounded-md overflow-hidden bg-white ring-1 ring-gray-200 flex items-center justify-center shrink-0">
               {imageSrc ? (
-                <Image
+                <img
                   src={imageSrc}
                   alt={imageSrc || 'Product'}
                   className="object-contain w-full h-full"
@@ -1359,7 +1359,7 @@ const shouldShowArrow = (item, allItems = []) => {
         >
           <div className="w-[50px] h-[50px] rounded-md overflow-hidden bg-white flex items-center justify-center border border-gray-200 shrink-0">
             {imageSrc ? (
-              <Image
+              <img
                 src={imageSrc}
                 alt={item.name || 'Product'}
                 className="object-contain w-full h-full"
@@ -1601,7 +1601,7 @@ const shouldShowArrow = (item, allItems = []) => {
                       {/* NEW MOBILE TOP ROW (from reference) */}
                       <div className="sm:hidden flex items-center justify-between w-full relative">
                           <Link href="/" className="p-1 rounded-lg">
-                            <Image src="/user/unilet-logo.webp" alt="Logo" width={70} height={45} className="h-auto" />
+                            <img src="/user/unilet-logo.webp" alt="Logo" width={70} height={45} className="h-auto" />
                           </Link>
                           <div className="flex items-center gap-3 pr-1 text-customBlue">
                             {/* Feedback Icon */}
@@ -1767,7 +1767,7 @@ const shouldShowArrow = (item, allItems = []) => {
 
           {/* Logo */}
           <Link href="/" className="text-lg font-semibold">
-           <Image src="/user/unilet-logo.webp" alt="Logo" width={100} height={70} className="h-auto" />
+           <img src="/user/unilet-logo.webp" alt="Logo" width={100} height={70} className="h-auto" />
           </Link>
 
           {/* Top Categories */}
@@ -2049,7 +2049,7 @@ const shouldShowArrow = (item, allItems = []) => {
               <div className="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20
                rounded-full overflow-hidden
                flex items-center justify-center border-2 border-[#1688c8]">
-                <Image src={`${cat.image}`} alt={cat.category_name} class="w-full h-full object-cover"/>
+                <img src={`${cat.image}`} alt={cat.category_name} class="w-full h-full object-cover"/>
               </div>
               <span className="text-sm font-semibold hover:text-[#1688c8]">{cat.category_name}</span>
               </Link>
@@ -2058,7 +2058,7 @@ const shouldShowArrow = (item, allItems = []) => {
 
             <div className="flex flex-col items-center min-w-[120px]">
         <div className="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full overflow-hidden flex items-center justify-center border-2 border-[#1688c8]">
-          <Image  className="w-full h-full object-cover" src={`${cat.image}`} alt={cat.category_name} />
+          <img  className="w-full h-full object-cover" src={`${cat.image}`} alt={cat.category_name} />
         </div>
         <Link href={`/category/${cat.category_slug}`}>
           <span className="text-sm font-semibold hover:text-[#1688c8]">{cat.category_name}</span>

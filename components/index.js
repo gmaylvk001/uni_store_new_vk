@@ -971,7 +971,7 @@ export default function HomeComponent() {
                     <div className="relative group overflow-hidden  shadow-sm hover:shadow-md transition-shadow">
 
                       {/* Image */}
-                      <Image
+                      <img
                         src={banner.imageUrl}
                         alt={`Category Banner ${index + 1}`}
                         className="w-full h-[300px] object-cover transform group-hover:scale-105 transition duration-500 ease-in-out"
@@ -1616,12 +1616,12 @@ return (
     className="h-48 relative flex items-center justify-center bg-gray-200 cursor-pointer"
     onClick={() => setActiveVideo(video)}
   >
-    <Image
+    <img
       src={thumb}
       alt={video.title}
       className="w-full h-full object-cover"
     />
-    <Image
+    <img
       src="https://img.poorvika.com//play_video.png"
       alt="play"
       className="absolute w-12 h-12"
@@ -1701,7 +1701,7 @@ return (
                                   <div className="w-1/3 p-2">
                                     <Link href={`/product/${product.slug}`} className="block">
                                       <div className="h-[100px] sm:h-[120px] md:h-[130px] bg-white flex items-center justify-center overflow-hidden rounded-md">
-                                        <Image
+                                        <img
                                           src={`/uploads/products/${product.images?.[0]}` || "/placeholder.jpg"}
                                           alt={product.item_code}
                                           className="object-contain w-full h-full"
@@ -1759,7 +1759,7 @@ return (
                                       <div className="w-1/3 p-2">
                                         <Link href={`/product/${product.slug}`} className="block">
                                           <div className="h-[100px] sm:h-[120px] md:h-[130px] flex items-center justify-center overflow-hidden rounded-md">
-                                            <Image
+                                            <img
                                               src={`/uploads/products/${product.images?.[0]}` || "/placeholder.jpg"}
                                               alt={product.item_code}
                                               className="object-contain w-full h-full"

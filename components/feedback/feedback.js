@@ -1,5 +1,5 @@
 "use client";
-import Image from 'next/image';
+
 import { useState } from "react";
 import { FaPhoneAlt, FaEnvelope } from "react-icons/fa";
 
@@ -104,7 +104,7 @@ const inputClass = "w-full border rounded-md px-3 py-2 focus:outline-none";
     {/* banner section */}
      <section className="relative w-full h-[200px] md:h-[300px] lg:h-[250px] flex items-center justify-center bg-gradient-to-r from-gray-800 to-black text-white">
         <div className="absolute inset-0">
-          <Image
+          <img
             src="uploads/feedback.jpg"
             alt="Contact Us"
             className="w-full h-full object-cover opacity-40"
@@ -123,7 +123,7 @@ const inputClass = "w-full border rounded-md px-3 py-2 focus:outline-none";
         
         {/* Contact Details (Moved to Left) */}
         <div className="text-center px-4">
-          <Image 
+          <img 
             src="uploads/query-image.jpg" 
             alt="Customer Service" 
             className="mx-auto max-w-full sm:w-64 h-auto mb-4 p-4"

@@ -1,5 +1,5 @@
 'use client';
-import Image from 'next/image';
+
 import { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Icon } from '@iconify/react';
@@ -118,11 +118,11 @@ export default function AdminSider({ collapsed }) {
         >
           {!collapsed ? (
             <a href="/" className="flex items-center space-x-2">
-              <Image src="/admin/assets/images/unilet-logo.webp" alt="Site Logo" className="h-9" />
+              <img src="/admin/assets/images/unilet-logo.webp" alt="Site Logo" className="h-9" />
               <span className="text-sm font-bold text-gray-700">UNILET</span>
             </a>
           ) : (
-            <Image src="/admin/assets/images/unilet-logo.webp" alt="Site Logo" className="h-9" />
+            <img src="/admin/assets/images/unilet-logo.webp" alt="Site Logo" className="h-9" />
           )}
         </div>
 
