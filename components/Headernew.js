@@ -1786,17 +1786,27 @@ const shouldShowArrow = (item, allItems = []) => {
                 {cat.category_name}
               </span>
             ))} */}
-            {categories?.slice(0, 4).map((cat) => (
+            {/* {categories?.slice(0, 4).map((cat) => (
               <Link href={`/category/${cat.category_slug}`}>
+              <span
+                className="text-sm text-gray-200 hover:text-[#1688c8] cursor-pointer"
+              >
+                {cat.category_name}
+              </span>
+                          </Link>
+            ))} */}
 
-  <span
-    className="text-sm text-gray-200 hover:text-[#1688c8] cursor-pointer"
-  >
-    {cat.category_name}
-  </span>
+            {categories?.slice(0, 4).map((cat) => (
+              <Link
+                key={cat.category_slug}   // ✅ UNIQUE KEY
+                href={`/category/${cat.category_slug}`}
+              >
+                <span className="text-sm text-gray-200 hover:text-[#1688c8] cursor-pointer">
+                  {cat.category_name}
+                </span>
               </Link>
+            ))}
 
-))}
             <span className="bg-sky-500 text-xs px-3 py-1 rounded-full font-medium">
               Xmas & New year Sale
             </span>
