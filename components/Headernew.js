@@ -2064,7 +2064,7 @@ const shouldShowArrow = (item, allItems = []) => {
               </Link>
               
             </div> */
- <Link href={`/category/${cat.category_slug}`}>
+ <Link key={cat.category_slug} href={`/category/${cat.category_slug}`}>
             <div className="flex flex-col items-center min-w-[120px]">
         <div className="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full overflow-hidden flex items-center justify-center border-2 border-[#1688c8]">
           <img  className="w-full h-full object-cover" src={`${cat.image}`} alt={cat.category_name} />
