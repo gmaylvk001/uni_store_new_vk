@@ -12,6 +12,7 @@ const CategoryProducts = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [navigating, setNavigating] = useState(false);
   const categoryScrollRefs = useRef({});
+  const [categoryStyless, setCategories] = useState(null);
 
   const priorityCategories = ["air-conditioner", "mobile-phones", "television", "refrigerator", "washing-machine"];
     const getSanitizedImage = (img) => {
@@ -24,6 +25,16 @@ const CategoryProducts = () => {
       // Replace spaces with underscores
       return lastImg.replace(/\s+/g, "_");
     };
+
+   useEffect(() => {
+    async function fetchCategories() {
+      const res = await fetch("/api/categories/styles");
+      const data = await res.json();
+      setCategories(data);
+    }
+
+    fetchCategories();
+  }, []);
   
     const categoryStyles = {
       "air-conditioner": {
@@ -171,7 +182,7 @@ const CategoryProducts = () => {
                 const products = categoryProduct.products || [];
                 const alignment = categoryProduct.alignment || "left";
                 if (!category || products.length === 0) return null;
-                const categoryStyle = categoryStyles[category.category_slug] || {
+                const categoryStyle = categoryStyless[category.category_slug] || {
                   backgroundImage: '/uploads/small-appliance-banner.webp',
                   borderColor: '#1F3A8C'
                 };
@@ -231,7 +242,7 @@ const CategoryProducts = () => {
                               </Link>
                             )}
 
-                            {categoryStyles[category.category_slug]?.subcategoryList?.map(
+                            {categoryStyless[category.category_slug]?.subcategoryList?.map(
                               (sub, idx) =>
                                 sub.category_slug && (
                                   <Link key={idx} href={sub.category_slug} className="px-3 py-1  text-gray-500 hover:text-blue-600 transition hover:underline">
