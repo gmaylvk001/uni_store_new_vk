@@ -1099,7 +1099,7 @@ useEffect(() => {
   initial="hidden"
   animate="visible"
   variants={containerVariants}
-  className="bg-gray-50 py-6"
+  className="py-6"
 >
   {isTwoBannerTwoLoading ? (
     <div className="p-6 flex justify-center items-center h-48">
