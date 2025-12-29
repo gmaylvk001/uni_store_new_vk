@@ -2075,8 +2075,8 @@ const shouldShowArrow = (item, allItems = []) => {
   title={cat.category_name}
   className="text-sm font-semibold hover:text-[#1688c8] cursor-pointer"
 >
-  {cat.category_name.length > 15
-    ? cat.category_name.slice(0, 15) + "..."
+  {cat.category_name.length > 14
+    ? cat.category_name.slice(0, 14) + "..."
     : cat.category_name}
 </span>
 
