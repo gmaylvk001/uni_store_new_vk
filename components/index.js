@@ -1164,7 +1164,7 @@ export default function HomeComponent() {
       {product.brand}
     </Link>
   ) : (
-    <span className="text-gray-400">No Brand</span>
+    <span className="text-gray-400"> </span>
   )}
 </h4>
 
