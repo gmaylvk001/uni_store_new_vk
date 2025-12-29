@@ -1099,35 +1099,38 @@ useEffect(() => {
   initial="hidden"
   animate="visible"
   variants={containerVariants}
-  className="container mx-auto px-6"
+  className="bg-gray-50 py-6"
 >
   {isTwoBannerTwoLoading ? (
     <div className="p-6 flex justify-center items-center h-48">
       <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-blue-600"></div>
     </div>
   ) : (
-    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-      {TwoBannerTwoData.twobanner.items.map((item) => (
-        <motion.div
-          key={item.id}
-          variants={itemVariants}
-          className="rounded-lg overflow-hidden flex justify-center"
-        >
-          <Link href={item.redirect_url}>
-            <Image
-              src={item.bgImageUrl}
-              alt="Two Banner"
-              width={900}
-              height={300}
-              className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-              priority
-            />
-          </Link>
-        </motion.div>
-      ))}
+    <div className="container mx-auto px-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        {TwoBannerTwoData.twobanner.items.map((item) => (
+          <motion.div
+            key={item.id}
+            variants={itemVariants}
+            className="group block overflow-hidden rounded-xl shadow-sm"
+          >
+            <Link href={item.redirect_url}>
+              <Image
+                src={item.bgImageUrl}
+                alt="Two Banner"
+                width={640}
+                height={200}
+                className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                priority
+              />
+            </Link>
+          </motion.div>
+        ))}
+      </div>
     </div>
   )}
 </motion.section>
+
 
 
 
