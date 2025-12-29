@@ -1153,14 +1153,21 @@ export default function HomeComponent() {
         </div>
     
 
-   <h4 className="text-xs text-gray-500 mb-2 uppercase">
-      <Link
-        href={`/brand/${product.brand.toLowerCase().replace(/\s+/g, "-")}`}
-        className="hover:text-blue-600"
-      >
-        {product.brand}
-      </Link>
-    </h4>
+<h4 className="text-xs text-gray-500 mb-2 uppercase">
+  {product?.brand ? (
+    <Link
+      href={`/brand/${product.brand
+        ?.toLowerCase()
+        ?.replace(/\s+/g, "-")}`}
+      className="hover:text-blue-600"
+    >
+      {product.brand}
+    </Link>
+  ) : (
+    <span className="text-gray-400">No Brand</span>
+  )}
+</h4>
+
 
                       {/* Title (HOVER COLOR CHANGE) */}
                       <Link
