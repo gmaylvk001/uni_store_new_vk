@@ -79,6 +79,7 @@ export default function AllCategoriesPage() {
   const [statusModal, setStatusModal] = useState({ isOpen: false, message: "", type: "" });
   const [mainCategories, setMainCategories] = useState([]);
   const [subcategoriesByParent, setSubcategoriesByParent] = useState({});
+  const [productsByMd5, setProductsByMd5] = useState({});
 
   // ✅ Show status modal
   const showStatusModal = (message, type = "success") => {
@@ -129,18 +130,29 @@ export default function AllCategoriesPage() {
 
   // ✅ Fetch products
   useEffect(() => {
-    async function fetchProducts() {
-      try {
-        const res = await fetch("/api/product/get");
-        const data = await res.json();
-        setProducts(data);
-      } catch (err) {
-        console.error("Error fetching products:", err);
-        showStatusModal("Error fetching products", "error");
-      }
+  async function fetchProducts() {
+    try {
+      const res = await fetch("/api/product/get");
+      const data = await res.json();
+      setProducts(data);
+
+      // 🔥 NEW: group products by category_new (md5)
+      const grouped = {};
+      data.forEach((p) => {
+        if (p.category_new) {
+          if (!grouped[p.category_new]) grouped[p.category_new] = [];
+          grouped[p.category_new].push(p);
+        }
+      });
+      setProductsByMd5(grouped);
+
+    } catch (err) {
+      console.error("Error fetching products:", err);
+      showStatusModal("Error fetching products", "error");
     }
-    fetchProducts();
-  }, []);
+  }
+  fetchProducts();
+}, []);
 
   // ✅ Fetch existing category products
   useEffect(() => {
@@ -202,7 +214,7 @@ export default function AllCategoriesPage() {
     }));
   };
 
-  console.log(products);
+  //console.log(products);
 
   // ✅ Handle input changes
   const handleInputChange = (subcategoryId, field, value) => {
@@ -393,9 +405,9 @@ const handleSave = async (subcategoryId) => {
               {subcategoriesByParent[mainCategory._id]?.map((subcat) => {
                 const subcatProducts = products.filter(
                   (p) =>
-                    p.category === subcat._id.toString() &&
-                    p.status === "Active" &&
-                    p.stock_status === "In Stock"
+                      new RegExp(subcat.md5_cat_name, "i").test(p.sub_category_new || "") &&
+                      p.status === "Active" &&
+                      p.stock_status.toLowerCase() === "in stock"
                 );
 
                 const productOptions = subcatProducts.map((p) => ({
