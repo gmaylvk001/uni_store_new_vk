@@ -1933,7 +1933,7 @@ const shouldShowArrow = (item, allItems = []) => {
       {/* Dropdown */}
       {open && (
         <div className="absolute left-0 top-full mt-2 w-56 bg-white text-black rounded-md shadow-lg z-50">
-          <ul className="py-2 text-sm">
+          {/* <ul className="py-2 text-sm">
   {categories && categories.length > 0 ? (
     categories.map((cat) => (
       <li
@@ -1948,7 +1948,41 @@ const shouldShowArrow = (item, allItems = []) => {
       No categories available
     </li>
   )}
+</ul> */}
+
+<ul className="py-2 text-sm w-[260px] bg-white rounded-md shadow-lg">
+  {categories && categories.length > 0 ? (
+    categories.map((cat) => (
+      <li
+        key={cat._id}
+        className="px-4 py-2 flex items-center justify-between hover:bg-gray-100 cursor-pointer relative"
+        onMouseEnter={(e) => {
+          cancelHide();
+
+          // Dropdown position calculate
+          const rect = e.currentTarget.getBoundingClientRect();
+
+          setDropdownTop(rect.top);
+          setDropdownLeft(rect.right);
+          setHoveredCategory(cat);
+        }}
+        onMouseLeave={() => startHide(120)}
+      >
+        <span className="truncate">{cat.category_name}</span>
+
+        {/* 👉 Show arrow only if subcategories exist */}
+        {cat.subcategories && cat.subcategories.length > 0 && (
+          <span className="text-gray-400 text-lg ml-2">{'>'}</span>
+        )}
+      </li>
+    ))
+  ) : (
+    <li className="px-4 py-2 text-gray-400 cursor-not-allowed">
+      No categories available
+    </li>
+  )}
 </ul>
+
 
         </div>
       )}
