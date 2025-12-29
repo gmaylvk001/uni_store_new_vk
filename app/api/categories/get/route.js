@@ -1,3 +1,4 @@
+// /api/categories/get
 import dbConnect from "@/lib/db";
 import Category from "@/models/ecom_category_info";
 import Product from "@/models/product";
