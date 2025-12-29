@@ -1099,38 +1099,35 @@ useEffect(() => {
   initial="hidden"
   animate="visible"
   variants={containerVariants}
-  className="pt-7 px-4 sm:px-6 md:px-6"
+  className="container mx-auto px-6"
 >
   {isTwoBannerTwoLoading ? (
     <div className="p-6 flex justify-center items-center h-48">
       <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-blue-600"></div>
     </div>
   ) : (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-      {TwoBannerTwoData?.twobanner?.items?.slice(0, 2).map((item) => (
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+      {TwoBannerTwoData.twobanner.items.map((item) => (
         <motion.div
           key={item.id}
           variants={itemVariants}
-          className="rounded-lg overflow-hidden"
+          className="rounded-lg overflow-hidden flex justify-center"
         >
-          <Link href={item.redirect_url} className="block">
-            {/* FIXED HEIGHT CONTAINER */}
-            <div className="relative w-full h-[180px] sm:h-[220px] md:h-[260px]">
-              <Image
-                src={item.bgImageUrl}
-                alt="Two Banner"
-                fill
-                className="object-cover"
-                priority
-              />
-            </div>
+          <Link href={item.redirect_url}>
+            <Image
+              src={item.bgImageUrl}
+              alt="Two Banner"
+              width={900}
+              height={300}
+              className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+              priority
+            />
           </Link>
         </motion.div>
       ))}
     </div>
   )}
 </motion.section>
-
 
 
 
@@ -2028,25 +2025,7 @@ return (
                 <ToastContainer />
                 <RecentlyViewedProducts /> 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            </div>
+           </div>
             <StatusBar /> 
         </>
     ); 
