@@ -1111,7 +1111,7 @@ useEffect(() => {
         <motion.div
           key={item.id}
           variants={itemVariants}
-          className="rounded-lg overflow-hidden bg-gray-100 flex justify-center"
+          className="rounded-lg overflow-hidden flex justify-center"
         >
           <Link href={item.redirect_url}>
             <Image
