@@ -2070,7 +2070,16 @@ const shouldShowArrow = (item, allItems = []) => {
         <div className="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full overflow-hidden flex items-center  justify-center border-2 border-[#1688c8]">
           <img  className="w-full h-full object-cover" src={`${cat.image}`} alt={cat.category_name} />
         </div>
-          <span className="text-sm font-semibold hover:text-[#1688c8]">{cat.category_name}</span>
+          {/* <span className="text-sm font-semibold hover:text-[#1688c8]">{cat.category_name}</span> */}
+          <span
+  title={cat.category_name}
+  className="text-sm font-semibold hover:text-[#1688c8] cursor-pointer"
+>
+  {cat.category_name.length > 15
+    ? cat.category_name.slice(0, 15) + "..."
+    : cat.category_name}
+</span>
+
        
         </div>
          </Link>
