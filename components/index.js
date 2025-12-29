@@ -1109,51 +1109,53 @@ export default function HomeComponent() {
                 className="overflow-hidden pt-7 px-4 sm:px-6 md:px-6"
               >
                 <div className="relative">
-                  {isTwoBannerTwoLoading ? (
-                    <div className="p-6 flex justify-center items-center h-64">
-                      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600"></div>
-                    </div>
-                  ) : TwoBannerTwoData.twobanner.items.length > 0 ? (
-                    TwoBannerTwoData.twobanner.items.length > 1 ? (
-                      <Slider {...settings}>
-                        {TwoBannerTwoData.twobanner.items.map((item) => (
-                          <motion.div
-                            key={item.id}
-                            className="relative w-full aspect-[1900/400]"
-                            variants={itemVariants}
-                          >
-                            <Link href={item.redirect_url || "#"} className="block w-full h-full">
-                              <Image
-                                src={item.bgImageUrl}
-                                alt="Single Banner Two"
-                                fill
-                                quality={100}
-                                className="object-fill w-full h-full"
-                                priority
-                              />
-                            </Link>
-                          </motion.div>
-                        ))}
-                      </Slider>
-                    ) : (
-                      <motion.div
-                        className="relative w-full aspect-[1900/400]"
-                        variants={itemVariants}
-                      >
-                        <Link href={TwoBannerTwoData.twobanner.items[0].redirect_url || "#"}>
-                          <Image
-                            src={TwoBannerTwoData.twobanner.items[0].bgImageUrl}
-                            alt="Two Banners"
-                            width={640}
-                            height={200}
-                            className="w-full h-auto object-fill"
-                            priority
-                          />
-                        </Link>
-                      </motion.div>
-                    )
-                  ) : null}
-                </div>
+  {isTwoBannerTwoLoading ? (
+    <div className="p-6 flex justify-center items-center h-64">
+      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600"></div>
+    </div>
+  ) : (TwoBannerTwoData?.twobanner?.items?.length > 0) ? (
+
+    TwoBannerTwoData.twobanner.items.length > 1 ? (
+      <Slider {...settings}>
+        {TwoBannerTwoData.twobanner.items.map((item) => (
+          <motion.div
+            key={item.id}
+            className="relative w-full aspect-[1900/400]"
+            variants={itemVariants}
+          >
+            <Link href={item.redirect_url || "#"} className="block w-full h-full">
+              <Image
+                src={item.bgImageUrl}
+                alt="Banner"
+                fill
+                quality={100}
+                className="object-fill"
+                priority
+              />
+            </Link>
+          </motion.div>
+        ))}
+      </Slider>
+    ) : (
+      <motion.div
+        className="relative w-full aspect-[1900/400]"
+        variants={itemVariants}
+      >
+        <Link href={TwoBannerTwoData.twobanner.items[0]?.redirect_url || "#"}>
+          <Image
+            src={TwoBannerTwoData.twobanner.items[0]?.bgImageUrl}
+            alt="Banner"
+            fill
+            className="object-fill"
+            priority
+          />
+        </Link>
+      </motion.div>
+    )
+
+  ) : null}
+</div>
+
               </motion.section>
 
             );
