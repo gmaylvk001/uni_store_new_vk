@@ -960,49 +960,42 @@ export default function HomeComponent() {
     
 
     const [TwoBannerTwoData, setTwoBannerTwoData] = useState({
-      twobanner: { items: [] },
-    });
-    const [isTwoBannerTwoLoading, setIsTwoBannerTwoLoading] = useState(false);
-    const fetcTwoBannerTwoData = async () => {
-      setIsTwoBannerTwoLoading(true);
-      try {
-        const response = await fetch("/api/twobanner");
-        const data = await response.json();
+  twobanner: { items: [] },
+});
+const [isTwoBannerTwoLoading, setIsTwoBannerTwoLoading] = useState(false);
 
-        if (data.success && data.banners?.length > 0) {
-          const bannerItems = data.banners
-            .filter((banner) => banner.status === "Active")
-            .map((banner) => ({
-              id: banner._id,
-              redirect_url: banner.redirect_url || "/shop",
-              bgImageUrl: banner.banner_image,
-            }));
+const fetcTwoBannerTwoData = async () => {
+  setIsTwoBannerTwoLoading(true);
+  try {
+    const response = await fetch("/api/twobanner");
+    const data = await response.json();
 
-          setTwoBannerTwoData({
-            singlebanner_two: { items: bannerItems },
-          });
-        } else {
-          setTwoBannerTwoData({
-            singlebanner_two: {
-              items: [
-                {
-                  id: 1,
-                  redirect_url: "/shop",
-                  bgImageUrl: "/images/default-singlebanner.png",
-                },
-              ],
-            },
-          });
-        }
-      } catch (error) {
-        console.error("Error fetching singlebanner_two:", error);
-      } finally {
-        setIsTwoBannerTwoLoading(false);
-      }
-    };
-    useEffect(() => {
-      fetcTwoBannerTwoData();
-    }, []);
+    if (data.success && Array.isArray(data.banners)) {
+      const bannerItems = data.banners
+        .filter(b => b.status === "Active")
+        .sort((a, b) => a.order - b.order)
+        .slice(0, 2) // ✅ ONLY 2 images
+        .map(banner => ({
+          id: banner._id,
+          redirect_url: banner.redirect_url,
+          bgImageUrl: banner.banner_image,
+        }));
+
+      setTwoBannerTwoData({
+        twobanner: { items: bannerItems },
+      });
+    }
+  } catch (error) {
+    console.error("Two banner fetch error:", error);
+  } finally {
+    setIsTwoBannerTwoLoading(false);
+  }
+};
+
+useEffect(() => {
+  fetcTwoBannerTwoData();
+}, []);
+
 
     console.log(categoryBanner);
     const renderSection = (sectionName) => {
@@ -1102,59 +1095,39 @@ export default function HomeComponent() {
 
 
      <motion.section
-                id="twobanner"
-                initial="hidden"
-                animate="visible"
-                variants={containerVariants}
-                className="overflow-hidden pt-7 px-4 sm:px-6 md:px-6"
-              >
-                <div className="relative">
-                  {isTwoBannerTwoLoading ? (
-                    <div className="p-6 flex justify-center items-center h-64">
-                      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600"></div>
-                    </div>
-                  ) : TwoBannerTwoData.twobanner.items.length > 0 ? (
-                    TwoBannerTwoData.twobanner.items.length > 2 ? (
-                      <Slider {...settings}>
-                        {TwoBannerTwoData.twobanner.items.map((item) => (
-                          <motion.div
-                            key={item.id}
-                            className="relative w-full aspect-[1900/400]"
-                            variants={itemVariants}
-                          >
-                            <Link href={item.redirect_url || "#"} className="block w-full h-full">
-                              <Image
-                                src={item.bgImageUrl}
-                                alt="Single Banner Two"
-                                fill
-                                quality={100}
-                                className="object-fill w-full h-full"
-                                priority
-                              />
-                            </Link>
-                          </motion.div>
-                        ))}
-                      </Slider>
-                    ) : (
-                      <motion.div
-                        className="relative w-full aspect-[1900/400]"
-                        variants={itemVariants}
-                      >
-                        <Link href={TwoBannerTwoData.twobanner.items[0].redirect_url || "#"}>
-                          <Image
-                            src={TwoBannerTwoData.twobanner.items[0].bgImageUrl}
-                            alt="Two Banners"
-                            width={640}
-                            height={200}
-                            className="w-full h-auto object-fill"
-                            priority
-                          />
-                        </Link>
-                      </motion.div>
-                    )
-                  ) : null}
-                </div>
-              </motion.section>
+  id="twobanner"
+  initial="hidden"
+  animate="visible"
+  variants={containerVariants}
+  className="overflow-hidden pt-7 px-4 sm:px-6 md:px-6"
+>
+  {isTwoBannerTwoLoading ? (
+    <div className="p-6 flex justify-center items-center h-64">
+      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600"></div>
+    </div>
+  ) : (
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      {TwoBannerTwoData.twobanner.items.map(item => (
+        <motion.div
+          key={item.id}
+          variants={itemVariants}
+          className="relative aspect-[950/400] overflow-hidden rounded-lg"
+        >
+          <Link href={item.redirect_url}>
+            <Image
+              src={item.bgImageUrl}
+              alt="Two Banner"
+              fill
+              className="object-cover hover:scale-105 transition-transform duration-300"
+              priority
+            />
+          </Link>
+        </motion.div>
+      ))}
+    </div>
+  )}
+</motion.section>
+
 
             );
             case 'whatsnew':
