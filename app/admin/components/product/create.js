@@ -922,6 +922,28 @@ setProduct(prev => ({
     return null;
   };
 
+  const findImmediateParentCategory = (categories, childId) => {
+  for (const cat of categories) {
+    if (cat.children) {
+      // ✅ check only direct children
+      for (const child of cat.children) {
+        if (child._id === childId) {
+          return cat; // return full parent object
+        }
+      }
+
+      // 🔁 recurse deeper
+      const found = findImmediateParentCategory(cat.children, childId);
+      if (found) return found;
+    }
+  }
+  return null;
+};
+
+//const parentCategory = findImmediateParentCategory(categories, category._id);
+
+//console.log(parentCategory?._id);
+
   const parentCategoryId = findParentCategory(categories, category._id);
   setSelectedParentCategory(parentCategoryId);
 
