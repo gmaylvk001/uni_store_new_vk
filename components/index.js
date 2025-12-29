@@ -1107,27 +1107,30 @@ useEffect(() => {
     </div>
   ) : (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-      {TwoBannerTwoData.twobanner.items.map((item) => (
+      {TwoBannerTwoData?.twobanner?.items?.slice(0, 2).map((item) => (
         <motion.div
           key={item.id}
           variants={itemVariants}
-          className="rounded-lg overflow-hidden flex justify-center"
+          className="rounded-lg overflow-hidden"
         >
-          <Link href={item.redirect_url}>
-            <Image
-              src={item.bgImageUrl}
-              alt="Two Banner"
-              width={900}
-              height={300}
-              className="w-full h-auto object-contain"
-              priority
-            />
+          <Link href={item.redirect_url} className="block">
+            {/* FIXED HEIGHT CONTAINER */}
+            <div className="relative w-full h-[180px] sm:h-[220px] md:h-[260px]">
+              <Image
+                src={item.bgImageUrl}
+                alt="Two Banner"
+                fill
+                className="object-cover"
+                priority
+              />
+            </div>
           </Link>
         </motion.div>
       ))}
     </div>
   )}
 </motion.section>
+
 
 
 
