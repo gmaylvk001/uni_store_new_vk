@@ -1094,31 +1094,32 @@ useEffect(() => {
     </section> */
 
 
-     <motion.section
+<motion.section
   id="twobanner"
   initial="hidden"
   animate="visible"
   variants={containerVariants}
-  className="overflow-hidden pt-7 px-4 sm:px-6 md:px-6"
+  className="pt-7 px-4 sm:px-6 md:px-6"
 >
   {isTwoBannerTwoLoading ? (
-    <div className="p-6 flex justify-center items-center h-64">
-      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600"></div>
+    <div className="p-6 flex justify-center items-center h-48">
+      <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-blue-600"></div>
     </div>
   ) : (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-      {TwoBannerTwoData.twobanner.items.map(item => (
+      {TwoBannerTwoData.twobanner.items.map((item) => (
         <motion.div
           key={item.id}
           variants={itemVariants}
-          className="relative aspect-[950/400] overflow-hidden rounded-lg"
+          className="rounded-lg overflow-hidden bg-gray-100 flex justify-center"
         >
           <Link href={item.redirect_url}>
             <Image
               src={item.bgImageUrl}
               alt="Two Banner"
-              fill
-              className="object-cover hover:scale-105 transition-transform duration-300"
+              width={900}
+              height={300}
+              className="w-full h-auto object-contain"
               priority
             />
           </Link>
@@ -1127,6 +1128,7 @@ useEffect(() => {
     </div>
   )}
 </motion.section>
+
 
 
             );
