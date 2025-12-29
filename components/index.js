@@ -1057,105 +1057,183 @@ export default function HomeComponent() {
             );
             case 'whatsnew':
             return (
-              <section className="bg-white mb-6">
-  <div className="container mx-auto px-4">
+              
+<section className="bg-white mb-6">
+      <div className="container mx-auto px-4">
 
-    {/* Title */}
-    <div className="mt-6 mb-4">
-      <h1 className="text-2xl font-bold text-[#d72828]">
-        WHAT&apos;S NEW
-      </h1>
-    </div>
+        {/* Title */}
+        <div className="mt-6 mb-4">
+          <h1 className="text-2xl font-bold text-[#d72828]">
+            WHAT&apos;S NEW
+          </h1>
+        </div>
 
-    <div className="relative">
-      <Swiper
-        modules={[Navigation]}
-        navigation={{
-          nextEl: ".whatsnew-next",
-          prevEl: ".whatsnew-prev",
-        }}
-        spaceBetween={40}
-        slidesPerView="auto"
-      >
-        {products.map((product) => {
-          const image = product.images?.[0] || "/placeholder.webp";
-
-          const discount = product.special_price
-            ? Math.round(
+        <div className="relative">
+          <Swiper
+            modules={[Navigation]}
+            navigation={{
+              nextEl: ".whatsnew-next",
+              prevEl: ".whatsnew-prev",
+            }}
+            spaceBetween={40}
+            slidesPerView="auto"
+          >
+            {products.map((product) => {
+              const discount = Math.round(
                 ((product.price - product.special_price) / product.price) * 100
-              )
-            : null;
+              );
 
-          return (
-            <SwiperSlide key={product._id} className="!w-[290px]">
-              {/* CARD */}
-              <div className="relative bg-white border shadow-md rounded-lg overflow-hidden
-                              h-[420px] flex flex-col">
+              return (
+                <SwiperSlide key={product._id} className="!w-[280px]">
+        <div className="relative bg-white border rounded-xl shadow-sm p-4 h-[400px] flex flex-col">
 
-                {/* NEW badge */}
-                <span className="absolute top-2 left-2 z-10 bg-red-600 text-white text-xs px-2 py-1 rounded">
-                  New
-                </span>
+        <div className="relative w-full h-[210px] group overflow-hidden rounded-t-lg aspect-square">
+          <Link
+            href={`/product/${product.slug}`}
+            onClick={() => handleProductClick(product)}
+            className="block w-full h-full"
+          >
+            {/* Default Image */}
+            {product.images?.[0] && (
+              <Image
+                src={
+                  product.images[0].startsWith("http")
+                    ? product.images[0]
+                    : `/uploads/products/${product.images[0]}`
+                }
+                alt={product.name}
+                fill
+                className={`object-contain p-2 md:p-4 transition-all duration-1000 ease-in-out 
+                  ${product.images[1]
+                    ? "group-hover:opacity-0"   // fade out if second image exists
+                    : "group-hover:scale-110"   // zoom if only one image
+                  }`}
+                sizes="(max-width: 640px) 50vw, 33vw, 25vw"
+                unoptimized
+                onError={(e) => {
+                  e.target.onerror = null;
+                  e.target.src = "/uploads/products/placeholder.jpg";
+                }}
+              />
+            )}
+        
+            {/* Hover Image (if available) */}
+            {product.images?.[1] && (
+              <Image
+                src={
+                  product.images[1].startsWith("http")
+                    ? product.images[1]
+                    : `/uploads/products/${product.images[1]}`
+                }
+                alt={product.name}
+                fill
+                className="object-contain p-2 md:p-4 transition-all duration-1000 ease-in-out opacity-0 group-hover:opacity-100 group-hover:scale-110"
+                sizes="(max-width: 640px) 50vw, 33vw, 25vw"
+                unoptimized
+                onError={(e) => {
+                  e.target.onerror = null;
+                  e.target.src = `/uploads/products/${product.images[0]}`;
+                }}
+              />
+            )}
+          </Link>
+        
+          {/* Discount Badge */}
+          {Number(product.special_price) > 0 &&
+            Number(product.special_price) < Number(product.price) && (
+              <span className="absolute top-2 left-2 bg-orange-500 tracking-wider text-white text-xs font-bold px-2 py-1 rounded z-20">
+                -{Math.round(100 - (Number(product.special_price) / Number(product.price)) * 100)}%
+              </span>
+            )}
+        
+          {/* Wishlist Icon */}
+          <div className="absolute top-2 right-2 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <ProductCard productId={product._id} isOutOfStock={product.quantity === 0} />
+          </div>
+        </div>
+    
 
-                {/* Image */}
-                <div className="relative h-[200px] bg-gray-50 flex items-center justify-center">
-                  <Link href={`/product/${product.slug}`}>
-                    <Image
-                      src={product.images[0].startsWith("http") ? product.images[0] : `/uploads/products/${product.images[0]}`}
-                      alt={product.name}
-                      width={260}
-                      height={200}
-                      className="object-contain transition-transform duration-300 hover:scale-105"
-                    />
-                  </Link>
-                </div>
+   <h4 className="text-xs text-gray-500 mb-2 uppercase">
+      <Link
+        href={`/brand/${product.brand.toLowerCase().replace(/\s+/g, "-")}`}
+        className="hover:text-blue-600"
+      >
+        {product.brand}
+      </Link>
+    </h4>
 
-                {/* Details */}
-                <div className="p-3 text-sm flex flex-col flex-1">
+                      {/* Title (HOVER COLOR CHANGE) */}
+                      <Link
+                        href={`/product/${product.slug}`}
+                        className="text-sm font-medium text-[#0069c6] hover:text-[#00badb] transition-colors line-clamp-2 min-h-[40px]"
+                      >
+                        {product.name}
+                      </Link>
 
-                  {/* Product Name */}
-                  <Link
-                    href={`/product/${product.slug}`}
-                    className="block font-medium text-gray-800 hover:text-blue-600
-                               line-clamp-2 min-h-[40px]"
-                  >
-                    {product.name}
-                  </Link>
+                        {/* Price */}
+                        <div className="flex items-center gap-2 mb-3">
+                          <span className="text-base font-semibold text-red-600">
+                            ₹ {(
+                              product.special_price && product.special_price > 0 && product.special_price != '0'  && product.special_price != 0 && product.special_price < product.price
+                                ? product.special_price
+                                : product.price
+                            ).toLocaleString()}
+                          </span>
+    
+    
+                          {product.special_price > 0 && product.special_price != '0'  && product.special_price != 0 &&   product.special_price &&
+                            product.special_price < product.price &&
+                            (
+                              <span className="text-xs text-gray-500 line-through">
+                                ₹ {product.price.toLocaleString()}
+                              </span>
+                          )}
+                        </div>
 
-                  {/* Price Section - pushed to bottom */}
-                  <div className="mt-auto flex items-center gap-2 pt-3">
-                    <span className="text-lg font-semibold text-gray-900">
-                      ₹{product.special_price || product.price}
-                    </span>
+                        <h4 className={`text-xs mb-3 ${product.stock_status === "In Stock" && product.quantity ? "text-green-600" : "text-red-600"}`}>
+                          {product.stock_status === "In Stock" && product.quantity ? ` ${product.stock_status}` : "Out Of Stock"}
+                          {product.stock_status === "In Stock" && product.quantity ? `, ${product.quantity} units` : ""}
+                        </h4>
 
-                    {product.special_price && (
-                      <>
-                        <span className="line-through text-gray-400 text-sm">
-                          ₹{product.price}
-                        </span>
-                        <span className="text-green-600 text-xs font-medium">
-                          {discount}% off
-                        </span>
-                      </>
-                    )}
-                  </div>
-                </div>
-              </div>
-            </SwiperSlide>
-          );
-        })}
-      </Swiper>
+                          {/* Add To Cart Button */}
+                          <div className="mt-auto flex items-center justify-between gap-2">
+                            <Addtocart
+                              productId={product._id} stockQuantity={product.quantity}  special_price={product.special_price}
+                              className="w-full text-xs sm:text-sm py-1.5"
+                            />
+                            <a
+                              href={`https://wa.me/919243585858?text=${encodeURIComponent(`Check Out This Product: ${apiUrl}/product/${product.slug}`)}`} 
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="bg-green-500 hover:bg-green-600 text-white p-1 rounded-full transition-colors duration-300 flex items-center justify-center"
+                            >
+                              <svg
+                                className="w-5 h-5"
+                                viewBox="0 0 32 32"
+                                fill="currentColor"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path d="M16.003 2.667C8.64 2.667 2.667 8.64 2.667 16c0 2.773.736 5.368 2.009 7.629L2 30l6.565-2.643A13.254 13.254 0 0016.003 29.333C23.36 29.333 29.333 23.36 29.333 16c0-7.36-5.973-13.333-13.33-13.333zm7.608 18.565c-.32.894-1.87 1.749-2.574 1.865-.657.104-1.479.148-2.385-.148-.55-.175-1.256-.412-2.162-.812-3.8-1.648-6.294-5.77-6.49-6.04-.192-.269-1.55-2.066-1.55-3.943 0-1.878.982-2.801 1.33-3.168.346-.364.75-.456 1.001-.456.25 0 .5.002.719.013.231.01.539-.088.845.643.32.768 1.085 2.669 1.18 2.863.096.192.16.423.03.683-.134.26-.2.423-.39.65-.192.231-.413.512-.589.689-.192.192-.391.401-.173.788.222.392.986 1.625 2.116 2.636 1.454 1.298 2.682 1.7 3.075 1.894.393.192.618.173.845-.096.23-.27.975-1.136 1.237-1.527.262-.392.524-.32.894-.192.375.13 2.35 1.107 2.75 1.308.393.205.656.308.75.48.096.173.096 1.003-.224 1.897z" />
+                              </svg>
+                            </a>
+                          </div>
+                        </div>
+                      </SwiperSlide>
 
-      {/* Navigation */}
-      <div className="whatsnew-prev absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow rounded-full w-6 h-6 flex items-center justify-center cursor-pointer">
-        ‹
+              );
+            })}
+          </Swiper>
+
+          {/* Navigation arrows */}
+          <div className="whatsnew-prev absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow rounded-full w-6 h-6 flex items-center justify-center cursor-pointer">
+            ‹
+          </div>
+          <div className="whatsnew-next absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow rounded-full w-6 h-6 flex items-center justify-center cursor-pointer">
+            ›
+          </div>
+        </div>
       </div>
-      <div className="whatsnew-next absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow rounded-full w-6 h-6 flex items-center justify-center cursor-pointer">
-        ›
-      </div>
-    </div>
-  </div>
-</section>
+    </section>
 
             );
           case 'product':
@@ -1817,6 +1895,8 @@ return (
         
         return mapping[sectionName] || sectionName.toLowerCase();
     };
+
+
     return (
         <>
           {navigating && (
@@ -1860,6 +1940,25 @@ return (
                 </div>
                 <ToastContainer />
                 <RecentlyViewedProducts /> 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             </div>
             <StatusBar /> 
         </>
