@@ -53,10 +53,11 @@ export async function GET() {
           _id: { $in: cp.products },
           quantity: { $gt: 0 },
           special_price: { $gt: 2 },
-          $or: [
+         /* $or: [
             { model_number: { $exists: false } },
             { model_number: { $exists: true, $ne: "" } }
           ]
+          */
         }).lean();
         return {
           ...cp,
