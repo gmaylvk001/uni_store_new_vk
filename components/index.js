@@ -207,7 +207,9 @@ export default function HomeComponent() {
           brand: brandMap[p.brand] || p.brand
         })); */
         const productsWithBrands = stored.map(product => {
+          alert("Hi:)");
   const brandName = brandMap[product.brand];
+  console.log("Tester",brandName);
 
   return {
     ...product,
@@ -215,6 +217,7 @@ export default function HomeComponent() {
       ? brandName
       : ""
   };
+  console.log("Testerkjds",brand);
 });
 
 
