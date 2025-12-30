@@ -135,79 +135,43 @@ export default function HomeComponent() {
       }
     };
 
-       useEffect(() => {
-    fetch("/api/product/whats-new")
-      .then((res) => res.json())
-      .then(setProducts)
-      .catch(console.error);
-  }, []);
+      useEffect(() => {
+  const fetchData = async () => {
+    try {
+      // 🔹 1. Fetch products (unchanged)
+      const res = await fetch("/api/product/whats-new");
+      const products = await res.json();
 
+      // 🔹 2. Fetch brands
+      const brandRes = await fetch("/api/brand");
+      const brandResult = await brandRes.json();
 
-    useEffect(() => {
-      const fetchRecentProductsWithBrands = async () => {
-        setIsLoading(true);
-        // Step 1: Get localStorage value safely
-      const storedString = localStorage.getItem('whatsnew');
-      let stored_new = [];
-  
-      try {
-        stored_new = JSON.parse(storedString) || [];
-      } catch (e) {
-        stored_new = [];
-      }
-  
-      // Step 2: Ensure it's an array
-      if (!Array.isArray(stored_new)) {
-        stored_new = [];
-      }
-  
-      // Step 3: Filter quantity > 0
-      const stored = stored_new.filter(product => product.quantity > 0);
-  
-      // Step 4: Log the result
-      //console.log(stored);
-  
-      // Step 5: Use stored directly (no JSON.parse here!)
-      if (stored.length === 0) {
-        setIsLoading(false);
-        return;
-      }
-  
-      // stored is already an array of products
-      const products = stored;
-  
-        try {
-          const response = await fetch("/api/brand");
-          const result = await response.json();
-          console.log("getres",result);
-          if (result.error) {
-            console.error(result.error);
-            setProducts(products); // Use products without brand names if fetch fails
-          } else {
-            const brandData = result.data;
-            const brandMap = {};
-            brandData.forEach((b) => {
-              brandMap[b._id] = b.brand_name;
-            });
-  
-            // Map brand names to products before setting state
-            const productsWithBrands = products.map(product => ({
-              ...product,
-              brand: brandMap[product.brand] || product.brand // Use brand name if found, otherwise keep original
-            }));
-            console.log("check",productsWithBrands);
-            setProducts(productsWithBrands);
-          }
-        } catch (error) {
-          console.error(error.message);
-          setProducts(products); // Fallback to products without brand names
-        } finally {
-          setIsLoading(false);
-        }
-      };
-  
-      fetchRecentProductsWithBrands();
-    }, []); // Run only once when the component mounts
+      const brandData = brandResult?.data || [];
+
+      // 🔹 3. brandId → brandName map
+      const brandMap = {};
+      brandData.forEach(b => {
+        brandMap[b._id] = b.brand_name;
+      });
+
+      // 🔹 4. ONLY add brand name (nothing else touched)
+      const updatedProducts = products.map(p => ({
+        ...p,
+        brand_name: brandMap[p.brand] || p.brand
+      }));
+
+      // 🔹 5. setProducts (same state)
+      setProducts(updatedProducts);
+
+    } catch (err) {
+      console.error(err);
+      setProducts([]);
+    }
+  };
+
+  fetchData();
+}, []);
+
 
     useEffect(() => {
       fetchBrand();
