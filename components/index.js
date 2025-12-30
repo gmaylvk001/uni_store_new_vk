@@ -148,7 +148,7 @@ export default function HomeComponent() {
         setIsLoading(true);
         
         // Step 1: Get localStorage value safely
-      const storedString = localStorage.getItem('recentlyViewed');
+      const storedString = localStorage.getItem('whatsnew');
       let stored_new = [];
   
       try {
