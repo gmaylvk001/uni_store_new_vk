@@ -18,6 +18,7 @@ export async function GET() {
         createdAt: 1,
         brand: 1,
         stock_status: 1,
+        quantity: 1,
       })
       .lean();
 
