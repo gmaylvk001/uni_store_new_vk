@@ -54,6 +54,8 @@ export default function HomeComponent() {
         items: []
       }
     });
+    const [isMobile, setIsMobile] = useState(false);
+    const [startIndex, setStartIndex] = useState(0);
     const router = useRouter();
     const [userData, setUserData] = useState(null);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -81,6 +83,30 @@ export default function HomeComponent() {
     const [products, setProducts] = useState([]);
 
  
+     useEffect(() => {
+        const checkIfMobile = () => {
+          setIsMobile(window.innerWidth < 768);
+        };
+    
+        checkIfMobile();
+        window.addEventListener('resize', checkIfMobile);
+    
+        const handleRouteChange = () => setNavigating(false);
+        if (router?.events?.on) {
+          router.events.on('routeChangeComplete', handleRouteChange);
+          router.events.on('routeChangeError', handleRouteChange);
+        }
+        
+        // Cleanup function
+        return () => {
+          window.removeEventListener('resize', checkIfMobile);
+          if (router?.events?.off) {
+            router.events.off('routeChangeComplete', handleRouteChange);
+            router.events.off('routeChangeError', handleRouteChange);
+          }
+        };
+      }, [router]);
+
    
     const scrollCategories = (direction) => {
       if (categoryScrollRef.current) {
@@ -143,71 +169,68 @@ export default function HomeComponent() {
   }, []);
 
 
-    useEffect(() => {
-      const fetchRecentProductsWithBrands = async () => {
-        setIsLoading(true);
-        
-        // Step 1: Get localStorage value safely
-      const storedString = localStorage.getItem('whatsnew');
-      let stored_new = [];
-  
-      try {
-        stored_new = JSON.parse(storedString) || [];
-      } catch (e) {
-        stored_new = [];
+ useEffect(() => {
+  const fetchWhatsnewProductsWithBrands = async () => {
+    setIsLoading(true);
+
+    const storedString = localStorage.getItem("whatsnew");
+    let stored_new = [];
+
+    try {
+      stored_new = JSON.parse(storedString) || [];
+    } catch {
+      stored_new = [];
+    }
+
+    if (!Array.isArray(stored_new)) stored_new = [];
+
+    const stored = stored_new.filter(p => p.quantity > 0);
+
+    if (!stored.length) {
+      setProducts([]);
+      setIsLoading(false);
+      return;
+    }
+
+    try {
+      const response = await fetch("/api/brand");
+      const result = await response.json();
+
+      if (Array.isArray(result?.data)) {
+        const brandMap = {};
+        result.data.forEach(b => {
+          brandMap[b._id] = b.brand_name;
+        });
+
+        const productsWithBrands = stored.map(p => ({
+          ...p,
+          brand: brandMap[p.brand] || p.brand
+        }));
+
+        setProducts(productsWithBrands);
+      } else {
+        setProducts(stored);
       }
-  
-      // Step 2: Ensure it's an array
-      if (!Array.isArray(stored_new)) {
-        stored_new = [];
-      }
-  
-      // Step 3: Filter quantity > 0
-      const stored = stored_new.filter(product => product.quantity > 0);
-  
-      // Step 4: Log the result
-      //console.log(stored);
-  
-      // Step 5: Use stored directly (no JSON.parse here!)
-      if (stored.length === 0) {
-        setIsLoading(false);
-        return;
-      }
-  
-      // stored is already an array of products
-      const products = stored;
-  
-        try {
-          const response = await fetch("/api/brand");
-          const result = await response.json();
-          
-          if (result.error) {
-            console.error(result.error);
-            setProducts(products); // Use products without brand names if fetch fails
-          } else {
-            const brandData = result.data;
-            const brandMap = {};
-            brandData.forEach((b) => {
-              brandMap[b._id] = b.brand_name;
-            });
-  
-            // Map brand names to products before setting state
-            const productsWithBrands = products.map(product => ({
-              ...product,
-              brand: brandMap[product.brand] || product.brand // Use brand name if found, otherwise keep original
-            }));
-            setProducts(productsWithBrands);
-          }
-        } catch (error) {
-          console.error(error.message);
-          setProducts(products); // Fallback to products without brand names
-        } finally {
-          setIsLoading(false);
-        }
-      };
-  
-      fetchRecentProductsWithBrands();
-    }, []); // Run only once when the component mounts
+    } catch {
+      setProducts(stored);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  fetchWhatsnewProductsWithBrands();
+}, []);
+
+const visibleCount = isMobile ? 3 : 4;
+
+const safeProducts = Array.isArray(products) ? products : [];
+
+const productsNew = safeProducts.slice(
+  startIndex,
+  startIndex + visibleCount
+);
+
+const totalPages = Math.ceil(safeProducts.length / visibleCount);
 
 
     useEffect(() => {
@@ -1226,7 +1249,7 @@ useEffect(() => {
             spaceBetween={40}
             slidesPerView="auto"
           >
-            {products.map((product) => {
+            {productsNew.map((product) => {
               console.log("Whatsnews",product);
               const discount = Math.round(
                 ((product.price - product.special_price) / product.price) * 100
