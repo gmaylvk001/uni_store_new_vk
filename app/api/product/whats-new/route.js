@@ -16,7 +16,6 @@ export async function GET() {
         special_price: 1,
         images: 1,
         createdAt: 1,
-        brand: 1,
       })
       .lean();
 
