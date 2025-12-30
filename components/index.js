@@ -135,61 +135,87 @@ export default function HomeComponent() {
       }
     };
 
-       /* useEffect(() => {
+       useEffect(() => {
     fetch("/api/product/whats-new")
       .then((res) => res.json())
       .then(setProducts)
       .catch(console.error);
-  }, []); */
+  }, []);
 
-useEffect(() => {
+/*   useEffect(() => {
   const fetchWhatsNewWithBrands = async () => {
     setIsLoading(true);
 
     try {
+      // 1️⃣ Fetch WHAT'S NEW products
       const productRes = await fetch("/api/product/whats-new");
       const productResult = await productRes.json();
 
-      if (!Array.isArray(productResult?.data)) {
-        setProducts({ data: [] });
+      const products = Array.isArray(productResult?.data)
+        ? productResult.data
+        : [];
+
+      if (!products.length) {
+        setProducts([]);
         return;
       }
 
+      // 2️⃣ Fetch brands
       const brandRes = await fetch("/api/brand");
       const brandResult = await brandRes.json();
 
       const brandMap = {};
-      brandResult?.data?.forEach((b) => {
-        brandMap[b._id] = b.brand_name;
-      });
 
-      const productsWithBrands = productResult.data.map((product) => {
-        const brandId =
-          typeof product.brand === "object"
-            ? product.brand?._id
-            : product.brand;
+      if (Array.isArray(brandResult?.data)) {
+        brandResult.data.forEach((brand) => {
+          brandMap[brand._id] = brand.brand_name;
+        });
+      }
 
-        return {
-          ...product,
-          brand_name: brandMap[brandId] || "",
-        };
-      });
+      // 3️⃣ Merge brand name into products
+      const productsWithBrands = products.map((product) => ({
+        ...product,
+        brand_name: brandMap[product.brand] || "",
+      }));
 
-      // 🔥 IMPORTANT – SAME STRUCTURE AS OLD
-      setProducts({
-        ...productResult,
-        data: productsWithBrands,
-      });
-    } catch (err) {
-      console.error(err);
-      setProducts({ data: [] });
+      setProducts(productsWithBrands);
+    } catch (error) {
+      console.error("What's New fetch error:", error);
+      setProducts([]);
     } finally {
       setIsLoading(false);
     }
   };
 
   fetchWhatsNewWithBrands();
-}, []);
+}, []); */
+
+/* useEffect(() => {
+  const fetchWhatsNew = async () => {
+    try {
+      const res = await fetch("/api/product/whats-new");
+      const result = await res.json();
+
+      // ✅ ONLY ARRAY goes to state
+      setProducts(Array.isArray(result?.data) ? result.data : []);
+    } catch (err) {
+      console.error(err);
+      setProducts([]);
+    }
+  };
+
+  fetchWhatsNew();
+}, []); */
+
+const productsWithBrands = result.data.map((product) => ({
+  ...product,
+  brand:
+    typeof product.brand === "object"
+      ? product.brand.brand_name
+      : product.brand,
+}));
+
+setProducts(productsWithBrands);
 
 
 
