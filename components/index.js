@@ -147,7 +147,7 @@ export default function HomeComponent() {
       const fetchRecentProductsWithBrands = async () => {
         setIsLoading(true);
         // Step 1: Get localStorage value safely
-      const storedString = localStorage.getItem('recentlyViewed');
+      const storedString = localStorage.getItem('whatsnew');
       let stored_new = [];
   
       try {
