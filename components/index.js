@@ -878,7 +878,7 @@ export default function HomeComponent() {
 
     try {
       // 1️⃣ Fetch products (replace with your real products API)
-      const productRes = await fetch("/api/products");
+      const productRes = await fetch("/api/product/whats-new");
       const productResult = await productRes.json();
 
       const products = Array.isArray(productResult?.data)
