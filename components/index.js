@@ -196,8 +196,22 @@ useEffect(() => {
       const res = await fetch("/api/product/whats-new");
       const result = await res.json();
 
-      // ✅ ONLY ARRAY goes to state
-      setProducts(Array.isArray(result?.data) ? result.data : []);
+      if (!Array.isArray(result?.data)) {
+        setProducts([]);
+        return;
+      }
+
+      // ✅ add brand safely
+      const productsWithBrands = result.data.map((product) => ({
+        ...product,
+        brand:
+          typeof product.brand === "object"
+            ? product.brand.brand_name
+            : product.brand,
+      }));
+
+      // ✅ store ONLY array
+      setProducts(productsWithBrands);
     } catch (err) {
       console.error(err);
       setProducts([]);
@@ -207,15 +221,6 @@ useEffect(() => {
   fetchWhatsNew();
 }, []);
 
-const productsWithBrands = result.data.map((product) => ({
-  ...product,
-  brand:
-    typeof product.brand === "object"
-      ? product.brand.brand_name
-      : product.brand,
-}));
-
-setProducts(productsWithBrands);
 
 
 
