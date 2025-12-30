@@ -142,12 +142,13 @@ export default function HomeComponent() {
       .catch(console.error);
   }, []); */
 
-/*   useEffect(() => {
-  const fetchWhatsNewWithBrands = async () => {
-    setIsLoading(true);
 
+  useEffect(() => {
+  const fetchWhatsNewWithBrands = async () => {
     try {
-      // 1️⃣ Fetch WHAT'S NEW products
+      setIsLoading(true);
+
+      // 1️⃣ Whats-new products
       const productRes = await fetch("/api/product/whats-new");
       const productResult = await productRes.json();
 
@@ -160,27 +161,33 @@ export default function HomeComponent() {
         return;
       }
 
-      // 2️⃣ Fetch brands
+      // 2️⃣ Brands
       const brandRes = await fetch("/api/brand");
       const brandResult = await brandRes.json();
 
-      const brandMap = {};
-
-      if (Array.isArray(brandResult?.data)) {
-        brandResult.data.forEach((brand) => {
-          brandMap[brand._id] = brand.brand_name;
-        });
+      // If brand API fail → show products as-is
+      if (!Array.isArray(brandResult?.data)) {
+        setProducts(products);
+        return;
       }
 
-      // 3️⃣ Merge brand name into products
+      // 3️⃣ Brand map
+      const brandMap = {};
+      brandResult.data.forEach((b) => {
+        brandMap[b._id] = b.brand_name;
+      });
+
+      // 4️⃣ Merge brand into product (NO overwrite)
       const productsWithBrands = products.map((product) => ({
-        ...product,
-        brand_name: brandMap[product.brand] || "",
+        ...product, // 🔥 name, image, price, everything preserved
+        brand_name: brandMap[product.brand] || "Unknown",
       }));
 
+      // 5️⃣ Set state
       setProducts(productsWithBrands);
-    } catch (error) {
-      console.error("What's New fetch error:", error);
+
+    } catch (err) {
+      console.error(err);
       setProducts([]);
     } finally {
       setIsLoading(false);
@@ -188,40 +195,7 @@ export default function HomeComponent() {
   };
 
   fetchWhatsNewWithBrands();
-}, []); */
-
-useEffect(() => {
-  const fetchWhatsNew = async () => {
-    try {
-      const res = await fetch("/api/product/whats-new");
-      const result = await res.json();
-
-      if (!Array.isArray(result?.data)) {
-        setProducts([]);
-        return;
-      }
-
-      // ✅ add brand safely
-      const productsWithBrands = result.data.map((product) => ({
-        ...product,
-        brand:
-          typeof product.brand === "object"
-            ? product.brand.brand_name
-            : product.brand,
-      }));
-
-      // ✅ store ONLY array
-      setProducts(productsWithBrands);
-    } catch (err) {
-      console.error(err);
-      setProducts([]);
-    }
-  };
-
-  fetchWhatsNew();
 }, []);
-
-
 
 
     useEffect(() => {
