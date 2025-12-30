@@ -1266,14 +1266,14 @@ useEffect(() => {
     
 
 <h4 className="text-xs text-gray-500 mb-2 uppercase">
-  {product?.brand ? (
+  {product?.brand_name ? (
     <Link
-      href={`/brand/${product.brand
+      href={`/brand/${product.brand_name
         ?.toLowerCase()
         ?.replace(/\s+/g, "-")}`}
       className="hover:text-blue-600"
     >
-      {product.brand}
+      {product.brand_name}
     </Link>
   ) : (
     <span className="text-gray-400"> </span>
