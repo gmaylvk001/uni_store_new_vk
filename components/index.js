@@ -202,10 +202,21 @@ export default function HomeComponent() {
           brandMap[b._id] = b.brand_name;
         });
 
-        const productsWithBrands = stored.map(p => ({
+        /* const productsWithBrands = stored.map(p => ({
           ...p,
           brand: brandMap[p.brand] || p.brand
-        }));
+        })); */
+        const productsWithBrands = stored.map(product => {
+  const brandName = brandMap[product.brand];
+
+  return {
+    ...product,
+    brand: typeof brandName === "string" && brandName.trim()
+      ? brandName
+      : ""
+  };
+});
+
 
         setProducts(productsWithBrands);
       } else {
@@ -1325,7 +1336,7 @@ useEffect(() => {
         </div>
     
 
-<h4 className="text-xs text-gray-500 mb-2 uppercase">
+{/* <h4 className="text-xs text-gray-500 mb-2 uppercase">
   {product?.brand ? (
     <Link
       href={`/brand/${product.brand
@@ -1338,7 +1349,22 @@ useEffect(() => {
   ) : (
     <span className="text-gray-400"> </span>
   )}
+</h4> */}
+
+
+<h4 className="text-xs text-gray-500 mb-2 uppercase">
+  {typeof product?.brand === "string" && product.brand.trim() ? (
+    <Link
+      href={`/brand/${product.brand
+        .toLowerCase()
+        .replace(/\s+/g, "-")}`}
+      className="hover:text-blue-600"
+    >
+      {product.brand}
+    </Link>
+  ) : null}
 </h4>
+
 
 
                       {/* Title (HOVER COLOR CHANGE) */}
