@@ -135,68 +135,79 @@ export default function HomeComponent() {
       }
     };
 
-       /* useEffect(() => {
+       useEffect(() => {
     fetch("/api/product/whats-new")
       .then((res) => res.json())
       .then(setProducts)
       .catch(console.error);
-  }, []); */
+  }, []);
 
 
-  useEffect(() => {
-  const fetchWhatsNewWithBrands = async () => {
-    try {
-      setIsLoading(true);
-
-      // 1️⃣ Whats-new products
-      const productRes = await fetch("/api/product/whats-new");
-      const productResult = await productRes.json();
-
-      const products = Array.isArray(productResult?.data)
-        ? productResult.data
-        : [];
-
-      if (!products.length) {
-        setProducts([]);
+    useEffect(() => {
+      const fetchRecentProductsWithBrands = async () => {
+        setIsLoading(true);
+        // Step 1: Get localStorage value safely
+      const storedString = localStorage.getItem('recentlyViewed');
+      let stored_new = [];
+  
+      try {
+        stored_new = JSON.parse(storedString) || [];
+      } catch (e) {
+        stored_new = [];
+      }
+  
+      // Step 2: Ensure it's an array
+      if (!Array.isArray(stored_new)) {
+        stored_new = [];
+      }
+  
+      // Step 3: Filter quantity > 0
+      const stored = stored_new.filter(product => product.quantity > 0);
+  
+      // Step 4: Log the result
+      //console.log(stored);
+  
+      // Step 5: Use stored directly (no JSON.parse here!)
+      if (stored.length === 0) {
+        setIsLoading(false);
         return;
       }
-
-      // 2️⃣ Brands
-      const brandRes = await fetch("/api/brand");
-      const brandResult = await brandRes.json();
-
-      // If brand API fail → show products as-is
-      if (!Array.isArray(brandResult?.data)) {
-        setProducts(products);
-        return;
-      }
-
-      // 3️⃣ Brand map
-      const brandMap = {};
-      brandResult.data.forEach((b) => {
-        brandMap[b._id] = b.brand_name;
-      });
-
-      // 4️⃣ Merge brand into product (NO overwrite)
-      const productsWithBrands = products.map((product) => ({
-        ...product, // 🔥 name, image, price, everything preserved
-        brand_name: brandMap[product.brand] || "Unknown",
-      }));
-
-      // 5️⃣ Set state
-      setProducts(productsWithBrands);
-
-    } catch (err) {
-      console.error(err);
-      setProducts([]);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  fetchWhatsNewWithBrands();
-}, []);
-
+  
+      // stored is already an array of products
+      const products = stored;
+  
+        try {
+          const response = await fetch("/api/brand");
+          const result = await response.json();
+          console.log("getres",result);
+          if (result.error) {
+            console.error(result.error);
+            setProducts(products); // Use products without brand names if fetch fails
+          } else {
+            const brandData = result.data;
+            const brandMap = {};
+            brandData.forEach((b) => {
+              brandMap[b._id] = b.brand_name;
+            });
+  
+            // Map brand names to products before setting state
+            const productsWithBrands = products.map(product => ({
+              ...product,
+              brand: brandMap[product.brand] || product.brand // Use brand name if found, otherwise keep original
+            }));
+            console.log("check",productsWithBrands);
+            setProducts(productsWithBrands);
+          }
+        } catch (error) {
+          console.error(error.message);
+          setProducts(products); // Fallback to products without brand names
+        } finally {
+          setIsLoading(false);
+        }
+      };
+  
+      fetchRecentProductsWithBrands();
+    }, []); // Run only once when the component mounts
 
     useEffect(() => {
       fetchBrand();
@@ -1215,6 +1226,7 @@ useEffect(() => {
             slidesPerView="auto"
           >
             {products.map((product) => {
+              console.log("Whatsnew",product);
               const discount = Math.round(
                 ((product.price - product.special_price) / product.price) * 100
               );
