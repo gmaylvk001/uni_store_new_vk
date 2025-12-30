@@ -306,12 +306,12 @@ export default function HomeComponent() {
             const rootIds = data
             .filter(cat => cat.parentid === "none" && cat.status === "Active")
             .map(cat => cat._id);
-            console.log(rootIds);
+          //  console.log(rootIds);
             // 2. Get only categories whose parentid is in rootIds → second level
             const secondLevelCategories = data.filter(
               cat => rootIds.includes(cat.parentid) && cat.status === "Active"
             );
-            console.log(secondLevelCategories);
+          //  console.log(secondLevelCategories);
             setParentCategories(secondLevelCategories);
             setSelectedCategory(secondLevelCategories[0]);
           } catch (error) {
@@ -357,7 +357,7 @@ export default function HomeComponent() {
               });
 
               setCategoryBanner(formatted);
-              console.log("formatted",formatted);
+             // console.log("formatted",formatted);
             }
           } catch (error) {
             console.error("Error fetching category banners:", error);
@@ -997,7 +997,7 @@ useEffect(() => {
 }, []);
 
 
-    console.log(categoryBanner);
+   // console.log(categoryBanner);
     const renderSection = (sectionName) => {
       switch(sectionName) {
           case 'category_banner':
