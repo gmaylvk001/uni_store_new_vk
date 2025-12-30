@@ -1159,6 +1159,7 @@ useEffect(() => {
             slidesPerView="auto"
           >
             {products.map((product) => {
+              console.log("Whatsnews",product);
               const discount = Math.round(
                 ((product.price - product.special_price) / product.price) * 100
               );
