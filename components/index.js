@@ -54,8 +54,6 @@ export default function HomeComponent() {
         items: []
       }
     });
-    const [isMobile, setIsMobile] = useState(false);
-    const [startIndex, setStartIndex] = useState(0);
     const router = useRouter();
     const [userData, setUserData] = useState(null);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -83,30 +81,6 @@ export default function HomeComponent() {
     const [products, setProducts] = useState([]);
 
  
-     useEffect(() => {
-        const checkIfMobile = () => {
-          setIsMobile(window.innerWidth < 768);
-        };
-    
-        checkIfMobile();
-        window.addEventListener('resize', checkIfMobile);
-    
-        const handleRouteChange = () => setNavigating(false);
-        if (router?.events?.on) {
-          router.events.on('routeChangeComplete', handleRouteChange);
-          router.events.on('routeChangeError', handleRouteChange);
-        }
-        
-        // Cleanup function
-        return () => {
-          window.removeEventListener('resize', checkIfMobile);
-          if (router?.events?.off) {
-            router.events.off('routeChangeComplete', handleRouteChange);
-            router.events.off('routeChangeError', handleRouteChange);
-          }
-        };
-      }, [router]);
-
    
     const scrollCategories = (direction) => {
       if (categoryScrollRef.current) {
@@ -167,85 +141,6 @@ export default function HomeComponent() {
       .then(setProducts)
       .catch(console.error);
   }, []);
-
-
- useEffect(() => {
-  const fetchWhatsnewProductsWithBrands = async () => {
-    setIsLoading(true);
-
-    const storedString = localStorage.getItem("whatsnew");
-    let stored_new = [];
-
-    try {
-      stored_new = JSON.parse(storedString) || [];
-    } catch {
-      stored_new = [];
-    }
-
-    if (!Array.isArray(stored_new)) stored_new = [];
-
-    const stored = stored_new.filter(p => p.quantity > 0);
-
-    if (!stored.length) {
-      setProducts([]);
-      setIsLoading(false);
-      return;
-    }
-
-    try {
-      const response = await fetch("/api/brand");
-      const result = await response.json();
-
-      if (Array.isArray(result?.data)) {
-        const brandMap = {};
-        result.data.forEach(b => {
-          brandMap[b._id] = b.brand_name;
-        });
-
-        /* const productsWithBrands = stored.map(p => ({
-          ...p,
-          brand: brandMap[p.brand] || p.brand
-        })); */
-        const productsWithBrands = stored.map(product => {
-          alert("Hi:)");
-  const brandName = brandMap[product.brand];
-  console.log("Tester",brandName);
-
-  return {
-    ...product,
-    brand: typeof brandName === "string" && brandName.trim()
-      ? brandName
-      : ""
-  };
-  console.log("Testerkjds",brand);
-});
-
-
-        setProducts(productsWithBrands);
-      } else {
-        setProducts(stored);
-      }
-    } catch {
-      setProducts(stored);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  fetchWhatsnewProductsWithBrands();
-}, []);
-
-const visibleCount = isMobile ? 3 : 4;
-
-const safeProducts = Array.isArray(products) ? products : [];
-
-const productsNew = safeProducts.slice(
-  startIndex,
-  startIndex + visibleCount
-);
-
-const totalPages = Math.ceil(safeProducts.length / visibleCount);
-
 
     useEffect(() => {
       fetchBrand();
@@ -974,6 +869,91 @@ const totalPages = Math.ceil(safeProducts.length / visibleCount);
   
       fetchOfferProducts();
     }, []);
+
+
+
+      useEffect(() => {
+        const fetchProductsWithBrands = async () => {
+          setIsLoading(true);
+          /*
+          const stored = localStorage.getItem('recentlyViewed');
+          if (!stored) {
+            setIsLoading(false);
+            return;
+          }
+          const products = JSON.parse(stored);
+          */
+          
+          // Step 1: Get localStorage value safely
+        const storedString = localStorage.getItem('recentlyViewed');
+        let stored_new = [];
+    
+        try {
+          stored_new = JSON.parse(storedString) || [];
+        } catch (e) {
+          stored_new = [];
+        }
+    
+        // Step 2: Ensure it's an array
+        if (!Array.isArray(stored_new)) {
+          stored_new = [];
+        }
+    
+        // Step 3: Filter quantity > 0
+        const stored = stored_new.filter(product => product.quantity > 0);
+    
+        // Step 4: Log the result
+        //console.log(stored);
+    
+        // Step 5: Use stored directly (no JSON.parse here!)
+        if (stored.length === 0) {
+          setIsLoading(false);
+          return;
+        }
+    
+        // stored is already an array of products
+        const products = stored;
+    
+          try {
+            const response = await fetch("/api/brand");
+            const result = await response.json();
+            console.log("Hiiiii",result);
+            if (result.error) {
+              console.error(result.error);
+              setProducts(products); // Use products without brand names if fetch fails
+            } else {
+              const brandData = result.data;
+              comsole.log(brandData);
+              const brandMap = {};
+              brandData.forEach((b) => {
+                brandMap[b._id] = b.brand_name;
+              });
+    
+              // Map brand names to products before setting state
+              const productsWithBrands = products.map(product => ({
+                ...product,
+                brand: brandMap[product.brand] || product.brand // Use brand name if found, otherwise keep original
+              }));
+              console.log("Whatsnew Bismi",productsWithBrands);
+              setProducts(productsWithBrands);
+            }
+          } catch (error) {
+            console.error(error.message);
+            setProducts(products); // Fallback to products without brand names
+          } finally {
+            setIsLoading(false);
+          }
+        };
+    
+        fetchProductsWithBrands();
+      }, []); // Run only once when the component mounts
+
+
+
+
+    
+
+
     const [singleBannerNewData, setSingleBannerNewData] = useState({
       singlebanner_new: { items: [] }
     });
@@ -1263,8 +1243,7 @@ useEffect(() => {
             spaceBetween={40}
             slidesPerView="auto"
           >
-            {productsNew.map((product) => {
-              console.log("Whatsnews",product);
+            {products.map((product) => {
               const discount = Math.round(
                 ((product.price - product.special_price) / product.price) * 100
               );
@@ -1339,7 +1318,7 @@ useEffect(() => {
         </div>
     
 
-{/* <h4 className="text-xs text-gray-500 mb-2 uppercase">
+<h4 className="text-xs text-gray-500 mb-2 uppercase">
   {product?.brand ? (
     <Link
       href={`/brand/${product.brand
@@ -1352,22 +1331,7 @@ useEffect(() => {
   ) : (
     <span className="text-gray-400"> </span>
   )}
-</h4> */}
-
-
-<h4 className="text-xs text-gray-500 mb-2 uppercase">
-  {typeof product?.brand === "string" && product.brand.trim() ? (
-    <Link
-      href={`/brand/${product.brand
-        .toLowerCase()
-        .replace(/\s+/g, "-")}`}
-      className="hover:text-blue-600"
-    >
-      {product.brand}
-    </Link>
-  ) : null}
 </h4>
-
 
 
                       {/* Title (HOVER COLOR CHANGE) */}
