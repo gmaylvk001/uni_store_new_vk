@@ -135,12 +135,12 @@ export default function HomeComponent() {
       }
     };
 
-       useEffect(() => {
+       /* useEffect(() => {
     fetch("/api/product/whats-new")
       .then((res) => res.json())
       .then(setProducts)
       .catch(console.error);
-  }, []);
+  }, []); */
 
 /*   useEffect(() => {
   const fetchWhatsNewWithBrands = async () => {
@@ -190,7 +190,7 @@ export default function HomeComponent() {
   fetchWhatsNewWithBrands();
 }, []); */
 
-/* useEffect(() => {
+useEffect(() => {
   const fetchWhatsNew = async () => {
     try {
       const res = await fetch("/api/product/whats-new");
@@ -205,7 +205,7 @@ export default function HomeComponent() {
   };
 
   fetchWhatsNew();
-}, []); */
+}, []);
 
 const productsWithBrands = result.data.map((product) => ({
   ...product,
