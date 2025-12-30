@@ -135,12 +135,61 @@ export default function HomeComponent() {
       }
     };
 
-       useEffect(() => {
+       /* useEffect(() => {
     fetch("/api/product/whats-new")
       .then((res) => res.json())
       .then(setProducts)
       .catch(console.error);
-  }, []);
+  }, []); */
+
+  useEffect(() => {
+  const fetchWhatsNewWithBrands = async () => {
+    setIsLoading(true);
+
+    try {
+      // 1️⃣ Fetch WHAT'S NEW products
+      const productRes = await fetch("/api/product/whats-new");
+      const productResult = await productRes.json();
+
+      const products = Array.isArray(productResult?.data)
+        ? productResult.data
+        : [];
+
+      if (!products.length) {
+        setProducts([]);
+        return;
+      }
+
+      // 2️⃣ Fetch brands
+      const brandRes = await fetch("/api/brand");
+      const brandResult = await brandRes.json();
+
+      const brandMap = {};
+
+      if (Array.isArray(brandResult?.data)) {
+        brandResult.data.forEach((brand) => {
+          brandMap[brand._id] = brand.brand_name;
+        });
+      }
+
+      // 3️⃣ Merge brand name into products
+      const productsWithBrands = products.map((product) => ({
+        ...product,
+        brand_name: brandMap[product.brand] || "",
+      }));
+
+      setProducts(productsWithBrands);
+    } catch (error) {
+      console.error("What's New fetch error:", error);
+      setProducts([]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  fetchWhatsNewWithBrands();
+}, []);
+
 
     useEffect(() => {
       fetchBrand();
@@ -869,67 +918,6 @@ export default function HomeComponent() {
   
       fetchOfferProducts();
     }, []);
-
-
-
-     useEffect(() => {
-  const fetchProductsWithBrands = async () => {
-    setIsLoading(true);
-
-    try {
-      // 1️⃣ Fetch products (replace with your real products API)
-      const productRes = await fetch("/api/product/whats-new");
-      const productResult = await productRes.json();
-
-      const products = Array.isArray(productResult?.data)
-        ? productResult.data
-        : [];
-
-      if (!products.length) {
-        setProducts([]);
-        return;
-      }
-
-      // 2️⃣ Fetch brands
-      const brandRes = await fetch("/api/brand");
-      const brandResult = await brandRes.json();
-
-      const brandMap = {};
-
-      if (Array.isArray(brandResult?.data)) {
-        brandResult.data.forEach(b => {
-          brandMap[b._id] = b.brand_name;
-        });
-      }
-
-      // 3️⃣ Map brand name safely
-      const productsWithBrands = products.map(product => ({
-        ...product,
-        brand:
-          typeof brandMap[product.brand] === "string"
-            ? brandMap[product.brand]
-            : ""
-      }));
-
-      setProducts(productsWithBrands);
-    } catch (error) {
-      console.error(error);
-      setProducts([]);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  fetchProductsWithBrands();
-}, []);
-
-
-
-
-
-    
-
-
     const [singleBannerNewData, setSingleBannerNewData] = useState({
       singlebanner_new: { items: [] }
     });
