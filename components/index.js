@@ -179,7 +179,7 @@ export default function HomeComponent() {
         try {
           const response = await fetch("/api/brand");
           const result = await response.json();
-          
+          console.log("getres",result);
           if (result.error) {
             console.error(result.error);
             setProducts(products); // Use products without brand names if fetch fails
@@ -195,6 +195,7 @@ export default function HomeComponent() {
               ...product,
               brand: brandMap[product.brand] || product.brand // Use brand name if found, otherwise keep original
             }));
+            console.log("check",productsWithBrands);
             setProducts(productsWithBrands);
           }
         } catch (error) {
@@ -1225,6 +1226,7 @@ useEffect(() => {
             slidesPerView="auto"
           >
             {products.map((product) => {
+              console.log("Whatsnew",product);
               const discount = Math.round(
                 ((product.price - product.special_price) / product.price) * 100
               );
