@@ -4,13 +4,17 @@ import CategoryClient from "@/components/category/[slug]/[sub_slug]/[sub_slug_on
 export async function generateMetadata({ params }) {
   const awaitedParams = await params;
   const sub_slug_one = awaitedParams.sub_slug_one;
- // console.log('sub_slug_one',sub_slug_one);
+  const sub_slug = awaitedParams.sub_slug;
+  //console.log('sub_slug_one',sub_slug_one);
+  //console.log('sub_slug',sub_slug);
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
   try {
     const res = await fetch(`${baseUrl}/api/categories/${sub_slug_one}`, {
       cache: "no-store",
     });
+
+    //console.log('res',res);
 
     if (!res.ok) {
       return {
@@ -20,6 +24,7 @@ export async function generateMetadata({ params }) {
     }
 
     const data = await res.json();
+    //console.log('data',data);
     const category = data.main_category;
     //console.log('category',category);
     return {
@@ -43,7 +48,8 @@ export async function generateMetadata({ params }) {
         description: category.meta_description,
       },
     };
-  } catch {
+  } catch  {
+    console.log('error:');
     return {
       title: "Category",
       description: "Browse products by category",

@@ -11,7 +11,7 @@ export async function generateMetadata({ params }) {
     const res = await fetch(`${baseUrl}/api/categories/${sub_slug}`, {
       cache: "no-store",
     });
-
+    
     if (!res.ok) {
       return {
         title: "Category Not Found",
