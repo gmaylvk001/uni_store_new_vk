@@ -1612,7 +1612,7 @@ useEffect(() => {
 
                 </div>
                 {/* <ToastContainer /> */}
-                <RecentlyViewedProducts /> 
+                {/* <RecentlyViewedProducts />  */}
 
            </div>
             <StatusBar /> 
