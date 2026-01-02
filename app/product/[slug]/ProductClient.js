@@ -87,7 +87,7 @@ const handleIncrease = () => {
 const { updateCartCount } = useCart();
   const { openAuthModal } = useModal();
 const handleBuyNow = async () => {
-  console.log("Buying now with warranty:", selectedWarranty, selectedExtendedWarranty);
+  //console.log("Buying now with warranty:", selectedWarranty, selectedExtendedWarranty);
   try {
     const token = localStorage.getItem("token");
 
@@ -338,7 +338,7 @@ const toggleFrequentProduct = (product) => {
           `/api/product/relatedpro?category=${categoryId}&brand=${brandId}&exclude=${currentProductId}&limit=5`
         );
         const data = await res.json();
-        console.log("current related products is:", data);
+       // console.log("current related products is:", data);
 
         if (res.ok) {
           if (data.success && data.products) {
@@ -561,7 +561,7 @@ const fetchBrand = async () => {
       const response = await fetch("/api/brand");
       const result = await response.json();
       if (result.error) {
-      console.error(result.error);
+     // console.error(result.error);
       } else {
         const data = result.data;
   
