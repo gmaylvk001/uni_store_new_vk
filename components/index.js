@@ -78,9 +78,77 @@ export default function HomeComponent() {
     const [videos, setVideos] = useState([]);
     const [activeVideo, setActiveVideo] = useState(null);
     const scrollRef = useRef(null);
-    const [products, setProducts] = useState([]);
+    // const [products, setProducts] = useState([]);
 
  
+
+    const [index, setIndex] = useState(0);
+  const visibleCount = 4;
+
+  const prev = () => {
+    setIndex((prev) =>
+      prev === 0 ? products.length - visibleCount : prev - 1
+    );
+  };
+
+  const next = () => {
+    setIndex((prev) =>
+      prev + visibleCount >= products.length ? 0 : prev + 1
+    );
+  };
+
+    const products = [
+  {
+    id: 1,
+    name: "Blueair Joy S HEPA Silent Technology Air Purifier",
+    image: "uploads/products/1741764239334-aa.jpg",
+    price: "₹11,721",
+    oldPrice: "₹14,999",
+    rating: 5,
+  },
+  {
+    id: 2,
+    name: "Russell Hobbs DOME1515 1500 Watt Electric Kettle",
+    image: "uploads/products/1742274862765-KnYKgfMqmvuhoRW2.jpg",
+    price: "₹799",
+    oldPrice: "₹1,895",
+    rating: 5,
+  },
+  {
+    id: 3,
+    name: "PHILIPS 2000 Series 4.2L Digital Air Fryer",
+    image: "uploads/products/1744699296499-CcFj5I8CaTP1n3LV.jpg",
+    price: "₹8,299",
+    oldPrice: "₹9,995",
+    rating: 3,
+  },
+  {
+    id: 4,
+    name: "WONDERCHEF Regenta 800 Watt Automatic Coffee Maker",
+    image: "uploads/products/1760442848361-1760419717626-MZ55MIN-thumbnail.png",
+    price: "₹3,999",
+    oldPrice: "₹7,000",
+    rating: 4,
+  },
+  {
+    id: 5,
+    name: "Prestige Induction Cooktop",
+    image: "uploads/products/1744782226045-5LMqi3KxCKzfeqQ2.jpg",
+    price: "₹2,499",
+    oldPrice: "₹3,999",
+    rating: 4,
+  },
+  {
+    id: 6,
+    name: "PHILIPS 2000 Series 4.2L 1500 Watt Digital Air Fryer",
+    image: "uploads/products/1744699296499-CcFj5I8CaTP1n3LV.jpg",
+    price: "₹2,499",
+    oldPrice: "₹3,999",
+    rating: 4,
+  },
+];
+
+
    
     const scrollCategories = (direction) => {
       if (categoryScrollRef.current) {
@@ -161,7 +229,7 @@ export default function HomeComponent() {
       }));
 
       // 🔹 5. setProducts (same state)
-      setProducts(updatedProducts);
+      // setProducts(updatedProducts);
 
     } catch (err) {
       console.error(err);
@@ -1028,992 +1096,6 @@ useEffect(() => {
 }, []);
 
 
-   // console.log(categoryBanner);
-    const renderSection = (sectionName) => {
-      switch(sectionName) {
-          case 'category_banner':
-        return (
-          <section id="category_banner">
-            <div className="px-4 md:px-6 py-8">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                {categoryBanner.map((banner, index) => (
-                  
-                  <div key={index} className="col-span-1">
-                    <div className="relative group overflow-hidden  shadow-sm hover:shadow-md transition-shadow">
-
-                      {/* Image */}
-                      <img
-                        src={banner.imageUrl}
-                        alt={`Category Banner ${index + 1}`}
-                        className="w-full h-[300px] object-cover transform group-hover:scale-105 transition duration-500 ease-in-out"
-                        width={400}
-                        height={400}
-                      />
-
-                      <div className="absolute top-1 mb-4 left-4 py-6">
-                        <h3 className="text-lg md:text-xl font-bold">{banner.categoryname}</h3>
-                      </div>
-
-                      {/* Shop Now Link with Arrow */}
-                      <div className="absolute top-8 left-4 py-6">
-                        <Link
-                          href={banner.redirectUrl || "#"}
-                          className="mt-2 inline-flex items-center text-sm font-medium text-gray-800 hover:text-black transition"
-                        >
-                          {banner.buttonText || "Shop Now"}
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="20"
-                            height="20"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            className="ml-1 h-4 w-4"
-                          >
-                            <path d="m9 18 6-6-6-6" />
-                          </svg>
-                        </Link>
-                      </div>
-
-
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </section>
-          );
-          case 'twobanner':
-            return (
-             /*  <section className="bg-gray-50 py-6">
-  
-      <div className="container mx-auto px-6">
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-          
-          <Link
-            href="/category/large-appliance/air-conditioner"
-            className="group block overflow-hidden rounded-xl shadow-sm"
-          >
-            <Image
-              src="/uploads/1762491617.webp"
-              alt="Air Conditioner Deals"
-              width={640}
-              height={200}
-              className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-              priority
-            />
-          </Link>
-
-          <Link
-            href="/category/televisions"
-            className="group block overflow-hidden rounded-xl shadow-sm"
-          >
-            <Image
-              src="/uploads/1757927911.webp"
-              alt="TV Accessories Deals"
-              width={640}
-              height={200}
-              className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-            />
-          </Link>
-
-        </div>
-      </div>
-    </section> */
-
-
-<motion.section
-  id="twobanner"
-  initial="hidden"
-  animate="visible"
-  variants={containerVariants}
-  className="py-6"
->
-  {isTwoBannerTwoLoading ? (
-    <div className="p-6 flex justify-center items-center h-48">
-      <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-blue-600"></div>
-    </div>
-  ) : (
-    <div className="container mx-auto px-6">
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-        {TwoBannerTwoData.twobanner.items.map((item) => (
-          <motion.div
-            key={item.id}
-            variants={itemVariants}
-            className="group block overflow-hidden rounded-xl shadow-sm"
-          >
-            <Link href={item.redirect_url}>
-              <Image
-                src={item.bgImageUrl}
-                alt="Two Banner"
-                width={640}
-                height={200}
-                className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                priority
-              />
-            </Link>
-          </motion.div>
-        ))}
-      </div>
-    </div>
-  )}
-</motion.section>
-
-
-
-
-            );
-            case 'whatsnew':
-            return (
-              
-<section className="bg-white mb-6">
-      <div className="container mx-auto px-4">
-
-        {/* Title */}
-        <div className="mt-6 mb-4">
-          <h1 className="text-2xl font-bold text-[#d72828]">
-            WHAT&apos;S NEW
-          </h1>
-        </div>
-
-        <div className="relative">
-          <Swiper
-            modules={[Navigation]}
-            navigation={{
-              nextEl: ".whatsnew-next",
-              prevEl: ".whatsnew-prev",
-            }}
-            spaceBetween={40}
-            slidesPerView="auto"
-          >
-            {products.map((product) => {
-              console.log("Whatsnew",product);
-              const discount = Math.round(
-                ((product.price - product.special_price) / product.price) * 100
-              );
-
-              return (
-                <SwiperSlide key={product._id} className="!w-[280px]">
-        <div className="relative bg-white border rounded-xl shadow-sm p-4 h-[400px] flex flex-col">
-
-        <div className="relative w-full h-[210px] group overflow-hidden rounded-t-lg aspect-square">
-          <Link
-            href={`/product/${product.slug}`}
-            onClick={() => handleProductClick(product)}
-            className="block w-full h-full"
-          >
-            {/* Default Image */}
-            {product.images?.[0] && (
-              <Image
-                src={
-                  product.images[0].startsWith("http")
-                    ? product.images[0]
-                    : `/uploads/products/${product.images[0]}`
-                }
-                alt={product.name}
-                fill
-                className={`object-contain p-2 md:p-4 transition-all duration-1000 ease-in-out 
-                  ${product.images[1]
-                    ? "group-hover:opacity-0"   // fade out if second image exists
-                    : "group-hover:scale-110"   // zoom if only one image
-                  }`}
-                sizes="(max-width: 640px) 50vw, 33vw, 25vw"
-                unoptimized
-                onError={(e) => {
-                  e.target.onerror = null;
-                  e.target.src = "/uploads/products/placeholder.jpg";
-                }}
-              />
-            )}
-        
-            {/* Hover Image (if available) */}
-            {product.images?.[1] && (
-              <Image
-                src={
-                  product.images[1].startsWith("http")
-                    ? product.images[1]
-                    : `/uploads/products/${product.images[1]}`
-                }
-                alt={product.name}
-                fill
-                className="object-contain p-2 md:p-4 transition-all duration-1000 ease-in-out opacity-0 group-hover:opacity-100 group-hover:scale-110"
-                sizes="(max-width: 640px) 50vw, 33vw, 25vw"
-                unoptimized
-                onError={(e) => {
-                  e.target.onerror = null;
-                  e.target.src = `/uploads/products/${product.images[0]}`;
-                }}
-              />
-            )}
-          </Link>
-        
-          {/* Discount Badge */}
-          {Number(product.special_price) > 0 &&
-            Number(product.special_price) < Number(product.price) && (
-              <span className="absolute top-2 left-2 bg-orange-500 tracking-wider text-white text-xs font-bold px-2 py-1 rounded z-20">
-                -{Math.round(100 - (Number(product.special_price) / Number(product.price)) * 100)}%
-              </span>
-            )}
-        
-          {/* Wishlist Icon */}
-          <div className="absolute top-2 right-2 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            <ProductCard productId={product._id} isOutOfStock={product.quantity === 0} />
-          </div>
-        </div>
-    
-
-<h4 className="text-xs text-gray-500 mb-2 uppercase">
-  {product?.brand_name ? (
-    <Link
-      href={`/brand/${product.brand_name
-        ?.toLowerCase()
-        ?.replace(/\s+/g, "-")}`}
-      className="hover:text-blue-600"
-    >
-      {product.brand_name}
-    </Link>
-  ) : (
-    <span className="text-gray-400"> </span>
-  )}
-</h4>
-
-
-                      {/* Title (HOVER COLOR CHANGE) */}
-                      <Link
-                        href={`/product/${product.slug}`}
-                        className="text-sm font-medium text-[#0069c6] hover:text-[#00badb] transition-colors line-clamp-2 min-h-[40px]"
-                      >
-                        {product.name}
-                      </Link>
-
-                        {/* Price */}
-                        <div className="flex items-center gap-2 mb-3">
-                          <span className="text-base font-semibold text-red-600">
-                            ₹ {(
-                              product.special_price && product.special_price > 0 && product.special_price != '0'  && product.special_price != 0 && product.special_price < product.price
-                                ? product.special_price
-                                : product.price
-                            ).toLocaleString()}
-                          </span>
-    
-    
-                          {product.special_price > 0 && product.special_price != '0'  && product.special_price != 0 &&   product.special_price &&
-                            product.special_price < product.price &&
-                            (
-                              <span className="text-xs text-gray-500 line-through">
-                                ₹ {product.price.toLocaleString()}
-                              </span>
-                          )}
-                        </div>
-
-                        <h4 className={`text-xs mb-3 ${product.stock_status === "In Stock" && product.quantity ? "text-green-600" : "text-red-600"}`}>
-                          {product.stock_status === "In Stock" && product.quantity ? ` ${product.stock_status}` : "Out Of Stock"}
-                          {product.stock_status === "In Stock" && product.quantity ? `, ${product.quantity} units` : ""}
-                        </h4>
-
-                          {/* Add To Cart Button */}
-                          <div className="mt-auto flex items-center justify-between gap-2">
-                            <Addtocart
-                              productId={product._id} stockQuantity={product.quantity}  special_price={product.special_price}
-                              className="w-full text-xs sm:text-sm py-1.5"
-                            />
-                            <a
-                              href={`https://wa.me/919243585858?text=${encodeURIComponent(`Check Out This Product: ${apiUrl}/product/${product.slug}`)}`} 
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="bg-green-500 hover:bg-green-600 text-white p-1 rounded-full transition-colors duration-300 flex items-center justify-center"
-                            >
-                              <svg
-                                className="w-5 h-5"
-                                viewBox="0 0 32 32"
-                                fill="currentColor"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path d="M16.003 2.667C8.64 2.667 2.667 8.64 2.667 16c0 2.773.736 5.368 2.009 7.629L2 30l6.565-2.643A13.254 13.254 0 0016.003 29.333C23.36 29.333 29.333 23.36 29.333 16c0-7.36-5.973-13.333-13.33-13.333zm7.608 18.565c-.32.894-1.87 1.749-2.574 1.865-.657.104-1.479.148-2.385-.148-.55-.175-1.256-.412-2.162-.812-3.8-1.648-6.294-5.77-6.49-6.04-.192-.269-1.55-2.066-1.55-3.943 0-1.878.982-2.801 1.33-3.168.346-.364.75-.456 1.001-.456.25 0 .5.002.719.013.231.01.539-.088.845.643.32.768 1.085 2.669 1.18 2.863.096.192.16.423.03.683-.134.26-.2.423-.39.65-.192.231-.413.512-.589.689-.192.192-.391.401-.173.788.222.392.986 1.625 2.116 2.636 1.454 1.298 2.682 1.7 3.075 1.894.393.192.618.173.845-.096.23-.27.975-1.136 1.237-1.527.262-.392.524-.32.894-.192.375.13 2.35 1.107 2.75 1.308.393.205.656.308.75.48.096.173.096 1.003-.224 1.897z" />
-                              </svg>
-                            </a>
-                          </div>
-                        </div>
-                      </SwiperSlide>
-
-              );
-            })}
-          </Swiper>
-
-          {/* Navigation arrows */}
-          <div className="whatsnew-prev absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow rounded-full w-6 h-6 flex items-center justify-center cursor-pointer">
-            ‹
-          </div>
-          <div className="whatsnew-next absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow rounded-full w-6 h-6 flex items-center justify-center cursor-pointer">
-            ›
-          </div>
-        </div>
-      </div>
-    </section>
-
-            );
-          case 'product':
-            return (
-              <CategoryProducts/>
-            );
-          case 'flash_sales':
-          return (
-            <motion.section
-              ref={refs.flashSales}
-              initial="hiddenDown"
-              animate="visible"
-              variants={sectionVariants}
-              id="flash_sales"
-              className="px-4 md:px-6 py-8"
-            >
-              {flashSalesData.filter(item => item.bgImage && item.productImage).length > 0 && (
-                <div className="grid grid-cols-12 gap-6">
-                  {isFlashSalesLoading ? (
-                    <div className="flex justify-center items-center h-64 col-span-12">
-                      <div className="rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600 animate-spin"></div>
-                    </div>
-                  ) : (
-                    flashSalesData
-                      .filter(item => item.bgImage && item.productImage)
-                      .slice(0, 3) // only take 3 items for 4/4/4
-                      .map((item) => (
-                        <div
-                          key={item.id}
-                          className="col-span-12 md:col-span-4 relative shadow-md overflow-hidden flex items-center p-6"
-                          style={{
-                            backgroundImage: `url(${item.bgImage})`,
-                            backgroundSize: "cover",
-                            backgroundPosition: "center",
-                          }}
-                        >
-                          {/* Overlay */}
-                          <div className="absolute inset-0 bg-black bg-opacity-40"></div>
-
-                          {/* Content Wrapper */}
-                          <div className="relative z-10 flex items-center w-full">
-                            {/* Image Left with animation */}
-                            <motion.div
-                              whileHover={{ scale: 1.1 }}
-                              transition={{ duration: 0.4 }}
-                              className="w-1/2 flex justify-center"
-                            >
-                              <Image
-                                src={item.productImage}
-                                alt={item.title}
-                                width={300}
-                                height={300}
-                                className="object-cover rounded-lg"
-                              />
-                            </motion.div>
-
-                            {/* Text Right */}
-                            <div className="w-1/2 pl-4 text-left text-white">
-                              <h3 className="text-lg md:text-xl font-bold">{item.title}</h3>
-                              <p className="text-sm mt-1 opacity-90">
-                                {item.discountText || "Flat up to 30% discount"}
-                              </p>
-                              <motion.a
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
-                                href={item.redirectUrl}
-                                className="mt-2 inline-flex items-center text-sm font-medium text-gray-800 hover:text-black transition"
-                              >
-                                Shop Now
-                                <svg
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  width="24"
-                                  height="24"
-                                  viewBox="0 0 24 24"
-                                  fill="none"
-                                  stroke="currentColor"
-                                  strokeWidth="2"
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  className="lucide lucide-chevron-right ml-1 h-4 w-4"
-                                >
-                                  <path d="M9 18l6-6-6-6" />
-                                </svg>
-
-                              </motion.a>
-                            </div>
-                          </div>
-                        </div>
-                      ))
-                  )}
-                </div>
-              )}
-            </motion.section>
-          );
-          case 'features':
-              return (
-              <section className="pt-7 px-4 sm:px-6 md:px-6" id="features">
-                <div className="max-w-7xl mx-auto px-4">
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 text-center">
-                {features.map((feature, index) => (
-                  <div
-                    key={index}
-                    className="flex flex-col items-center cursor-pointer group"
-                    onMouseEnter={(e) => {
-                      const img = e.currentTarget.querySelector(".img-flip");
-                      if (img) img.style.transform = "rotateY(360deg)";
-                    }}
-                    onMouseLeave={(e) => {
-                      const img = e.currentTarget.querySelector(".img-flip");
-                      if (img) img.style.transform = "rotateY(0deg)";
-                    }}
-                  >
-                    {/* Image instead of Icon */}
-                    <div
-                      className="mb-4 img-flip"
-                      style={{
-                        transition: "transform 0.5s",
-                        transformStyle: "preserve-3d",
-                      }}
-                    >
-                      <img
-                        src={feature.image}
-                        alt={feature.title}
-                        className="w-16 h-16 object-contain"
-                      />
-                    </div>
-
-                    {/* Title */}
-                    <h3 className="text-lg font-semibold text-gray-900 mb-2 group-hover:transition-colors duration-300">
-                      {feature.title}
-                    </h3>
-
-                    {/* Description */}
-                    <p className="text-gray-600 text-sm leading-relaxed max-w-[250px] group-hover:transition-colors duration-300">
-                      {feature.description}
-                    </p>
-                  </div>
-                ))}
-                </div>
-                </div>
-              </section>
-              );
-          case 'brands':
-              return (
-              <motion.section id="brands"
-                      ref={refs.delivery} 
-                      initial={scrollDirection === 'down' ? 'hiddenDown' : 'hiddenUp'} 
-                      animate= 'visible' 
-                      variants={sectionVariants} 
-                      className="px-4 sm:px-6 md:px-6 pt-7"
-                  >
-                      <div>
-                          <motion.div variants={containerVariants} className="  rounded-[23px] mx-2">
-                              <motion.div variants={itemVariants} className="flex justify-between items-center mb-4">
-                                  <h5 className= "text-lg font-semibold">Shop by Brands</h5>
-                              </motion.div>
-
-                              {isBrandsLoading ? (
-                                  <div className="flex justify-center items-center h-32">
-                                      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600"></div>
-                                  </div>
-                              ) : (
-                                  <motion.div variants={itemVariants}>
-                                      <Slider {...brandSettings} className="brand-slider px-2 sm:px-[50px] relative">
-                                          {brands.map((brand) => (
-                                              <motion.div
-                                                  key={brand.id}
-                                                  className="p-4 flex justify-center items-center"
-                                                  whileHover={{ scale: 1.1 }}
-                                              >
-                                              <div className="w-24 h-24 flex items-center justify-center overflow-hidden">
-                                                <Link href={`/brand/${slugify(brand.brand_name)}`}>
-                                                  <Image
-                                                    src={`/uploads/Brands/${brand.image}`}
-                                                    alt={brand.brand_name || "Brand Logo"}
-                                                    width={100}
-                                                    height={100}
-                                                    className="object-contain w-full h-full cursor-pointer"
-                                                    unoptimized
-                                                  />
-                                                </Link>
-                                              </div>
-                                              </motion.div>
-                                          ))}
-                                      </Slider>
-                                  </motion.div>
-                              )}
-                          </motion.div>
-                      </div>
-                  </motion.section>
-              );
-          case 'topbanner':
-  return (
-    <motion.section 
-      id="topbanner"
-      ref={refs.banner}
-      initial="hidden"
-      animate="visible"
-      variants={containerVariants}
-      className="overflow-hidden pt-0 m-0"
-    >
-      <div className="relative">
-        {isBannerLoading ? (
-          <div className="p-6 flex justify-center items-center h-64">
-            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600"></div>
-          </div>
-        ) : bannerData.banner.items.length > 0 ? (
-          bannerData.banner.items.length > 1 ? (
-            <Slider {...settings} className="relative">
-              {bannerData.banner.items.map((banner) => (
-                <motion.div
-                  key={banner.id}
-                  className="relative w-full aspect-[2000/667] max-h-auto"
-                  variants={itemVariants}
-                >
-                  <div className="absolute inset-0 overflow-hidden">
-                    <Image
-                      src={banner.bgImageUrl}
-                      alt="Banner"
-                      fill
-                      quality={100}
-                      className="object-fill w-full h-full"
-                      style={{ objectPosition: "center 30%" }}
-                      priority
-                    />
-                  </div>
-                  {/* Clickable accessible banner - REMOVED HOVER EFFECT */}
-                  <div
-                    className="absolute inset-0 overflow-hidden cursor-pointer"
-                    role="link"
-                    tabIndex={0}
-                    aria-label={banner?.alt || banner?.redirectUrl || "Banner"}
-                    onClick={() => {
-                      const href = banner?.redirectUrl;
-                      if (!href) return;
-                      if (href.startsWith("/")) {
-                        router.push(href);
-                      } else {
-                        window.location.href = href;
-                      }
-                    }}
-                    onKeyDown={(e) => {
-                      const href = banner?.redirectUrl;
-                      if (!href) return;
-                      if (e.key === "Enter" || e.key === " " || e.key === "Spacebar") {
-                        e.preventDefault();
-                        if (href.startsWith("/")) {
-                          router.push(href);
-                        } else {
-                          window.location.href = href;
-                        }
-                      }
-                    }}
-                  >
-                    <Image
-                      src={banner.bgImageUrl}
-                      alt={banner?.alt || "Banner"}
-                      fill
-                      quality={100}
-                      className="object-fill w-full h-full"
-                      style={{ objectPosition: "center 30%" }}
-                      priority
-                    />
-                  </div>
-                </motion.div>
-              ))}
-            </Slider>
-          ) : (
-            <motion.div
-              className="p-4 md:p-6 relative aspect-[2000/667] max-h-auto"
-              variants={itemVariants}
-            >
-              <div className="absolute inset-0 flex justify-center items-center bg-white">
-                <Image
-                  src={bannerData.banner.items[0].bgImageUrl}
-                  alt="Banner"
-                  fill
-                  className="object-fill w-full h-full"
-                  priority
-                />
-              </div>
-            </motion.div>
-          )
-        ) : (
-          <div></div>
-        )}
-      </div>
-    </motion.section>
-  )
-          case 'singlebanner':
-            return (
-              <motion.section
-                id="singlebanner"
-                initial="hidden"
-                animate="visible"
-                variants={containerVariants}
-                className="overflow-hidden pt-7 px-4 sm:px-6 md:px-6"
-              >
-                <div className="relative">
-                  {isSingleBannerNewLoading ? (
-                    <div className="p-6 flex justify-center items-center h-64">
-                      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600"></div>
-                    </div>
-                  ) : singleBannerNewData.singlebanner_new.items.length > 0 ? (
-                    singleBannerNewData.singlebanner_new.items.length > 1 ? (
-                      <Slider {...settings}>
-                        {singleBannerNewData.singlebanner_new.items.map((item) => (
-                          <motion.div
-                            key={item.id}
-                            className="relative w-full aspect-[1900/400]"
-                            variants={itemVariants}
-                          >
-                            <Link href={item.redirect_url || "#"} className="block w-full h-full">
-                              <Image
-                                src={item.bgImageUrl}
-                                alt="Single Banner New"
-                                fill
-                                quality={100}
-                                className="object-fill w-full h-full"
-                                priority
-                              />
-                            </Link>
-                          </motion.div>
-                        ))}
-                      </Slider>
-                    ) : (
-                      <motion.div className="relative w-full aspect-[1900/400]" variants={itemVariants}>
-                        <Link href={singleBannerNewData.singlebanner_new.items[0].redirect_url || "#"}>
-                          <Image
-                            src={singleBannerNewData.singlebanner_new.items[0].bgImageUrl}
-                            alt="Single Banner New"
-                            width={1900}
-                            height={400}
-                            className="w-full h-auto object-fill"
-                            priority
-                          />
-                        </Link>
-                      </motion.div>
-                    )
-                  ) : null}
-                </div>
-              </motion.section>
-            );
-          case "singlebanner-two":
-            return (
-              <motion.section
-                id="singlebanner-two"
-                initial="hidden"
-                animate="visible"
-                variants={containerVariants}
-                className="overflow-hidden pt-7 px-4 sm:px-6 md:px-6"
-              >
-                <div className="relative">
-                  {isSingleBannerTwoLoading ? (
-                    <div className="p-6 flex justify-center items-center h-64">
-                      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600"></div>
-                    </div>
-                  ) : singleBannerTwoData.singlebanner_two.items.length > 0 ? (
-                    singleBannerTwoData.singlebanner_two.items.length > 1 ? (
-                      <Slider {...settings}>
-                        {singleBannerTwoData.singlebanner_two.items.map((item) => (
-                          <motion.div
-                            key={item.id}
-                            className="relative w-full aspect-[1900/400]"
-                            variants={itemVariants}
-                          >
-                            <Link href={item.redirect_url || "#"} className="block w-full h-full">
-                              <Image
-                                src={item.bgImageUrl}
-                                alt="Single Banner Two"
-                                fill
-                                quality={100}
-                                className="object-fill w-full h-full"
-                                priority
-                              />
-                            </Link>
-                          </motion.div>
-                        ))}
-                      </Slider>
-                    ) : (
-                      <motion.div
-                        className="relative w-full aspect-[1900/400]"
-                        variants={itemVariants}
-                      >
-                        <Link href={singleBannerTwoData.singlebanner_two.items[0].redirect_url || "#"}>
-                          <Image
-                            src={singleBannerTwoData.singlebanner_two.items[0].bgImageUrl}
-                            alt="Single Banner Two"
-                            width={1900}
-                            height={400}
-                            className="w-full h-auto object-fill"
-                            priority
-                          />
-                        </Link>
-                      </motion.div>
-                    )
-                  ) : null}
-                </div>
-              </motion.section>
-          );
-          case 'videocard':
-            return(
-              <motion.section id="videocard"
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.3 }}
-                transition={{ duration: 0.6 }}
-                className="px-4 sm:px-6 md:px-6 pt-7"
-              >
-                <div className=" rounded-2xl">
-                  {/* Header */}
-                  <div className="flex justify-between items-center mb-6 md:px-4">
-                    <h5 className="text-xl font-bold">What's Trending</h5>
-                    <div className="flex gap-2">
-                      <button
-                        onClick={() => scroll("left")}
-                        className="p-2 rounded-full bg-gray-200 hover:bg-gray-300"
-                      >
-                        <CaretLeft size={20} weight="bold" />
-                      </button>
-                      <button
-                        onClick={() => scroll("right")}
-                        className="p-2 rounded-full bg-gray-200 hover:bg-gray-300"
-                      >
-                        <CaretRight size={20} weight="bold" />
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* Video Scroll */}
-                  <div
-ref={scrollRef}
-className="flex gap-4 overflow-x-hidden scroll-smooth px-2 scrollbar-hide"
->
-{videos.map((video) => {
-let thumb = video.thumbnail_image;
-
-if (thumb) {
-// Ensure correct path
-if (!thumb.startsWith("http") && !thumb.startsWith("/")) {
-  thumb = "/" + thumb;
-}
-} else if (video.video_url) {
-const ytId = getYoutubeId(video.video_url);
-if (ytId) thumb = `https://img.youtube.com/vi/${ytId}/0.jpg`;
-}
-
-if (!thumb) thumb = "/placeholder.jpg";
-
-return (
-<motion.div
-  key={video._id}
-  whileHover={{ scale: 1.05 }}
-  className="min-w-[320px]  shadow-md bg-white overflow-hidden"
->
-  {/* 👉 Thumbnail click = same as title click */}
-  <div
-    className="h-48 relative flex items-center justify-center bg-gray-200 cursor-pointer"
-    onClick={() => setActiveVideo(video)}
-  >
-    <img
-      src={thumb}
-      alt={video.title}
-      className="w-full h-full object-cover"
-    />
-    <img
-      src="https://img.poorvika.com//play_video.png"
-      alt="play"
-      className="absolute w-12 h-12"
-    />
-  </div>
-
-  {/* 👉 Title click */}
-  <div className="p-3">
-    <p
-      className="text-sm font-medium text-gray-800 line-clamp-2 cursor-pointer hover:text-orange-600"
-      onClick={() => setActiveVideo(video)}
-    >
-      {video.title}
-    </p>
-  </div>
-</motion.div>
-);
-})}
-</div>
-
-
-                  {/* ✅ Modal for YouTube video */}
-                  {activeVideo && (
-                    <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50">
-                      <div className="bg-white  overflow-hidden relative w-[90%] md:w-[700px] h-[400px]">
-                        {/* Close Button */}
-                        <button
-                          className="absolute top-2 right-2 bg-black text-white rounded-full p-1"
-                          onClick={() => setActiveVideo(null)}
-                        >
-                          <X size={20} />
-                        </button>
-
-                        {/* YouTube Embed */}
-                        <iframe
-                          width="100%"
-                          height="100%"
-                          src={`https://www.youtube.com/embed/${getYoutubeId(
-                            activeVideo.video_url
-                          )}?autoplay=1`}
-                          title={activeVideo.title}
-                          frameBorder="0"
-                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                          allowFullScreen
-                        ></iframe>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </motion.section>
-          )
-          case 'offer':
-            return(
-              <>
-                <div className="overflow-hidden pt-6 px-4 sm:px-6 md:px-6">
-                    {offerProducts.length > 0 && (
-                      <section id="offer">
-                      <div className="px-2 py-4">
-                        <div className="flex justify-between items-center mb-4">
-                          <h2 className="text-xl font-semibold">Exciting Offers</h2>
-                          {offerProducts.length > 3 && (
-                            <div className="flex gap-2">
-                              {/* Optional navigation buttons */}
-                            </div>
-                          )}
-                        </div>
-
-                        {/* Mobile view: static grid */}
-                        {offerProducts.length >= 3 && (
-                          <div className="grid grid-cols-2 gap-4 sm:hidden">
-                            {offerProducts.slice(0, 4).map((product, index) => (
-                              <div
-                                key={product._id}
-                                className={`card  shadow-sm h-[140px] min-h-[140px] flex overflow-hidden ${bgClasses[index % bgClasses.length]}`}
-                              >
-                                <div className="flex items-center">
-                                  <div className="w-1/3 p-2">
-                                    <Link href={`/product/${product.slug}`} className="block">
-                                      <div className="h-[100px] sm:h-[120px] md:h-[130px] bg-white flex items-center justify-center overflow-hidden rounded-md">
-                                        <img
-                                          src={`/uploads/products/${product.images?.[0]}` || "/placeholder.jpg"}
-                                          alt={product.item_code}
-                                          className="object-contain w-full h-full"
-                                        />
-                                      </div>
-                                    </Link>
-                                  </div>
-                                  <div className="w-2/3 p-4">
-                                    <Link href={`/product/${product.slug}`} className="block">
-                                      <div className="text-sm line-clamp-2">{product.name}</div>
-                                    </Link>
-                                    <div className="mt-1">
-                                      <span className="text-sm font-medium text-gray-700">Rs.</span>
-                                      <span className="ml-1 font-semibold">{product.price}</span>
-                                    </div>
-                                    <div className="flex flex-wrap items-center gap-2 mt-1">
-                                      <div className="text-sm font-medium text-gray-400 line-through whitespace-nowrap">
-                                        <span className="text-sm font-medium text-gray-400">Rs.</span>
-                                        {product.special_price ? product.price : product.price + 20}
-                                      </div>
-                                      <div className="text-xs font-semibold text-green-600 bg-white rounded px-2 py-0.5 whitespace-nowrap">
-                                        {product.special_price ? "Special Offer" : "Limited Time"}
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            ))}
-                          </div>
-                        )}
-
-                        {/* Desktop view: Swiper */}
-                        <div className="hidden sm:block">
-                          {offerProducts.length && (
-                            <Swiper
-                              modules={[Navigation, Autoplay]}
-                              navigation={{
-                                nextEl: ".swiper-button-next",
-                                prevEl: ".swiper-button-prev",
-                              }}
-                              autoplay={{
-                                delay: 5000,
-                                disableOnInteraction: false,
-                              }}
-                              slidesPerView={4}
-                              spaceBetween={0}
-                              loop={true}
-                            >
-                              {offerProducts.map((product, index) => (
-                                <SwiperSlide key={product._id}>
-                                  <div
-                                    className={`card  shadow-sm h-[140px] min-h-[140px] flex overflow-hidden ${bgClasses[index % bgClasses.length]}`}
-                                  >
-                                    <div className="flex items-center">
-                                      <div className="w-1/3 p-2">
-                                        <Link href={`/product/${product.slug}`} className="block">
-                                          <div className="h-[100px] sm:h-[120px] md:h-[130px] flex items-center justify-center overflow-hidden rounded-md">
-                                            <img
-                                              src={`/uploads/products/${product.images?.[0]}` || "/placeholder.jpg"}
-                                              alt={product.item_code}
-                                              className="object-contain w-full h-full"
-                                            />
-                                          </div>
-                                        </Link>
-                                      </div>
-                                      <div className="w-2/3 p-4">
-                                        <Link href={`/product/${product.slug}`} className="block">
-                                          <div className="text-sm line-clamp-2">{product.name}</div>
-                                        </Link>
-                                        <div className="mt-1">
-                                          <span className="text-sm font-medium text-gray-700">Rs.</span>
-                                          <span className="ml-1 font-semibold">{product.price}</span>
-                                        </div>
-                                        <div className="flex items-center gap-2 mt-1">
-                                          <div className="text-sm font-medium text-gray-400 line-through whitespace-nowrap">
-                                            <span className="text-sm font-medium text-gray-400">Rs.</span>
-                                            {product.special_price ? product.price : product.price + 20}
-                                          </div>
-                                          <div className="text-sm font-semibold text-green-600 bg-white rounded px-2 whitespace-nowrap">
-                                            {product.special_price ? "Special Offer" : "Limited Time"}
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </SwiperSlide>
-                              ))}
-                            </Swiper>
-                          )}
-                        </div>
-                      </div>
-                      </section>
-                    )}
-                </div>
-              </>
-              )
-          default:
-                      return null;
-      }
-    };
-    const getSectionComponentName = (sectionName) => {
-        const mapping = {
-            'categorybanner': 'category_banner',
-            'flashsale': 'flash_sales',
-            'Brands': 'brands',
-            'topbanner' : 'topbanner',
-            'singlebanner': 'singlebanner',
-            'singlebanner-two': 'singlebanner-two',
-            'features' : 'features',
-            'product'  :'product',
-            // Add more mappings as needed
-        };
-        
-        return mapping[sectionName] || sectionName.toLowerCase();
-    };
 
 
     return (
@@ -2033,32 +1115,486 @@ return (
             {/* main div start */}
             <div className={`relative transition-opacity duration-300 ${isLoading ? 'opacity-0 h-0 overflow-hidden' : 'opacity-100'}`} ref={containerRef} >
                 {/* Banner Section start */}
-                <div className="home-container">
-                  {isSectionLoading ? (
-                      <div className="flex justify-center items-center h-64">
-                          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600"></div>
+
+                <motion.section  id="topbanner" ref={refs.banner} initial="hidden" animate="visible" variants={containerVariants} className="overflow-hidden pt-0 m-0">
+                  <div className="relative">
+                    {isBannerLoading ? (
+                      <div className="p-6 flex justify-center items-center h-64">
+                        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600"></div>
                       </div>
-                      ) : homeSectionData.sections.length > 0 ? (
-                      // Render sections in the order specified by homeSectionData
-                      homeSectionData.sections
-                          .sort((a, b) => a.position - b.position)
-                          .map(section => (
-                              <div key={section.id}>
-                                  {renderSection(getSectionComponentName(section.name))}
+                    ) : bannerData.banner.items.length > 0 ? (
+                      bannerData.banner.items.length > 1 ? (
+                        <Slider {...settings} className="relative">
+                          {bannerData.banner.items.map((banner) => (
+                            <motion.div
+                              key={banner.id}
+                              className="relative w-full aspect-[2000/667] max-h-auto"
+                              variants={itemVariants}
+                            >
+                              <div className="absolute inset-0 overflow-hidden">
+                                <Image
+                                  src={banner.bgImageUrl}
+                                  alt="Banner"
+                                  fill
+                                  quality={100}
+                                  className="object-fill w-full h-full"
+                                  style={{ objectPosition: "center 30%" }}
+                                  priority
+                                />
                               </div>
-                          ))
-                  ) : (
-                      // Fallback order if no sections are configured
-                      <>
-                          {renderSection('category_banner')}
-                          {renderSection('flash_sales')}
-                          {renderSection('brands')}
-                          {renderSection('features')}
-                      </>
-                  )}
+                              {/* Clickable accessible banner - REMOVED HOVER EFFECT */}
+                              <div
+                                className="absolute inset-0 overflow-hidden cursor-pointer"
+                                role="link"
+                                tabIndex={0}
+                                aria-label={banner?.alt || banner?.redirectUrl || "Banner"}
+                                onClick={() => {
+                                  const href = banner?.redirectUrl;
+                                  if (!href) return;
+                                  if (href.startsWith("/")) {
+                                    router.push(href);
+                                  } else {
+                                    window.location.href = href;
+                                  }
+                                }}
+                                onKeyDown={(e) => {
+                                  const href = banner?.redirectUrl;
+                                  if (!href) return;
+                                  if (e.key === "Enter" || e.key === " " || e.key === "Spacebar") {
+                                    e.preventDefault();
+                                    if (href.startsWith("/")) {
+                                      router.push(href);
+                                    } else {
+                                      window.location.href = href;
+                                    }
+                                  }
+                                }}
+                              >
+                                <Image
+                                  src={banner.bgImageUrl}
+                                  alt={banner?.alt || "Banner"}
+                                  fill
+                                  quality={100}
+                                  className="object-fill w-full h-full"
+                                  style={{ objectPosition: "center 30%" }}
+                                  priority
+                                />
+                              </div>
+                            </motion.div>
+                          ))}
+                        </Slider>
+                      ) : (
+                        <motion.div
+                          className="p-4 md:p-6 relative aspect-[2000/667] max-h-auto"
+                          variants={itemVariants}
+                        >
+                          <div className="absolute inset-0 flex justify-center items-center bg-white">
+                            <Image
+                              src={bannerData.banner.items[0].bgImageUrl}
+                              alt="Banner"
+                              fill
+                              className="object-fill w-full h-full"
+                              priority
+                            />
+                          </div>
+                        </motion.div>
+                      )
+                    ) : (
+                      <div></div>
+                    )}
+                  </div>
+                  {/* ================= ROUND CATEGORY ICONS ================= */}
+                  <div className="py-2 relative">
+                    {/* Left Arrow */}
+                    <button
+                      onClick={scrollLeft}
+                      className="absolute left-0 top-1/2 -translate-y-1/2 bg-white p-1 rounded-full shadow hover:bg-gray-100 z-10"
+                    >
+                      <FiChevronLeft size={20} />
+                    </button>
+
+                    {/* Right Arrow */}
+                    <button
+                      onClick={scrollRight}
+                      className="absolute right-0 top-1/2 -translate-y-1/2 bg-white p-1 rounded-full shadow hover:bg-gray-100 z-10"
+                    >
+                      <FiChevronRight size={20} />
+                    </button>
+
+                    {/* Category Row */}
+                    <div
+                      ref={containerRef}
+                      className="flex items-start lg:justify-center justify-start gap-8 overflow-x-hidden no-scrollbar px-4 md:px-10"
+                    >
+                      {categories.map((cat) => (
+                        <Link key={cat._id} href={`/category/${cat.category_slug}`}>
+                          <div className="flex flex-col items-center min-w-[100px] cursor-pointer">
+                            {/* ICON TILE */}
+                            <div className="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20
+            rounded-2xl
+            bg-gradient-to-br from-[#ff2aa1] via-[#b5179e] to-[#0b3c5d]
+
+            flex items-center justify-center
+            shadow-md
+            hover:scale-105 transition">
+                              {cat.image ? (
+                                <img
+                                  src={cat.image}
+                                  alt={cat.category_name}
+                                  className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 object-contain"
+                                />
+                              ) : (
+                                <div className="w-10 h-10 bg-gray-200 rounded-full" />
+                              )}
+                            </div>
+
+                            {/* TEXT */}
+                            <span
+                              title={cat.category_name}
+                              className="mt-1 text-xs sm:text-sm font-medium text-gray-800 
+                                        hover:text-[#1688c8] text-center truncate max-w-[80px]"
+                            >
+                              {cat.category_name}
+                            </span>
+                          </div>
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                </motion.section>
+                <div className="home-container bg-gradient-to-r from-[#1688C8] to-[#33a7b5]">
+                  <section className="px-4 md:px-6 py-8 text-white">
+                    <h2 className="text-xl md:text-2xl font-bold mb-6"> Latest @Unilet</h2>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      {/* Card 1 */}
+                      <div className="relative rounded-lg overflow-hidden shadow-lg">
+                        <img
+                          src="uploads/flashsale/HP_SOH_Layout_31Dec2025_07_qHwHCtAzl.png"
+                          alt="flash sale"
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+
+
+                      <div className="relative rounded-lg overflow-hidden shadow-lg">
+                        <img
+                          src="uploads/flashsale/HP_SOH_Layout_31Dec2025_08_LZAba1DuDe.webp"
+                          alt="flash sale"
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+
+                      {/* Card 3 */}
+                      <div className="relative rounded-lg overflow-hidden shadow-lg">
+                        <img
+                          src="uploads/flashsale/HP_SOH_Layout_31Dec2025_09_Bos-jsPMo.webp"
+                          alt="flash sale"
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    </div>
+                  </section>
+
+                  <section className="px-4 md:px-6 py-8 text-white">
+                    <h2 className="text-xl md:text-2xl font-bold mb-6">Best Value for you</h2>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      {/* Card 1 */}
+                      <div className="relative rounded-lg overflow-hidden shadow-lg">
+                        <img
+                          src="uploads/aboutus/HP_SOH_3split_Wedding_31Dec2025_gg1gytBQc.webp"
+                          alt="flash sale"
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+
+
+                      <div className="relative rounded-lg overflow-hidden shadow-lg">
+                        <img
+                          src="uploads/aboutus/HP_SOH_3split_Dealscorner_31Dec2025_cYeQy6op2.webp"
+                          alt="flash sale"
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+
+                      {/* Card 3 */}
+                      <div className="relative rounded-lg overflow-hidden shadow-lg">
+                        <img
+                          src="uploads/aboutus/HP_SOH_3split_WinterSale_31Dec2025_1fEWqgna5.webp"
+                          alt="flash sale"
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    </div>
+                  </section>
+
+                  
+                  <section className="px-4 md:px-6 py-10">
+                    <h2 className="text-xl md:text-2xl font-semibold text-white mb-6">
+                      What's Hot
+                    </h2>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                      
+                      {/* Image 1 */}
+                      <div className="rounded-xl overflow-hidden bg-[#111] hover:scale-[1.02] transition">
+                        <img
+                          src="uploads/aboutus/HP_What'sHot_RealmeP4x_02Jan2026_ZNy77FWpt.webp"
+                          alt="What's Hot"
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+
+                      {/* Image 2 */}
+                      <div className="rounded-xl overflow-hidden bg-[#111] hover:scale-[1.02] transition">
+                        <img
+                          src="uploads/aboutus/HP_What'sHot_TVs_02Jan2026_8MouoeMk4B.webp"
+                          alt="What's Hot"
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+
+                      {/* Image 3 */}
+                      <div className="rounded-xl overflow-hidden bg-[#111] hover:scale-[1.02] transition">
+                        <img
+                          src="uploads/aboutus/HP_What'sHot_WM_02Jan2026_Yt-KWCCDR.webp"
+                          alt="What's Hot"
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+
+                      {/* Image 4 */}
+                      <div className="rounded-xl overflow-hidden bg-[#111] hover:scale-[1.02] transition">
+                        <img
+                          src="uploads/aboutus/HP_What'sHot_iPad11_02Jan2026_PhoUjE9mF.webp"
+                          alt="What's Hot"
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+
+                    </div>
+                  </section>
+
+
+                  <div className=" py-10 px-6 relative">
+                    <h2 className="text-white text-2xl font-semibold mb-6">
+                      Best for the season
+                    </h2>
+
+                    {/* Left Arrow */}
+                    <button
+                      onClick={prev}
+                      className="absolute left-2 top-1/2 -translate-y-1/2 z-10 bg-black/70 p-2 rounded-full text-white"
+                    >
+                      <FiChevronLeft size={28} />
+                    </button>
+
+                    {/* Right Arrow */}
+                    <button
+                      onClick={next}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 z-10 bg-black/70 p-2 rounded-full text-white"
+                    >
+                      <FiChevronRight size={28} />
+                    </button>
+
+                    {/* Products */}
+                    <div className="overflow-hidden">
+                      <div
+                        className="flex gap-6 transition-transform duration-500"
+                        style={{
+                          transform: `translateX(-${index * 260}px)`,
+                        }}
+                      >
+                        {products.map((product) => (
+                          <div
+                            key={product.id}
+                            className="min-w-[240px] bg-[#1a1a1a] rounded-xl p-4 text-white relative"
+                          >
+                            <Heart className="absolute top-4 right-4 text-white" size={18} />
+
+                            <img
+                              src={product.image}
+                              alt={product.name}
+                              className="h-40 mx-auto object-contain mb-4"
+                            />
+
+                            <h3 className="text-sm font-medium line-clamp-2 mb-2">
+                              {product.name}
+                            </h3>
+
+                            <div className="flex items-center gap-2 mb-2">
+                              <span className="text-lg font-semibold">{product.price}</span>
+                              <span className="text-gray-400 line-through text-sm">
+                                {product.oldPrice}
+                              </span>
+                            </div>
+
+                            {/* Rating */}
+                            <div className="flex gap-1">
+                              {Array.from({ length: 5 }).map((_, i) => (
+                                <span
+                                  key={i}
+                                  className={
+                                    i < product.rating
+                                      ? "text-green-400"
+                                      : "text-gray-500"
+                                  }
+                                >
+                                  ★
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className=" py-10 px-6 relative">
+                    <h2 className="text-white text-2xl font-semibold mb-6">
+                      UNILET Only
+                    </h2>
+
+                    {/* Left Arrow */}
+                    <button
+                      onClick={prev}
+                      className="absolute left-2 top-1/2 -translate-y-1/2 z-10 bg-black/70 p-2 rounded-full text-white"
+                    >
+                      <FiChevronLeft size={28} />
+                    </button>
+
+                    {/* Right Arrow */}
+                    <button
+                      onClick={next}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 z-10 bg-black/70 p-2 rounded-full text-white"
+                    >
+                      <FiChevronRight size={28} />
+                    </button>
+
+                    {/* Products */}
+                    <div className="overflow-hidden">
+                      <div
+                        className="flex gap-6 transition-transform duration-500"
+                        style={{
+                          transform: `translateX(-${index * 260}px)`,
+                        }}
+                      >
+                        {products.map((product) => (
+                          <div
+                            key={product.id}
+                            className="min-w-[240px] bg-[#1a1a1a] rounded-xl p-4 text-white relative"
+                          >
+                            <Heart className="absolute top-4 right-4 text-white" size={18} />
+
+                            <img
+                              src={product.image}
+                              alt={product.name}
+                              className="h-40 mx-auto object-contain mb-4"
+                            />
+
+                            <h3 className="text-sm font-medium line-clamp-2 mb-2">
+                              {product.name}
+                            </h3>
+
+                            <div className="flex items-center gap-2 mb-2">
+                              <span className="text-lg font-semibold">{product.price}</span>
+                              <span className="text-gray-400 line-through text-sm">
+                                {product.oldPrice}
+                              </span>
+                            </div>
+
+                            {/* Rating */}
+                            <div className="flex gap-1">
+                              {Array.from({ length: 5 }).map((_, i) => (
+                                <span
+                                  key={i}
+                                  className={
+                                    i < product.rating
+                                      ? "text-green-400"
+                                      : "text-gray-500"
+                                  }
+                                >
+                                  ★
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                   <section className="px-4 md:px-6 py-10">
+                    <h2 className="text-xl md:text-2xl font-semibold text-white mb-6">
+                      Special Deals for you
+                    </h2>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                      
+                      {/* Image 1 */}
+                      <div className="rounded-xl overflow-hidden bg-[#111] hover:scale-[1.02] transition">
+                        <img
+                          src="uploads/aboutus/HP_DOTD_AirFryers_02Jan2026_iSrQ_kbJl.jpg"
+                          alt="Special Deals for you"
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+
+                      {/* Image 2 */}
+                      <div className="rounded-xl overflow-hidden bg-[#111] hover:scale-[1.02] transition">
+                        <img
+                          src="uploads/aboutus/HP_DOTD_BTSpeakers_02Jan2026_-VhhZiYFRG.jpg"
+                          alt="What's Hot"
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+
+                      {/* Image 3 */}
+                      <div className="rounded-xl overflow-hidden bg-[#111] hover:scale-[1.02] transition">
+                        <img
+                          src="uploads/aboutus/HP_DOTD_Chargers_02Jan2026_i5NEs4ycP.webp"
+                          alt="What's Hot"
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+
+                      {/* Image 4 */}
+                      <div className="rounded-xl overflow-hidden bg-[#111] hover:scale-[1.02] transition">
+                        <img
+                          src="uploads/aboutus/HP_DOTD_SW_02Jan2026_bvnroJbzi.webp"
+                          alt="What's Hot"
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+
+                    </div>
+                  </section>
+
+
+                  <section className="px-4 md:px-6 py-10">
+                    <h2 className="text-xl md:text-2xl font-semibold text-white mb-6">
+                     Onsite Service Options: UniShield, Unisure, UniCare, UniGuard, UniProtect, UniSafe
+                    </h2>
+
+                    <div className="overflow-hidden pt-0 m-0 bg-transparent">
+                      
+                      {/* Image 1 */}
+                      <div className="rounded-xl overflow-hidden bg-[#111] hover:scale-[1.02] transition">
+                        <img
+                          src="uploads/aboutus/D_Zipcare_27.png"
+                          alt="Special Deals for you"
+                          className="w-full h-auto block"
+                        />
+                      </div>
+                    </div>
+                  </section>
+
+
+                  
+
+
                 </div>
-                <ToastContainer />
-                <RecentlyViewedProducts /> 
+               {/*  <ToastContainer />
+                <RecentlyViewedProducts />  */}
 
            </div>
             <StatusBar /> 
