@@ -80,11 +80,15 @@ export default function HomeComponent() {
     const scrollRef = useRef(null);
     // const [products, setProducts] = useState([]);
 
+
+
+
  
 
     const [index, setIndex] = useState(0);
   const visibleCount = 4;
 
+  
   const prev = () => {
     setIndex((prev) =>
       prev === 0 ? products.length - visibleCount : prev - 1
@@ -148,8 +152,12 @@ export default function HomeComponent() {
   },
 ];
 
+const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
+const CARD_WIDTH = isMobile ? 230 : 330; // gap include
 
-   
+const CARDS_PER_VIEW = isMobile ? 2 : 4;
+
+const maxIndex = Math.max(0, products.length - CARDS_PER_VIEW);
     const scrollCategories = (direction) => {
       if (categoryScrollRef.current) {
         categoryScrollRef.current.scrollBy({
@@ -1113,7 +1121,7 @@ useEffect(() => {
                 </div>
             )}
             {/* main div start */}
-            <div className={`relative transition-opacity duration-300 ${isLoading ? 'opacity-0 h-0 overflow-hidden' : 'opacity-100'}`} ref={containerRef} >
+            <div className={`relative transition-opacity duration-300 overflow-hidden ${isLoading ? 'opacity-0 h-0 overflow-hidden' : 'opacity-100'}`} ref={containerRef} >
                 {/* Banner Section start */}
 
                 <motion.section  id="topbanner" ref={refs.banner} initial="hidden" animate="visible" variants={containerVariants} className="overflow-hidden pt-0 m-0">
@@ -1231,12 +1239,12 @@ useEffect(() => {
                           <div className="flex flex-col items-center min-w-[100px] cursor-pointer">
                             {/* ICON TILE */}
                             <div className="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20
-            rounded-2xl
-            bg-gradient-to-br from-[#ff2aa1] via-[#b5179e] to-[#0b3c5d]
+                            rounded-2xl
+                            bg-gradient-to-br from-[#ff2aa1] via-[#b5179e] to-[#0b3c5d]
 
-            flex items-center justify-center
-            shadow-md
-            hover:scale-105 transition">
+                            flex items-center justify-center
+                            shadow-md
+                            hover:scale-105 transition">
                               {cat.image ? (
                                 <img
                                   src={cat.image}
@@ -1405,10 +1413,20 @@ useEffect(() => {
                         }}
                       >
                         {products.map((product) => (
+                          
                           <div
-                            key={product.id}
-                            className="min-w-[240px] bg-[#1a1a1a] rounded-xl p-4 text-white relative"
-                          >
+  key={product.id}
+  className="
+    min-w-[210px] 
+    md:min-w-[310px] 
+    bg-[#1a1a1a] 
+    rounded-xl 
+    p-4 
+    text-white 
+    relative
+  "
+>
+
                             <Heart className="absolute top-4 right-4 text-white" size={18} />
 
                             <img
@@ -1593,8 +1611,8 @@ useEffect(() => {
 
 
                 </div>
-               {/*  <ToastContainer />
-                <RecentlyViewedProducts />  */}
+                {/* <ToastContainer /> */}
+                {/* <RecentlyViewedProducts />  */}
 
            </div>
             <StatusBar /> 
