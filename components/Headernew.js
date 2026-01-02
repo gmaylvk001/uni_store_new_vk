@@ -1759,61 +1759,197 @@ const shouldShowArrow = (item, allItems = []) => {
 
 
 
-      {/* ================= TOP DARK BAR ================= */}
-      {/* <div className="bg-gradient-to-b from-[#1e1e1e] to-[#2a2a2a] text-white"> */}
-        <div className={`${isMobileMenuOpen ? "fixed inset-0 mt-0 pt-0 z-50 overflow-y-auto" : "w-full text-white sticky top-0 z-[999] bg-[#212529] bg-[url('/user/christmas-garlands.jpg')] bg-repeat-x bg-top bg-[length:auto_140px]"}`}>
-        <div className="bg-black/20 px-4 sm:px-6 md:px-6 md:pt-4">
-        <div className="max-w-7xl mx-auto px-1 py-3 flex items-center justify-between">
 
-          {/* Logo */}
+      {/* ================= SEARCH BAR ROW ================= */}
+      {/* <div className="bg-gradient-to-r from-[#1688C8] to-[#33a7b5]"> */}
+      <div className="bg-black">
+        <div className="max-w-7xl mx-auto px-4 py-4 flex items-center gap-4">
           <Link href="/" className="text-lg font-semibold">
            <img src="/user/unilet-logo.webp" alt="Logo" width={100} height={70} className="h-auto" />
           </Link>
+          <div ref={menuRef} className="relative">
+            {/* Menu Button */}
+            <button
+              onClick={() => setOpen(!open)}
+              className="flex items-center gap-2 text-white cursor-pointer px-4 py-2"
+            >
+              <FiMenu size={18} />
+              <span className="font-medium">Menu</span>
+            </button>
 
-          {/* Top Categories */}
-          <div className=" 
-          hidden lg:flex overflow-x-auto scrollbar-hide text-nowrap items-center gap-5 font-medium px-1 py-1 md:px-2
-              md:py-2
-              rounded-lg lg:rounded-full
-              bg-white/10
-              backdrop-blur-md
-              border border-white/30">
-            {/* {categories.map((cat) => (
-              <span
-                key={cat.category_slug}
-                className="text-sm text-gray-200 hover:text-[#1688c8] cursor-pointer"
-              >
-                {cat.category_name}
-              </span>
-            ))} */}
-            {/* {categories?.slice(0, 4).map((cat) => (
-              <Link href={`/category/${cat.category_slug}`}>
-              <span
-                className="text-sm text-gray-200 hover:text-[#1688c8] cursor-pointer"
-              >
-                {cat.category_name}
-              </span>
-                          </Link>
-            ))} */}
+            {/* Dropdown */}
+            {open && (
+              <div className="absolute left-0 top-full mt-2 w-56 bg-white text-black shadow-lg z-50">
+                <ul ref={dropdownRef} className="py-2 text-sm" style={{ height: "391px" }}>
+                  {categories && categories.length > 0 ? (
+                    categories.map((cat) => (
+                      <li
+                        key={cat._id}
+                        className="px-4 py-2 cursor-pointer relative flex items-center justify-between
+                                  hover:bg-gray-100"
+                        onMouseEnter={(e) => {
+                          if (cat?.subcategories?.length > 0) {
+                            setHoveredCategory(cat);
+                            const rect = e.currentTarget.getBoundingClientRect();
+                            setDropdownTop(rect.top);
+                            setDropdownLeft(rect.right);
+                          } else {
+                            setHoveredCategory(null);
+                          }
+                        }}
+                      >
+                        <span>{cat.category_name}</span>
 
-            {categories?.slice(0, 4).map((cat) => (
-              <Link
-                key={cat.category_slug}   // ✅ UNIQUE KEY
-                href={`/category/${cat.category_slug}`}
-              >
-                <span className="text-sm text-gray-200 hover:text-[#1688c8] cursor-pointer">
-                  {cat.category_name}
-                </span>
-              </Link>
-            ))}
+                        {/* 👉 Show arrow ONLY if subcategory exists */}
+                        {cat?.subcategories?.length > 0 && (
+                          <span className="text-gray-400 text-sm">{">"}</span>
+                        )}
+                      </li>
+                    ))
+                  ) : (
+                    <li className="px-4 py-2 text-gray-400 cursor-not-allowed">
+                      No categories available
+                    </li>
+                  )}
+                </ul>
+              </div>
+            )}
 
-            <span className="bg-sky-500 text-xs px-3 py-1 rounded-full font-medium">
-              Xmas & New year Sale
-            </span>
+            {hoveredCategory && hoveredCategory.subcategories?.length > 0 && (() => {
+              const sortedSubcategories = [...hoveredCategory.subcategories]
+                .filter(Boolean)
+                .sort((a, b) =>
+                  alphaSortString(a?.category_name, b?.category_name)
+                );
+
+              const flatAll = flattenAllCategories(
+                sortedSubcategories,
+                hoveredCategory.category_slug
+              );
+
+              const sanitizedFlat = (flatAll || []).filter((item) =>
+                item?.type === "brand"
+                  ? !!item?.brand_name
+                  : !!item?.category_name
+              );
+
+              const flatAlpha = prepareFlatListAlpha(sanitizedFlat);
+              const dropdownChunksLocal = chunkFlatList(flatAlpha, 11);
+              const filteredChunks = dropdownChunksLocal.filter(
+                (chunk) => chunk?.length > 0
+              );
+
+              /* let navImages = [];
+              if (hoveredCategory?.navImage) {
+                navImages = Array.isArray(hoveredCategory.navImage)
+                  ? hoveredCategory.navImage
+                  : hoveredCategory.navImage.split(",").map(s => s.trim());
+              } */
+
+              const columnWidth = 220;
+              const computedWidth =
+                // (filteredChunks.length + navImages.length) * columnWidth;
+                (filteredChunks.length) * columnWidth;
+
+              return (
+                <div
+                  ref={dropdownRef}
+                  className="fixed z-50 border-t shadow-xl"
+                  style={{
+                    top: `${dropdownTop - 8}px`,
+                    left: `${dropdownLeft - 1}px`,
+                    width: `${computedWidth}px`,
+                  }}
+                  onMouseEnter={cancelHide}
+                  onMouseLeave={() => startHide(120)}
+                >
+                  <div className="flex bg-white h-[390px] overflow-hidden">
+                    {filteredChunks.map((chunk, index) => (
+                      <div
+                        key={index}
+                        className={`min-w-[220px] p-3 ${
+                          index % 2 === 0 ? "bg-[#f2f2f2]" : "bg-white"
+                        }`}
+                      >
+                        {chunk.map((item) =>
+                          renderFlatItem(item, hoveredCategory, flatAlpha)
+                        )}
+                      </div>
+                    ))}
+
+                    {/* {navImages.map((img, idx) => (
+                      <div key={idx} className="w-[220px] h-[390px]">
+                        <Image
+                          src={img}
+                          alt="nav"
+                          width={220}
+                          height={390}
+                          className="object-cover w-full h-full"
+                        />
+                      </div>
+                    ))} */}
+                  </div>
+                </div>
+              );
+            })()}
+
           </div>
 
-          {/* Icons */}
-          <div className="flex items-center gap-4">
+          {/* Search */}
+          <div className="flex-1 flex bg-white rounded-md overflow-hidden">
+            {/* <select className="px-4 text-sm outline-none border-r">
+              <option>All Categories</option>
+              {categories.map((cat) => (
+                <option key={cat}>{cat}</option>
+              ))}
+            </select> */}
+             {/* Category select */}
+                      <select
+                        value={selectedCategory}
+                        onChange={(e) => setSelectedCategory(e.target.value)}
+                        className="border-r border-gray-300 outline-none flex-shrink-0 min-w-[120px] w-auto px-4 text-sm"
+                        aria-label="Category"
+                      >
+                        <option value="All Category">All Category</option>
+                        {categories.map((cat) => (
+                          <option key={cat._id} value={cat.category_name} title={cat.category_name}>
+                            {cat.category_name}
+                          </option>
+                        ))}
+                      </select>
+
+<input
+		type="search"
+		name="q"
+		id="q"
+		value={searchQuery}
+		onChange={(e) => setSearchQuery(e.target.value)}
+		ref={searchInputRef}
+		onFocus={() => {
+		  setSearchContext('desktop'); // ADDED
+		  if (searchInputRef.current) {
+			const rect = searchInputRef.current.getBoundingClientRect();
+			setSearchDropdownLeft(rect.left);
+			setSearchDropdownTop(rect.bottom + window.scrollY);
+			setSearchDropdownWidth(rect.width);
+		  }
+		  if (searchQuery.trim().length >= 2) fetchSuggestions(searchQuery);
+		  setSearchDropdownVisible(true);
+		}}
+		onKeyDown={handleDesktopKeyDown}  // correct usage
+		className={`px-4 py-2 outline-none search-input w-48 ${searchQuery.trim() ? 'has-value' : ''}`}
+		placeholder="Search"
+		aria-label="Search query"
+	  />
+	  
+            {/* SEARCH ICON */}
+                    <button onClick={handleSearchBtnClick} className="px-5 text-sky-500">
+                      <FiSearch size={18} />
+                    </button>
+          </div>
+
+          {/* Right Icons */}
+          <div className="hidden md:flex items-center gap-4 text-white">
             <div className="w-9 h-9 rounded-full bg-[#2f2f2f] hover:bg-[#1688c8] flex items-center justify-center cursor-pointer transition-all duration-300">
               <Link href="/wishlist" className="relative w-9 h-9 flex items-center justify-center rounded-full
                bg-[#2b2b2b] border border-[#4a4a4a]
@@ -1836,7 +1972,27 @@ const shouldShowArrow = (item, allItems = []) => {
                 </span>
               </Link>
             </div>
-           <div className="relative flex items-center">
+
+            <div className="w-9 h-9 rounded-full bg-[#2f2f2f] hover:bg-[#1688c8] flex items-center justify-center cursor-pointer transition-all duration-300">
+              <Link href="/contact" className="w-9 h-9 flex items-center justify-center rounded-full
+               bg-[#2b2b2b] border border-[#4a4a4a]
+               text-white shadow-md
+               hover:bg-[#1688c8] transition-all">
+                <FiPhone />
+               </Link>
+              
+            </div>
+            <div className="w-9 h-9 rounded-full bg-[#2f2f2f] hover:bg-[#1688c8] flex items-center justify-center cursor-pointer transition-all duration-300">
+              <Link href="/location" className="w-9 h-9 flex items-center justify-center rounded-full
+               bg-[#2b2b2b] border border-[#4a4a4a]
+               text-white shadow-md
+               hover:bg-[#1688c8] transition-all">
+                <FiMapPin />
+               </Link>
+              
+            </div>
+
+            <div className="relative flex items-center">
   {isLoggedIn ? (
     <>
       <button
@@ -1909,218 +2065,39 @@ const shouldShowArrow = (item, allItems = []) => {
     </button>
   )}
 </div>
-
-          </div>
-        </div>
-        </div>
-        
-      </div>
-
-      {/* ================= SEARCH BAR ROW ================= */}
-      <div className="bg-[#4a4a4a]">
-        <div className="max-w-7xl mx-auto px-4 py-4 flex items-center gap-4">
-
-          <div ref={menuRef} className="relative">
-      {/* Menu Button */}
-      <button
-        onClick={() => setOpen(!open)}
-        className="flex items-center gap-2 text-white cursor-pointer px-4 py-2"
-      >
-        <FiMenu size={18} />
-        <span className="font-medium">Menu</span>
-      </button>
-
-      {/* Dropdown */}
-      {open && (
-        <div className="absolute left-0 top-full mt-2 w-56 bg-white text-black rounded-md shadow-lg z-50">
-          {/* <ul className="py-2 text-sm">
-  {categories && categories.length > 0 ? (
-    categories.map((cat) => (
-      <li
-        key={cat._id}
-        className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-      >
-        {cat.category_name}
-      </li>
-    ))
-  ) : (
-    <li className="px-4 py-2 text-gray-400 cursor-not-allowed">
-      No categories available
-    </li>
-  )}
-</ul> */}
-
-<ul className="py-2 text-sm w-[260px] bg-white rounded-md shadow-lg">
-  {categories && categories.length > 0 ? (
-    categories.map((cat) => (
-      <li
-        key={cat._id}
-        className="px-4 py-2 flex items-center justify-between hover:bg-gray-100 cursor-pointer relative"
-        onMouseEnter={(e) => {
-          cancelHide();
-
-          // Dropdown position calculate
-          const rect = e.currentTarget.getBoundingClientRect();
-
-          setDropdownTop(rect.top);
-          setDropdownLeft(rect.right);
-          setHoveredCategory(cat);
-        }}
-        onMouseLeave={() => startHide(120)}
-      >
-        <span className="truncate">{cat.category_name}</span>
-
-        {/* 👉 Show arrow only if subcategories exist */}
-        {cat.subcategories && cat.subcategories.length > 0 && (
-          <span className="text-gray-400 text-lg ml-2">{'>'}</span>
-        )}
-      </li>
-    ))
-  ) : (
-    <li className="px-4 py-2 text-gray-400 cursor-not-allowed">
-      No categories available
-    </li>
-  )}
-</ul>
-
-
-        </div>
-      )}
-    </div>
-
-          {/* Search */}
-          <div className="flex-1 flex bg-white rounded-md overflow-hidden">
-            {/* <select className="px-4 text-sm outline-none border-r">
-              <option>All Categories</option>
-              {categories.map((cat) => (
-                <option key={cat}>{cat}</option>
-              ))}
-            </select> */}
-             {/* Category select */}
-                      <select
-                        value={selectedCategory}
-                        onChange={(e) => setSelectedCategory(e.target.value)}
-                        className="border-r border-gray-300 outline-none flex-shrink-0 min-w-[120px] w-auto px-4 text-sm"
-                        aria-label="Category"
-                      >
-                        <option value="All Category">All Category</option>
-                        {categories.map((cat) => (
-                          <option key={cat._id} value={cat.category_name} title={cat.category_name}>
-                            {cat.category_name}
-                          </option>
-                        ))}
-                      </select>
-
-<input
-		type="search"
-		name="q"
-		id="q"
-		value={searchQuery}
-		onChange={(e) => setSearchQuery(e.target.value)}
-		ref={searchInputRef}
-		onFocus={() => {
-		  setSearchContext('desktop'); // ADDED
-		  if (searchInputRef.current) {
-			const rect = searchInputRef.current.getBoundingClientRect();
-			setSearchDropdownLeft(rect.left);
-			setSearchDropdownTop(rect.bottom + window.scrollY);
-			setSearchDropdownWidth(rect.width);
-		  }
-		  if (searchQuery.trim().length >= 2) fetchSuggestions(searchQuery);
-		  setSearchDropdownVisible(true);
-		}}
-		onKeyDown={handleDesktopKeyDown}  // correct usage
-		className={`flex-1 px-4 py-2 outline-none search-input ${searchQuery.trim() ? 'has-value' : ''}`}
-		placeholder="Search"
-		aria-label="Search query"
-	  />
-	  {/* typed-overlay: "Search for" light gray, typedPreview black */}
-	  {/* {searchQuery.trim() === "" && (
-		<div className="absolute left-4 top-1/2 -translate-y-1/2 flex items-center gap-2 pointer-events-none z-10">
-		  <span className="text-gray-400 text-sm">Search for</span>
-		  <span className="text-black text-sm">"{typedPreview }"</span>
-		</div>
-	  )} */}
-
-            {/* <input
-              type="text"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search"
-              className="flex-1 px-4 py-2 outline-none"
-            /> */}
-
-           {/*  <button className="px-5 text-sky-500">
-              <FiSearch size={18} />
-            </button> */}
-            {/* SEARCH ICON */}
-                    <button onClick={handleSearchBtnClick} className="px-5 text-sky-500">
-                      <FiSearch size={18} />
-                    </button>
-          </div>
-
-          {/* Right Icons */}
-          <div className="hidden md:flex items-center gap-4 text-white">
-            <div className="w-9 h-9 rounded-full bg-[#2f2f2f] hover:bg-[#1688c8] flex items-center justify-center cursor-pointer transition-all duration-300">
-              <Link href="/contact" className="w-9 h-9 flex items-center justify-center rounded-full
-               bg-[#2b2b2b] border border-[#4a4a4a]
-               text-white shadow-md
-               hover:bg-[#1688c8] transition-all">
-                <FiPhone />
-               </Link>
-              
-            </div>
-            <div className="w-9 h-9 rounded-full bg-[#2f2f2f] hover:bg-[#1688c8] flex items-center justify-center cursor-pointer transition-all duration-300">
-              <Link href="/location" className="w-9 h-9 flex items-center justify-center rounded-full
-               bg-[#2b2b2b] border border-[#4a4a4a]
-               text-white shadow-md
-               hover:bg-[#1688c8] transition-all">
-                <FiMapPin />
-               </Link>
-              
-            </div>
           </div>
         </div>
       </div>
 
       {/* ================= ROUND CATEGORY ICONS ================= */}
-      <div className="bg-white py-2">
-        <div className="flex items-start lg:justify-center justify-start gap-8 
-                  overflow-x-hidden no-scrollbar px-4 md:px-10">
+      {/* <div className="bg-white py-2">
+        <div className="flex items-start lg:justify-center justify-start gap-8 overflow-x-hidden no-scrollbar px-4 md:px-10">
           {categories.map((cat) => (
-           /*  <div key={cat} className="flex flex-col items-center min-w-[120px]">
-              <Link href={`/category/${cat.category_slug}`}>
-              <div className="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20
-               rounded-full overflow-hidden
-               flex items-center justify-center border-2 border-[#1688c8]">
-                <img src={`${cat.image}`} alt={cat.category_name} class="w-full h-full object-cover"/>
-              </div>
-              <span className="text-sm font-semibold hover:text-[#1688c8]">{cat.category_name}</span>
-              </Link>
-              
-            </div> */
- <Link key={cat.category_slug} href={`/category/${cat.category_slug}`}>
-            <div className="flex flex-col items-center min-w-[120px]">
-        <div className="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full overflow-hidden flex items-center  justify-center border-2 border-[#1688c8]">
-          <img  className="w-full h-full object-cover" src={`${cat.image}`} alt={cat.category_name} />
-        </div>
-          {/* <span className="text-sm font-semibold hover:text-[#1688c8]">{cat.category_name}</span> */}
-          <span
-  title={cat.category_name}
-  className="text-sm font-semibold hover:text-[#1688c8] cursor-pointer"
->
-  {cat.category_name.length > 14
-    ? cat.category_name.slice(0, 14) + "..."
-    : cat.category_name}
-</span>
+            <Link key={cat.category_slug} href={`/category/${cat.category_slug}`}>
+              <div className="flex flex-col items-center min-w-[120px] cursor-pointer">
+                // ICON TILE *
+                <div className="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-2xl bg-gradient-to-br from-[#00e5b0] to-[#1688c8] flex items-center justify-center shadow-md hover:scale-105 transition">
+                  <img src={cat.image} alt={cat.category_name} className="w-11 h-11 md:w-14 md:h-14 object-contain" />
+                </div>
 
-       
-        </div>
-         </Link>
+                // TEXT 
+                <span
+                  title={cat.category_name}
+                  className="mt-2 text-sm font-semibold text-gray-800 
+                            hover:text-[#1688c8] text-center"
+                >
+                  {cat.category_name.length > 14
+                    ? cat.category_name.slice(0, 14) + "..."
+                    : cat.category_name}
+                </span>
+
+              </div>
+            </Link>
           ))}
 
         </div>
-      </div>
+      </div> */}
+
 
       
 
