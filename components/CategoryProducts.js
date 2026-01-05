@@ -175,7 +175,7 @@ const CategoryProducts = () => {
         <div className="rounded-[23px] py-1">
           <div className="space-y-6 max-w-12xl mx-auto">
             <div className="flex justify-between items-center flex-wrap gap-4 mb-3 sm:mb-5">
-              <h5 className="text-lg sm:text-2xl font-bold text-white"> Best for the season</h5>
+              <h5 className="text-lg sm:text-2xl font-bold"> Best for the season</h5>
             </div>
               {categoryProducts.map((categoryProduct) => {
                 const category = categoryProduct.subcategoryId;
@@ -235,9 +235,9 @@ const CategoryProducts = () => {
                             }}
                           > */}
                           <div
-                            className={`relative flex-1 py-2 overflow-visible`}>
+                            className={`relative flex-1 overflow-visible`}>
                           {/* Category Links Section */}
-                          <div className={`flex flex-wrap items-center gap-2 mb-3 text-sm font-medium ${ alignment === "right" ? "justify-start" : "justify-end" }`} >
+                          {/* <div className={`flex flex-wrap items-center gap-2 mb-3 text-sm font-medium ${ alignment === "right" ? "justify-start" : "justify-end" }`} >
                             {categoryStyle.showallCategoryLink && (
                               <Link href={categoryStyle.showallCategoryLink} className="px-3 py-1  text-blue-600 hover:underline" >
                                 Show All
@@ -252,7 +252,7 @@ const CategoryProducts = () => {
                                   </Link>
                                 )
                             )}
-                          </div>
+                          </div> */}
 
                           {/* Scroll Arrows */}
                           <button
@@ -270,14 +270,14 @@ const CategoryProducts = () => {
                           {/* Scrollable Products */}
                               <div
                                 ref={(el) => (categoryScrollRefs.current[categoryProduct._id] = el)}
-                                className={`flex overflow-x-auto scrollbar-hide scroll-smooth gap-4 py-3 px-4 ${fewProducts ? "justify-center" : "justify-start"}`}
+                                className={`flex overflow-x-auto scrollbar-hide scroll-smooth gap-4 py-1 ${fewProducts ? "justify-center" : "justify-start"}`}
                                 style={{ WebkitOverflowScrolling: "touch" }}
                               >
                               {products.slice(0, 15).map((product) => (
                                     <div
                                       key={product._id}
                                       // fixed responsive card widths so 5 fit on large screens; min-width keeps consistency
-                                      className="relative bg-gradient-to-br from-[#FF416C] via-[#FFC371] to-[#FFC371] flex-none flex flex-col justify-between p-1 rounded-lg border border-gray-200 hover:border-[#0069c1] hover:shadow-md transition cursor-pointer h-full w-[48%] sm:w-[31%] md:w-[24%] lg:w-[23.9%] min-w-[160px]"
+                                      className="relative bg-gradient-to-br from-[#F0E1D3] via-[#F0E1D3] to-[#E0C3DF] flex-none flex flex-col justify-between p-1 rounded-lg border border-gray-200 hover:border-[#0069c1] hover:shadow-md transition cursor-pointer h-full w-[48%] sm:w-[31%] md:w-[24%] lg:w-[23.9%] min-w-[160px]"
                                     >
                                       {/* Image */}
                                       <div className="relative aspect-square bg-white overflow-hidden">
@@ -289,7 +289,7 @@ const CategoryProducts = () => {
                                               alt={product.name}
                                               fill
                                               // ensure the image fits without stretching
-                                              className="object-contain p-2 sm:p-3 bg-gradient-to-br from-[#FF416C] via-[#FFC371] to-[#FFC371]"
+                                              className="object-contain p-2 sm:p-3 bg-gradient-to-br from-[#F0E1D3] via-[#F0E1D3] to-[#DDE1CF]"
                                               sizes="(max-width: 640px) 90vw, (max-width: 1024px) 45vw, 18vw"
                                               unoptimized
                                             />
@@ -319,7 +319,8 @@ const CategoryProducts = () => {
                                           onClick={() => handleProductClick(product)}
                                           className="block mb-1"
                                         >
-                                          <h3 className="text-xs sm:text-sm font-medium text-[#0069c6] hover:text-[#00badb] min-h-[32px] sm:min-h-[40px]">
+                                          {/* 0069c6 */}
+                                          <h3 className="text-xs sm:text-sm font-medium text-[#00badb] hover:text-[#00badb] min-h-[32px] sm:min-h-[40px]">
                                             {(() => {
                                               const model = product.model_number ? `(${product.model_number.trim()})` : "";
                                               const name = product.name ? product.name.trim() : "";

@@ -1199,7 +1199,7 @@ useEffect(() => {
                     )}
                   </div>
                   {/* ================= ROUND CATEGORY ICONS ================= */}
-                  <div className="py-2 relative">
+                  <div className="py-2 relative bg-white">
                     {/* Left Arrow */}
                     <button
                       onClick={scrollLeft}
@@ -1227,8 +1227,7 @@ useEffect(() => {
                             {/* ICON TILE */}
                             <div className="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20
                             rounded-2xl
-                            bg-gradient-to-br from-[#FF0080] via-[#2193B0] to-[#7928CA]
-
+                            bg-gradient-to-br from-[#B0D7EE] via-[#ffffff] to-[#E4F1F9]
                             flex items-center justify-center
                             shadow-md
                             hover:scale-105 transition">
@@ -1258,9 +1257,9 @@ useEffect(() => {
                   </div>
                 </motion.section>
                 {/* <div className="home-container bg-gradient-to-r from-[#1688C8] to-[#33a7b5]"> */}
-                <div className="home-container bg-gradient-to-br from-[#1688C8] via-[#49B7CC] to-[#33a7b5]">
+                <div className="home-container bg-gradient-to-br from-[#B0D7EE] via-[#ffffff] to-[#E4F1F9]">
                   {/* LATEST @ UNILET STORES */}
-                  <section className="px-4 md:px-6 py-8 text-white">
+                  <section className="px-4 md:px-6 py-8">
                     <h2 className="text-xl md:text-2xl font-bold mb-6"> Latest @Unilet</h2>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       {/* Card 1 */}
@@ -1293,7 +1292,7 @@ useEffect(() => {
                   </section>
 
                   {/* Best Value for you */}
-                  <section className="px-4 md:px-6 py-8 text-white">
+                  <section className="px-4 md:px-6 py-1">
                     <h2 className="text-xl md:text-2xl font-bold mb-6">Best Value for you</h2>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       {/* Card 1 */}
@@ -1326,13 +1325,16 @@ useEffect(() => {
                   </section>
 
                   {/* Best for the season */}
-                  <div className=" py-10 px-6 relative">
-                    <CategoryProducts/>
+                  <div className=" py-5 px-6 relative">
+                    <div className="grid grid-cols-2 md:grid-cols-1 gap-4">
+                      <CategoryProducts/>
+                    </div>
+                   
                   </div>
 
                   {/* What's Hot */}
                   <section className="px-4 md:px-6 py-10">
-                    <h2 className="text-xl md:text-2xl font-semibold text-white mb-6">What's Hot</h2>
+                    <h2 className="text-xl md:text-2xl font-semibold mb-6">What's Hot</h2>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
                       
                       {/* Image 1 */}
@@ -1449,7 +1451,7 @@ useEffect(() => {
 
                   {/* Special Deals for you */}
                   <section className="px-4 md:px-6 py-10">
-                    <h2 className="text-xl md:text-2xl font-semibold text-white mb-6">Special Deals for you</h2>
+                    <h2 className="text-xl md:text-2xl font-semibold mb-6">Special Deals for you</h2>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
                       
                       {/* Image 1 */}
