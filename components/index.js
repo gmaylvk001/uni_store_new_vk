@@ -21,6 +21,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Autoplay } from "swiper/modules";
 import RecentlyViewedProducts from '@/components/RecentlyViewedProducts';
 import StatusBar from '@/components/StatusBar';
+import DetailsPageFooter from '@/components/DetailsPageFooter';
 import CategoryProducts from '@/components/CategoryProducts';
 import CategoryProductsUnilets from '@/components/CategoryProductsUnilets';
 import { ChevronRight } from "lucide-react";
@@ -1089,7 +1090,77 @@ useEffect(() => {
   fetcTwoBannerTwoData();
 }, []);
 
+const renderSection = (sectionName) => {
+      switch(sectionName) {
+case 'brands':
+              return (
+              <motion.section id="brands"
+                      ref={refs.delivery} 
+                      initial={scrollDirection === 'down' ? 'hiddenDown' : 'hiddenUp'} 
+                      animate= 'visible' 
+                      variants={sectionVariants} 
+                      className="px-4 sm:px-6 md:px-6 pt-7"
+                  >
+                      <div>
+                          <motion.div variants={containerVariants} className="  rounded-[23px] mx-2">
+                              <motion.div variants={itemVariants} className="flex justify-between items-center mb-4">
+                                  <h5 className= "text-lg font-semibold">Shop by Brands</h5>
+                              </motion.div>
 
+                              {isBrandsLoading ? (
+                                  <div className="flex justify-center items-center h-32">
+                                      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-red-600"></div>
+                                  </div>
+                              ) : (
+                                  <motion.div variants={itemVariants}>
+                                      <Slider {...brandSettings} className="brand-slider px-2 sm:px-[50px] relative">
+                                          {brands.map((brand) => (
+                                              <motion.div
+                                                  key={brand.id}
+                                                  className="p-4 flex justify-center items-center"
+                                                  whileHover={{ scale: 1.1 }}
+                                              >
+                                              <div className="w-24 h-24 flex items-center justify-center overflow-hidden">
+                                                <Link href={`/brand/${slugify(brand.brand_name)}`}>
+                                                  <Image
+                                                    src={`/uploads/Brands/${brand.image}`}
+                                                    alt={brand.brand_name || "Brand Logo"}
+                                                    width={100}
+                                                    height={100}
+                                                    className="object-contain w-full h-full cursor-pointer"
+                                                    unoptimized
+                                                  />
+                                                </Link>
+                                              </div>
+                                              </motion.div>
+                                          ))}
+                                      </Slider>
+                                  </motion.div>
+                              )}
+                          </motion.div>
+                      </div>
+                  </motion.section>
+              );
+              default:
+              return null;
+      }
+      
+    }
+
+// Map section names from API to our component names
+        const getSectionComponentName = (sectionName) => {
+            const mapping = {
+                'categorybanner': 'category_banner',
+                'flashsale': 'flash_sales',
+                'Brands': 'brands',
+                'topbanner' : 'topbanner',
+                'features' : 'features',
+                'product'  :'product',
+                // Add more mappings as needed
+            };
+            
+            return mapping[sectionName] || sectionName.toLowerCase();
+        };
 
 
     return (
@@ -1493,7 +1564,7 @@ useEffect(() => {
                     </div>
                   </section>
 
-                  <section className="px-4 md:px-8 py-1">
+                  <section className="px-4 md:px-8 py-3">
                     {/* <h2 className="text-xl md:text-2xl font-semibold text-white mb-6">
                      Onsite Service Options: UniShield, Unisure, UniCare, UniGuard, UniProtect, UniSafe
                     </h2> */}
@@ -1504,7 +1575,7 @@ useEffect(() => {
                     <div className="overflow-hidden pt-0 m-0 bg-transparent">
                       
                       {/* Image 1 */}
-                      <div className="rounded-xl overflow-hidden bg-[#111] hover:scale-[1.02] transition">
+                      <div className="rounded-xl overflow-hidden  bg-transparent hover:scale-[1.02] transition">
                         <img
                           src="uploads/unicare-banner.png"
                           alt="Special Deals for you"
@@ -1514,11 +1585,38 @@ useEffect(() => {
                     </div>
                   </section>
                 </div>
+
+
+                {/* Banner Section start */}
+              
+                  <div className="home-container">
+                    {isSectionLoading ? (
+                        <div className="flex justify-center items-center h-64">
+                            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-red-600"></div>
+                        </div>
+                    ) : homeSectionData.sections.length > 0 ? (
+                        // Render sections in the order specified by homeSectionData
+                        homeSectionData.sections
+                            .sort((a, b) => a.position - b.position)
+                            .map(section => (
+                                <div key={section.id}>
+                                    {renderSection(getSectionComponentName(section.name))}
+                                </div>
+                            ))
+                    ) : (
+                        // Fallback order if no sections are configured
+                        <>
+                            {renderSection('brands')}
+                        </>
+                    )}
+                  </div>
+
                 {/* <ToastContainer /> */}
                 {/* <RecentlyViewedProducts />  */}
 
            </div>
             <StatusBar /> 
+            <DetailsPageFooter /> 
         </>
     ); 
 }
