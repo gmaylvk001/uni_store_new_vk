@@ -1599,7 +1599,7 @@ const shouldShowArrow = (item, allItems = []) => {
       {/* Main Header bg-white */}
                   <div className={`${isMobileMenuOpen ? "fixed inset-0 mt-0 pt-0 z-50 overflow-y-auto" : "px-4 sm:px-6 md:px-0 py-0 sticky top-0 z-40"}`} style={{ backgroundColor: "black" }}>
                       {/* NEW MOBILE TOP ROW (from reference) */}
-                      <div className="sm:hidden flex items-center justify-between w-full relative">
+                      <div className="lg:hidden flex items-center justify-between relative md:mx-4">
                           <Link href="/" className="p-1 rounded-lg">
                             <img src="/user/unilet-logo.webp" alt="Logo" width={70} height={45} className="h-auto" />
                           </Link>
@@ -1660,9 +1660,9 @@ const shouldShowArrow = (item, allItems = []) => {
                           </div>
                       </div>
                       {/* NEW MOBILE SEARCH BAR */}
-                      <div className="sm:hidden mt-2 -mx-4 px-0">
+                      <div className="lg:hidden mt-2 md:mx-4 px-0">
                         {/* <div className="bg-[#2453D3] w-full px-3 py-3"> */}
-                        <div className="bg-black w-full px-3 py-3">
+                        <div className="bg-black w-full md:px-3 py-3">
                           <div className="flex items-center bg-white h-12 rounded-xl border border-gray-300 shadow-sm overflow-hidden w-full transition-all duration-150 focus-within:border-[#2453d3] focus-within:shadow-[0_0_0_2px_rgba(36,83,211,0.15)] flex-nowrap">
                             
                             <select
@@ -1762,7 +1762,7 @@ const shouldShowArrow = (item, allItems = []) => {
 
       {/* ================= SEARCH BAR ROW ================= */}
       {/* <div className="bg-gradient-to-r from-[#1688C8] to-[#33a7b5]"> */}
-      <div className="bg-black">
+      <div className="bg-black hidden lg:block">
         <div className="max-w-7xl mx-auto px-4 py-4 flex items-center gap-4">
           <Link href="/" className="text-lg font-semibold">
            <img src="/user/unilet-logo.webp" alt="Logo" width={100} height={70} className="h-auto" />

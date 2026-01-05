@@ -1374,29 +1374,35 @@ case 'brands':
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       {/* Card 1 */}
                       <div className="relative rounded-lg overflow-hidden shadow-lg">
+                        <Link href={`/terms-and-condition`}>
                         <img
-                          src="uploads/aboutus/HP_SOH_3split_Wedding_31Dec2025_gg1gytBQc.webp"
+                          src="uploads/aboutus/BestvalueImg.png"
                           alt="flash sale"
                           className="w-full h-full object-cover"
                         />
+                        </Link>
                       </div>
 
 
                       <div className="relative rounded-lg overflow-hidden shadow-lg">
+                        <Link href={`/category/others`}>
                         <img
                           src="uploads/aboutus/HP_SOH_3split_Dealscorner_31Dec2025_cYeQy6op2.webp"
                           alt="flash sale"
                           className="w-full h-full object-cover"
                         />
+                        </Link>
                       </div>
 
                       {/* Card 3 */}
                       <div className="relative rounded-lg overflow-hidden shadow-lg">
+                         <Link href={`/category/others`}>
                         <img
-                          src="uploads/aboutus/HP_SOH_3split_WinterSale_31Dec2025_1fEWqgna5.webp"
+                          src="uploads/aboutus/BestValueSaleImg2.png"
                           alt="flash sale"
                           className="w-full h-full object-cover"
                         />
+                        </Link>
                       </div>
                     </div>
                   </section>
