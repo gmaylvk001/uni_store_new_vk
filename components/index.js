@@ -1335,29 +1335,35 @@ case 'brands':
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       {/* Card 1 */}
                       <div className="relative rounded-lg overflow-hidden">
+                        <Link href={`/product/one-plus-mobile-13r-5g-16gb-512gb`}>
                         <img
                           src="uploads/flashsale/HP_SOH_Layout_31Dec2025_07_qHwHCtAzl.png"
-                          alt="flash sale"
+                          alt="Unilet"
                           className="w-full h-full object-cover"
                         />
+                        </Link>
                       </div>
 
 
                       <div className="relative rounded-lg overflow-hidden">
-                        <img
-                          src="uploads/flashsale/HP_SOH_Layout_31Dec2025_08_LZAba1DuDe.webp"
-                          alt="flash sale"
-                          className="w-full h-full object-cover"
-                        />
+                        <Link href={`/product/apple-laptop-mba-m4-md-13-inch-midnight-black-16gb-256gb`}>
+                          <img
+                            src="uploads/flashsale/Latest_unilet-img.png"
+                            alt="Unilet"
+                            className="w-full h-full object-cover"
+                          />
+                        </Link>
                       </div>
 
                       {/* Card 3 */}
                       <div className="relative rounded-lg overflow-hidden">
+                        <Link href={`/`}>
                         <img
-                          src="uploads/flashsale/HP_SOH_Layout_31Dec2025_09_Bos-jsPMo.webp"
-                          alt="flash sale"
+                          src="uploads/flashsale/unilet-latest-pro-n-.png"
+                          alt="Unilet"
                           className="w-full h-full object-cover"
                         />
+                        </Link>
                       </div>
                     </div>
                   </section>
@@ -1368,80 +1374,100 @@ case 'brands':
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       {/* Card 1 */}
                       <div className="relative rounded-lg overflow-hidden shadow-lg">
+                        <Link href={`/terms-and-condition`}>
                         <img
-                          src="uploads/aboutus/HP_SOH_3split_Wedding_31Dec2025_gg1gytBQc.webp"
+                          src="uploads/aboutus/BestvalueImg.png"
                           alt="flash sale"
                           className="w-full h-full object-cover"
                         />
+                        </Link>
                       </div>
 
 
                       <div className="relative rounded-lg overflow-hidden shadow-lg">
+                        <Link href={`/category/others`}>
                         <img
                           src="uploads/aboutus/HP_SOH_3split_Dealscorner_31Dec2025_cYeQy6op2.webp"
                           alt="flash sale"
                           className="w-full h-full object-cover"
                         />
+                        </Link>
                       </div>
 
                       {/* Card 3 */}
                       <div className="relative rounded-lg overflow-hidden shadow-lg">
+                         <Link href={`/category/others`}>
                         <img
-                          src="uploads/aboutus/HP_SOH_3split_WinterSale_31Dec2025_1fEWqgna5.webp"
+                          src="uploads/aboutus/BestValueSaleImg2.png"
                           alt="flash sale"
                           className="w-full h-full object-cover"
                         />
+                        </Link>
                       </div>
                     </div>
                   </section>
 
                   {/* Best for the season */}
-                  <div className=" py-5 px-6 relative">
+                  {/* <div className=" py-5 px-6 relative">
                     <div className="grid grid-cols-2 md:grid-cols-1 gap-4">
                       <CategoryProducts/>
                     </div>
                    
+                  </div> */}
+                  <div className=" py-5 px-6 relative">
+                      <CategoryProducts/>
                   </div>
 
                   {/* What's Hot */}
                   <section className="px-4 md:px-8 py-1">
                     <h2 className="text-xl md:text-2xl font-semibold mb-6">What's Hot</h2>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                    <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-5">
                       
                       {/* Image 1 */}
                       <div className="rounded-xl overflow-hidden bg-[#111] hover:scale-[1.02] transition">
+                        <Link href={`/brand/realme`}>
                         <img
                           src="uploads/aboutus/HP_What'sHot_RealmeP4x_02Jan2026_ZNy77FWpt.webp"
                           alt="What's Hot"
                           className="w-full h-full object-cover"
                         />
+                        </Link>
+                        
                       </div>
 
                       {/* Image 2 */}
                       <div className="rounded-xl overflow-hidden bg-[#111] hover:scale-[1.02] transition">
+                        <Link href={`/category/televisions`}>
                         <img
                           src="uploads/aboutus/HP_What'sHot_TVs_02Jan2026_8MouoeMk4B.webp"
                           alt="What's Hot"
                           className="w-full h-full object-cover"
                         />
+                        </Link>
                       </div>
 
                       {/* Image 3 */}
                       <div className="rounded-xl overflow-hidden bg-[#111] hover:scale-[1.02] transition">
+                        <Link href={`/category/large-appliance`}>
+                        
                         <img
                           src="uploads/aboutus/HP_What'sHot_WM_02Jan2026_Yt-KWCCDR.webp"
                           alt="What's Hot"
                           className="w-full h-full object-cover"
                         />
+                        </Link>
                       </div>
 
                       {/* Image 4 */}
                       <div className="rounded-xl overflow-hidden bg-[#111] hover:scale-[1.02] transition">
+                        <Link href={`/category/mobiles-accessories/mobile-phones/iphone`}>
+                       
                         <img
                           src="uploads/aboutus/HP_What'sHot_iPad11_02Jan2026_PhoUjE9mF.webp"
                           alt="What's Hot"
                           className="w-full h-full object-cover"
                         />
+                         </Link>
                       </div>
 
                     </div>
@@ -1523,71 +1549,58 @@ case 'brands':
                   {/* Special Deals for you */}
                   <section className="px-4 md:px-8 py-1">
                     <h2 className="text-xl md:text-2xl font-semibold mb-6">Special Deals for you</h2>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                    <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-5">
                       
                       {/* Image 1 */}
                       <div className="rounded-xl overflow-hidden bg-[#111] hover:scale-[1.02] transition">
+                        <Link href={`/category/others`}>
+                        
+                       
                         <img
                           src="uploads/aboutus/HP_DOTD_AirFryers_02Jan2026_iSrQ_kbJl.jpg"
                           alt="Special Deals for you"
                           className="w-full h-full object-cover"
                         />
+                         </Link>
                       </div>
 
                       {/* Image 2 */}
                       <div className="rounded-xl overflow-hidden bg-[#111] hover:scale-[1.02] transition">
+                        <Link href={`/category/others`}>
                         <img
                           src="uploads/aboutus/HP_DOTD_BTSpeakers_02Jan2026_-VhhZiYFRG.jpg"
                           alt="What's Hot"
                           className="w-full h-full object-cover"
                         />
+                        </Link>
                       </div>
 
                       {/* Image 3 */}
                       <div className="rounded-xl overflow-hidden bg-[#111] hover:scale-[1.02] transition">
+                        <Link href={`/category/others`}>
                         <img
                           src="uploads/aboutus/HP_DOTD_Chargers_02Jan2026_i5NEs4ycP.webp"
                           alt="What's Hot"
                           className="w-full h-full object-cover"
                         />
+                        </Link>
                       </div>
 
                       {/* Image 4 */}
                       <div className="rounded-xl overflow-hidden bg-[#111] hover:scale-[1.02] transition">
+                        <Link href={`/category/others`}>
                         <img
                           src="uploads/aboutus/HP_DOTD_SW_02Jan2026_bvnroJbzi.webp"
                           alt="What's Hot"
                           className="w-full h-full object-cover"
                         />
+                        </Link>
                       </div>
 
                     </div>
                   </section>
 
-                  <section className="px-4 md:px-8 py-3">
-                    {/* <h2 className="text-xl md:text-2xl font-semibold text-white mb-6">
-                     Onsite Service Options: UniShield, Unisure, UniCare, UniGuard, UniProtect, UniSafe
-                    </h2> */}
-                    <h2 className="text-xl md:text-2xl font-semibold mb-6">
-                    UniCare
-                    </h2>
-
-                    <div className="overflow-hidden pt-0 m-0 bg-transparent">
-                      
-                      {/* Image 1 */}
-                      <div className="rounded-xl overflow-hidden  bg-transparent hover:scale-[1.02] transition">
-                        <img
-                          src="uploads/unicare-banner.png"
-                          alt="Special Deals for you"
-                          className="w-full h-auto block"
-                        />
-                      </div>
-                    </div>
-                  </section>
-                </div>
-
-
-                {/* Banner Section start */}
+{/* Banner Section start */}
               
                   <div className="home-container">
                     {isSectionLoading ? (
@@ -1610,13 +1623,38 @@ case 'brands':
                         </>
                     )}
                   </div>
+                  
+                  <section className="px-4 md:px-8 py-3">
+                    {/* <h2 className="text-xl md:text-2xl font-semibold text-white mb-6">
+                     Onsite Service Options: UniShield, Unisure, UniCare, UniGuard, UniProtect, UniSafe
+                    </h2> */}
+                    {/* <h2 className="text-xl md:text-2xl font-semibold mb-6">
+                    UniCare
+                    </h2> */}
+
+                    <div className="overflow-hidden pt-0 m-0 bg-transparent">
+                      
+                      {/* Image 1 */}
+                      <div className="rounded-xl overflow-hidden  bg-transparent hover:scale-[1.02] transition">
+                        <img
+                          src="uploads/unicare-banner.png"
+                          alt="Special Deals for you"
+                          className="w-full h-auto block"
+                        />
+                      </div>
+                    </div>
+                  </section>
+                </div>
+
+
+                
 
                 {/* <ToastContainer /> */}
                 {/* <RecentlyViewedProducts />  */}
 
            </div>
             <StatusBar /> 
-            <DetailsPageFooter /> 
+            {/* <DetailsPageFooter />  */}
         </>
     ); 
 }
