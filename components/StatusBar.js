@@ -47,37 +47,41 @@ function Counter({ end, duration = 2000 }) {
 
 const StatusBar = () => {
   return (
-    <div className="w-full bg-gradient-to-r from-[#005189] to-[#003468] py-1">
-      <div className="max-w-7xl mx-auto flex items-center justify-between text-white px-4">
-
-        {/* 50+ Stores */}
-        <div className="flex items-center gap-3">
-          <div className="text-3xl font-bold">
+    <div className="w-full bg-gradient-to-r from-[#005189] to-[#003468] py-3">
+      <div
+        className="
+          max-w-7xl mx-auto px-4 text-white
+          flex flex-col gap-4
+          sm:flex-row sm:items-center sm:justify-between
+        "
+      >
+        {/* Stores */}
+        <div className="flex items-center justify-center sm:justify-start gap-3">
+          <div className="text-2xl sm:text-3xl font-bold">
             <Counter end={50} />+
           </div>
-          <p className="text-lg">Stores</p>
+          <p className="text-sm sm:text-lg">Stores</p>
         </div>
-
-        <div className="h-10 w-[1px] bg-white/30"></div>
-
-        {/* 100+ Brands */}
-        <div className="flex items-center gap-3">
-          <div className="text-3xl font-bold">
+ 
+        <div className="hidden sm:block h-10 w-[1px] bg-white/30" />
+ 
+        {/* Brands */}
+        <div className="flex items-center justify-center sm:justify-start gap-3">
+          <div className="text-2xl sm:text-3xl font-bold">
             <Counter end={100} />+
           </div>
-          <p className="text-lg">Brands</p>
+          <p className="text-sm sm:text-lg">Brands</p>
         </div>
-
-        <div className="h-10 w-[1px] bg-white/30"></div>
-
-        {/* 100,000+ Happy Customers */}
-        <div className="flex items-center gap-3">
-          <div className="text-3xl font-bold">
+ 
+        <div className="hidden sm:block h-10 w-[1px] bg-white/30" />
+ 
+        {/* Happy Customers */}
+        <div className="flex items-center justify-center sm:justify-start gap-3">
+          <div className="text-2xl sm:text-3xl font-bold">
             <Counter end={100000} />+
           </div>
-          <p className="text-lg">Happy Customers</p>
+          <p className="text-sm sm:text-lg">Happy Customers</p>
         </div>
-
       </div>
     </div>
   );
