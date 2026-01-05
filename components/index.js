@@ -1194,7 +1194,7 @@ case 'brands':
                           {bannerData.banner.items.map((banner) => (
                             <motion.div
                               key={banner.id}
-                              className="relative w-full aspect-[2000/667] max-h-auto"
+                              className="relative w-full aspect-[2000/867] max-h-auto"
                               variants={itemVariants}
                             >
                               <div className="absolute inset-0 overflow-hidden">
