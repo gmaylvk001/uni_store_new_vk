@@ -235,7 +235,7 @@ const CategoryProducts = () => {
                             }}
                           > */}
                           <div
-                            className={`relative flex-1 py-2 overflow-visible`}>
+                            className={`relative flex-1  overflow-visible`}>
                           {/* Category Links Section */}
                           <div className={`flex flex-wrap items-center gap-2 mb-3 text-sm font-medium ${ alignment === "right" ? "justify-start" : "justify-end" }`} >
                             {categoryStyle.showallCategoryLink && (

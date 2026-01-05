@@ -22,6 +22,7 @@ import { Navigation, Autoplay } from "swiper/modules";
 import RecentlyViewedProducts from '@/components/RecentlyViewedProducts';
 import StatusBar from '@/components/StatusBar';
 import CategoryProducts from '@/components/CategoryProducts';
+import CategoryProductsUnilets from '@/components/CategoryProductsUnilets';
 import { ChevronRight } from "lucide-react";
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -898,21 +899,6 @@ const maxIndex = Math.max(0, products.length - CARDS_PER_VIEW);
         .filter(cat => cat.parentid === parentId)
         .map(sub => sub.category_slug);
     };
-    {/* const filteredProducts = selectedCategory
-    ? (() => {
-        const subCategories = categories.filter(
-          cat => cat.parentid === selectedCategory._id
-        );
-
-        const validCategoryIds = [
-          selectedCategory._id,
-          ...subCategories.map(sub => sub._id)
-        ];
-        return products.filter(product => 
-          product.category && 
-          validCategoryIds.includes(product.category.toString())
-        );
-})() : products; */}
     const handleProductClick = (product) => {
       if (navigating) return;
       setNavigating(true);
@@ -1122,6 +1108,7 @@ useEffect(() => {
             )}
             {/* main div start */}
             <div className={`relative transition-opacity duration-300 overflow-hidden ${isLoading ? 'opacity-0 h-0 overflow-hidden' : 'opacity-100'}`} ref={containerRef} >
+                
                 {/* Banner Section start */}
 
                 <motion.section  id="topbanner" ref={refs.banner} initial="hidden" animate="visible" variants={containerVariants} className="overflow-hidden pt-0 m-0">
@@ -1240,7 +1227,7 @@ useEffect(() => {
                             {/* ICON TILE */}
                             <div className="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20
                             rounded-2xl
-                            bg-gradient-to-br from-[#ff2aa1] via-[#b5179e] to-[#0b3c5d]
+                            bg-gradient-to-br from-[#FF0080] via-[#2193B0] to-[#7928CA]
 
                             flex items-center justify-center
                             shadow-md
@@ -1270,12 +1257,14 @@ useEffect(() => {
                     </div>
                   </div>
                 </motion.section>
-                <div className="home-container bg-gradient-to-r from-[#1688C8] to-[#33a7b5]">
+                {/* <div className="home-container bg-gradient-to-r from-[#1688C8] to-[#33a7b5]"> */}
+                <div className="home-container bg-gradient-to-br from-[#1688C8] via-[#49B7CC] to-[#33a7b5]">
+                  {/* LATEST @ UNILET STORES */}
                   <section className="px-4 md:px-6 py-8 text-white">
                     <h2 className="text-xl md:text-2xl font-bold mb-6"> Latest @Unilet</h2>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       {/* Card 1 */}
-                      <div className="relative rounded-lg overflow-hidden shadow-lg">
+                      <div className="relative rounded-lg overflow-hidden">
                         <img
                           src="uploads/flashsale/HP_SOH_Layout_31Dec2025_07_qHwHCtAzl.png"
                           alt="flash sale"
@@ -1284,7 +1273,7 @@ useEffect(() => {
                       </div>
 
 
-                      <div className="relative rounded-lg overflow-hidden shadow-lg">
+                      <div className="relative rounded-lg overflow-hidden">
                         <img
                           src="uploads/flashsale/HP_SOH_Layout_31Dec2025_08_LZAba1DuDe.webp"
                           alt="flash sale"
@@ -1293,7 +1282,7 @@ useEffect(() => {
                       </div>
 
                       {/* Card 3 */}
-                      <div className="relative rounded-lg overflow-hidden shadow-lg">
+                      <div className="relative rounded-lg overflow-hidden">
                         <img
                           src="uploads/flashsale/HP_SOH_Layout_31Dec2025_09_Bos-jsPMo.webp"
                           alt="flash sale"
@@ -1303,6 +1292,7 @@ useEffect(() => {
                     </div>
                   </section>
 
+                  {/* Best Value for you */}
                   <section className="px-4 md:px-6 py-8 text-white">
                     <h2 className="text-xl md:text-2xl font-bold mb-6">Best Value for you</h2>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -1335,12 +1325,14 @@ useEffect(() => {
                     </div>
                   </section>
 
-                  
-                  <section className="px-4 md:px-6 py-10">
-                    <h2 className="text-xl md:text-2xl font-semibold text-white mb-6">
-                      What's Hot
-                    </h2>
+                  {/* Best for the season */}
+                  <div className=" py-10 px-6 relative">
+                    <CategoryProducts/>
+                  </div>
 
+                  {/* What's Hot */}
+                  <section className="px-4 md:px-6 py-10">
+                    <h2 className="text-xl md:text-2xl font-semibold text-white mb-6">What's Hot</h2>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
                       
                       {/* Image 1 */}
@@ -1382,13 +1374,10 @@ useEffect(() => {
                     </div>
                   </section>
 
-
+                  {/* UNILET Only */}
                   <div className=" py-10 px-6 relative">
-                    <h2 className="text-white text-2xl font-semibold mb-6">
-                      Best for the season
-                    </h2>
-
-                    {/* Left Arrow */}
+                    {/* <h2 className="text-white text-2xl font-semibold mb-6">UNILET Only</h2> */}
+                    {/* //Left Arrow
                     <button
                       onClick={prev}
                       className="absolute left-2 top-1/2 -translate-y-1/2 z-10 bg-black/70 p-2 rounded-full text-white"
@@ -1396,7 +1385,7 @@ useEffect(() => {
                       <FiChevronLeft size={28} />
                     </button>
 
-                    {/* Right Arrow */}
+                    //Right Arrow
                     <button
                       onClick={next}
                       className="absolute right-2 top-1/2 -translate-y-1/2 z-10 bg-black/70 p-2 rounded-full text-white"
@@ -1404,91 +1393,7 @@ useEffect(() => {
                       <FiChevronRight size={28} />
                     </button>
 
-                    {/* Products */}
-                    <div className="overflow-hidden">
-                      <div
-                        className="flex gap-6 transition-transform duration-500"
-                        style={{
-                          transform: `translateX(-${index * 260}px)`,
-                        }}
-                      >
-                        {products.map((product) => (
-                          
-                          <div
-  key={product.id}
-  className="
-    min-w-[210px] 
-    md:min-w-[310px] 
-    bg-[#1a1a1a] 
-    rounded-xl 
-    p-4 
-    text-white 
-    relative
-  "
->
-
-                            <Heart className="absolute top-4 right-4 text-white" size={18} />
-
-                            <img
-                              src={product.image}
-                              alt={product.name}
-                              className="h-40 mx-auto object-contain mb-4"
-                            />
-
-                            <h3 className="text-sm font-medium line-clamp-2 mb-2">
-                              {product.name}
-                            </h3>
-
-                            <div className="flex items-center gap-2 mb-2">
-                              <span className="text-lg font-semibold">{product.price}</span>
-                              <span className="text-gray-400 line-through text-sm">
-                                {product.oldPrice}
-                              </span>
-                            </div>
-
-                            {/* Rating */}
-                            <div className="flex gap-1">
-                              {Array.from({ length: 5 }).map((_, i) => (
-                                <span
-                                  key={i}
-                                  className={
-                                    i < product.rating
-                                      ? "text-green-400"
-                                      : "text-gray-500"
-                                  }
-                                >
-                                  ★
-                                </span>
-                              ))}
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className=" py-10 px-6 relative">
-                    <h2 className="text-white text-2xl font-semibold mb-6">
-                      UNILET Only
-                    </h2>
-
-                    {/* Left Arrow */}
-                    <button
-                      onClick={prev}
-                      className="absolute left-2 top-1/2 -translate-y-1/2 z-10 bg-black/70 p-2 rounded-full text-white"
-                    >
-                      <FiChevronLeft size={28} />
-                    </button>
-
-                    {/* Right Arrow */}
-                    <button
-                      onClick={next}
-                      className="absolute right-2 top-1/2 -translate-y-1/2 z-10 bg-black/70 p-2 rounded-full text-white"
-                    >
-                      <FiChevronRight size={28} />
-                    </button>
-
-                    {/* Products */}
+                    //Products
                     <div className="overflow-hidden">
                       <div
                         className="flex gap-6 transition-transform duration-500"
@@ -1520,7 +1425,7 @@ useEffect(() => {
                               </span>
                             </div>
 
-                            {/* Rating */}
+                            //Rating
                             <div className="flex gap-1">
                               {Array.from({ length: 5 }).map((_, i) => (
                                 <span
@@ -1538,14 +1443,13 @@ useEffect(() => {
                           </div>
                         ))}
                       </div>
-                    </div>
+                    </div> */}
+                    <CategoryProductsUnilets/>
                   </div>
 
-                   <section className="px-4 md:px-6 py-10">
-                    <h2 className="text-xl md:text-2xl font-semibold text-white mb-6">
-                      Special Deals for you
-                    </h2>
-
+                  {/* Special Deals for you */}
+                  <section className="px-4 md:px-6 py-10">
+                    <h2 className="text-xl md:text-2xl font-semibold text-white mb-6">Special Deals for you</h2>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
                       
                       {/* Image 1 */}
@@ -1587,7 +1491,6 @@ useEffect(() => {
                     </div>
                   </section>
 
-
                   <section className="px-4 md:px-6 py-10">
                     <h2 className="text-xl md:text-2xl font-semibold text-white mb-6">
                      Onsite Service Options: UniShield, Unisure, UniCare, UniGuard, UniProtect, UniSafe
@@ -1605,11 +1508,6 @@ useEffect(() => {
                       </div>
                     </div>
                   </section>
-
-
-                  
-
-
                 </div>
                 {/* <ToastContainer /> */}
                 {/* <RecentlyViewedProducts />  */}
