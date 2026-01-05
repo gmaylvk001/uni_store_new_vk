@@ -20,7 +20,9 @@ export default function ClientLayout({ children }) {
           <CartProvider>
             <AuthProvider>
               {!pathname?.startsWith("/admin") && <CustomHeader />}
-              <main className="relative">{children}</main>
+              {/* <main className="relative">{children}</main> */}
+              <main className="relative bg-gradient-to-br from-[#B0D7EE] via-[#ffffff] to-[#E4F1F9]">{children}</main>
+
               {!pathname?.startsWith("/admin") && <CustomFooter />}
               <GlobalModals />
             </AuthProvider>
