@@ -1425,38 +1425,49 @@ case 'brands':
                       
                       {/* Image 1 */}
                       <div className="rounded-xl overflow-hidden bg-[#111] hover:scale-[1.02] transition">
+                        <Link href={`/brand/realme`}>
                         <img
                           src="uploads/aboutus/HP_What'sHot_RealmeP4x_02Jan2026_ZNy77FWpt.webp"
                           alt="What's Hot"
                           className="w-full h-full object-cover"
                         />
+                        </Link>
+                        
                       </div>
 
                       {/* Image 2 */}
                       <div className="rounded-xl overflow-hidden bg-[#111] hover:scale-[1.02] transition">
+                        <Link href={`/category/televisions`}>
                         <img
                           src="uploads/aboutus/HP_What'sHot_TVs_02Jan2026_8MouoeMk4B.webp"
                           alt="What's Hot"
                           className="w-full h-full object-cover"
                         />
+                        </Link>
                       </div>
 
                       {/* Image 3 */}
                       <div className="rounded-xl overflow-hidden bg-[#111] hover:scale-[1.02] transition">
+                        <Link href={`/category/large-appliance`}>
+                        
                         <img
                           src="uploads/aboutus/HP_What'sHot_WM_02Jan2026_Yt-KWCCDR.webp"
                           alt="What's Hot"
                           className="w-full h-full object-cover"
                         />
+                        </Link>
                       </div>
 
                       {/* Image 4 */}
                       <div className="rounded-xl overflow-hidden bg-[#111] hover:scale-[1.02] transition">
+                        <Link href={`/category/mobiles-accessories/mobile-phones/iphone`}>
+                       
                         <img
                           src="uploads/aboutus/HP_What'sHot_iPad11_02Jan2026_PhoUjE9mF.webp"
                           alt="What's Hot"
                           className="w-full h-full object-cover"
                         />
+                         </Link>
                       </div>
 
                     </div>
@@ -1542,67 +1553,54 @@ case 'brands':
                       
                       {/* Image 1 */}
                       <div className="rounded-xl overflow-hidden bg-[#111] hover:scale-[1.02] transition">
+                        <Link href={`/category/others`}>
+                        
+                       
                         <img
                           src="uploads/aboutus/HP_DOTD_AirFryers_02Jan2026_iSrQ_kbJl.jpg"
                           alt="Special Deals for you"
                           className="w-full h-full object-cover"
                         />
+                         </Link>
                       </div>
 
                       {/* Image 2 */}
                       <div className="rounded-xl overflow-hidden bg-[#111] hover:scale-[1.02] transition">
+                        <Link href={`/category/others`}>
                         <img
                           src="uploads/aboutus/HP_DOTD_BTSpeakers_02Jan2026_-VhhZiYFRG.jpg"
                           alt="What's Hot"
                           className="w-full h-full object-cover"
                         />
+                        </Link>
                       </div>
 
                       {/* Image 3 */}
                       <div className="rounded-xl overflow-hidden bg-[#111] hover:scale-[1.02] transition">
+                        <Link href={`/category/others`}>
                         <img
                           src="uploads/aboutus/HP_DOTD_Chargers_02Jan2026_i5NEs4ycP.webp"
                           alt="What's Hot"
                           className="w-full h-full object-cover"
                         />
+                        </Link>
                       </div>
 
                       {/* Image 4 */}
                       <div className="rounded-xl overflow-hidden bg-[#111] hover:scale-[1.02] transition">
+                        <Link href={`/category/others`}>
                         <img
                           src="uploads/aboutus/HP_DOTD_SW_02Jan2026_bvnroJbzi.webp"
                           alt="What's Hot"
                           className="w-full h-full object-cover"
                         />
+                        </Link>
                       </div>
 
                     </div>
                   </section>
 
-                  <section className="px-4 md:px-8 py-3">
-                    {/* <h2 className="text-xl md:text-2xl font-semibold text-white mb-6">
-                     Onsite Service Options: UniShield, Unisure, UniCare, UniGuard, UniProtect, UniSafe
-                    </h2> */}
-                    <h2 className="text-xl md:text-2xl font-semibold mb-6">
-                    UniCare
-                    </h2>
-
-                    <div className="overflow-hidden pt-0 m-0 bg-transparent">
-                      
-                      {/* Image 1 */}
-                      <div className="rounded-xl overflow-hidden  bg-transparent hover:scale-[1.02] transition">
-                        <img
-                          src="uploads/unicare-banner.png"
-                          alt="Special Deals for you"
-                          className="w-full h-auto block"
-                        />
-                      </div>
-                    </div>
-                  </section>
-                </div>
-
-
-                {/* Banner Section start */}
+{/* Banner Section start */}
               
                   <div className="home-container">
                     {isSectionLoading ? (
@@ -1625,13 +1623,38 @@ case 'brands':
                         </>
                     )}
                   </div>
+                  
+                  <section className="px-4 md:px-8 py-3">
+                    {/* <h2 className="text-xl md:text-2xl font-semibold text-white mb-6">
+                     Onsite Service Options: UniShield, Unisure, UniCare, UniGuard, UniProtect, UniSafe
+                    </h2> */}
+                    {/* <h2 className="text-xl md:text-2xl font-semibold mb-6">
+                    UniCare
+                    </h2> */}
+
+                    <div className="overflow-hidden pt-0 m-0 bg-transparent">
+                      
+                      {/* Image 1 */}
+                      <div className="rounded-xl overflow-hidden  bg-transparent hover:scale-[1.02] transition">
+                        <img
+                          src="uploads/unicare-banner.png"
+                          alt="Special Deals for you"
+                          className="w-full h-auto block"
+                        />
+                      </div>
+                    </div>
+                  </section>
+                </div>
+
+
+                
 
                 {/* <ToastContainer /> */}
                 {/* <RecentlyViewedProducts />  */}
 
            </div>
             <StatusBar /> 
-            <DetailsPageFooter /> 
+            {/* <DetailsPageFooter />  */}
         </>
     ); 
 }
