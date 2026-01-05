@@ -1333,7 +1333,7 @@ useEffect(() => {
                   </div>
 
                   {/* What's Hot */}
-                  <section className="px-4 md:px-6 py-10">
+                  <section className="px-4 md:px-8 py-1">
                     <h2 className="text-xl md:text-2xl font-semibold mb-6">What's Hot</h2>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
                       
@@ -1450,7 +1450,7 @@ useEffect(() => {
                   </div>
 
                   {/* Special Deals for you */}
-                  <section className="px-4 md:px-6 py-10">
+                  <section className="px-4 md:px-8 py-1">
                     <h2 className="text-xl md:text-2xl font-semibold mb-6">Special Deals for you</h2>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
                       
@@ -1493,9 +1493,12 @@ useEffect(() => {
                     </div>
                   </section>
 
-                  <section className="px-4 md:px-6 py-10">
-                    <h2 className="text-xl md:text-2xl font-semibold text-white mb-6">
+                  <section className="px-4 md:px-8 py-1">
+                    {/* <h2 className="text-xl md:text-2xl font-semibold text-white mb-6">
                      Onsite Service Options: UniShield, Unisure, UniCare, UniGuard, UniProtect, UniSafe
+                    </h2> */}
+                    <h2 className="text-xl md:text-2xl font-semibold mb-6">
+                    UniCare
                     </h2>
 
                     <div className="overflow-hidden pt-0 m-0 bg-transparent">
@@ -1503,7 +1506,7 @@ useEffect(() => {
                       {/* Image 1 */}
                       <div className="rounded-xl overflow-hidden bg-[#111] hover:scale-[1.02] transition">
                         <img
-                          src="uploads/aboutus/D_Zipcare_27.png"
+                          src="uploads/unicare-banner.png"
                           alt="Special Deals for you"
                           className="w-full h-auto block"
                         />
