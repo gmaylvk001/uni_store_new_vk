@@ -277,7 +277,7 @@ const CategoryProducts = () => {
                                     <div
                                       key={product._id}
                                       // fixed responsive card widths so 5 fit on large screens; min-width keeps consistency
-                                      className="relative bg-gradient-to-br from-[#F0E1D3] via-[#F0E1D3] to-[#E0C3DF] flex-none flex flex-col justify-between p-1 rounded-lg border border-gray-200 hover:border-[#0069c1] hover:shadow-md transition cursor-pointer h-full w-[48%] sm:w-[31%] md:w-[24%] lg:w-[23.9%] min-w-[160px]"
+                                      className="relative bg-gradient-to-br from-[#f4d4ea] via-[#fff0e1] to-[#f198ea] flex-none flex flex-col justify-between p-1 rounded-lg border border-gray-200 hover:border-[#0069c1] hover:shadow-md transition cursor-pointer h-full w-[48%] sm:w-[31%] md:w-[24%] lg:w-[23.9%] min-w-[160px]"
                                     >
                                       {/* Image */}
                                       <div className="relative aspect-square bg-white overflow-hidden">
@@ -289,7 +289,7 @@ const CategoryProducts = () => {
                                               alt={product.name}
                                               fill
                                               // ensure the image fits without stretching
-                                              className="object-contain p-2 sm:p-3 bg-gradient-to-br from-[#F0E1D3] via-[#F0E1D3] to-[#DDE1CF]"
+                                              className="object-contain p-2 sm:p-3 bg-gradient-to-br from-[#f4d4ea] via-[#fff0e1] to-[#f198ea]"
                                               sizes="(max-width: 640px) 90vw, (max-width: 1024px) 45vw, 18vw"
                                               unoptimized
                                             />
