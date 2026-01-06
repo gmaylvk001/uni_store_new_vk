@@ -215,6 +215,7 @@ const CategoryProducts = () => {
             </div>
               {categoryProducts.map((categoryProduct) => {
                 const category = categoryProduct.subcategoryId;
+                console.log("second",category);
                 const products = categoryProduct.products || [];
                 const alignment = categoryProduct.alignment || "left";
                 if (!category || products.length === 0) return null;

@@ -183,7 +183,7 @@ const CategoryProducts = () => {
                 const products = categoryProduct.products || [];
                const slug = (category.category_slug || "").toLowerCase();
 
-const isAllowed = ["refridgerator"]
+const isAllowed = ["mobile-phones", "mobile", "phones"]
   .some(key => slug.includes(key));
 
 if (!isAllowed) return null;
