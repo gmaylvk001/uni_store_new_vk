@@ -895,6 +895,42 @@ const maxIndex = Math.max(0, products.length - CARDS_PER_VIEW);
         categoryScrollRefs.current[categoryId].scrollBy({ left: 300, behavior: "smooth" });
       }
     }; 
+
+const showArrows = categories.length > 10;
+/*     const scrollLeftArrow = () => {
+  if (containerRef.current) {
+    containerRef.current.scrollBy({
+      left: -200,
+      behavior: "smooth",
+    });
+  }
+};
+
+const scrollRightArrow = () => {
+  if (containerRef.current) {
+    containerRef.current.scrollBy({
+      left: 200,
+      behavior: "smooth",
+    });
+  }
+}; */
+
+const scrollLeftArrow = () => {
+  containerRef.current?.scrollBy({
+    left: -260,
+    behavior: "smooth",
+  });
+};
+
+const scrollRightArrow = () => {
+  containerRef.current?.scrollBy({
+    left: 260,
+    behavior: "smooth",
+  });
+};
+
+
+
     const getSubcategorySlugs = (parentId) => {
       return categories
         .filter(cat => cat.parentid === parentId)
@@ -1270,28 +1306,44 @@ case 'brands':
                     )}
                   </div>
                   {/* ================= ROUND CATEGORY ICONS ================= */}
-                  <div className="py-2 relative bg-white">
-                    {/* Left Arrow */}
-                    <button
-                      onClick={scrollLeft}
-                      className="absolute left-0 top-1/2 -translate-y-1/2 bg-white p-1 rounded-full shadow hover:bg-gray-100 z-10"
-                    >
-                      <FiChevronLeft size={20} />
-                    </button>
+                  <div className="relative bg-white py-2">
+                    {/* LEFT ARROW */}
+                    {(showArrows || true) && (
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
 
-                    {/* Right Arrow */}
-                    <button
-                      onClick={scrollRight}
-                      className="absolute right-0 top-1/2 -translate-y-1/2 bg-white p-1 rounded-full shadow hover:bg-gray-100 z-10"
-                    >
-                      <FiChevronRight size={20} />
-                    </button>
+                          if (scrollContainerRef.current) {
+                            scrollContainerRef.current.scrollLeft -= 300;
+                          }
+                        }}
+                        className="absolute left-1 top-1/2 -translate-y-1/2
+                                  bg-white p-2 rounded-full shadow z-50"
+                      >
+                        <FiChevronLeft size={22} />
+                      </button>
+                    )}
+                    {/* RIGHT ARROW */}
+                    {(showArrows || true) && (
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
 
-                    {/* Category Row */}
-                    <div
-                      ref={containerRef}
-                      className="flex items-start lg:justify-center justify-start gap-8 overflow-x-hidden no-scrollbar px-4 md:px-10"
-                    >
+                          if (scrollContainerRef.current) {
+                            scrollContainerRef.current.scrollLeft += 300;
+                          }
+                        }}
+                        className="absolute right-1 top-1/2 -translate-y-1/2
+                                  bg-white p-2 rounded-full shadow z-50"
+                      >
+                        <FiChevronRight size={22} />
+                      </button>
+                    )}
+                    <div ref={scrollContainerRef} className="flex items-start lg:justify-center justify-start gap-8 overflow-x-hidden no-scrollbar px-4 md:px-10"> 
                       {categories.map((cat) => (
                         <Link key={cat._id} href={`/category/${cat.category_slug}`}>
                           <div className="flex flex-col items-center min-w-[100px] cursor-pointer">
@@ -1654,7 +1706,7 @@ case 'brands':
 
            </div>
             <StatusBar /> 
-            {/* <DetailsPageFooter />  */}
+            <DetailsPageFooter /> 
         </>
     ); 
 }

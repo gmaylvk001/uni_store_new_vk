@@ -2047,7 +2047,7 @@ const fetchBrand = async () => {
         <div className="bg-gray-50 p-4 rounded-md shadow-md h-full">
           <h3 className="text-sm font-semibold text-gray-900 mb-3">PRODUCT HIGHLIGHTS</h3>
 
-          <div className="mt-3 overflow-auto">
+          {/* <div className="mt-3 overflow-auto">
             {Array.isArray(product.product_highlights) &&
             product.product_highlights.flatMap(item => item.split(/[\n,]+/)).length > 0 ? (
               <table className="w-full text-xs text-left text-gray-700 border border-gray-200">
@@ -2075,7 +2075,65 @@ const fetchBrand = async () => {
             ) : (
               <p className="text-gray-500 text-xs">No highlights available.</p>
             )}
-          </div>
+          </div> */}
+
+
+          <div className="mt-3">
+  {(() => {
+    let highlights = [];
+
+    if (product?.product_highlights) {
+      const data = product.product_highlights;
+
+      // ✅ CASE 1: HTML UL / LI
+      if (typeof data === "string" && data.includes("<li")) {
+        highlights = data
+          .replace(/<\/?ul>/gi, "")
+          .split(/<\/li>/gi)
+          .map(item =>
+            item
+              .replace(/<li>/gi, "")
+              .replace(/<[^>]+>/g, "")
+              .trim()
+          )
+          .filter(Boolean);
+      }
+
+      // ✅ CASE 2: Array
+      else if (Array.isArray(data)) {
+        highlights = data.flatMap(item =>
+          item
+            .replace(/<[^>]+>/g, "")
+            .split(/[\n,]+/)
+            .map(h => h.trim())
+        );
+      }
+
+      // ✅ CASE 3: Normal string
+      else if (typeof data === "string") {
+        highlights = data
+          .replace(/<[^>]+>/g, "")
+          .split(/[\n,]+/)
+          .map(h => h.trim());
+      }
+    }
+
+    return highlights.length > 0 ? (
+      <ul className="list-disc list-inside text-sm text-gray-700 space-y-1">
+        {highlights.map((highlight, index) => (
+          <li key={index}>
+            {highlight.charAt(0).toUpperCase() + highlight.slice(1)}
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <span className="text-xs text-gray-500">
+        No highlights available.
+      </span>
+    );
+  })()}
+</div>
+
         </div>
       </div>
 

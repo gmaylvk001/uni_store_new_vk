@@ -53,43 +53,43 @@ function Counter({ end, duration = 2000 }) {
 
 const DetailsPageStatusBar = () => {
   return (
-    <div className="w-full bg-[#5f5885] py-4">
+    <div className="w-full bg-[#3de3fe] py-4">
       <div className="max-w-7xl mx-auto grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6 px-4 text-center">
         
         {/* Free Delivery */}
         <div className="flex flex-col items-center gap-1">
-          <Truck className="w-6 h-6 text-[#4DA3FF]" />
-          <p className="text-white font-semibold text-sm">Free Delivery</p>
-          <p className="text-gray-400 text-xs">For all products</p>
+          <Truck className="w-6 h-6 text-[#6256a5]" />
+          <p className="text-[#ca0f0f] font-semibold text-sm">Free Delivery</p>
+          <p className="text-[#32447f] text-xs">For all products</p>
         </div>
 
         {/* Protection Plan */}
         <div className="flex flex-col items-center gap-1">
-          <ShieldCheck className="w-6 h-6 text-[#4DA3FF]" />
-          <p className="text-white font-semibold text-sm">Protection Plan</p>
-          <p className="text-gray-400 text-xs">
+          <ShieldCheck className="w-6 h-6 text-[#6256a5]" />
+          <p className="text-[#ca0f0f] font-semibold text-sm">Protection Plan</p>
+          <p className="text-[#32447f] text-xs">
             Accidental & liquid damage
           </p>
         </div>
 
         {/* 15 Days */}
         <div className="flex flex-col items-center gap-1">
-          <RotateCcw className="w-6 h-6 text-[#4DA3FF]" />
-          <p className="text-white font-semibold text-sm">15 Days</p>
-          <p className="text-gray-400 text-xs">Free returns</p>
+          <RotateCcw className="w-6 h-6 text-[#6256a5]" />
+          <p className="text-[#ca0f0f] font-semibold text-sm">15 Days</p>
+          <p className="text-[#32447f] text-xs">Free returns</p>
         </div>
 
         {/* Payment */}
         <div className="flex flex-col items-center gap-1">
-          <CreditCard className="w-6 h-6 text-[#4DA3FF]" />
-          <p className="text-white font-semibold text-sm">Payment</p>
-          <p className="text-gray-400 text-xs">Secure system</p>
+          <CreditCard className="w-6 h-6 text-[#6256a5]" />
+          <p className="text-[#ca0f0f] font-semibold text-sm">Payment</p>
+          <p className="text-[#32447f] text-xs">Secure system</p>
         </div>
 
         {/* Only Best */}
         <div className="flex flex-col items-center gap-1">
-          <BadgeCheck className="w-6 h-6 text-[#4DA3FF]" />
-          <p className="text-white font-semibold text-sm">Only Best</p>
+          <BadgeCheck className="w-6 h-6 text-[#6256a5]" />
+          <p className="text-[#ca0f0f] font-semibold text-sm">Only Best</p>
         </div>
 
       </div>
