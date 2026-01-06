@@ -179,10 +179,11 @@ const CategoryProducts = () => {
             </div>
               {categoryProducts.map((categoryProduct) => {
                 const category = categoryProduct.subcategoryId;
+                console.log(category);
                 const products = categoryProduct.products || [];
-               const slug = (categoryProduct?.slug || "").toLowerCase();
+               const slug = (category.category_slug || "").toLowerCase();
 
-const isAllowed = ["air-conditioner", "air", "conditioner"]
+const isAllowed = ["refridgerator"]
   .some(key => slug.includes(key));
 
 if (!isAllowed) return null;
