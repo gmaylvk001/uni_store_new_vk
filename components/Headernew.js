@@ -1181,6 +1181,16 @@ const shouldShowArrow = (item, allItems = []) => {
 };
 
 
+ /* ✅ CORRECT CHUNKING */
+  const chunkList = (list, size) => {
+    const chunks = [];
+    for (let i = 0; i < list.length; i += size) {
+      chunks.push(list.slice(i, i + size));
+    }
+    return chunks;
+  };
+
+
 
     // Render flattened category/brand item
     const renderFlatItem = (item, hoveredCategory, allItems = []) => {
@@ -1772,99 +1782,88 @@ const shouldShowArrow = (item, allItems = []) => {
       {/* MENU BUTTON */}
       <button
         onClick={() => setOpen(!open)}
-        className="flex items-center gap-2 text-white px-4 py-2 cursor-pointer"
+        className="flex items-center gap-2 text-white px-4 py-2"
       >
         <FiMenu size={18} />
         <span className="font-medium">Menu</span>
       </button>
 
-      {/* LEFT MAIN MENU */}
+      {/* LEFT MENU */}
       {open && (
-        <div className="absolute left-0 top-full mt-2 w-56 bg-white text-black shadow-lg z-40">
+        <div className="absolute left-0 top-full mt-2 w-56 bg-white shadow-lg z-40">
           <ul className="py-2 text-sm h-[390px]">
-            {categories.length > 0 ? (
-              categories.map((cat) => (
-                <li
-                  key={cat._id}
-                  className="px-4 py-2 flex justify-between items-center cursor-pointer hover:bg-gray-100"
-                  onMouseEnter={() => {
-                    if (
-                      cat?.subcategories?.length > 0 &&
-                      menuWrapperRef.current
-                    ) {
-                      setHoveredCategory(cat);
-
-                      const rect =
-                        menuWrapperRef.current.getBoundingClientRect();
-
-                      // 🔥 IMPORTANT FIX (STRAIGHT ALIGN)
-                      setDropdownTop(rect.top);
-                      setDropdownLeft(rect.right);
-                    } else {
-                      setHoveredCategory(null);
-                    }
-                  }}
-                  onMouseLeave={() => {}}
-                >
-                  <span>{cat.category_name}</span>
-                  {cat?.subcategories?.length > 0 && (
-                    <span className="text-gray-400">{">"}</span>
-                  )}
-                </li>
-              ))
-            ) : (
-              <li className="px-4 py-2 text-gray-400">
-                No categories
+            {categories.map((cat) => (
+              <li
+                key={cat._id}
+                className="px-4 py-2 flex justify-between cursor-pointer hover:bg-gray-100"
+                onMouseEnter={() => {
+                  if (
+                    cat?.subcategories?.length > 0 &&
+                    menuWrapperRef.current
+                  ) {
+                    setHoveredCategory(cat);
+                    const rect =
+                      menuWrapperRef.current.getBoundingClientRect();
+                    setDropdownTop(rect.top);
+                    setDropdownLeft(rect.right);
+                  } else {
+                    setHoveredCategory(null);
+                  }
+                }}
+              >
+                <span>{cat.category_name}</span>
+                {cat?.subcategories?.length > 0 && (
+                  <span className="text-gray-400">{">"}</span>
+                )}
               </li>
-            )}
+            ))}
           </ul>
         </div>
       )}
 
       {/* RIGHT MEGA MENU */}
       {hoveredCategory &&
-        hoveredCategory.subcategories?.length > 0 && (() => {
-          const flat = flattenAllCategories(
-            hoveredCategory.subcategories
-          );
+  hoveredCategory.subcategories?.length > 0 && (() => {
+    const flat = prepareFlatListAlpha(
+      flattenAllCategories(hoveredCategory.subcategories)
+    );
 
-          const alpha = prepareFlatListAlpha(flat);
-          const chunks = chunkFlatList(alpha, 11);
+    const ITEMS_PER_COLUMN = 12;
+    const MAX_COLUMNS = 4;
+    const columnWidth = 220;
 
-          const columnWidth = 220;
-          const computedWidth = chunks.length * columnWidth;
+    const rawColumns = chunkList(flat, ITEMS_PER_COLUMN).slice(0, MAX_COLUMNS);
+    const columns = rawColumns.filter(col => col.length > 0);
 
-          return (
-            <div
-              ref={dropdownRef}
-              className="fixed z-50 shadow-xl border-t"
-              style={{
-                top: `${64}px`,
+    // 🚀 KEY FIX
+    const computedWidth = columns.length * columnWidth;
+
+    return (
+      <div
+        className="fixed z-50 shadow-xl border-t bg-white"
+        style={{
+           top: `${64}px`,
                 left: `${399}px`,
-                width: `${computedWidth}px`,
-              }}
-              onMouseEnter={() => setHoveredCategory(hoveredCategory)}
-              onMouseLeave={() => setHoveredCategory(null)}
+          width: computedWidth,
+        }}
+        onMouseLeave={() => setHoveredCategory(null)}
+      >
+        <div className="flex h-[390px]">
+          {columns.map((column, index) => (
+            <div
+              key={index}
+              className={`min-w-[220px] p-3 ${
+                index % 2 === 0 ? "bg-[#f2f2f2]" : "bg-white"
+              }`}
             >
-              <div className="flex bg-white h-[390px] overflow-hidden">
-                {chunks.map((chunk, index) => (
-                  <div
-                    key={index}
-                    className={`min-w-[220px] p-3 ${
-                      index % 2 === 0
-                        ? "bg-[#f2f2f2]"
-                        : "bg-white"
-                    }`}
-                  >
-                    {chunk.map((item) =>
-                      renderFlatItem(item)
-                    )}
-                  </div>
-                ))}
-              </div>
+              {column.map(renderFlatItem)}
             </div>
-          );
-        })()}
+          ))}
+        </div>
+      </div>
+    );
+  })()}
+
     </div>
 
           {/* Search */}
