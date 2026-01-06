@@ -1603,7 +1603,7 @@ const shouldShowArrow = (item, allItems = []) => {
                           <Link href="/" className="p-1 rounded-lg">
                             <img src="/user/unilet-logo.webp" alt="Logo" width={70} height={45} className="h-auto" />
                           </Link>
-                          <div className="flex items-center gap-3 pr-1 text-customBlue">
+                          <div className="flex items-center gap-3 pr-1 text-white">
                             {/* Feedback Icon */}
                             <Link href="/feedback" className="relative">
                                 <FiMessageSquare size={16} />
@@ -1665,7 +1665,7 @@ const shouldShowArrow = (item, allItems = []) => {
                         <div className="bg-black w-full md:px-3 py-3">
                           <div className="flex items-center bg-white h-12 rounded-xl border border-gray-300 shadow-sm overflow-hidden w-full transition-all duration-150 focus-within:border-[#2453d3] focus-within:shadow-[0_0_0_2px_rgba(36,83,211,0.15)] flex-nowrap">
                             
-                            <select
+                            {/* <select
                               value={selectedCategory}
                               onChange={(e) => setSelectedCategory(e.target.value)}
                               className="h-full text-[11px] xs:text-xs bg-white  border-r border-gray-300 outline-none flex-shrink-0 min-w-[120px] w-auto"
@@ -1677,7 +1677,7 @@ const shouldShowArrow = (item, allItems = []) => {
                                   {cat.category_name}
                                 </option>
                               ))}
-                            </select>
+                            </select> */}
                             <div className="flex-1 relative h-full flex items-center">
                               <input
                                 type="search"
@@ -1904,7 +1904,7 @@ const shouldShowArrow = (item, allItems = []) => {
               ))}
             </select> */}
              {/* Category select */}
-                      <select
+                      {/* <select
                         value={selectedCategory}
                         onChange={(e) => setSelectedCategory(e.target.value)}
                         className="border-r border-gray-300 outline-none flex-shrink-0 min-w-[120px] w-auto px-4 text-sm"
@@ -1916,7 +1916,7 @@ const shouldShowArrow = (item, allItems = []) => {
                             {cat.category_name}
                           </option>
                         ))}
-                      </select>
+                      </select> */}
 
 <input
 		type="search"
