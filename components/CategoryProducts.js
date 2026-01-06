@@ -180,7 +180,15 @@ const CategoryProducts = () => {
               {categoryProducts.map((categoryProduct) => {
                 const category = categoryProduct.subcategoryId;
                 const products = categoryProduct.products || [];
-                const alignment = categoryProduct.alignment || "left";
+               const slug = (categoryProduct?.slug || "").toLowerCase();
+
+const isAllowed = ["air-conditioner", "air", "conditioner"]
+  .some(key => slug.includes(key));
+
+if (!isAllowed) return null;
+
+
+        if (!isAllowed) return null;
                 if (!category || products.length === 0) return null;
                 const categoryStyle = categoryStyless[category.category_slug] || {
                   backgroundImage: '/uploads/small-appliance-banner.webp',
