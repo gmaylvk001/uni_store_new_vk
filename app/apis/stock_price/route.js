@@ -56,11 +56,11 @@ export async function POST(req) {
     const filename = `stock_${Date.now()}.json`;
     fs.writeFileSync(path.join(filePath, filename), JSON.stringify(body, null, 2));
     
-    
+    /*
     return NextResponse.json({
       message: 'Your data stored in a file successfully!...',
     });
-
+*/
     if (!mongoose.connection.readyState) {
       await mongoose.connect(process.env.MONGODB_URI);
     }
