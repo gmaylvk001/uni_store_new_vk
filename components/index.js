@@ -1635,9 +1635,9 @@ case 'brands':
                     <div className="overflow-hidden pt-0 m-0 bg-transparent">
                       
                       {/* Image 1 */}
-                      <div className="rounded-xl overflow-hidden  bg-transparent hover:scale-[1.02] transition">
+                      <div className="rounded-xl overflow-hidden  bg-transparent hover:scale-[1.01] transition">
                         <img
-                          src="uploads/unicare-banner.png"
+                          src="uploads/unicare-banner-appliances-uni-care.png"
                           alt="Special Deals for you"
                           className="w-full h-auto block"
                         />

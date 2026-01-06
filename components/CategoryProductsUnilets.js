@@ -130,7 +130,7 @@ const CategoryProducts = () => {
     visible: { y: 0, opacity: 1, transition: { duration: 0.5, ease: "easeOut" } }
   };
 
-  useEffect(() => {
+  /* useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
       try {
@@ -152,7 +152,43 @@ const CategoryProducts = () => {
       }
     };
     fetchData();
-  }, []);
+  }, []); */
+
+  useEffect(() => {
+  const fetchData = async () => {
+    setIsLoading(true);
+    try {
+      const response = await fetch("/api/categoryproduct/settings");
+      const result = await response.json();
+
+      if (result.ok) {
+        const updatedData = result.data.map((category) => ({
+          ...category,
+          products: [...(category.products || [])].reverse(), // 🔥 DESC order
+        }));
+
+        setCategoryProducts(updatedData);
+      }
+
+      const brandResponse = await fetch("/api/brand");
+      const brandResult = await brandResponse.json();
+      if (!brandResult.error) {
+        const map = {};
+        brandResult.data.forEach((b) => {
+          map[b._id] = b.brand_name;
+        });
+        setBrandMap(map);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  fetchData();
+}, []);
+
 
   if (isLoading) {
     return (
@@ -175,7 +211,7 @@ const CategoryProducts = () => {
         <div className="rounded-[23px] py-1">
           <div className="space-y-6 max-w-12xl mx-auto">
             <div className="flex justify-between items-center flex-wrap gap-4 mb-3 sm:mb-5">
-              <h5 className="text-lg sm:text-2xl font-bold"> Best for the season</h5>
+              <h5 className="text-lg sm:text-2xl font-bold"> UNILET Only</h5>
             </div>
               {categoryProducts.map((categoryProduct) => {
                 const category = categoryProduct.subcategoryId;
