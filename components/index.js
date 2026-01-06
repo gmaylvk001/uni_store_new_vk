@@ -1466,7 +1466,7 @@ case 'brands':
                     </div>
                    
                   </div> */}
-                  <div className=" py-5 px-6 relative">
+                  <div className="py-10 px-2 lg:px-6 relative">
                       <CategoryProducts/>
                   </div>
 
@@ -1526,7 +1526,7 @@ case 'brands':
                   </section>
 
                   {/* UNILET Only */}
-                  <div className=" py-10 px-6 relative">
+                  <div className=" py-10 px-2 lg:px-6 relative">
                     {/* <h2 className="text-white text-2xl font-semibold mb-6">UNILET Only</h2> */}
                     {/* //Left Arrow
                     <button
