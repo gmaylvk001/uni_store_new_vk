@@ -106,7 +106,23 @@ const CategoryProducts = () => {
     };
 
 
-  const scrollLeft = (categoryId) => {
+    const scrollLeft = (categoryId) => {
+  const el = categoryScrollRefs.current[categoryId];
+  if (!el) return;
+
+  const scrollAmount = el.clientWidth; // 👈 move exactly visible items
+  el.scrollBy({ left: -scrollAmount, behavior: "smooth" });
+};
+
+const scrollRight = (categoryId) => {
+  const el = categoryScrollRefs.current[categoryId];
+  if (!el) return;
+
+  const scrollAmount = el.clientWidth;
+  el.scrollBy({ left: scrollAmount, behavior: "smooth" });
+};
+
+ /*  const scrollLeft = (categoryId) => {
     if (categoryScrollRefs.current[categoryId]) {
       categoryScrollRefs.current[categoryId].scrollBy({ left: -250, behavior: 'smooth' });
     }
@@ -116,7 +132,7 @@ const CategoryProducts = () => {
     if (categoryScrollRefs.current[categoryId]) {
       categoryScrollRefs.current[categoryId].scrollBy({ left: 250, behavior: 'smooth' });
     }
-  };
+  }; */
 
   const handleProductClick = (product) => {
     setNavigating(true);
@@ -207,7 +223,7 @@ const CategoryProducts = () => {
           <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-600"></div>
         </div>
       )}
-      <motion.section id="category-products" initial="hidden" animate="visible" className="category-products px-3 sm:px-1 pt-1">
+      <motion.section id="category-products" initial="hidden" animate="visible" className="category-products px-3 pt-1">
         <div className="rounded-[23px] py-1">
           <div className="space-y-6 max-w-12xl mx-auto">
             <div className="flex justify-between items-center flex-wrap gap-4 mb-3 sm:mb-5">
@@ -215,14 +231,7 @@ const CategoryProducts = () => {
             </div>
               {categoryProducts.map((categoryProduct) => {
                 const category = categoryProduct.subcategoryId;
-                console.log("second",category);
                 const products = categoryProduct.products || [];
-                const slug = (category.category_slug || "").toLowerCase();
-
-const isAllowed = ["Laptops", "mobile", "phones"]
-  .some(key => slug.includes(key));
-
-if (!isAllowed) return null;
                 const alignment = categoryProduct.alignment || "left";
                 if (!category || products.length === 0) return null;
                 const categoryStyle = categoryStyless[category.category_slug] || {
@@ -233,7 +242,7 @@ if (!isAllowed) return null;
                 const sanitizedBackgroundImage = getSanitizedImage(categoryStyle.backgroundImage);
                 const finalBgUrl = sanitizedCategoryImage || sanitizedBackgroundImage || "/default-image.jpg"; 
                 const styleObj = { backgroundImage: `url("${finalBgUrl}")` };
-                const visibleDesktopCount = 5;
+                const visibleDesktopCount = 4;
                 const fewProducts = products.length > 0 && products.length < visibleDesktopCount;
 
                 return (
@@ -311,17 +320,46 @@ if (!isAllowed) return null;
                             <FiChevronRight size={16} />
                           </button>
                           {/* Scrollable Products */}
-                              <div
+                              {/* <div
                                 ref={(el) => (categoryScrollRefs.current[categoryProduct._id] = el)}
-                                className={`flex overflow-x-auto scrollbar-hide scroll-smooth gap-4 py-1 ${fewProducts ? "justify-center" : "justify-start"}`}
+                                className={`flex overflow-x-auto scrollbar-hide scroll-smooth gap-2 py-1 ${fewProducts ? "justify-center" : "justify-start"}`}
                                 style={{ WebkitOverflowScrolling: "touch" }}
-                              >
+                              > */}
+ <div
+  ref={(el) => (categoryScrollRefs.current[categoryProduct._id] = el)}
+  className="
+    flex overflow-x-auto scroll-smooth scrollbar-hide
+    snap-x snap-mandatory gap-2
+    md:gap-4 lg:gap-4 py-1
+    pr-2        /* ✅ IMPORTANT */
+  "
+>
+
+
                               {products.slice(0, 15).map((product) => (
-                                    <div
+                                   /*  <div
                                       key={product._id}
                                       // fixed responsive card widths so 5 fit on large screens; min-width keeps consistency
-                                      className="relative bg-gradient-to-br from-[#f4d4ea] via-[#fff0e1] to-[#f198ea] flex-none flex flex-col justify-between p-1 rounded-lg border border-gray-200 hover:border-[#0069c1] hover:shadow-md transition cursor-pointer h-full w-[48%] sm:w-[31%] md:w-[24%] lg:w-[23.9%] min-w-[160px]"
-                                    >
+                                      className="relative bg-gradient-to-br from-[#f4d4ea] via-[#fff0e1] to-[#f198ea] flex-none flex flex-col justify-between p-1 rounded-lg border border-gray-200 hover:border-[#0069c1] hover:shadow-md transition cursor-pointer h-full w-[48%] sm:w-[40%] md:w-[24%] lg:w-[23.9%] min-w-[160px]"
+                                    > */
+  <div
+  key={product._id}
+  className="
+    snap-start
+    flex-none shrink-0     /* ✅ IMPORTANT */
+
+    bg-gradient-to-br from-[#f4d4ea] via-[#fff0e1] to-[#f198ea]
+    flex flex-col justify-between
+    p-1 rounded-lg border border-gray-200
+    hover:border-[#0069c1] hover:shadow-md transition
+    cursor-pointer h-full
+
+    w-[50%] sm:w-[50%]
+    md:w-[25%] lg:w-[24.1%]
+  "
+>
+
+
                                       {/* Image */}
                                       <div className="relative aspect-square bg-white overflow-hidden">
                                         <Link href={`/product/${product.slug}`} onClick={() => handleProductClick(product)} className="block mb-1">
@@ -381,18 +419,22 @@ if (!isAllowed) return null;
                                           </h3>
                                         </Link>
 
-                                         <div className="flex items-center gap-2 mb-2 sm:mb-3">
-                                           <span className="text-sm sm:text-base font-semibold text-red-600">
+                                         <div className="flex flex-col sm:flex-row items-center md:gap-2 mb-2 sm:mb-3">
+                                          <div>
+                                            <span className="text-sm sm:text-base font-semibold text-red-600">
                                              MRP ₹ {(product.special_price > 0 && product.special_price < product.price
                                                ? Math.round(product.special_price)
                                                : Math.round(product.price)
                                              ).toLocaleString()}
                                            </span>
-                                           {product.special_price > 0 && product.special_price < product.price && (
+                                          </div>
+                                           <div>
+                                            {product.special_price > 0 && product.special_price < product.price && (
                                              <span className="text-[10px] sm:text-xs text-gray-500 line-through">
                                                MRP ₹ {Math.round(product.price).toLocaleString()}
                                              </span>
                                            )}
+                                           </div>
                                          </div>
  
                                          <h4 className={`text-[10px] sm:text-xs mb-2 ${product.stock_status === "In Stock" ? "text-green-600" : "text-red-600"}`}>
