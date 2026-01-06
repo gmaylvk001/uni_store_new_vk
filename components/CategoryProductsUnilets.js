@@ -217,6 +217,12 @@ const CategoryProducts = () => {
                 const category = categoryProduct.subcategoryId;
                 console.log("second",category);
                 const products = categoryProduct.products || [];
+                const slug = (category.category_slug || "").toLowerCase();
+
+const isAllowed = ["Laptops", "mobile", "phones"]
+  .some(key => slug.includes(key));
+
+if (!isAllowed) return null;
                 const alignment = categoryProduct.alignment || "left";
                 if (!category || products.length === 0) return null;
                 const categoryStyle = categoryStyless[category.category_slug] || {
