@@ -231,6 +231,14 @@ const scrollRight = (categoryId) => {
             </div>
               {categoryProducts.map((categoryProduct) => {
                 const category = categoryProduct.subcategoryId;
+
+                const slug = category?.category_slug?.toLowerCase() || "";
+                const keywords = ["televisions"];
+                const isAllowed = keywords.some((key) => slug.includes(key));
+        
+                if (!isAllowed) return null;
+
+
                 const products = categoryProduct.products || [];
                 const alignment = categoryProduct.alignment || "left";
                 if (!category || products.length === 0) return null;
