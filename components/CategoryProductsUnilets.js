@@ -233,7 +233,7 @@ const scrollRight = (categoryId) => {
                 const category = categoryProduct.subcategoryId;
 
                 const slug = category?.category_slug?.toLowerCase() || "";
-                const keywords = ["televisions"];
+                const keywords = ["television","televisions"];
                 const isAllowed = keywords.some((key) => slug.includes(key));
         
                 if (!isAllowed) return null;
