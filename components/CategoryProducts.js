@@ -198,7 +198,7 @@ const scrollRight = (categoryId) => {
                 const category = categoryProduct.subcategoryId;
                 console.log("First Catgeory:",category);
                 const slug = category?.category_slug?.toLowerCase() || "";
-                const keywords = ["refrigerator", "televisions", "computers-laptops", "computers", "laptops", "mobiles-tablets", "mobiles", "tablets","mobile-phones", "mobile", "phones"];
+                const keywords = ["refridgerator", "refrigerator", "televisions", "computers-laptops", "computers", "laptops", "mobiles-tablets", "mobiles", "tablets","mobile-phones", "mobile", "phones"];
                 const isAllowed = keywords.some((key) => slug.includes(key));
         
                 if (!isAllowed) return null;
