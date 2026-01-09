@@ -53,7 +53,7 @@ function Counter({ end, duration = 2000 }) {
 
 const DetailsPageStatusBar = () => {
   return (
-    <div className="w-full bg-[#3de3fe] py-4">
+    <div className="w-full bg-white py-4">
       <div className="max-w-7xl mx-auto grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6 px-4 text-center">
         
         {/* Free Delivery */}
@@ -63,7 +63,7 @@ const DetailsPageStatusBar = () => {
           <p className="text-[#32447f] text-xs">For all products</p>
         </div>
 
-        {/* Protection Plan */}
+        {/* Protection Plan bg-[#3de3fe] */}
         <div className="flex flex-col items-center gap-1">
           <ShieldCheck className="w-6 h-6 text-[#6256a5]" />
           <p className="text-[#ca0f0f] font-semibold text-sm">Protection Plan</p>
