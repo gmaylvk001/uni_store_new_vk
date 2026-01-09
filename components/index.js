@@ -1348,17 +1348,13 @@ case 'brands':
                         <Link key={cat._id} href={`/category/${cat.category_slug}`}>
                           <div className="flex flex-col items-center min-w-[100px] cursor-pointer">
                             {/* ICON TILE */}
-                            <div className="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20
-                            rounded-2xl
-                            bg-gradient-to-br from-[#B0D7EE] via-[#ffffff] to-[#E4F1F9]
-                            flex items-center justify-center
-                            shadow-md
+                            <div className="flex items-center justify-center
                             hover:scale-105 transition">
                               {cat.image ? (
                                 <img
                                   src={cat.image}
                                   alt={cat.category_name}
-                                  className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 object-contain"
+                                  className="lg:w-24"
                                 />
                               ) : (
                                 <div className="w-10 h-10 bg-gray-200 rounded-full" />
