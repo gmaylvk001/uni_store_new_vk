@@ -336,7 +336,7 @@ const scrollRight = (categoryId) => {
                                               alt={product.name}
                                               fill
                                               // ensure the image fits without stretching
-                                              className="object-contain p-2 sm:p-3 bg-gradient-to-br from-[#f4d4ea] via-[#fff0e1] to-[#f198ea]"
+                                              className="object-contain p-2 sm:p-3"
                                               sizes="(max-width: 640px) 90vw, (max-width: 1024px) 45vw, 18vw"
                                               unoptimized
                                             />
