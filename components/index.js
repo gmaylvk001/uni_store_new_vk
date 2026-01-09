@@ -1343,7 +1343,8 @@ case 'brands':
                         <FiChevronRight size={22} />
                       </button>
                     )}
-                    <div ref={scrollContainerRef} className="flex items-start lg:justify-center justify-start gap-8 overflow-x-hidden no-scrollbar px-4 md:px-10"> 
+                    {/* <div ref={scrollContainerRef} className="flex items-start lg:justify-center justify-start gap-8 overflow-x-hidden no-scrollbar px-4 md:px-10">  */}
+                    <div ref={scrollContainerRef} className="flex items-start lg:justify-center justify-start overflow-x-hidden no-scrollbar px-4 md:px-10" style={{ columnGap: "5%" }}> 
                       {categories.map((cat) => (
                         <Link key={cat._id} href={`/category/${cat.category_slug}`}>
                           <div className="flex flex-col items-center min-w-[100px] cursor-pointer">
