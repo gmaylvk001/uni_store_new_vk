@@ -1612,7 +1612,7 @@ const shouldShowArrow = (item, allItems = []) => {
                       {/* NEW MOBILE TOP ROW (from reference) */}
                       <div className="lg:hidden flex items-center justify-between relative md:mx-4">
                           <Link href="/" className="p-1 rounded-lg">
-                            <img src="/user/unilet-logo.webp" alt="Logo" width={70} height={45} className="h-auto" />
+                            <img src="/user/logo-mobile-view-res.png" alt="Logo" width={70} height={45} className="h-auto" />
                           </Link>
                           <div className="flex items-center gap-3 pr-1 text-white">
                             {/* Feedback Icon */}
