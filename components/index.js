@@ -20,6 +20,7 @@ import Addtocart from "@/components/AddToCart";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Autoplay } from "swiper/modules";
 import RecentlyViewedProducts from '@/components/RecentlyViewedProducts';
+import BlogDetailsImagehome from '@/components/blog/BlogDetailsImagehome';
 import StatusBar from '@/components/StatusBar';
 import DetailsPageFooter from '@/components/DetailsPageFooter';
 import CategoryProducts from '@/components/CategoryProducts';
@@ -1693,6 +1694,7 @@ case 'brands':
                       </div>
                     </div>
                   </section>
+                  <BlogDetailsImagehome /> 
                 </div>
 
 
