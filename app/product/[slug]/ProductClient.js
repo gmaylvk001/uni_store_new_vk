@@ -1103,6 +1103,38 @@ const fetchBrand = async () => {
 </p>
 
             </div>
+<div className="flex gap-3 w-full py-1">
+            {/* Buy Now */}
+ {product.stock_status === "In Stock" && product.quantity > 0 && (
+  <button
+    onClick={handleBuyNow}
+    className="w-full bg-white hover:bg-customBlue hover:text-white text-customBlue border border-blue-200 font-semibold py-3 rounded-md shadow-md flex items-center justify-center gap-3"
+  >
+    <FaStore className="h-5 w-5" />
+    <span>Buy Now</span>
+  </button>
+)}
+
+
+  {/* Add to Cart */}
+  <ProductAddtoCart
+    productId={product._id}
+    stockQuantity={product.quantity}
+    quantity={quantity}
+    additionalProducts={[
+      ...selectedFrequentProducts.map((p) => p._id),
+      ...selectedRelatedProducts.map((p) => p._id),
+    ]}
+    // warranty={selectedWarranty}
+    selectedRelatedProducts={selectedRelatedProducts}
+    // extendedWarranty={selectedExtendedWarranty}
+    extendedWarranty={selectedWarrantyAmount}
+    selectedFrequentProducts={selectedFrequentProducts}
+    className="w-full bg-customBlue hover:bg-blue-700 text-white font-semibold py-3 rounded-md shadow-md text-center"
+  />
+
+</div>
+
 
             {/* Add this code right after the Stock Alert section */}
               {/* <div className="border-2 border-customBlue rounded-lg overflow-hidden bg-blue-50 shadow-md mt-4">
@@ -1880,34 +1912,7 @@ const fetchBrand = async () => {
       </div>
     </div>
   )}
-  {/* Buy Now */}
- {product.stock_status === "In Stock" && product.quantity > 0 && (
-  <button
-    onClick={handleBuyNow}
-    className="w-full bg-white hover:bg-customBlue hover:text-white text-customBlue border border-blue-200 font-semibold py-3 rounded-md shadow-md flex items-center justify-center gap-3"
-  >
-    <FaStore className="h-5 w-5" />
-    <span>Buy Now</span>
-  </button>
-)}
-
-
-  {/* Add to Cart */}
-  <ProductAddtoCart
-    productId={product._id}
-    stockQuantity={product.quantity}
-    quantity={quantity}
-    additionalProducts={[
-      ...selectedFrequentProducts.map((p) => p._id),
-      ...selectedRelatedProducts.map((p) => p._id),
-    ]}
-    // warranty={selectedWarranty}
-    selectedRelatedProducts={selectedRelatedProducts}
-    // extendedWarranty={selectedExtendedWarranty}
-    extendedWarranty={selectedWarrantyAmount}
-    selectedFrequentProducts={selectedFrequentProducts}
-    className="w-full bg-customBlue hover:bg-blue-700 text-white font-semibold py-3 rounded-md shadow-md text-center"
-  />
+  
 </div>
 
           </div>

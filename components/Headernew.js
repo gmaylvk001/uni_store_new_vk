@@ -1776,7 +1776,7 @@ const shouldShowArrow = (item, allItems = []) => {
       <div className="bg-black hidden lg:block">
         <div className="max-w-7xl mx-auto px-4 py-4 flex items-center gap-4">
           <Link href="/" className="text-lg font-semibold">
-           <img src="/user/unilet-logo.webp" alt="Logo" width={100} height={70} className="h-auto" />
+           <img src="/user/logo-mobile-view-res.png" alt="Logo" width={100} height={70} className="h-auto" />
           </Link>
           <div className="relative" ref={menuWrapperRef}>
       {/* MENU BUTTON */}
