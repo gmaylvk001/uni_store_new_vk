@@ -13,17 +13,23 @@ import { HeaderProvider } from "@/context/HeaderContext";
 export default function ClientLayout({ children }) {
   const pathname = usePathname();
 
+  // pages where header/footer should be hidden
+  const hideLayoutPages = ["/join-our-luckydrop","/thank-you"];
+  const hideHeaderFooter = hideLayoutPages.some((p) => pathname?.startsWith(p));
+
   return (
     <HeaderProvider>
       <ModalProvider>
         <WishlistProvider>
           <CartProvider>
             <AuthProvider>
-              {!pathname?.startsWith("/admin") && <CustomHeader />}
-              {/* <main className="relative">{children}</main> */}
-              <main className="relative bg-gradient-to-br from-[#B0D7EE] via-[#ffffff] to-[#E4F1F9]">{children}</main>
+              {!pathname?.startsWith("/admin") && !hideHeaderFooter && <CustomHeader />}
 
-              {!pathname?.startsWith("/admin") && <CustomFooter />}
+              <main className="relative bg-gradient-to-br from-[#B0D7EE] via-[#ffffff] to-[#E4F1F9]">
+                {children}
+              </main>
+
+              {!pathname?.startsWith("/admin") && !hideHeaderFooter && <CustomFooter />}
               <GlobalModals />
             </AuthProvider>
           </CartProvider>
