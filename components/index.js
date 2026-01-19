@@ -26,6 +26,7 @@ import DetailsPageFooter from '@/components/DetailsPageFooter';
 import CategoryProducts from '@/components/CategoryProducts';
 import CategoryProductsUnilets from '@/components/CategoryProductsUnilets';
 import CategoryBestofApple from '@/components/CategoryBestofApple';
+import CategoryBestofValue from '@/components/CategoryBestofValue';
 import { ChevronRight } from "lucide-react";
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -1422,6 +1423,10 @@ case 'brands':
                   {/* Best Value for you */}
                   <section className="px-4 md:px-6 py-1">
                     <h2 className="text-xl md:text-2xl font-bold mb-6">Best Value for you</h2>
+                    {/* Best of Apple */}
+                    <div className="mt-1">
+                      <CategoryBestofValue/>
+                    </div>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       {/* Card 1 */}
                       <div className="relative rounded-lg overflow-hidden shadow-lg">

@@ -53,7 +53,7 @@ function Counter({ end, duration = 2000 }) {
 
 const DetailsPageStatusBar = () => {
   return (
-    <div className="w-full py-4" style={{ background: "linear-gradient(90deg,rgba(137, 171, 196, 1) 0%, rgba(255, 255, 255, 1) 50%, rgba(135, 170, 195, 1) 100%);" }}>
+    <div className="w-full py-4" style={{ background: "linear-gradient(90deg,rgba(137, 171, 196, 1) 0%, rgba(255, 255, 255, 1) 50%, rgba(135, 170, 195, 1) 100%)" }}>
       <div className="max-w-7xl mx-auto grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6 px-4 text-center">
         
         {/* Free Delivery */}
