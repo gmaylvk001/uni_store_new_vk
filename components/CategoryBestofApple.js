@@ -197,7 +197,7 @@ const scrollRight = (categoryId) => {
               {categoryProducts.map((categoryProduct) => {
                 const category = categoryProduct.subcategoryId;
                 const slug = category?.category_slug?.toLowerCase() || "";
-                const keywords = ["iPhone", "IPhones", "iPhones", "IPhone"];
+                const keywords = ["iphone", "Iphones", "iphones", "iphone"];
                 const isAllowed = keywords.some((key) => slug.includes(key));
         
                 if (!isAllowed) return null;
