@@ -25,6 +25,7 @@ import StatusBar from '@/components/StatusBar';
 import DetailsPageFooter from '@/components/DetailsPageFooter';
 import CategoryProducts from '@/components/CategoryProducts';
 import CategoryProductsUnilets from '@/components/CategoryProductsUnilets';
+import CategoryBestofApple from '@/components/CategoryBestofApple';
 import { ChevronRight } from "lucide-react";
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -1457,6 +1458,16 @@ case 'brands':
                     </div>
                   </section>
 
+
+
+                  {/* Best of Apple */}
+                  <div className="py-10 px-2 lg:px-6 relative">
+                    <CategoryBestofApple/>
+                  </div>
+
+
+
+
                   {/* Best for the season */}
                   {/* <div className=" py-5 px-6 relative">
                     <div className="grid grid-cols-2 md:grid-cols-1 gap-4">
@@ -1464,7 +1475,7 @@ case 'brands':
                     </div>
                    
                   </div> */}
-                  <div className="py-10 px-2 lg:px-6 relative">
+                  <div className="py-10 px-2 lg:px-6 relative pt-1">
                       <CategoryProducts/>
                   </div>
 

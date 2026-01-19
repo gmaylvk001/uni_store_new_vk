@@ -1103,7 +1103,7 @@ const fetchBrand = async () => {
 </p>
 
             </div>
-<div className="flex gap-3 w-full py-1">
+<div className="flex gap-3 w-full py-2">
             {/* Buy Now */}
  {product.stock_status === "In Stock" && product.quantity > 0 && (
   <button
