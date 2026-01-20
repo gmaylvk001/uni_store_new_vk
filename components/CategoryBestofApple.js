@@ -292,7 +292,6 @@ const scrollRight = (categoryId) => {
   key={product._id}
   className="
     snap-start flex-none
-    bg-gradient-to-br from-[#f4d4ea] via-[#fff0e1] to-[#f198ea]
     flex flex-col justify-between
     p-1 rounded-lg border border-gray-200
     hover:border-[#0069c1] hover:shadow-md transition
@@ -300,7 +299,7 @@ const scrollRight = (categoryId) => {
 
     w-[calc(50%-0.5rem)]
     md:w-[calc(33.333%-0.75rem)]
-  "
+  " style={{ background: "linear-gradient(90deg,rgba(180, 223, 255, 1) 0%, rgba(255, 255, 255, 1) 50%, rgba(158, 203, 235, 1) 100%)" }}
 >
 
 

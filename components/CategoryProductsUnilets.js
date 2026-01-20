@@ -356,7 +356,7 @@ const scrollRight = (categoryId) => {
     snap-start
     flex-none shrink-0     /* ✅ IMPORTANT */
 
-    bg-gradient-to-br from-[#f4d4ea] via-[#fff0e1] to-[#f198ea]
+
     flex flex-col justify-between
     p-1 rounded-lg border border-gray-200
     hover:border-[#0069c1] hover:shadow-md transition
@@ -364,11 +364,11 @@ const scrollRight = (categoryId) => {
 
     w-[50%] sm:w-[50%]
     md:w-[25%] lg:w-[24.1%]
-  "
+  " style={{ background: "linear-gradient(90deg,rgba(180, 223, 255, 1) 0%, rgba(255, 255, 255, 1) 50%, rgba(158, 203, 235, 1) 100%)" }}
 >
 
 
-                                      {/* Image */}
+                                      {/* Image     bg-gradient-to-br from-[#f4d4ea] via-[#fff0e1] to-[#f198ea]*/}
                                       <div className="relative aspect-square bg-white overflow-hidden">
                                         <Link href={`/product/${product.slug}`} onClick={() => handleProductClick(product)} className="block mb-1">
                                         {product.images?.[0] && (
