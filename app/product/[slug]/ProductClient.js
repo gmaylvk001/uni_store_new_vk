@@ -1716,12 +1716,12 @@ const fetchBrand = async () => {
         </>
       )}
     </div>
-  )} */}
+  )} Similar Products*/}
 {relatedProducts.filter((item) => item.quantity > 0 && item.status === "Active").length > 0 && (
   <div className="border border-gray-300 rounded-lg shadow-md bg-white max-h-[500px] overflow-y-scroll scrollbar-hide">
     <div className="px-4 py-4">
       <h2 className="text-sm font-bold text-customBlue underline mb-2">
-        Similar Products
+        Add Ons
       </h2>
 
       {relatedProducts
