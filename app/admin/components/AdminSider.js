@@ -36,8 +36,7 @@ export default function AdminSider({ collapsed }) {
       // { icon: 'mdi:clock-outline', label: 'Home Delivery', link: 'order/home-delivery', dotColor: 'bg-yellow-500' },
       // { icon: 'mdi:clock-outline', label: 'Pending Order', link: 'order/pending-order', dotColor: 'bg-yellow-500' },
       { icon: 'mdi:cancel', label: 'Cancel Order', link: 'order/cancel-order', dotColor: 'bg-blue-500' },
-      { icon: 'mdi:truck-delivery-outline', label: 'Shipped Order', link: 'shippedorder', dotColor: 'bg-green-500' },
-      { icon: 'material-symbols:reviews-rounded', label: 'Reviews', link: 'reviews' }
+      { icon: 'mdi:truck-delivery-outline', label: 'Shipped Order', link: 'shippedorder', dotColor: 'bg-green-500' }
     ]
   },
 
@@ -57,7 +56,7 @@ export default function AdminSider({ collapsed }) {
     { icon: 'mdi:note-text-outline', label: 'Blog', link: 'blog' },
     /* { icon: 'mdi:account-outline', label: 'User', link: 'user' },
     { icon: 'mdi:phone-outline', label: 'Contact Us', link: 'contact' }, */
-    /* { icon: 'material-symbols:reviews-rounded', label: 'Reviews', link: 'reviews' }, */
+    { icon: 'material-symbols:reviews-rounded', label: 'Reviews', link: 'reviews' },
     /* {
   icon: 'mdi:file-chart-outline', // changed to reports icon
   label: 'Reports',
