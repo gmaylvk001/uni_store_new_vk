@@ -57,6 +57,7 @@ export default function AdminSider({ collapsed }) {
     /* { icon: 'mdi:account-outline', label: 'User', link: 'user' },
     { icon: 'mdi:phone-outline', label: 'Contact Us', link: 'contact' }, */
     { icon: 'material-symbols:reviews-rounded', label: 'Reviews', link: 'reviews' },
+    { icon: 'mdi:plus-box-outline', label: 'New Product', link: 'newproduct', dotColor: 'bg-green-500' },
     /* {
   icon: 'mdi:file-chart-outline', // changed to reports icon
   label: 'Reports',
