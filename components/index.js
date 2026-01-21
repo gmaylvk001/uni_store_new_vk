@@ -1718,7 +1718,7 @@ case 'brands':
                     </div>
                   </section>
 
-{/* Banner Section start */}
+{/* Banner Section start */} 
               
                   <div className="home-container">
                     {isSectionLoading ? (
