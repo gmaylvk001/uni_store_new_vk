@@ -1476,6 +1476,62 @@ case 'brands':
                     </div>
                    
                   </div> */}
+
+                  {/* Unilet Brands */}
+                  <section className="px-4 md:px-8 py-1">
+                    <h2 className="text-xl md:text-2xl font-semibold mb-6">Brand Spotlight</h2>
+                    <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-5">
+                      
+                      {/* Image 1 */}
+                      <div className="rounded-xl overflow-hidden bg-[#111] hover:scale-[1.02] transition">
+                        <Link href={`/brand/preethi`}>
+                        <img
+                          src="uploads/aboutus/whats-hot-unilet-mg.png"
+                          alt="What's Hot"
+                          className="w-full h-full object-cover"
+                        />
+                        </Link>
+                        
+                      </div>
+
+                      {/* Image 2 */}
+                      <div className="rounded-xl overflow-hidden bg-[#111] hover:scale-[1.02] transition">
+                        <Link href={`/brand/voltas`}>
+                        <img
+                          src="uploads/aboutus/whats-hot-unilet-ac.png"
+                          alt="What's Hot"
+                          className="w-full h-full object-cover"
+                        />
+                        </Link>
+                      </div>
+
+                      {/* Image 3 */}
+                      <div className="rounded-xl overflow-hidden bg-[#111] hover:scale-[1.02] transition">
+                        <Link href={`/brand/lg`}>
+                        
+                        <img
+                          src="uploads/aboutus/whats-hot-unilet.png"
+                          alt="What's Hot"
+                          className="w-full h-full object-cover"
+                        />
+                        </Link>
+                      </div>
+
+                      {/* Image 4 */}
+                      <div className="rounded-xl overflow-hidden bg-[#111] hover:scale-[1.02] transition">
+                        <Link href={`/brand/apple`}>
+                       
+                        <img
+                          src="uploads/aboutus/whats-hot-unilet-mb.png"
+                          alt="What's Hot"
+                          className="w-full h-full object-cover"
+                        />
+                         </Link>
+                      </div>
+
+                    </div>
+                  </section>
+
                   <div className="py-10 px-2 lg:px-6 relative pt-1">
                       <CategoryProducts/>
                   </div>
