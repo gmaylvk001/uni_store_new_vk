@@ -1383,40 +1383,38 @@ case 'brands':
                 <div className="home-container bg-gradient-to-br from-[#B0D7EE] via-[#ffffff] to-[#E4F1F9]">
                   {/* LATEST @ UNILET STORES */}
                   <section className="px-4 md:px-6 py-8">
-                    <h2 className="text-xl md:text-2xl font-bold mb-6"> Latest @Unilet</h2>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                      {/* Card 1 */}
-                      <div className="relative rounded-lg overflow-hidden">
-                        <Link href={`/product/one-plus-mobile-13r-5g-16gb-512gb`}>
-                        <img
-                          src="uploads/flashsale/HP_SOH_Layout_31Dec2025_07_qHwHCtAzl.png"
-                          alt="Unilet"
-                          className="w-full h-full object-cover"
-                        />
-                        </Link>
-                      </div>
+                    <h2 className="text-xl md:text-2xl font-bold mb-6">Latest @Unilet</h2>
+                    <div className="relative max-w-12xl mx-auto">
+                      {/* LEFT ARROW */}
+                      <button className="unilet-prev absolute left-3 top-1/2 -translate-y-1/2 z-20 h-9 w-9 rounded-full bg-black/40 text-white flex items-center justify-center text-xl hover:bg-black/70">‹</button>
+                      {/* RIGHT ARROW */}
+                      <button className="unilet-next absolute right-3 top-1/2 -translate-y-1/2 z-20 h-9 w-9 rounded-full bg-black/40 text-white flex items-center justify-center text-xl hover:bg-black/70">›</button>
+                      <Swiper modules={[Autoplay, Navigation]} autoplay={{ delay: 3000, disableOnInteraction: false }}
+                        navigation={{
+                          prevEl: ".unilet-prev",
+                          nextEl: ".unilet-next",
+                        }} loop slidesPerView={1} className="rounded-xl overflow-hidden">
+                        {/* Slide 1 */}
+                        <SwiperSlide>
+                          <Link href="/product/one-plus-mobile-13r-5g-16gb-512gb">
+                            <img src="uploads/flashsale/Latest_unilet-imgae-1.png" alt="Unilet" className="w-full h-[260px] md:h-[380px] lg:h-[420px]"/>
+                          </Link>
+                        </SwiperSlide>
 
+                        {/* Slide 2 */}
+                        <SwiperSlide>
+                          <Link href="/product/apple-laptop-mba-m4-md-13-inch-midnight-black-16gb-256gb">
+                            <img src="uploads/flashsale/Latest_unilet-img.png" alt="Unilet" className="w-full h-[260px] md:h-[380px] lg:h-[420px]"/>
+                          </Link>
+                        </SwiperSlide>
 
-                      <div className="relative rounded-lg overflow-hidden">
-                        <Link href={`/product/apple-laptop-mba-m4-md-13-inch-midnight-black-16gb-256gb`}>
-                          <img
-                            src="uploads/flashsale/Latest_unilet-img.png"
-                            alt="Unilet"
-                            className="w-full h-full object-cover"
-                          />
-                        </Link>
-                      </div>
-
-                      {/* Card 3 */}
-                      <div className="relative rounded-lg overflow-hidden">
-                        <Link href={`/`}>
-                        <img
-                          src="uploads/flashsale/unilet-latest-pro-n-.png"
-                          alt="Unilet"
-                          className="w-full h-full object-cover"
-                        />
-                        </Link>
-                      </div>
+                        {/* Slide 3 */}
+                        <SwiperSlide>
+                          <Link href="/">
+                            <img src="uploads/flashsale/unilet-latest-pro-n-.png" alt="Unilet" className="w-full h-[260px] md:h-[380px] lg:h-[420px]"/>
+                          </Link>
+                        </SwiperSlide>
+                      </Swiper>
                     </div>
                   </section>
 
@@ -1427,39 +1425,37 @@ case 'brands':
                     <div className="mt-1">
                       <CategoryBestofValue/>
                     </div>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                      {/* Card 1 */}
-                      <div className="relative rounded-lg overflow-hidden shadow-lg">
-                        <Link href={`/terms-and-condition`}>
-                        <img
-                          src="uploads/aboutus/BestvalueImg.png"
-                          alt="flash sale"
-                          className="w-full h-full object-cover"
-                        />
-                        </Link>
-                      </div>
+                    <div className="relative max-w-12xl mx-auto">
+                      {/* LEFT ARROW */}
+                      <button className="unilet-prev absolute left-3 top-1/2 -translate-y-1/2 z-20 h-9 w-9 rounded-full bg-black/40 text-white flex items-center justify-center text-xl hover:bg-black/70">‹</button>
+                      {/* RIGHT ARROW */}
+                      <button className="unilet-next absolute right-3 top-1/2 -translate-y-1/2 z-20 h-9 w-9 rounded-full bg-black/40 text-white flex items-center justify-center text-xl hover:bg-black/70">›</button>
+                      <Swiper modules={[Autoplay, Navigation]} autoplay={{ delay: 3000, disableOnInteraction: false }}
+                        navigation={{
+                          prevEl: ".unilet-prev",
+                          nextEl: ".unilet-next",
+                        }} loop slidesPerView={1} className="rounded-xl overflow-hidden">
+                        {/* Slide 1 */}
+                        <SwiperSlide>
+                          <Link href="/terms-and-condition">
+                            <img src="uploads/aboutus/BestvalueImg.png" alt="Unilet" className="w-full h-[260px] md:h-[380px] lg:h-[420px]"/>
+                          </Link>
+                        </SwiperSlide>
 
+                        {/* Slide 2 */}
+                        <SwiperSlide>
+                          <Link href="/category/others">
+                            <img src="uploads/aboutus/HP_SOH_3split_Dealscorner_31Dec2025_cYeQy6op2.webp" alt="Unilet" className="w-full h-[260px] md:h-[380px] lg:h-[420px]"/>
+                          </Link>
+                        </SwiperSlide>
 
-                      <div className="relative rounded-lg overflow-hidden shadow-lg">
-                        <Link href={`/category/others`}>
-                        <img
-                          src="uploads/aboutus/HP_SOH_3split_Dealscorner_31Dec2025_cYeQy6op2.webp"
-                          alt="flash sale"
-                          className="w-full h-full object-cover"
-                        />
-                        </Link>
-                      </div>
-
-                      {/* Card 3 */}
-                      <div className="relative rounded-lg overflow-hidden shadow-lg">
-                         <Link href={`/category/others`}>
-                        <img
-                          src="uploads/aboutus/BestValueSaleImg2.png"
-                          alt="flash sale"
-                          className="w-full h-full object-cover"
-                        />
-                        </Link>
-                      </div>
+                        {/* Slide 3 */}
+                        <SwiperSlide>
+                          <Link href="/category/others">
+                            <img src="uploads/aboutus/BestValueSaleImg2.png" alt="Unilet" className="w-full h-[260px] md:h-[380px] lg:h-[420px]"/>
+                          </Link>
+                        </SwiperSlide>
+                      </Swiper>
                     </div>
                   </section>
 
