@@ -12,6 +12,9 @@ const poppins = Poppins({ subsets: ["latin"], weight: ["400","500","600"] });
 import { formatDistanceToNow, format } from "date-fns";
 import { useHeaderdetails } from '@/context/HeaderContext';
 import { ToastContainer, toast } from 'react-toastify';
+import { jwtDecode } from 'jwt-decode';
+import ProductReviews from "./ProductReviews";
+
 export default function ProductDetailsSection({ product, reviews=[], avgRating=0, reviewCount=0}) {
   const [brand, setBrand] = useState([]);
   const [activeTab, setActiveTab] = useState("overview");
@@ -30,7 +33,53 @@ export default function ProductDetailsSection({ product, reviews=[], avgRating=0
   const [flixLoaded, setFlixLoaded] = useState(false);
   // NEW: observer ref to watch for injected Flix nodes
   const flixObserverRef = useRef(null);
- 
+
+ const [canReview, setCanReview] = useState(false);
+const [checkingReview, setCheckingReview] = useState(true);
+
+const [showForm, setShowForm] = useState(false);
+const [rating, setRating] = useState(0);
+const [title, setTitle] = useState("");
+const [comment, setComment] = useState("");
+const [loading, setLoading] = useState(false);
+const [images, setImages] = useState([]);
+const [user_Id, setUserId] = useState(0);
+
+
+const [alreadyReviewed, setAlreadyReviewed] = useState(false);
+const [message, setMessage] = useState("");
+
+
+/*
+const [reviewsData, setReviewsData] = useState({
+  rating: 0,
+  count: 0,
+  items: []
+});
+
+useEffect(() => {
+  if (!product?._id) return;
+
+  const fetchReviews = async () => {
+    const res = await fetch(`/api/reviews/by-product/${product._id}`);
+    const data = await res.json();
+    setReviewsData(data);
+  };
+
+  fetchReviews();
+}, [product?._id]);
+*/
+
+if (!user_Id) {
+const token = localStorage.getItem("token");
+      if (token) {
+        const decoded = jwtDecode(token);
+        const userId = decoded.userId;
+        console.log('userId:', userId);
+        setUserId(userId);
+      }
+    }
+
   const tabData = {
     overview: product.overview || "No overview available.",
     description: product.description || "No description available.",
@@ -53,6 +102,85 @@ export default function ProductDetailsSection({ product, reviews=[], avgRating=0
       }))
     }
   };
+  
+
+
+const submitReview = async () => {
+  if (!rating || !title) return alert("Rating & title required");
+
+  setLoading(true);
+
+  const formData = new FormData();
+  formData.append("user_id", user_Id);
+  formData.append("product_id", product._id);
+  formData.append("reviews_rating", rating);
+  formData.append("reviews_title", title);
+  formData.append("reviews_comments", comment);
+
+  images.forEach((img) => {
+    formData.append("images", img);
+  });
+
+  const res = await fetch("/api/reviews/add", {
+    method: "POST",
+    body: formData,
+  });
+
+  if (res.ok) {
+    alert("Review submitted for approval");
+    setShowForm(false);
+    setImages([]);
+    setTitle("");
+    setComment("");
+    setRating(0);
+  }
+
+  setLoading(false);
+};
+
+  //console.log('Product id:', product?._id);
+
+  const handleImageChange = (e) => {
+  const files = Array.from(e.target.files);
+
+  if (images.length + files.length > 5) {
+    alert("Maximum 5 images allowed");
+    return;
+  }
+
+  setImages((prev) => [...prev, ...files]);
+};
+
+const removeImage = (index) => {
+  setImages(images.filter((_, i) => i !== index));
+};
+
+
+  useEffect(() => {
+  const checkCanReview = async () => {
+    try {
+      const res = await fetch(
+        `/api/reviews/can-review?&userId=${user_Id}&productcode=${product.item_code}&productId=${product._id}`
+      );
+      const data = await res.json();
+      console.log('Can review:', data);
+      setAlreadyReviewed(data.alreadyReviewed);
+      setCanReview(data.canReview);
+      setMessage(data.message || "");
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setCheckingReview(false);
+    }
+  };
+
+  if (product?._id) {
+    checkCanReview();
+  }
+}, [product?._id]);
+
+ 
+  
   // Replace "tabs" with UI-aligned tabs only (videos is not rendered in tabsForUI)
   // const tabs = ["overview", "description", "videos", "reviews"];
   const uiTabs = ["overview", "description", "reviews"];
@@ -1095,45 +1223,177 @@ const descriptionContent = (() => {
           </div>
         )} */}
   const reviewsContent = (
-    <div>
-      <form onSubmit={handleReviewSubmit} className="bg-white p-4 rounded-md shadow mt-3">
-        <h3 className="font-semibold text-left mb-2">Write a Review</h3>
-        <input type="text" placeholder="Review Title" value={reviewForm.title} onChange={(e) => setReviewForm({ ...reviewForm, title: e.target.value })} required className="w-full border rounded p-2 mb-2" />
-        <StarRating value={reviewForm.rating} onChange={(rating) => setReviewForm({ ...reviewForm, rating })} />
-        <textarea placeholder="Write your comments..." value={reviewForm.comment} onChange={(e) => setReviewForm({ ...reviewForm, comment: e.target.value })} className="w-full border rounded p-2 mb-2" rows="3" ></textarea>
-        <button type="submit" disabled={submitting} className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-          {submitting ? "Submitting..." : "Submit Review"}
-        </button>
-      </form>
-      <h2 className={`text-sm font-bold transition-all duration-200 text-left mt-3 ${poppins.className}`}>Customer Reviews</h2>
-      <div className="flex items-center mt-1 sm:mt-2">
-        {[...Array(5)].map((_, i) => (
-          <span key={i} className={`text-lg sm:text-2xl ${i < Math.floor(tabData.reviews.rating) ? 'text-yellow-400' : 'text-gray-300'}`}>★</span>
-        ))}
-        <span className="text-gray-700 ml-1 sm:ml-2 text-sm sm:text-base">
-          {tabData.reviews.rating.toFixed(1)} ({tabData.reviews.count} Reviews)
-        </span>
-      </div>
-      {tabData.reviews.items.length > 0 ? (
-        <div className="mt-2 sm:mt-4 space-y-2 sm:space-y-3">
-          {tabData.reviews.items.map((review, index) => (
-            <div key={index} className={`border-b border-gray-300  pb-2 sm:pb-3 ${index === 0 ? "border-t" : ""} `}>
-              <div className="flex text-lg items-baseline sm:text-lg mt-1">
-                {[...Array(5)].map((_, i) => (
-                  <span className="text-yellow-400" key={i}>{i < review.rating ? '★' : '☆'}</span>
-                ))}
-                <p className="text-gray-700 font-medium text-sm sm:text-base">&nbsp;{review.title}</p>
-              </div>
-              <p className="text-gray-700 text-left mt-1 sm:mt-2 text-sm sm:text-base">{review.comment}</p>
-              <p className="text-gray-400 text-left text-xs sm:text-sm mt-1">Reviewed By {review.userName} on {formatReviewDate(review.date)}</p>
-            </div>
-          ))}
+  <div >
+   
+    <h2 className="text-lg sm:text-xl font-semibold text-gray-900">
+      Customer Reviews
+    </h2>
+
+    {/* Write Review Section */}
+    {!checkingReview && canReview && (
+      <div className="mt-4 p-4 border rounded-lg bg-green-50">
+        <p className="text-green-700 font-medium text-sm mb-2">
+          You have purchased and received this product ✔
+        </p>
+
+        <button
+  onClick={() => setShowForm(!showForm)}
+  className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+>
+  Write a Review
+</button>
+
+{showForm && (
+  <>
+    {/* BACKDROP */}
+    <div
+      className="fixed inset-0 bg-black/50 z-40"
+      onClick={() => setShowForm(false)}
+    />
+
+    {/* MODAL */}
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+      <div className="bg-white w-full max-w-lg rounded-lg shadow-lg relative max-h-[90vh] overflow-y-auto">
+
+        {/* HEADER */}
+        <div className="flex justify-between items-center px-5 py-3 border-b">
+          <h3 className="text-lg font-semibold">Write a Review</h3>
+          <button
+            onClick={() => setShowForm(false)}
+            className="text-gray-500 hover:text-black text-xl"
+          >
+            ✕
+          </button>
         </div>
-      ) : (
-        <p className="text-gray-600 mt-2 sm:mt-4 text-sm sm:text-base">No reviews yet. Be the first to review this product!</p>
-      )}
+
+        {/* BODY */}
+        <div className="p-5 space-y-4">
+
+          {/* Rating */}
+          <div>
+            <label className="text-sm font-medium">Rating</label>
+            <div className="mt-1">
+              {[1, 2, 3, 4, 5].map((star) => (
+                <span
+                  key={star}
+                  onClick={() => setRating(star)}
+                  className={`cursor-pointer text-3xl ${
+                    star <= rating
+                      ? "text-yellow-400"
+                      : "text-gray-300"
+                  }`}
+                >
+                  ★
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {/* Title */}
+          <input
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="Review title"
+            className="w-full p-2 border rounded"
+          />
+
+          {/* Comment */}
+          <textarea
+            value={comment}
+            onChange={(e) => setComment(e.target.value)}
+            placeholder="Write your review..."
+            className="w-full p-2 border rounded"
+            rows={4}
+          />
+
+          {/* Image Upload */}
+          <div>
+            <label className="text-sm font-medium">
+              Upload Images (max 5)
+            </label>
+            <input
+              type="file"
+              multiple
+              accept="image/*"
+              onChange={handleImageChange}
+              className="mt-2"
+            />
+
+            {/* Preview */}
+            <div className="flex gap-2 mt-3 flex-wrap">
+              {images.map((img, index) => (
+                <div key={index} className="relative">
+                  <img
+                    src={URL.createObjectURL(img)}
+                    alt="preview"
+                    className="w-20 h-20 object-cover rounded border"
+                  />
+                  <button
+                    onClick={() => removeImage(index)}
+                    className="absolute -top-2 -right-2 bg-red-600 text-white rounded-full w-5 h-5 text-xs"
+                  >
+                    ✕
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* ACTIONS */}
+          <div className="flex gap-3 justify-end pt-3 border-t">
+            <button
+              onClick={() => {
+                setShowForm(false);
+                setRating(0);
+                setTitle("");
+                setComment("");
+                setImages([]);
+              }}
+              className="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400"
+            >
+              Cancel
+            </button>
+
+            <button
+              onClick={submitReview}
+              disabled={loading || rating === 0}
+              className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50"
+            >
+              {loading ? "Submitting..." : "Submit Review"}
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
-  );
+  </>
+)}
+
+
+
+      </div>
+    )}
+
+       {alreadyReviewed && (
+  <p className="text-sm text-orange-600 font-medium">
+    {message}
+  </p>
+)}
+
+    {!checkingReview && !canReview && !alreadyReviewed && (
+      <p className="mt-4 text-sm text-gray-500">
+        Only customers who ordered and received this product can write a review.
+      </p>
+    )}
+
+ 
+
+   
+      <h2 className="text-xl font-semibold mb-4">Ratings & Reviews</h2>
+    {/* Existing Reviews */}
+    <ProductReviews productId={product._id} />
+    
+  </div>
+);
   // Build tabsForUI (name + content)
   const tabsForUI = [
     { name: "overview", content: overviewContent },
