@@ -112,7 +112,7 @@ const Header = () => {
     return () => document.removeEventListener("mousedown", handler);
   }, []); */
 
-  useEffect(() => {
+/*   useEffect(() => {
   const handleClickOutside = (event) => {
     if (menuRef.current && !menuRef.current.contains(event.target)) {
       setOpen(false);
@@ -127,8 +127,62 @@ const Header = () => {
   return () => {
     document.removeEventListener("mousedown", handleClickOutside);
   };
+}, [open]); */
+
+useEffect(() => {
+  const handleClickOutside = (e) => {
+    if (menuRef.current && !menuRef.current.contains(e.target)) {
+      setOpen(false);
+      setHoveredCategory(null);
+    }
+  };
+
+  if (open) {
+    document.addEventListener("mousedown", handleClickOutside);
+  }
+
+  return () => {
+    document.removeEventListener("mousedown", handleClickOutside);
+  };
 }, [open]);
 
+const RightMegaMenu = ({ hoveredCategory }) => {
+  const flat = prepareFlatListAlpha(
+    flattenAllCategories(hoveredCategory.subcategories)
+  );
+
+  const ITEMS_PER_COLUMN = 12;
+  const MAX_COLUMNS = 4;
+  const columnWidth = 220;
+
+  const columns = chunkList(flat, ITEMS_PER_COLUMN)
+    .slice(0, MAX_COLUMNS)
+    .filter(col => col.length > 0);
+
+  const width = columns.length * columnWidth;
+
+  return (
+    <div
+      className="bg-white shadow-xl border-l"
+      style={{ width }}
+    >
+      <div className="flex h-[390px]">
+        {columns.map((column, index) => (
+          <div
+            key={index}
+            className={`min-w-[220px] p-3 ${
+              index % 2 === 0 ? "bg-[#f2f2f2]" : "bg-white"
+            }`}
+          >
+            {column.map(item =>
+              renderFlatItem(item, hoveredCategory, flat)
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
 
 
   const router = useRouter();
@@ -1802,7 +1856,7 @@ const shouldShowArrow = (item, allItems = []) => {
   ref={menuWrapperRef}
   onMouseLeave={() => setHoveredCategory(null)}
 >
-      {/* MENU BUTTON */}
+      {/* // MENU BUTTON
       <button
         onClick={() => setOpen(!open)}
         className="flex items-center gap-2 text-white px-4 py-2"
@@ -1811,7 +1865,7 @@ const shouldShowArrow = (item, allItems = []) => {
         <span className="font-medium">Menu</span>
       </button>
 
-      {/* LEFT MENU */}
+      // LEFT MENU
       {open && (
         <div className="absolute left-0 top-full mt-2 w-56 bg-white shadow-lg z-40" ref={menuRef}>
           <ul className="py-2 text-sm h-[390px]">
@@ -1844,7 +1898,7 @@ const shouldShowArrow = (item, allItems = []) => {
         </div>
       )}
 
-      {/* RIGHT MEGA MENU */}
+      // RIGHT MEGA MENU
       {hoveredCategory &&
   hoveredCategory.subcategories?.length > 0 && (() => {
     const flat = prepareFlatListAlpha(
@@ -1879,7 +1933,7 @@ const shouldShowArrow = (item, allItems = []) => {
                 index % 2 === 0 ? "bg-[#f2f2f2]" : "bg-white"
               }`}
             >
-              {/* {column.map(renderFlatItem)} */}
+              // {column.map(renderFlatItem)}
               {column.map(item =>
                 renderFlatItem(item, hoveredCategory, flat)
               )}
@@ -1888,7 +1942,57 @@ const shouldShowArrow = (item, allItems = []) => {
         </div>
       </div>
     );
-  })()}
+  })()} */}
+
+  {/* MENU BUTTON */}
+<button
+  onClick={() => setOpen(prev => !prev)}
+  className="flex items-center gap-2 text-white px-4 py-2"
+>
+  <FiMenu size={18} />
+  <span className="font-medium">Menu</span>
+</button>
+
+{/* MENU WRAPPER */}
+{open && (
+  <div
+    ref={menuRef}
+    className="absolute left-0 top-full mt-2 z-50 flex"
+  >
+    {/* LEFT MENU */}
+    <div className="w-56 bg-white shadow-lg">
+      <ul className="py-2 text-sm h-[390px]">
+        {categories.map((cat) => (
+          <li
+            key={cat._id}
+            className="px-4 py-2 flex justify-between cursor-pointer hover:bg-gray-100"
+            onMouseEnter={() => {
+              if (cat?.subcategories?.length > 0) {
+                setHoveredCategory(cat);
+              } else {
+                setHoveredCategory(null);
+              }
+            }}
+          >
+            <Link href={`/category/${cat.category_slug}`}>
+              {cat.category_name}
+            </Link>
+
+            {cat?.subcategories?.length > 0 && (
+              <span className="text-gray-400">{">"}</span>
+            )}
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    {/* RIGHT MEGA MENU */}
+    {hoveredCategory && hoveredCategory.subcategories?.length > 0 && (
+      <RightMegaMenu hoveredCategory={hoveredCategory} />
+    )}
+  </div>
+)}
+
 
     </div>
 
