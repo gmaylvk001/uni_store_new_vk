@@ -102,7 +102,7 @@ const Header = () => {
   const menuRef = useRef(null);
 
   // Close menu when clicking outside
-  useEffect(() => {
+  /* useEffect(() => {
     const handler = (e) => {
       if (menuRef.current && !menuRef.current.contains(e.target)) {
         setOpen(false);
@@ -110,7 +110,25 @@ const Header = () => {
     };
     document.addEventListener("mousedown", handler);
     return () => document.removeEventListener("mousedown", handler);
-  }, []);
+  }, []); */
+
+  useEffect(() => {
+  const handleClickOutside = (event) => {
+    if (menuRef.current && !menuRef.current.contains(event.target)) {
+      setOpen(false);
+      setHoveredCategory(null);
+    }
+  };
+
+  if (open) {
+    document.addEventListener("mousedown", handleClickOutside);
+  }
+
+  return () => {
+    document.removeEventListener("mousedown", handleClickOutside);
+  };
+}, [open]);
+
 
 
   const router = useRouter();
@@ -1778,7 +1796,12 @@ const shouldShowArrow = (item, allItems = []) => {
           <Link href="/" className="text-lg font-semibold">
            <img src="/user/logo-mobile-view-res.png" alt="Logo" width={100} height={70} className="h-auto" />
           </Link>
-          <div className="relative" ref={menuWrapperRef}>
+          {/* <div className="relative" ref={menuWrapperRef}> */}
+          <div
+  className="relative"
+  ref={menuWrapperRef}
+  onMouseLeave={() => setHoveredCategory(null)}
+>
       {/* MENU BUTTON */}
       <button
         onClick={() => setOpen(!open)}
@@ -1790,7 +1813,7 @@ const shouldShowArrow = (item, allItems = []) => {
 
       {/* LEFT MENU */}
       {open && (
-        <div className="absolute left-0 top-full mt-2 w-56 bg-white shadow-lg z-40">
+        <div className="absolute left-0 top-full mt-2 w-56 bg-white shadow-lg z-40" ref={menuRef}>
           <ul className="py-2 text-sm h-[390px]">
             {categories.map((cat) => (
               <li
@@ -1811,7 +1834,7 @@ const shouldShowArrow = (item, allItems = []) => {
                   }
                 }}
               >
-                <span>{cat.category_name}</span>
+                <span><Link href={`/category/${cat.category_slug}`}>{cat.category_name}</Link></span>
                 {cat?.subcategories?.length > 0 && (
                   <span className="text-gray-400">{">"}</span>
                 )}
@@ -1856,7 +1879,10 @@ const shouldShowArrow = (item, allItems = []) => {
                 index % 2 === 0 ? "bg-[#f2f2f2]" : "bg-white"
               }`}
             >
-              {column.map(renderFlatItem)}
+              {/* {column.map(renderFlatItem)} */}
+              {column.map(item =>
+                renderFlatItem(item, hoveredCategory, flat)
+              )}
             </div>
           ))}
         </div>
