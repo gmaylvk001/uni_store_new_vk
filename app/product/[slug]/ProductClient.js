@@ -45,7 +45,7 @@ export default function ProductClient() {
   const [selectedWarrantyAmount, setSelectedWarrantyAmount] = useState(0);
   const [showNoWarrantyModal, setShowNoWarrantyModal] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
-
+  const [showStickyBar, setShowStickyBar] = useState(false);
 
 
 
@@ -677,6 +677,22 @@ const fetchBrand = async () => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [lightboxOpen, lightboxIndex]);
 
+
+  useEffect(() => {
+  const handleScroll = () => {
+    if (window.scrollY > 300) {
+      setShowStickyBar(true);   // scroll down → show
+    } else {
+      setShowStickyBar(false);  // top → hide
+    }
+  };
+
+  window.addEventListener("scroll", handleScroll);
+  return () => window.removeEventListener("scroll", handleScroll);
+}, []);
+
+
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -979,12 +995,12 @@ const fetchBrand = async () => {
                     {(Number(product.special_price) > 0 || Number(product.price) > 0) && (
                       <>
                         <span className="text-2xl font-bold text-blue-800">
-                          Rs.{Math.round(Number(product.special_price) || Number(product.price))}
+                          Rs.{Math.round(Number(product.special_price) || Number(product.price)).toLocaleString()}
                         </span>
 
                         {Number(product.special_price) > 0 && Number(product.price) > 0 && (
                           <span className="text-gray-800 line-through text-sm">
-                            Rs.{Math.round(Number(product.price))}
+                            Rs.{Math.round(Number(product.price)).toLocaleString()}
                           </span>
                         )}
                       </>
@@ -1103,37 +1119,79 @@ const fetchBrand = async () => {
 </p>
 
             </div>
-<div className="flex gap-3 w-full py-2">
-            {/* Buy Now */}
- {product.stock_status === "In Stock" && product.quantity > 0 && (
-  <button
-    onClick={handleBuyNow}
-    className="w-full bg-white hover:bg-customBlue hover:text-white text-customBlue border border-blue-200 font-semibold py-3 rounded-md shadow-md flex items-center justify-center gap-3"
-  >
-    <FaStore className="h-5 w-5" />
-    <span>Buy Now</span>
-  </button>
-)}
+{showStickyBar && (
+  <div className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t shadow-lg hidden md:block">
+    <div className="max-w-7xl mx-auto px-4 py-3">
 
+      {/* ONE ROW LAYOUT */}
+      <div className="flex items-center justify-between gap-6">
 
-  {/* Add to Cart */}
+        {/* LEFT: Product name + price */}
+        <div className="flex flex-col min-w-0">
+          <h1 className="text-sm font-semibold text-gray-800 truncate max-w-[420px]">
+            {product.name}
+          </h1>
+
+          {(Number(product.special_price) > 0 || Number(product.price) > 0) && (
+            <span className="text-base font-bold text-blue-800">
+              Rs.{Math.round(
+                Number(product.special_price) || Number(product.price)
+              ).toLocaleString()}
+            </span>
+          )}
+        </div>
+
+        {/* RIGHT: Buttons */}
+        {/* RIGHT: Buttons */}
+<div className="flex items-center gap-3 flex-shrink-0">
+
+  {product.stock_status === "In Stock" && product.quantity > 0 && (
+    <button
+      onClick={handleBuyNow}
+      className="h-11 px-6 py-3 rounded-md shadow-md bg-white hover:bg-customBlue hover:text-white text-customBlue border border-blue-200 font-semibold rounded-md flex items-center justify-center gap-2 whitespace-nowrap"
+    >
+      <FaStore />
+      Buy Now
+    </button>
+  )}
+
   <ProductAddtoCart
     productId={product._id}
     stockQuantity={product.quantity}
     quantity={quantity}
     additionalProducts={[
-      ...selectedFrequentProducts.map((p) => p._id),
-      ...selectedRelatedProducts.map((p) => p._id),
+      ...selectedFrequentProducts.map(p => p._id),
+      ...selectedRelatedProducts.map(p => p._id),
     ]}
-    // warranty={selectedWarranty}
     selectedRelatedProducts={selectedRelatedProducts}
-    // extendedWarranty={selectedExtendedWarranty}
     extendedWarranty={selectedWarrantyAmount}
     selectedFrequentProducts={selectedFrequentProducts}
-    className="w-full bg-customBlue hover:bg-blue-700 text-white font-semibold py-3 rounded-md shadow-md text-center"
+    className="h-11 px-6 bg-customBlue text-white bg-customBlue hover:bg-blue-700 text-white font-semibold py-2 rounded-md shadow-md flex items-center justify-center whitespace-nowrap"
   />
-
 </div>
+
+
+      </div>
+
+    </div>
+  </div>
+)}
+
+
+
+{/* <div className="flex gap-3 w-full py-2">
+ {product.stock_status === "In Stock" && product.quantity > 0 && (
+  <button onClick={handleBuyNow} className="w-full bg-white hover:bg-customBlue hover:text-white text-customBlue border border-blue-200 font-semibold py-3 rounded-md shadow-md flex items-center justify-center gap-3">
+    <FaStore className="h-5 w-5" />
+    <span>Buy Now</span>
+  </button>
+)}
+  <ProductAddtoCart productId={product._id} stockQuantity={product.quantity} quantity={quantity}
+    additionalProducts={[
+      ...selectedFrequentProducts.map((p) => p._id),
+      ...selectedRelatedProducts.map((p) => p._id),
+    ]} selectedRelatedProducts={selectedRelatedProducts} extendedWarranty={selectedWarrantyAmount} selectedFrequentProducts={selectedFrequentProducts} className="w-full bg-customBlue hover:bg-blue-700 text-white font-semibold py-3 rounded-md shadow-md text-center" />
+</div> */}
 
 
             {/* Add this code right after the Stock Alert section */}

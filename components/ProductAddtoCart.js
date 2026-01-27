@@ -231,7 +231,7 @@ const AddToCartButton = ({ productId, quantity = 1, warranty, additionalProducts
 <button
   onClick={handleAddToCart}
   disabled={isLoading || isOutOfStock || isprice}
-  className={`w-full px-4 py-3 rounded-md shadow-md transition duration-300 text-md flex items-center justify-center gap-x-3 font-semibold text-center
+  className={`w-full px-4 py-2 rounded-md shadow-md transition duration-300 text-md flex items-center justify-center gap-x-3 font-semibold text-center
     ${isOutOfStock
       ? 'bg-gray-400 cursor-not-allowed text-white'
       : isLoading

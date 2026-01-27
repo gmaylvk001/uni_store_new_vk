@@ -1071,7 +1071,7 @@ export default function CartComponent() {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange-500 mx-auto"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500 mx-auto"></div>
           <p className="mt-4 text-gray-600">Loading your cart...</p>
         </div>
       </div>
@@ -1084,7 +1084,7 @@ export default function CartComponent() {
           <p className="text-blue-500 font-medium">{error}</p>
           <button 
             onClick={() => window.location.reload()}
-            className="mt-4 px-4 py-2 bg-orange-500 text-white rounded hover:bg-orange-600"
+            className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
           >
             Try Again
           </button>
@@ -1096,15 +1096,67 @@ export default function CartComponent() {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center p-6">
         <div className="text-center max-w-md mx-4">
-          <div className="text-6xl mb-4">🛒</div>
+          {/* <div className="text-6xl mb-4">🛒</div>
+           */}
+           <svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="238"
+  height="120"
+  viewBox="0 0 238 120"
+  fill="currentColor"
+  className="w-[25rem] h-[9rem] text-gray-800"
+>
+  <title>Cart</title>
+  <g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
+    <g transform="translate(-549, -178)">
+      <g transform="translate(462, 178)">
+        <g transform="translate(88, 0)">
+          <g transform="translate(58.4, 0)">
+            <rect x="0" y="0" width="120" height="120"></rect>
+            <circle stroke="#000000" cx="37.5" cy="101.25" r="7.5"></circle>
+            <circle stroke="#000000" cx="86.25" cy="101.25" r="7.5"></circle>
+            <path
+              d="M19.828125,33.75 L103.921875,33.75 L91.546875,77.0625 
+                 C90.6393075,80.2935554 87.6841669,82.5195055 84.328125,82.5001272 
+                 L39.421875,82.5001272 C36.0658331,82.5195055 33.1106925,80.2935554 
+                 32.203125,77.0625 L15.234375,17.71875 
+                 C14.7736501,16.1079783 13.3003656,14.9982315 11.625,14.9999979 
+                 L3.75,14.9999979"
+              stroke="#000000"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            ></path>
+          </g>
+          <line x1="0.3125" y1="109.0625" x2="235.9375" y2="109.0625" stroke="#353535"></line>
+          <line x1="12.1875" y1="45.3125" x2="52.8125" y2="45.3125" stroke="#353535"></line>
+          <line x1="4.6875" y1="60.3125" x2="19.0625" y2="60.3125" stroke="#353535"></line>
+          <line x1="167.1875" y1="54.0625" x2="181.5625" y2="54.0625" stroke="#353535"></line>
+          <line x1="167.1875" y1="64.0625" x2="220.3125" y2="64.0625" stroke="#353535"></line>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>
+
           <h2 className="text-2xl font-bold text-gray-800 mb-2">Your cart is empty</h2>
-          <p className="text-gray-600 mb-6">Looks like you haven't added anything to your cart yet</p>
-          <button 
+          {/* <p className="text-gray-600 mb-6">Looks like you haven't added anything to your cart yet</p> */}
+          {/* <button 
             onClick={() => router.push('/index')}
             className="px-6 py-3 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition"
           >
             Continue Shopping
-          </button>
+          </button> */}
+
+          {/* <a href={'/index'} 
+          className="text-blue-600 underline text-lg font-bold">
+          Continue Shopping
+          </a> */}
+           <a
+  onClick={() => router.push('/')}
+  className="text-blue-600 underline cursor-pointer hover:text-blue-700 transition"
+>
+  Continue Shopping
+</a>
         </div>
       </div>
     );
@@ -1181,14 +1233,18 @@ export default function CartComponent() {
                 <div className="flex items-center gap-2">
                   {item.price > 0 ? (
                     <>
-                      <h3 className="text-base font-semibold text-red-600">₹{(item.price ?? 0).toFixed(2)}</h3>
+                      {/* <h3 className="text-base font-semibold text-red-600">₹{(item.price ?? 0).toFixed(2)}</h3> */}
+                      <h3 className="text-base font-semibold text-red-600">₹{(item.price ?? 0).toLocaleString("en-IN", {minimumFractionDigits: 2,maximumFractionDigits: 2,})}</h3>
+
                       <h3 className="text-xs text-gray-500 line-through">
-                        ₹{(item.actual_price ?? item.price ?? 0).toFixed(2)}
+                        {/* ₹{(item.actual_price ?? item.price ?? 0).toFixed(2)} */}
+                        ₹{(item.actual_price ?? item.price ?? 0).toLocaleString("en-IN", {minimumFractionDigits: 2,maximumFractionDigits: 2,})} 
                       </h3>
                     </>
                   ) : (
                     <h3 className="text-base font-semibold text-red-600">
-                      ₹{(item.actual_price ?? 0).toFixed(2)}
+                      {/* ₹{(item.actual_price ?? 0).toFixed(2)} */}
+                       ₹{(item.actual_price ?? 0).toLocaleString("en-IN", {minimumFractionDigits: 2,maximumFractionDigits: 2,})}
                     </h3>
                   )}
                 </div>
@@ -1219,7 +1275,7 @@ export default function CartComponent() {
               </button>
             </td>
             <td className="py-4 px-4 text-center font-semibold text-gray-900">
-              ₹{(((item.price > 0 ? item.price : item.actual_price) ?? 0) * (item.quantity ?? 1)).toFixed(2)}
+              ₹{(((item.price > 0 ? item.price : item.actual_price) ?? 0) * (item.quantity ?? 1)).toLocaleString("en-IN", {minimumFractionDigits: 2,maximumFractionDigits: 2,})}
             </td>
             <td className="py-4 px-4 text-center">&emsp;</td>
           </tr>
@@ -1435,7 +1491,7 @@ export default function CartComponent() {
             <div className="flex justify-between items-center">
               <span>Subtotal</span>
               <span className="font-semibold text-gray-900">
-                ₹{calculateSubtotal().toFixed(2)}
+                ₹{calculateSubtotal().toLocaleString("en-IN", {minimumFractionDigits: 2,maximumFractionDigits: 2,})}
               </span>
             </div>
             <hr className="border-gray-300" />
@@ -1465,7 +1521,7 @@ export default function CartComponent() {
           {/* Total Price */}
           <div className="bg-gray-200 p-4 mt-4 rounded-lg flex justify-between font-bold text-gray-900">
             <span>Total</span>
-            <span>₹{calculateTotal().toFixed(2)}</span>
+            <span>₹{calculateTotal().toLocaleString("en-IN", {minimumFractionDigits: 2,maximumFractionDigits: 2,})}</span>
           </div>
 
           {/* Checkout Button */}

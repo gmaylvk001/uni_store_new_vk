@@ -694,7 +694,7 @@ const scroll = (direction) => {
         </div>
       )}
 {/* Categories Circle Section - Dynamic based on subcategories */}
-
+{categoryData?.categoryTree?.length > 0 && (
 <div className="relative my-12 px-6">
   {/* Left arrow */}
   <button
@@ -728,7 +728,7 @@ const scroll = (direction) => {
       margin: "0 auto", // center container
     }}
   >
-    {categoryData?.categoryTree?.length > 0 ? (
+    {/* {categoryData?.categoryTree?.length > 0 ? (
       categoryData.categoryTree.map((subcategory) => (
         <Link
           key={subcategory._id}
@@ -736,7 +736,7 @@ const scroll = (direction) => {
           className="flex flex-row items-center flex-shrink-0 w-[320px] h-[264px] border border-gray-200 rounded-xl bg-white hover:-translate-y-1 transition-all duration-300 hover:shadow-lg hover:bg-gray-50"
           style={{ scrollSnapAlign: "start" }}
         >
-          {/* Image section */}
+          //Image section
           <div className="flex justify-center items-center w-[150px] h-full ml-4 flex-shrink-0">
             {subcategory.image ? (
               <div className="relative w-[170px] h-[220px] flex items-center justify-center">
@@ -779,7 +779,7 @@ const scroll = (direction) => {
             )}
           </div>
 
-          {/* Content section */}
+          //Content section
          <div className="flex flex-col text-left px-3 py-10 w-[150px] h-full">
           <h3 className="text-lg font-bold text-gray-900 mb-3 text-nowrap">
             {subcategory.category_name}
@@ -800,9 +800,66 @@ const scroll = (direction) => {
       <div className="text-center w-full py-8">
         <p className="text-gray-500">No subcategories available</p>
       </div>
-    )}
+    )} */}
+
+    {categoryData?.categoryTree?.length > 0 &&
+  categoryData.categoryTree.map((subcategory) => (
+    <Link
+      key={subcategory._id}
+      href={`/category/${slug}/${sub_slug}/${subcategory.category_slug}`}
+      className="flex flex-row items-center flex-shrink-0 w-[320px] h-[264px] border border-gray-200 rounded-xl bg-white hover:-translate-y-1 transition-all duration-300 hover:shadow-lg hover:bg-gray-50"
+      style={{ scrollSnapAlign: "start" }}
+    >
+      {/* Image section */}
+      <div className="flex justify-center items-center w-[150px] h-full ml-4 flex-shrink-0">
+        {subcategory.image ? (
+          <div className="relative w-[170px] h-[220px] flex items-center justify-center">
+            <Image
+              src={
+                subcategory.image.startsWith("http")
+                  ? subcategory.image
+                  : `${subcategory.image}`
+              }
+              alt={subcategory.category_name}
+              fill
+              className="object-contain object-center"
+              unoptimized
+            />
+          </div>
+        ) : (
+          <div className="relative w-[170px] h-[220px] flex items-center justify-center">
+            <Image
+              src="/no-catimg.png"
+              alt="Fallback image"
+              fill
+              className="object-contain object-center"
+              unoptimized
+            />
+          </div>
+        )}
+      </div>
+
+      {/* Content section */}
+      <div className="flex flex-col text-left px-3 py-10 w-[150px] h-full">
+        <h3 className="text-lg font-bold text-gray-900 mb-3 text-nowrap">
+          {subcategory.category_name}
+        </h3>
+
+        <p className="text-gray-600 text-sm leading-relaxed mb-4 line-clamp-2 min-h-[40px]">
+          {subcategory.content || ""}
+        </p>
+
+        <button className="bg-[#2b8ef6] text-white rounded-md px-4 py-2 font-semibold w-fit hover:bg-[#1f77db] transition-colors">
+          Explore
+        </button>
+      </div>
+    </Link>
+  ))
+}
+
   </div>
 </div>
+)}
 
 
        <div className="grid grid-cols-1 lg:grid-cols-4 gap-2 lg:gap-8">
@@ -1534,7 +1591,7 @@ const scroll = (direction) => {
                           special_price={product.special_price}
                           className="w-full text-xs sm:text-sm py-1.5"
                         />
-                        <a
+                        {/* <a
                           href={`https://wa.me/919865555000?text=${encodeURIComponent(`Check Out This Product: ${apiUrl}/product/${product.slug}`)}`} 
                           target="_blank"
                           rel="noopener noreferrer"
@@ -1548,7 +1605,7 @@ const scroll = (direction) => {
                           >
                             <path d="M16.003 2.667C8.64 2.667 2.667 8.64 2.667 16c0 2.773.736 5.368 2.009 7.629L2 30l6.565-2.643A13.254 13.254 0 0016.003 29.333C23.36 29.333 29.333 23.36 29.333 16c0-7.36-5.973-13.333-13.33-13.333zm7.608 18.565c-.32.894-1.87 1.749-2.574 1.865-.657.104-1.479.148-2.385-.148-.55-.175-1.256-.412-2.162-.812-3.8-1.648-6.294-5.77-6.49-6.04-.192-.269-1.55-2.066-1.55-3.943 0-1.878.982-2.801 1.33-3.168.346-.364.75-.456 1.001-.456.25 0 .5.002.719.013.231.01.539-.088.845.643.32.768 1.085 2.669 1.18 2.863.096.192.16.423.03.683-.134.26-.2.423-.39.65-.192.231-.413.512-.589.689-.192.192-.391.401-.173.788.222.392.986 1.625 2.116 2.636 1.454 1.298 2.682 1.7 3.075 1.894.393.192.618.173.845-.096.23-.27.975-1.136 1.237-1.527.262-.392.524-.32.894-.192.375.13 2.35 1.107 2.75 1.308.393.205.656.308.75.48.096.173.096 1.003-.224 1.897z" />
                           </svg>
-                        </a>
+                        </a> */}
                       </div>
                     </div>
                   </div>

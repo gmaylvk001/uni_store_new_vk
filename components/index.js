@@ -1352,25 +1352,27 @@ case 'brands':
                         <Link key={cat._id} href={`/category/${cat.category_slug}`}>
                           <div className="flex flex-col items-center min-w-[100px] cursor-pointer">
                             {/* ICON TILE */}
-                            <div className="flex items-center justify-center
-                            hover:scale-105 transition">
+                            {/* <div className="flex items-center justify-center
+                            hover:scale-105 transition"> */}
+                            <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-gradient-to-br from-[#04a1fc] to-[#79c4f2] flex items-center justify-center shadow-lg transition-transform duration-300 group-hover:scale-105">
                               {cat.image ? (
                                 <img
                                   src={cat.image}
                                   alt={cat.category_name}
-                                  className="lg:w-24"
+                                  /* className="lg:w-24" */
+                                   className="h-10 w-12 sm:w-12 object-contain invert"
                                 />
                               ) : (
-                                <div className="w-10 h-10 bg-gray-200 rounded-full" />
+                                <div className="w-10 h-10 bg-white/30 rounded-full" />
                               )}
                             </div>
 
                             {/* TEXT */}
                             <span
                               title={cat.category_name}
-                              className="mt-1 text-xs sm:text-sm font-medium text-gray-800 
-                                        hover:text-[#1688c8] text-center truncate max-w-[80px]"
-                            >
+                              /* className="mt-1 text-xs sm:text-sm font-medium text-gray-800 
+                                        hover:text-[#1688c8] text-center truncate max-w-[80px]" */
+                                         className="mt-3 text-xs sm:text-sm font-medium text-gray-600 group-hover:text-black text-center truncate max-w-[90px]">
                               {cat.category_name}
                             </span>
                           </div>
@@ -1750,9 +1752,9 @@ case 'brands':
                     UniCare
                     </h2> */}
 
-                    <div className="overflow-hidden pt-0 m-0 bg-transparent">
+                    {/* <div className="overflow-hidden pt-0 m-0 bg-transparent">
                       
-                      {/* Image 1 */}
+                      Image 1
                       <div className="rounded-xl overflow-hidden  bg-transparent hover:scale-[1.01] transition">
                         <img
                           src="uploads/unicare-banner-appliances-uni-care.png"
@@ -1760,7 +1762,7 @@ case 'brands':
                           className="w-full h-auto block"
                         />
                       </div>
-                    </div>
+                    </div> */}
                   </section>
                   <BlogDetailsImagehome /> 
                 </div>
