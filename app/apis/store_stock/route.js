@@ -8,7 +8,7 @@ import Brand from "@/models/ecom_brand_info";
 import Product_all from "@/models/Product_all";
 import md5 from "md5";
 import ProductStore from '@/models/product_store';
-import ZTrackApi from '@/models/z_track_api';
+//import ZTrackApi from '@/models/z_track_api';
 export const config = {
   api: {
     bodyParser: false,
