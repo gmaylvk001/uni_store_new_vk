@@ -299,7 +299,7 @@ const scrollRight = (categoryId) => {
 
     w-[calc(50%-0.5rem)]
     md:w-[calc(33.333%-0.75rem)]
-  " style={{ background: "linear-gradient(90deg,rgba(180, 223, 255, 1) 0%, rgba(255, 255, 255, 1) 50%, rgba(158, 203, 235, 1) 100%)" }}
+  " style={{ background: "linear-gradient(90deg, rgb(180, 223, 255) 0%, rgb(193 218 255) 50%, rgb(255 255 255) 100%)" }}
 >
 
 
