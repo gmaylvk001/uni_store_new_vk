@@ -1217,7 +1217,9 @@ const grandTotal = subtotal - totalDiscount;
 
                       {/* Price */}
                       <div className="text-sm whitespace-nowrap text-base font-semibold text-red-600">
-                        ₹{(item.price > 0 ? item.price : item.actual_price) * item.quantity.toFixed(2)}
+                        {/* ₹{(item.price > 0 ? item.price : item.actual_price) * item.quantity.toFixed(2)} */}
+                        ₹{((item.price > 0 ? item.price : item.actual_price) * item.quantity).toLocaleString("en-IN", {minimumFractionDigits: 2,maximumFractionDigits: 2,})}
+
                       </div>
                     </div>
                   ))}
@@ -1274,13 +1276,13 @@ const grandTotal = subtotal - totalDiscount;
               {/* Subtotal */}
               <div className="flex justify-between text-gray-800 font-semibold  pt-2 mt-2">
                 <span>Subtotal:</span>
-                <span>₹{orderSummary.subtotal.toFixed(2)}</span>
+                <span>₹{orderSummary.subtotal.toLocaleString("en-IN", {minimumFractionDigits: 2,maximumFractionDigits: 2,})}</span>
               </div>
 
               {/* Total */}
               <div className="flex justify-between text-gray-800 font-semibold pt-2 mt-2">
                 <span>Total:</span>
-                <span>₹{orderSummary.total.toFixed(2)}</span>
+                <span>₹{orderSummary.total.toLocaleString("en-IN", {minimumFractionDigits: 2,maximumFractionDigits: 2,})}</span>
               </div>
 
               <div className="mt-6">
