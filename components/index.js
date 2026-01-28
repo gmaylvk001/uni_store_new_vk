@@ -637,7 +637,7 @@ const maxIndex = Math.max(0, products.length - CARDS_PER_VIEW);
           try {
             const parsed = JSON.parse(savedCategories);
             if (Array.isArray(parsed)) {
-              setCategories(parsed);
+             // setCategories(parsed);
             }
           } catch (parseErr) {
             console.warn('Could not parse saved headerCategories from localStorage, ignoring cached value.', parseErr);
