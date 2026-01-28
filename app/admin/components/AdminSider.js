@@ -53,6 +53,7 @@ export default function AdminSider({ collapsed }) {
     ]
   }, */
     { icon: 'mdi:tag-outline', label: 'Offer', link: 'offer' },
+    { icon: 'mdi:ticket-percent-outline', label: 'Deals', link: 'deals' },
   //  { icon: "mdi:briefcase-account-outline", label: "Job Positions", link: "careers" },
     { icon: 'mdi:note-text-outline', label: 'Blog', link: 'blog' },
     { icon: 'mdi:account-outline', label: 'User', link: 'user' },
@@ -73,7 +74,7 @@ export default function AdminSider({ collapsed }) {
     icon: 'mdi:cog-outline',  // changed from phone to settings cog
     label: 'Settings',
     submenu: [
-      // { icon: 'mdi:home-outline', label: 'Home Settings', link: 'homesettings', dotColor: 'bg-green-500' },
+      { icon: 'mdi:home-outline', label: 'Home Settings', link: 'homesettings', dotColor: 'bg-green-500' },
       { icon: 'mdi:category-outline', label: 'Category Settings', link: 'categorysettings', dotColor: 'bg-green-500' },
       { icon: 'mdi:category-outline', label: 'Brand Settings', link: 'brandsettings', dotColor: 'bg-green-500' },
       { icon: 'mdi:store-outline', label: 'Store Settings', link: 'store', dotColor: 'bg-yellow-500' },
