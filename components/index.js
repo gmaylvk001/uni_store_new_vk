@@ -414,7 +414,7 @@ const maxIndex = Math.max(0, products.length - CARDS_PER_VIEW);
           try {
             const response = await fetch("/api/categories/get");
             const data    = await response.json();
-            setCategories(data);
+            //setCategories(data);
             const rootIds = data
             .filter(cat => cat.parentid === "none" && cat.status === "Active")
             .map(cat => cat._id);
@@ -637,7 +637,7 @@ const maxIndex = Math.max(0, products.length - CARDS_PER_VIEW);
           try {
             const parsed = JSON.parse(savedCategories);
             if (Array.isArray(parsed)) {
-             // setCategories(parsed);
+              setCategories(parsed);
             }
           } catch (parseErr) {
             console.warn('Could not parse saved headerCategories from localStorage, ignoring cached value.', parseErr);
