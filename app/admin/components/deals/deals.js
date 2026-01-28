@@ -473,8 +473,6 @@ useEffect(() => {
         },
         body: JSON.stringify(formattedData),
       });
-console.log(formattedData);
-alert("Bismillah:)");
       if (!response.ok) {
         const errorText = await response.text();
         throw new Error(
@@ -1377,7 +1375,7 @@ const filteredOffers = offers.filter((offer) => {
                     type="submit"
                     className="inline-block bg-red-600 text-white px-5 py-2 rounded-md text-sm font-semibold hover:bg-red-700 transition"
                   >
-                    Save Offer
+                    Save Deals
                   </button>
                 </div>
               </form>
