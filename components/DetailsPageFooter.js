@@ -90,6 +90,7 @@ const DetailsPageStatusBar = () => {
         <div className="flex flex-col items-center gap-1">
           <BadgeCheck className="w-6 h-6 text-[#6256a5]" />
           <p className="text-[#ca0f0f] font-semibold text-sm">Only Best</p>
+          <p className="text-[#32447f] text-xs">Verified Quality</p>
         </div>
 
       </div>

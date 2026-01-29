@@ -1680,7 +1680,7 @@ const shouldShowArrow = (item, allItems = []) => {
 
 
       {/* Main Header bg-white */}
-                  <div className={`${isMobileMenuOpen ? "fixed inset-0 mt-0 pt-0 z-50 overflow-y-auto" : "px-4 sm:px-6 md:px-0 py-0 sticky top-0 z-40"}`} style={{ backgroundColor: "#444444" }}>
+                  <div className={`${isMobileMenuOpen ? "fixed inset-0 mt-0 pt-0 z-50 overflow-y-auto" : "px-4 sm:px-6 md:px-0 py-0 sticky top-0 z-40"}`} style={{ backgroundColor: "#1689C8" }}>
                       {/* NEW MOBILE TOP ROW (from reference) */}
                       <div className="lg:hidden flex items-center justify-between relative md:mx-4">
                           <Link href="/" className="p-1 rounded-lg">
@@ -1845,7 +1845,7 @@ const shouldShowArrow = (item, allItems = []) => {
 
       {/* ================= SEARCH BAR ROW ================= */}
       {/* <div className="bg-gradient-to-r from-[#1688C8] to-[#33a7b5]"> */}
-      <div className="hidden lg:block" style={{ backgroundColor: "#444444" }}>
+      <div className="hidden lg:block" style={{ backgroundColor: "#1689C8" }}>
         <div className="max-w-7xl mx-auto px-4 py-4 flex items-center gap-4">
           <Link href="/" className="text-lg font-semibold">
            <img src="/user/logo-mobile-view-res.png" alt="Logo" width={100} height={70} className="h-auto" />
@@ -1983,12 +1983,12 @@ const shouldShowArrow = (item, allItems = []) => {
             )}
           </li>
         ))}
-        <li>
+        {/* <li>
           <Link href={"/deals-offer"} className="px-4 py-2 flex justify-between cursor-pointer hover:bg-gray-100"> Deals </Link>
         </li>
         <li>
           <Link href={"/open-box"} className="px-4 py-2 flex justify-between cursor-pointer hover:bg-gray-100"> Open Box </Link>
-        </li>
+        </li> */}
       </ul>
     </div>
 
@@ -2114,7 +2114,7 @@ const shouldShowArrow = (item, allItems = []) => {
         {/* ✅ Username text */}
         <span
           className="hidden lg:inline text-xs sm:text-sm font-semibold truncate max-w-[110px]"
-          style={{ color: "#1688c8" }}
+          style={{ color: "#ffff" }}
         >
           Hi,&nbsp;
           {userData?.name

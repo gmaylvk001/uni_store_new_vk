@@ -1153,7 +1153,12 @@ case 'brands':
                               ) : (
                                   <motion.div variants={itemVariants}>
                                       <Slider {...brandSettings} className="brand-slider px-2 sm:px-[50px] relative">
-                                          {brands.map((brand) => (
+                                          {brands
+                                        .filter(
+                                          (brand) =>
+                                            brand.brand_name &&
+                                            brand.brand_name.toLowerCase() !== "no brand"
+                                        ).map((brand) => (
                                               <motion.div
                                                   key={brand.id}
                                                   className="p-4 flex justify-center items-center"
@@ -1399,23 +1404,23 @@ case 'brands':
                         {/* Slide 1 */}
                         <SwiperSlide>
                           <Link href="/product/one-plus-mobile-13r-5g-16gb-512gb">
-                            <img src="uploads/flashsale/Latest_unilet-imgae-1.png" alt="Unilet" className="w-full h-[260px] md:h-[380px] lg:h-[420px]"/>
+                            <img src="uploads/flashsale/Banner-1.png" alt="Unilet" className="w-full h-[260px] md:h-[380px] lg:h-[420px]"/>
                           </Link>
                         </SwiperSlide>
 
                         {/* Slide 2 */}
                         <SwiperSlide>
                           <Link href="/product/apple-laptop-mba-m4-md-13-inch-midnight-black-16gb-256gb">
-                            <img src="uploads/flashsale/Latest_unilet-img.png" alt="Unilet" className="w-full h-[260px] md:h-[380px] lg:h-[420px]"/>
+                            <img src="uploads/flashsale/Banner-2.png" alt="Unilet" className="w-full h-[260px] md:h-[380px] lg:h-[420px]"/>
                           </Link>
                         </SwiperSlide>
 
                         {/* Slide 3 */}
-                        <SwiperSlide>
+                        {/* <SwiperSlide>
                           <Link href="/">
                             <img src="uploads/flashsale/unilet-latest-pro-n-.png" alt="Unilet" className="w-full h-[260px] md:h-[380px] lg:h-[420px]"/>
                           </Link>
-                        </SwiperSlide>
+                        </SwiperSlide> */}
                       </Swiper>
                     </div>
                   </section>
@@ -1439,24 +1444,24 @@ case 'brands':
                         }} loop slidesPerView={1} className="rounded-xl overflow-hidden">
                         {/* Slide 1 */}
                         <SwiperSlide>
-                          <Link href="/terms-and-condition">
-                            <img src="uploads/aboutus/BestvalueImg.png" alt="Unilet" className="w-full h-[260px] md:h-[380px] lg:h-[420px]"/>
+                          <Link href="/category/large-appliance">
+                            <img src="uploads/aboutus/banner-below-bvfu-1.png" alt="Unilet" className="w-full h-[260px] md:h-[380px] lg:h-[420px]"/>
                           </Link>
                         </SwiperSlide>
 
                         {/* Slide 2 */}
                         <SwiperSlide>
-                          <Link href="/category/others">
-                            <img src="uploads/aboutus/HP_SOH_3split_Dealscorner_31Dec2025_cYeQy6op2.webp" alt="Unilet" className="w-full h-[260px] md:h-[380px] lg:h-[420px]"/>
+                          <Link href="/category/accessories">
+                            <img src="uploads/aboutus/banner-below-bvfu-2.png" alt="Unilet" className="w-full h-[260px] md:h-[380px] lg:h-[420px]"/>
                           </Link>
                         </SwiperSlide>
 
                         {/* Slide 3 */}
-                        <SwiperSlide>
+                        {/* <SwiperSlide>
                           <Link href="/category/others">
                             <img src="uploads/aboutus/BestValueSaleImg2.png" alt="Unilet" className="w-full h-[260px] md:h-[380px] lg:h-[420px]"/>
                           </Link>
-                        </SwiperSlide>
+                        </SwiperSlide> */}
                       </Swiper>
                     </div>
                   </section>
@@ -1673,7 +1678,7 @@ case 'brands':
                       
                       {/* Image 1 */}
                       <div className="rounded-xl overflow-hidden bg-[#111] hover:scale-[1.02] transition">
-                        <Link href={`/category/others`}>
+                        <Link href={`/category/small-appliances/kitchen-appliance/air-fryer`}>
                         
                        
                         <img
@@ -1686,7 +1691,7 @@ case 'brands':
 
                       {/* Image 2 */}
                       <div className="rounded-xl overflow-hidden bg-[#111] hover:scale-[1.02] transition">
-                        <Link href={`/category/others`}>
+                        <Link href={`/category/sound-systems/speaker`}>
                         <img
                           src="uploads/aboutus/HP_DOTD_BTSpeakers_02Jan2026_-VhhZiYFRG.jpg"
                           alt="What's Hot"
@@ -1697,7 +1702,7 @@ case 'brands':
 
                       {/* Image 3 */}
                       <div className="rounded-xl overflow-hidden bg-[#111] hover:scale-[1.02] transition">
-                        <Link href={`/category/others`}>
+                        <Link href={`/category/accessories`}>
                         <img
                           src="uploads/aboutus/HP_DOTD_Chargers_02Jan2026_i5NEs4ycP.webp"
                           alt="What's Hot"
@@ -1708,7 +1713,7 @@ case 'brands':
 
                       {/* Image 4 */}
                       <div className="rounded-xl overflow-hidden bg-[#111] hover:scale-[1.02] transition">
-                        <Link href={`/category/others`}>
+                        <Link href={`/category/gadgets/smart-watches`}>
                         <img
                           src="uploads/aboutus/HP_DOTD_SW_02Jan2026_bvnroJbzi.webp"
                           alt="What's Hot"

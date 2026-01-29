@@ -469,15 +469,18 @@ const capitalizeFirstLetter = (str) =>
                     <span className="text-gray-400">
                       {subs.map((subcat, i) => (
                         <span key={subcat._id}>
-                          <Link
-                            href={`/category/${main.category_slug}/${subcat.category_slug}`}
-                            className="text-white hover:underline"
-                          >
-                            {capitalizeFirstLetter(subcat.category_name)} :
-                          </Link>
+                          {/* MAIN CATEGORY : SUB CATEGORY */}
+                          <div className="mb-1">
+                            <Link href={`/category/${main.category_slug}`} className="text-white hover:text-white hover:underline font-semibold">{capitalizeFirstLetter(main.category_name)}</Link> :{" "}
+                            <Link href={`/category/${main.category_slug}/${subcat.category_slug}`}className="hover:text-white hover:underline font-semibold">{capitalizeFirstLetter(subcat.category_name)}</Link>
+                          </div>
 
+                          {/* SECOND LINE ONLY IF CHILD EXISTS */}
                           {(groupedCategories.subs[subcat._id] || []).length > 0 && (
-                            <span className="ml-2 text-gray-500">
+                            <div className="mb-1 text-gray-400 text-sm">
+                              <Link href={`/category/${main.category_slug}/${subcat.category_slug}`}className="text-white hover:text-white hover:underline font-medium">
+                              {capitalizeFirstLetter(subcat.category_name)} 
+                              </Link> : {" "}
                               {groupedCategories.subs[subcat._id].map((child, j, arr) => (
                                 <span key={child._id}>
                                   <Link
@@ -489,8 +492,9 @@ const capitalizeFirstLetter = (str) =>
                                   {j < arr.length - 1 && " / "}
                                 </span>
                               ))}
-                            </span>
+                            </div>
                           )}
+
 
                           {inSetCI(
                             subcat.category_name,
@@ -498,7 +502,6 @@ const capitalizeFirstLetter = (str) =>
                           ) &&
                             brands.length > 0 && (
                               <span>
-                                <br />
                                 <span className="font-semibold text-white">Brands :</span>
                                 <span className="ml-2 text-gray-500">
                                   {brands.map((brand, bi) => (
@@ -535,7 +538,7 @@ const capitalizeFirstLetter = (str) =>
                           )
                         ) && (
                           <>
-                            <br />
+                           
                             <span className="font-semibold text-white">Brands :</span>
                             <span className="ml-2 text-gray-500">
                               {brands.map((brand, i) => (
