@@ -400,7 +400,7 @@ const scrollRight = (categoryId) => {
                                          <div className="flex flex-col sm:flex-row items-center md:gap-2 mb-2 sm:mb-3">
                                           <div>
                                             <span className="text-sm sm:text-base font-semibold text-red-600">
-                                             MRP ₹ {(product.special_price > 0 && product.special_price < product.price
+                                             ₹ {(product.special_price > 0 && product.special_price < product.price
                                                ? Math.round(product.special_price)
                                                : Math.round(product.price)
                                              ).toLocaleString()}

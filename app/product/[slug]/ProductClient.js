@@ -995,12 +995,12 @@ const fetchBrand = async () => {
                     {(Number(product.special_price) > 0 || Number(product.price) > 0) && (
                       <>
                         <span className="text-2xl font-bold text-blue-800">
-                          Rs.{Math.round(Number(product.special_price) || Number(product.price)).toLocaleString()}
+                          ₹{Math.round(Number(product.special_price) || Number(product.price)).toLocaleString()}
                         </span>
 
                         {Number(product.special_price) > 0 && Number(product.price) > 0 && (
                           <span className="text-gray-800 line-through text-sm">
-                            Rs.{Math.round(Number(product.price)).toLocaleString()}
+                           MRP ₹.{Math.round(Number(product.price)).toLocaleString()}
                           </span>
                         )}
                       </>
@@ -1837,7 +1837,7 @@ const fetchBrand = async () => {
                     item.special_price !== "0" &&
                     item.special_price < item.price && (
                       <span className="text-xs text-gray-500 line-through">
-                        ₹ {item.price.toLocaleString()}
+                        MRP ₹ {item.price.toLocaleString()}
                       </span>
                     )}
                 </div>
