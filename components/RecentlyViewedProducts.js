@@ -333,7 +333,7 @@ const RecentlyViewedProducts = () => {
                           <h3 className="text-xs sm:text-sm font-medium text-[#0069c6] hover:text-[#00badb] line-clamp-2 min-h-[40px]">
                             {product.name}
                           </h3>
-                        </Link>
+                        
 
                         {/* Price */}
                         <div className="flex items-center gap-2 mb-3">
@@ -350,7 +350,7 @@ const RecentlyViewedProducts = () => {
                             product.special_price < product.price &&
                             (
                               <span className="text-xs text-gray-500 line-through">
-                                ₹ {product.price.toLocaleString()}
+                                MRP ₹ {product.price.toLocaleString()}
                               </span>
                           )}
                         </div>
@@ -359,6 +359,7 @@ const RecentlyViewedProducts = () => {
                           {product.stock_status === "In Stock" && product.quantity ? ` ${product.stock_status}` : "Out Of Stock"}
                           {product.stock_status === "In Stock" && product.quantity ? `, ${product.quantity} units` : ""}
                         </h4>
+                        </Link>
 
                         {/* Add To Cart Button */}
                         <div className="mt-auto flex items-center justify-between gap-2">
