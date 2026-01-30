@@ -662,22 +662,22 @@ const fetchInitialData = async () => {
       )}
 {/* Categories Circle Section - Dynamic based on subcategories */}
 
-<div className="relative my-12 px-6">
+<div className="relative my-12 px-1">
   {/* Left arrow */}
-  <button
+  {/* <button
     onClick={() => scroll("left")}
     className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white hover:bg-gray-100 p-3 rounded-full shadow-md hidden md:flex items-center justify-center"
   >
     <span className="text-2xl font-bold text-gray-700">{`‹`}</span>
-  </button>
+  </button> */}
 
   {/* Right arrow */}
-  <button
+  {/* <button
     onClick={() => scroll("right")}
     className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white hover:bg-gray-100 p-3 rounded-full shadow-md hidden md:flex items-center justify-center"
   >
     <span className="text-2xl font-bold text-gray-700">{`›`}</span>
-  </button>
+  </button> */}
 
   {/* Scroll container */}
   <div
@@ -690,8 +690,8 @@ const fetchInitialData = async () => {
     style={{
       scrollSnapType: "x mandatory",
       scrollPadding: "0 24px",
-      gap: "24px", // spacing between cards
-      maxWidth: "calc((320px * 3) + (24px * 2))", // 3 cards + 2 gaps
+      gap: "20px", // spacing between cards
+      maxWidth: "calc((490px * 3) + (24px * 2))", // 3 cards + 2 gaps
       margin: "0 auto", // center container
     }}
   >
@@ -703,7 +703,7 @@ const fetchInitialData = async () => {
         <Link
           key={subcategory._id}
           href={`/category/${slug}/${subcategory.category_slug}`}
-          className="flex flex-row items-center flex-shrink-0 w-[320px] h-[264px] border border-gray-200 rounded-xl bg-white hover:-translate-y-1 transition-all duration-300 hover:shadow-lg hover:bg-gray-50"
+          className="flex flex-row items-center flex-shrink-0 w-[295px] h-[264px] border border-gray-200 rounded-xl bg-white hover:-translate-y-1 transition-all duration-300 hover:shadow-lg hover:bg-gray-50"
           style={{ scrollSnapAlign: "start" }}
         >
           {/* Image section */}
@@ -750,8 +750,8 @@ const fetchInitialData = async () => {
           </div>
 
           {/* Content section */}
-         <div className="flex flex-col text-left px-3 py-10 w-[150px] h-full">
-          <h3 className="text-lg font-bold text-gray-900 mb-3 text-nowrap">
+         <div className="flex flex-col text-left px-1 py-10 w-[120px] h-full">
+          <h3 className="text-md font-bold text-gray-900 mb-3 truncate">
             {subcategory.category_name}
           </h3>
 
