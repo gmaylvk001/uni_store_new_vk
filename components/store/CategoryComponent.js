@@ -33,12 +33,12 @@ export default function StoreDetail() {
       <main className="max-w-full mx-auto px-4 py-6 space-y-10 text-slate-900">
 
         {/* ================= STORE HEADER ================= */}
-        <section className="bg-white grid grid-cols-2 max-sm:grid-cols-1 max-md:grid-cols-1 max-lg:grid-cols-[2fr_4fr] gap-4 rounded-lg">
+        <section className="grid grid-cols-2 max-sm:grid-cols-1 max-md:grid-cols-1 max-lg:grid-cols-[2fr_4fr] gap-4 rounded-lg">
 
           {/* LEFT INFO CARD */}
-          <div className="border border-gray-300 rounded-2xl">
+          <div className="bg-white border border-gray-300 rounded-2xl">
             <h1 className="text-xl md:text-xl font-semibold p-3.5 border-b border-gray-300">
-              {store.organisation_name} - <br /> {store.city}
+              {store.organisation_name} -  {store.city}
             </h1>
 
             <div className="flex px-5 py-2 gap-x-3.5">
@@ -97,7 +97,7 @@ export default function StoreDetail() {
         <div className="w-40 h-40 bg-white rounded-full overflow-hidden shadow flex justify-center">
           <img
             src={prod.image}
-            className="w-full h-full object-cover"
+            className="h-38 w-36 sm:w-32 object-contain"
           />
         </div>
 
