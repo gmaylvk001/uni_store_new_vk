@@ -966,7 +966,7 @@ export default function BrandPage() {
                               product.special_price &&
                               product.special_price < product.price && (
                                 <span className="text-xs text-gray-500 line-through">
-                                  ₹ {Math.round(product.price).toLocaleString()}
+                                  MRP ₹ {Math.round(product.price).toLocaleString()}
                                 </span>
                             )}
                           </div>

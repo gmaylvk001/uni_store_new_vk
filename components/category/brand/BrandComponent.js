@@ -1322,7 +1322,7 @@ console.log("Fetched products:", products);
                               }
                             })()}
                           </h3>
-                        </Link>
+                        
 
        
                           {/* Price Row (same level always) */}
@@ -1343,7 +1343,7 @@ console.log("Fetched products:", products);
                                 product.special_price !== '0' &&
                                 product.special_price < product.price && (
                                   <span className="text-xs text-gray-500 line-through">
-                                    ₹ {Math.round(product.price).toLocaleString()}
+                                    MRP ₹ {Math.round(product.price).toLocaleString()}
                                   </span>
                               )}
                             </div>
@@ -1352,7 +1352,7 @@ console.log("Fetched products:", products);
                             {product.stock_status === "In Stock" && product.quantity ? ` ${product.stock_status}` : "Out Of Stock"}
                             {product.stock_status === "In Stock" && product.quantity ? `, ${product.quantity} units` : ""}
                           </h4>
-       
+                        </Link>
                           {/* Bottom Buttons */}
                           <div className="mt-auto flex items-center justify-between gap-2">
                             <Addtocart

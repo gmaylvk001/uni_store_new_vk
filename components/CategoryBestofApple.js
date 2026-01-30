@@ -344,7 +344,7 @@ const scrollRight = (categoryId) => {
                                           className="block mb-1"
                                         >
                                           {/* 0069c6 */}
-                                          <h3 className="text-xs sm:text-sm font-medium text-[#00badb] hover:text-[#00badb] min-h-[32px] sm:min-h-[40px]">
+                                          <h3 className="text-xs sm:text-sm font-medium text-[#0069c6] hover:text-[#00badb] min-h-[32px] sm:min-h-[40px]">
                                             {(() => {
                                               const model = product.model_number ? `(${product.model_number.trim()})` : "";
                                               const name = product.name ? product.name.trim() : "";
@@ -360,7 +360,7 @@ const scrollRight = (categoryId) => {
                                               }
                                             })()}
                                           </h3>
-                                        </Link>
+                                        
 
 
                                          <div className="flex flex-col sm:flex-row items-center md:gap-2 mb-2 sm:mb-3">
@@ -384,6 +384,7 @@ const scrollRight = (categoryId) => {
                                          <h4 className={`text-[10px] sm:text-xs mb-2 ${product.stock_status === "In Stock" ? "text-green-600" : "text-red-600"}`}>
                                            {product.stock_status}{product.stock_status === "In Stock" && product.quantity ? `, ${product.quantity} units` : ""}
                                          </h4>
+                                         </Link>
                                        </div>
                                  </div>
         ))}

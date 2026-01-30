@@ -1477,7 +1477,7 @@ const fetchInitialData = async () => {
                                               }
                                             })()}
                                           </h3>
-</Link>
+
 
 
               {/* Price Row */}
@@ -1516,7 +1516,7 @@ const fetchInitialData = async () => {
                   ? `In Stock, ${product.quantity} units`
                   : "Out Of Stock"}
               </h4>
-
+</Link>
               {/* Bottom Buttons */}
               <div className="mt-auto flex items-center justify-between gap-2">
                 <Addtocart

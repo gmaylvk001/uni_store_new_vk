@@ -1000,7 +1000,7 @@ const fetchBrand = async () => {
 
                         {Number(product.special_price) > 0 && Number(product.price) > 0 && (
                           <span className="text-gray-800 line-through text-sm">
-                           MRP ₹.{Math.round(Number(product.price)).toLocaleString()}
+                           MRP ₹ {Math.round(Number(product.price)).toLocaleString()}
                           </span>
                         )}
                       </>

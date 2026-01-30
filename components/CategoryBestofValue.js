@@ -294,158 +294,132 @@ const scrollRight = (categoryId) => {
                                 className={`flex overflow-x-auto scrollbar-hide scroll-smooth gap-4 py-1 ${fewProducts ? "justify-center" : "justify-start"}`}
                                 style={{ WebkitOverflowScrolling: "touch" }}
                               > */}
-                               <div
-  ref={(el) => (categoryScrollRefs.current[categoryProduct._id] = el)}
-  className="
-    flex overflow-x-auto scroll-smooth scrollbar-hide
-    snap-x snap-mandatory gap-2
-    md:gap-4 lg:gap-4 py-1
-    pr-2        /* ✅ IMPORTANT */
-  "
->
-                              {products.slice(0, 15).map((product) => (
-                                    
+                                  <div ref={(el) => (categoryScrollRefs.current[categoryProduct._id] = el)} className="flex overflow-x-auto scroll-smooth scrollbar-hide snap-x snap-mandatory gap-2 md:gap-4 lg:gap-4 py-1 pr-2">
+                                    {products.slice(0, 15).map((product) => (
+                                      <div key={product._id} className="snap-start flex-none shrink-0 flex flex-col justify-between p-1 rounded-lg border border-gray-200 hover:border-[#0069c1] hover:shadow-md transition cursor-pointer h-full w-[50%] sm:w-[50%] md:w-[25%] lg:w-[24.1%]" style={{ background: "linear-gradient(90deg, rgb(180, 223, 255) 0%, rgb(193 218 255) 50%, rgb(255 255 255) 100%)" }} >
+                                        {/* linear-gradient(90deg, rgb(180 223 255) 0%, rgb(220 236 255) 50%, rgb(158 203 235) 100%);" linear-gradient(90deg,rgba(180, 223, 255, 1) 0%, rgba(255, 255, 255, 1) 50%, rgba(158, 203, 235, 1) 100%)*/}
+                                        {/* Image */}
+                                        <div className="relative aspect-square bg-white overflow-hidden">
+                                          <Link href={`/product/${product.slug}`} onClick={() => handleProductClick(product)} className="block mb-1">
+                                          {product.images?.[0] && (
+                                            <>
+                                              <Image
+                                                src={product.images[0].startsWith("http") ? product.images[0] : `/uploads/products/${product.images[0]}`}
+                                                alt={product.name}
+                                                fill
+                                                // ensure the image fits without stretching
+                                                className="object-contain p-2 sm:p-3"
+                                                sizes="(max-width: 640px) 90vw, (max-width: 1024px) 45vw, 18vw"
+                                                unoptimized
+                                              />
+                                              {Number(product.special_price) > 0 && Number(product.special_price) < Number(product.price) && (
+                                                <span className="absolute top-2 left-2 bg-orange-500 text-white text-[10px] sm:text-xs font-bold px-1.5 py-0.5 rounded">
+                                                  -{Math.round(100 - (Number(product.special_price) / Number(product.price)) * 100)}%
+                                                </span>
+                                              )}
+                                              <div className="absolute top-2 right-2">
+                                                <ProductCard productId={product._id} />
+                                              </div>
+                                            </>
+                                          )}
+                                          </Link>
+                                        </div>
 
-                                      <div
-  key={product._id}
-  className="
-    snap-start
-    flex-none shrink-0     /* ✅ IMPORTANT */
+                                        {/* Info */}
+                                        <div className="p-2 flex flex-col h-full">
+                                          <h4 className="text-[10px] sm:text-xs text-gray-500 mb-1 uppercase">
+                                            <Link href={`/brand/${brandMap[product.brand]?.toLowerCase().replace(/\s+/g, "-") || ""}`} className="hover:text-blue-600">
+                                              {brandMap[product.brand] || ""}
+                                            </Link>
+                                          </h4>
+                                          
+                                          <Link
+                                            href={`/product/${product.slug}`}
+                                            onClick={() => handleProductClick(product)}
+                                            className="block mb-1"
+                                          >
+                                            {/* 0069c6 */}
+                                            <h3 className="text-xs sm:text-sm font-medium text-[#0069c6] hover:text-[#00badb] min-h-[32px] sm:min-h-[40px]">
+                                              {(() => {
+                                                const model = product.model_number ? `(${product.model_number.trim()})` : "";
+                                                const name = product.name ? product.name.trim() : "";
+                                                const maxLen = 40;
 
-    
-    flex flex-col justify-between
-    p-1 rounded-lg border border-gray-200
-    hover:border-[#0069c1] hover:shadow-md transition
-    cursor-pointer h-full
+                                                if (model) {
+                                                  const remaining = maxLen - model.length - 1; // 1 for space before model
+                                                  const truncatedName =
+                                                    name.length > remaining ? name.slice(0, remaining - 3) + `${model}...` : name;
+                                                  return `${truncatedName} `;
+                                                } else {
+                                                  return name.length > maxLen ? name.slice(0, maxLen - 3) + "..." : name;
+                                                }
+                                              })()}
+                                            </h3>
+                                          </Link>
 
-    w-[50%] sm:w-[50%]
-    md:w-[25%] lg:w-[24.1%]
-  " style={{ background: "linear-gradient(90deg, rgb(180, 223, 255) 0%, rgb(193 218 255) 50%, rgb(255 255 255) 100%)" }}
->
-  {/* linear-gradient(90deg, rgb(180 223 255) 0%, rgb(220 236 255) 50%, rgb(158 203 235) 100%);" 
-  linear-gradient(90deg,rgba(180, 223, 255, 1) 0%, rgba(255, 255, 255, 1) 50%, rgba(158, 203, 235, 1) 100%)*/}
-
-                                      {/* Image */}
-                                      <div className="relative aspect-square bg-white overflow-hidden">
-                                        <Link href={`/product/${product.slug}`} onClick={() => handleProductClick(product)} className="block mb-1">
-                                        {product.images?.[0] && (
-                                          <>
-                                            <Image
-                                              src={product.images[0].startsWith("http") ? product.images[0] : `/uploads/products/${product.images[0]}`}
-                                              alt={product.name}
-                                              fill
-                                              // ensure the image fits without stretching
-                                              className="object-contain p-2 sm:p-3"
-                                              sizes="(max-width: 640px) 90vw, (max-width: 1024px) 45vw, 18vw"
-                                              unoptimized
-                                            />
-                                            {Number(product.special_price) > 0 && Number(product.special_price) < Number(product.price) && (
-                                              <span className="absolute top-2 left-2 bg-orange-500 text-white text-[10px] sm:text-xs font-bold px-1.5 py-0.5 rounded">
-                                                -{Math.round(100 - (Number(product.special_price) / Number(product.price)) * 100)}%
+                                          {/* <div className="flex items-center gap-2 mb-2 sm:mb-3">
+                                            <span className="text-sm sm:text-base font-semibold text-red-600">
+                                              MRP ₹ {(product.special_price > 0 && product.special_price < product.price
+                                                ? Math.round(product.special_price)
+                                                : Math.round(product.price)
+                                              ).toLocaleString()}
+                                            </span>
+                                            {product.special_price > 0 && product.special_price < product.price && (
+                                              <span className="text-[10px] sm:text-xs text-gray-500 line-through">
+                                                MRP ₹ {Math.round(product.price).toLocaleString()}
                                               </span>
                                             )}
-                                            <div className="absolute top-2 right-2">
-                                              <ProductCard productId={product._id} />
+                                          </div> */}
+
+                                          <Link href={`/product/${product.slug}`} onClick={() => handleProductClick(product)} className="block mb-1">
+                                          <div className="flex flex-col sm:flex-row items-center md:gap-2 mb-2 sm:mb-3">
+                                            <div>
+                                              <span className="text-sm sm:text-base font-semibold text-red-600">
+                                              ₹ {(product.special_price > 0 && product.special_price < product.price
+                                                ? Math.round(product.special_price)
+                                                : Math.round(product.price)
+                                              ).toLocaleString()}
+                                            </span>
                                             </div>
-                                          </>
-                                        )}
-                                        </Link>
-                                      </div>
- 
-                                       {/* Info */}
-                                       <div className="p-2 flex flex-col h-full">
-                                         <h4 className="text-[10px] sm:text-xs text-gray-500 mb-1 uppercase">
-                                           <Link href={`/brand/${brandMap[product.brand]?.toLowerCase().replace(/\s+/g, "-") || ""}`} className="hover:text-blue-600">
-                                             {brandMap[product.brand] || ""}
-                                           </Link>
-                                         </h4>
-                                         
-                                        <Link
-                                          href={`/product/${product.slug}`}
-                                          onClick={() => handleProductClick(product)}
-                                          className="block mb-1"
-                                        >
-                                          {/* 0069c6 */}
-                                          <h3 className="text-xs sm:text-sm font-medium text-[#00badb] hover:text-[#00badb] min-h-[32px] sm:min-h-[40px]">
-                                            {(() => {
-                                              const model = product.model_number ? `(${product.model_number.trim()})` : "";
-                                              const name = product.name ? product.name.trim() : "";
-                                              const maxLen = 40;
-
-                                              if (model) {
-                                                const remaining = maxLen - model.length - 1; // 1 for space before model
-                                                const truncatedName =
-                                                  name.length > remaining ? name.slice(0, remaining - 3) + `${model}...` : name;
-                                                return `${truncatedName} `;
-                                              } else {
-                                                return name.length > maxLen ? name.slice(0, maxLen - 3) + "..." : name;
-                                              }
-                                            })()}
-                                          </h3>
-                                        </Link>
-
-                                         {/* <div className="flex items-center gap-2 mb-2 sm:mb-3">
-                                           <span className="text-sm sm:text-base font-semibold text-red-600">
-                                             MRP ₹ {(product.special_price > 0 && product.special_price < product.price
-                                               ? Math.round(product.special_price)
-                                               : Math.round(product.price)
-                                             ).toLocaleString()}
-                                           </span>
-                                           {product.special_price > 0 && product.special_price < product.price && (
-                                             <span className="text-[10px] sm:text-xs text-gray-500 line-through">
-                                               MRP ₹ {Math.round(product.price).toLocaleString()}
-                                             </span>
-                                           )}
-                                         </div> */}
-
-                                         <div className="flex flex-col sm:flex-row items-center md:gap-2 mb-2 sm:mb-3">
-                                          <div>
-                                            <span className="text-sm sm:text-base font-semibold text-red-600">
-                                             ₹ {(product.special_price > 0 && product.special_price < product.price
-                                               ? Math.round(product.special_price)
-                                               : Math.round(product.price)
-                                             ).toLocaleString()}
-                                           </span>
+                                            <div>
+                                              {product.special_price > 0 && product.special_price < product.price && (
+                                              <span className="text-[10px] sm:text-xs text-gray-500 line-through">
+                                                MRP ₹ {Math.round(product.price).toLocaleString()}
+                                              </span>
+                                            )}
+                                            </div>
                                           </div>
-                                           <div>
-                                            {product.special_price > 0 && product.special_price < product.price && (
-                                             <span className="text-[10px] sm:text-xs text-gray-500 line-through">
-                                               MRP ₹ {Math.round(product.price).toLocaleString()}
-                                             </span>
-                                           )}
-                                           </div>
-                                         </div>
- 
-                                         <h4 className={`text-[10px] sm:text-xs mb-2 ${product.stock_status === "In Stock" ? "text-green-600" : "text-red-600"}`}>
-                                           {product.stock_status}{product.stock_status === "In Stock" && product.quantity ? `, ${product.quantity} units` : ""}
-                                         </h4>
- 
-                                         {/* Actions */}
-                                        {/* <div
-                                            className="mt-auto flex items-center gap-0 text-[12.5px] sm:text-[11.5px]  font-semibold"
-                                          >
-                                          <Addtocart
-                                            productId={product._id}
-                                            stockQuantity={product.quantity}
-                                            special_price={product.special_price}
-                                            className="flex-1 whitespace-nowrap text-[10px] sm:text-sm py-1.5"
-                                            
-                                          />
-                                          <a
-                                            href={`https://wa.me/919865555000?text=${encodeURIComponent(`Check Out This Product: ${typeof window !== 'undefined' ? window.location.origin : ''}/product/${product.slug}`)}`}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="bg-green-500 hover:bg-green-600 text-white p-1.5 rounded-full flex items-center justify-center flex-shrink-0"
-                                          >
-                                            <svg className="w-3 h-3 sm:w-4 sm:h-4" viewBox="0 0 32 32" fill="currentColor">
-                                              <path d="M16.003 2.667C8.64 2.667 2.667 8.64 2.667 16c0 2.773.736 5.368 2.009 7.629L2 30l6.565-2.643A13.254 13.254 0 0016.003 29.333C23.36 29.333 29.333 23.36 29.333 16c0-7.36-5.973-13.333-13.33-13.333zm7.608 18.565c-.32.894-1.87 1.749-2.574 1.865-.657.104-1.479.148-2.385-.148-.55-.175-1.256-.412-2.162-.812-3.8-1.648-6.294-5.77-6.49-6.04-.192-.269-1.55-2.066-1.55-3.943 0-1.878.982-2.801 1.33-3.168.346-.364.75-.456 1.001-.456.25 0 .5.002.719.013.231.01.539-.088.845.643.32.768 1.085 2.669 1.18 2.863.096.192.16.423.03.683-.134.26-.2.423-.39.65-.192.231-.413.512-.589.689-.192.192-.391.401-.173.788.222.392.986 1.625 2.116 2.636 1.454 1.298 2.682 1.7 3.075 1.894.393.192.618.173.845-.096.23-.27.975-1.136 1.237-1.527.262-.392.524-.32.894-.192.375.13 2.35 1.107 2.75 1.308.393.205.656.308.75.48.096.173.096 1.003-.224 1.897z" />
-                                            </svg>
-                                          </a>
-                                        </div> */}
-                                       </div>
-                                 </div>
-                                 ))}
-                             </div>
+  
+                                          <h4 className={`text-[10px] sm:text-xs mb-2 ${product.stock_status === "In Stock" ? "text-green-600" : "text-red-600"}`}>
+                                            {product.stock_status}{product.stock_status === "In Stock" && product.quantity ? `, ${product.quantity} units` : ""}
+                                          </h4>
+  </Link>
+                                          {/* Actions */}
+                                          {/* <div
+                                              className="mt-auto flex items-center gap-0 text-[12.5px] sm:text-[11.5px]  font-semibold"
+                                            >
+                                            <Addtocart
+                                              productId={product._id}
+                                              stockQuantity={product.quantity}
+                                              special_price={product.special_price}
+                                              className="flex-1 whitespace-nowrap text-[10px] sm:text-sm py-1.5"
+                                              
+                                            />
+                                            <a
+                                              href={`https://wa.me/919865555000?text=${encodeURIComponent(`Check Out This Product: ${typeof window !== 'undefined' ? window.location.origin : ''}/product/${product.slug}`)}`}
+                                              target="_blank"
+                                              rel="noopener noreferrer"
+                                              className="bg-green-500 hover:bg-green-600 text-white p-1.5 rounded-full flex items-center justify-center flex-shrink-0"
+                                            >
+                                              <svg className="w-3 h-3 sm:w-4 sm:h-4" viewBox="0 0 32 32" fill="currentColor">
+                                                <path d="M16.003 2.667C8.64 2.667 2.667 8.64 2.667 16c0 2.773.736 5.368 2.009 7.629L2 30l6.565-2.643A13.254 13.254 0 0016.003 29.333C23.36 29.333 29.333 23.36 29.333 16c0-7.36-5.973-13.333-13.33-13.333zm7.608 18.565c-.32.894-1.87 1.749-2.574 1.865-.657.104-1.479.148-2.385-.148-.55-.175-1.256-.412-2.162-.812-3.8-1.648-6.294-5.77-6.49-6.04-.192-.269-1.55-2.066-1.55-3.943 0-1.878.982-2.801 1.33-3.168.346-.364.75-.456 1.001-.456.25 0 .5.002.719.013.231.01.539-.088.845.643.32.768 1.085 2.669 1.18 2.863.096.192.16.423.03.683-.134.26-.2.423-.39.65-.192.231-.413.512-.589.689-.192.192-.391.401-.173.788.222.392.986 1.625 2.116 2.636 1.454 1.298 2.682 1.7 3.075 1.894.393.192.618.173.845-.096.23-.27.975-1.136 1.237-1.527.262-.392.524-.32.894-.192.375.13 2.35 1.107 2.75 1.308.393.205.656.308.75.48.096.173.096 1.003-.224 1.897z" />
+                                              </svg>
+                                            </a>
+                                          </div> */}
+                                        </div>
+                                      </div>
+                                    ))}
+                                  </div>
                           </div>
                         </div>
                       </div>

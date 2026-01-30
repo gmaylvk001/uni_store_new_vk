@@ -1238,7 +1238,7 @@ export default function CartComponent() {
 
                       <h3 className="text-xs text-gray-500 line-through">
                         {/* ₹{(item.actual_price ?? item.price ?? 0).toFixed(2)} */}
-                        ₹{(item.actual_price ?? item.price ?? 0).toLocaleString("en-IN", {minimumFractionDigits: 2,maximumFractionDigits: 2,})} 
+                        MRP ₹{(item.actual_price ?? item.price ?? 0).toLocaleString("en-IN", {minimumFractionDigits: 2,maximumFractionDigits: 2,})} 
                       </h3>
                     </>
                   ) : (
