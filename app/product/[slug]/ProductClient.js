@@ -1120,7 +1120,8 @@ const fetchBrand = async () => {
 
             </div>
 {showStickyBar && (
-  <div className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t shadow-lg hidden md:block">
+  <div className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t shadow-lg block">
+
     <div className="max-w-7xl mx-auto px-4 py-3">
 
       {/* ONE ROW LAYOUT */}
