@@ -47,6 +47,57 @@ export default function ProductClient() {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [showStickyBar, setShowStickyBar] = useState(false);
 
+const [deliveryInfo, setDeliveryInfo] = useState(null);
+
+const [pincode, setPincode] = useState("");
+const [pincodeError, setPincodeError] = useState("");
+const [checkingPincode, setCheckingPincode] = useState(false);
+
+
+useEffect(() => {
+  const saved = localStorage.getItem("deliveryInfo");
+  if (saved) {
+    setDeliveryInfo(JSON.parse(saved));
+  }
+}, []);
+
+const checkPincode = async () => {
+  if (pincode.length !== 6) {
+    setPincodeError("Enter valid 6 digit pincode");
+    return;
+  }
+
+  try {
+    setCheckingPincode(true);
+    setPincodeError("");
+
+    const res = await fetch(
+      `https://api.postalpincode.in/pincode/${pincode}`
+    );
+    const data = await res.json();
+
+    if (data[0]?.Status !== "Success") {
+      setPincodeError("Delivery not available to this pincode");
+      return;
+    }
+
+    const postOffice = data[0].PostOffice[0];
+
+    const info = {
+      pincode,
+      city: postOffice.District,
+      state: postOffice.State,
+      days: 2,
+    };
+
+    setDeliveryInfo(info);
+    localStorage.setItem("deliveryInfo", JSON.stringify(info));
+  } catch (err) {
+    setPincodeError("Something went wrong");
+  } finally {
+    setCheckingPincode(false);
+  }
+};
 
 
 const handleDecrease = () => {
@@ -1149,7 +1200,7 @@ const fetchBrand = async () => {
   {product.stock_status === "In Stock" && product.quantity > 0 && (
     <button
       onClick={handleBuyNow}
-      className="h-11 px-6 py-3 rounded-md shadow-md bg-white hover:bg-customBlue hover:text-white text-customBlue border border-blue-200 font-semibold rounded-md flex items-center justify-center gap-2 whitespace-nowrap"
+      className="h-11 px-6 py-3 rounded-md shadow-md bg-[#1689C8] hover:bg-[#1689C8] hover:text-white text-white border border-blue-200 font-semibold rounded-md flex items-center justify-center gap-2 whitespace-nowrap"
     >
       <FaStore />
       Buy Now
@@ -1232,7 +1283,65 @@ const fetchBrand = async () => {
                            
                            <RazorpayOffers amount={product.special_price} />
  
- 
+ {/* 🚚 Delivery Check */}
+<div className="border border-gray-300 rounded-lg p-4 bg-white shadow-md">
+  <h3 className="text-sm font-semibold flex items-center gap-2 mb-2">
+    <TbTruckDelivery className="text-lg" />
+    Delivery Options
+  </h3>
+
+  {!deliveryInfo ? (
+    <>
+      <div className="flex gap-2">
+        <input
+          type="text"
+          value={pincode}
+          maxLength={6}
+          onChange={(e) => setPincode(e.target.value)}
+          placeholder="Enter Pincode"
+          className="border border-gray-300 px-3 py-2 rounded-md w-full text-sm"
+        />
+        <button
+          onClick={checkPincode}
+          disabled={checkingPincode}
+          className="px-4 py-2 bg-customBlue text-white text-sm rounded-md"
+        >
+          {checkingPincode ? "Checking..." : "Check"}
+        </button>
+      </div>
+
+      {pincodeError && (
+        <p className="text-red-600 text-xs mt-1">{pincodeError}</p>
+      )}
+    </>
+  ) : (
+    <div className="text-sm space-y-1">
+      <p className="text-green-600 font-semibold">
+        ✔ Delivery available
+      </p>
+      <p>
+        Deliver to{" "}
+        <span className="font-semibold">
+          {deliveryInfo.city}, {deliveryInfo.pincode}
+        </span>
+      </p>
+      <p className="text-gray-600">
+        Delivery in {deliveryInfo.days} days
+      </p>
+
+      <button
+        onClick={() => {
+          setDeliveryInfo(null);
+          localStorage.removeItem("deliveryInfo");
+        }}
+        className="text-xs text-blue-600 underline mt-2"
+      >
+        Change pincode
+      </button>
+    </div>
+  )}
+</div>
+
 
 
 {/* EMI Modal */}

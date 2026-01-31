@@ -2,6 +2,7 @@
 import Link from "next/link";
 import Image from 'next/image';
 import { FiSearch, FiMapPin, FiHeart,FiPhone, FiShoppingCart, FiUser, FiMenu, FiX, FiPhoneCall, FiMessageSquare, FiChevronRight } from "react-icons/fi";
+import { MdPermPhoneMsg } from "react-icons/md";
 import { FaBars, FaShoppingBag, FaUserShield, FaSearch } from "react-icons/fa";
 import { useState, useRef, useEffect, useLayoutEffect, useCallback, useMemo } from 'react';
 import { IoLogOut } from "react-icons/io5";
@@ -2085,7 +2086,7 @@ const shouldShowArrow = (item, allItems = []) => {
                bg-[#2b2b2b] border border-[#4a4a4a]
                text-white shadow-md
                hover:bg-[#1688c8] transition-all">
-                <FiPhone />
+                <MdPermPhoneMsg  />
                </Link>
               
             </div>

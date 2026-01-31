@@ -95,7 +95,7 @@ const CancellationReturnPolicy = () => {
             </div>
 
             {/* Product Complaints */}
-            <div className="p-8 border-b border-gray-100">
+            {/* <div className="p-8 border-b border-gray-100">
               <h3 className="text-xl font-semibold text-gray-800 mb-3 flex items-center gap-2">
                 <FiCheckCircle className="text-2xl" />
                 Product Complaints
@@ -103,10 +103,10 @@ const CancellationReturnPolicy = () => {
               <p className="text-gray-600">
                 In case you feel that the product received is not as shown on the site or as per your expectations, you must bring it to the notice of our customer service within 7 days of receiving the product. The Customer Service Team, after looking into your complaint will take an appropirate decision.
               </p>
-            </div>
+            </div> */}
 
             {/* Warranty Items */}
-            <div className="p-8 border-b border-gray-100 bg-blue-50/30">
+            {/* <div className="p-8 border-b border-gray-100 bg-blue-50/30">
               <h3 className="text-xl font-semibold text-gray-800 mb-3 flex items-center gap-2">
                 <FiPackage className="text-2xl" />
                 Warranty Products
@@ -114,7 +114,7 @@ const CancellationReturnPolicy = () => {
               <p className="text-gray-600">
                 In case of complaints regarding products that come with a warranty from manufacturers, please refer the issue to them.
               </p>
-            </div>
+            </div> */}
 
             {/* Refund Processing */}
             <div className="p-8">

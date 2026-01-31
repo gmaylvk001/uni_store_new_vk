@@ -270,7 +270,7 @@ const handleAddBrand = async (e) => {
     formData.append("id", editingBrand._id);
     formData.append("brand_name", editingBrand.brand_name);
     formData.append("status", editingBrand.status);
-    formData.append("existingImage", editingBrand.existingImage || "");
+    formData.append("existingImage", editingBrand.existingImage || ""); 
     if (editingBrand.image instanceof File) {
         formData.append("image", editingBrand.image);
     }
