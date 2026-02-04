@@ -50,11 +50,32 @@ export default function StoreDetail() {
             </div>
 
             <div className="flex px-5 py-2 gap-x-3.5">
+              <i className="text-blue-900 text-2xl">📍</i>
+              <div className="text-sm">
+                <p className="mb-2">{store.zipcode}</p>
+              </div>
+            </div>
+
+            <div className="flex px-5 py-2 gap-x-3.5">
               <i className="text-blue-900 text-2xl">📞</i>
               <div className="text-sm">
                 <a href={`tel:+91${store.phone}`}> +91{store.phone} </a>
               </div>
             </div>
+
+            <div className="flex px-5 py-2 gap-x-3.5">
+              <i className="text-blue-900 text-2xl">⏰</i>
+             <ul className="text-sm mt-2 space-y-1">
+                  {store.businessHours.map((b, idx) => (
+                    <li key={idx} className="flex justify-between">
+                      <span>Open Until {b.timing} Every {b.day}</span>
+                      {/* <span>{b.day}</span> */}
+                    </li>
+                  ))}
+                </ul>
+            </div>
+
+            
           </div>
 
           {/* RIGHT — BANNERS */}
@@ -72,8 +93,8 @@ export default function StoreDetail() {
         </section>
 
         {/* ================= FEATURED PRODUCTS ================= */}
-        {store.featuredProducts?.length > 0 && (
-          <section className="p-7 overflow-hidden bg-blue-600 rounded-xl">
+        {/* {store.featuredProducts?.length > 0 && (
+          <section className="p-7 overflow-hidden rounded-xl" style={{ backgroundColor: "#1689C8" }}>
   <h2 className="text-center text-white mb-7 text-xl font-semibold">
     Featured Products
   </h2>
@@ -106,7 +127,55 @@ export default function StoreDetail() {
     ))}
   </Swiper>
 </section>
-        )}
+        )} */}
+
+        {store.featuredProducts?.length > 0 && (
+  <section
+    className="p-7 overflow-hidden rounded-xl"
+    style={{ backgroundColor: "#1689C8" }}
+  >
+    {/* Heading */}
+    <h2 className="text-center text-white mb-7 text-2xl md:text-3xl font-semibold">
+      Featured Products
+    </h2>
+
+    <Swiper
+      modules={[Navigation]}
+      navigation
+      spaceBetween={30}
+      centeredSlides={false}
+      breakpoints={{
+        1200: { slidesPerView: 4 },
+        992: { slidesPerView: 3 },
+        768: { slidesPerView: 2 },
+        0: { slidesPerView: 1 },
+      }}
+      className="px-6"
+    >
+      {store.featuredProducts.map((prod, idx) => (
+        <SwiperSlide key={idx} className="flex justify-center">
+          <div className="flex flex-col items-center text-center">
+            
+            {/* Circle Card */}
+            <div className="bg-gray-200 rounded-full w-52 h-52 flex items-center justify-center shadow-lg">
+              <img
+                src={prod.image}
+                alt={prod.title}
+                className="w-36 h-36 object-contain"
+              />
+            </div>
+
+            {/* Title */}
+            <p className="text-white text-sm md:text-base font-medium mt-4">
+              {prod.title}
+            </p>
+          </div>
+        </SwiperSlide>
+      ))}
+    </Swiper>
+  </section>
+)}
+
 
         {/* ================= OFFERS ================= */}
         {store.offers?.length > 0 && (
@@ -218,8 +287,9 @@ export default function StoreDetail() {
   </section>
 
         {/* ================= HIGHLIGHTS ================= */}
-        {store.highlights?.length > 0 && (
-          <section className="bg-blue-600 text-white rounded-xl py-6 px-4 md:px-8">
+
+        {/*  {store.highlights?.length > 0 && (
+          <section className="text-white rounded-xl py-6 px-4 md:px-8" style={{ backgroundColor: "#1689C8" }}>
             <h2 className="text-center text-lg md:text-3xl font-semibold mb-4">
               Highlights
             </h2>
@@ -233,7 +303,40 @@ export default function StoreDetail() {
               ))}
             </div>
           </section>
-        )}
+        )} */}
+       {store.highlights?.length > 0 && (
+  <section className="text-white rounded-xl py-6 px-4 md:px-8" style={{ backgroundColor: "#1689C8" }}>
+    {/* Heading */}
+    <h2 className="text-center text-lg md:text-3xl font-semibold mb-4">
+      Highlights
+    </h2>
+
+    {/* Highlights */}
+    <div className="flex flex-wrap justify-center gap-6 md:gap-12">
+      {store.highlights.map((h, idx) => (
+        <div
+          key={idx}
+          className="flex flex-col items-center text-center w-32 md:w-40"
+        >
+          {/* Circle Icon */}
+          <div className="bg-white rounded-full w-20 h-20 md:w-24 md:h-24 flex items-center justify-center shadow-md">
+            <img
+              src={h.image}
+              alt={h.label}
+              className="w-full h-24 object-cover rounded"
+            />
+          </div>
+
+          {/* Label */}
+          <p className="mt-4 text-xs md:text-sm font-medium leading-snug">
+            {h.label}
+          </p>
+        </div>
+      ))}
+    </div>
+  </section>
+)}
+
 
         {/* ================= SOCIAL TIMELINE ================= */}
         {store.socialTimeline?.length > 0 && (
@@ -279,7 +382,7 @@ export default function StoreDetail() {
 
         {/* ================= ABOUT ================= */}
         {store.description && (
-          <section className="bg-blue-600 rounded-xl p-6 text-white">
+          <section className="rounded-xl p-6 text-white" style={{ backgroundColor: "#1689C8" }}>
             <h2 className="text-2xl text-center font-semibold">About</h2>
             <p className="text-sm text-center mt-3">{store.description}</p>
           </section>
