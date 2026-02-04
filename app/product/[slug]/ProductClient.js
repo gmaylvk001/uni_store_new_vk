@@ -53,13 +53,127 @@ const [pincode, setPincode] = useState("");
 const [pincodeError, setPincodeError] = useState("");
 const [checkingPincode, setCheckingPincode] = useState(false);
 
-
+const [addOnProducts, setAddOnProducts] = useState([]);
 useEffect(() => {
   const saved = localStorage.getItem("deliveryInfo");
   if (saved) {
     setDeliveryInfo(JSON.parse(saved));
   }
 }, []);
+
+
+/* const addOnIds = product?.add_ons
+  ? product.add_ons.split(",").map(id => id.trim())
+  : []; */
+  
+  const addOnIds = Array.isArray(product?.add_ons)
+  ? product.add_ons.map(id => id.toString())
+  : [];
+
+
+  useEffect(() => {
+  console.log("useEffect triggered", product?._id, addOnIds);
+}, [product?._id]);
+
+
+/*   useEffect(() => {
+  if (!addOnIds.length) return;
+
+  const fetchAddOnProducts = async () => {
+    try {
+      const res = await fetch("/api/product/addons", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ ids: addOnIds }),
+      });
+
+      const data = await res.json();
+      alert("dsacds");
+      console.log(data);
+      setAddOnProducts(data.products || []);
+    } catch (err) {
+      console.error("Add-on product fetch error", err);
+    }
+  };
+
+  fetchAddOnProducts();
+}, [product?._id]); */
+
+
+
+/* useEffect(() => {
+  if (!product?.add_ons) return;
+
+  // const ids = product.add_ons.split(",").map(id => id.trim());
+  const ids = Array.isArray(product?.add_ons)
+  ? product.add_ons.map(id => id.toString())
+  : [];
+  if (!ids.length) return;
+
+  console.log("Calling add-on API with IDs:", ids);
+
+  const fetchAddOnProducts = async () => {
+  try {
+    alert("nsdbckja");
+    const res = await fetch("/api/product/addons", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ids }),
+    });
+
+    if (!res.ok) {
+      // console.error("API failed:", res.status);
+      setAddOnProducts([]);
+      return;
+    }
+
+    const text = await res.text(); // 👈 IMPORTANT
+    if (!text) {
+      console.warn("Empty API response");
+      setAddOnProducts([]);
+      return;
+    }
+
+    const data = JSON.parse(text); // 👈 safe parse
+    setAddOnProducts(data.products || []);
+  } catch (err) {
+    console.error("Add-on fetch failed", err);
+    setAddOnProducts([]);
+  }
+};
+
+
+  fetchAddOnProducts();
+  console.log("dfgkudsfhaiushfdiuds",product);
+}, [product]); */
+
+
+useEffect(() => {
+  if (!Array.isArray(product?.add_ons) || product.add_ons.length === 0) return;
+
+  const ids = product.add_ons.map(id => id.toString());
+
+  const fetchAddOnProducts = async () => {
+    try {
+      const res = await fetch("/api/product/addons", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ids }),
+      });
+
+      const data = await res.json();
+      setAddOnProducts(data.products || []);
+    } catch (e) {
+      setAddOnProducts([]);
+    }
+  };
+
+  fetchAddOnProducts();
+}, [product?.add_ons]);
+
+
 
 const checkPincode = async () => {
   if (pincode.length !== 6) {
@@ -1885,7 +1999,69 @@ const fetchBrand = async () => {
       )}
     </div>
   )} Similar Products*/}
-{relatedProducts.filter((item) => item.quantity > 0 && item.status === "Active").length > 0 && (
+{addOnProducts.filter(
+  (item) => item.quantity > 0 && item.status === "Active"
+).length > 0 && (
+<div className="border border-gray-300 rounded-lg shadow-md bg-white max-h-[500px] overflow-y-scroll scrollbar-hide">
+    <div className="px-4 py-4">
+      <h2 className="text-sm font-bold text-customBlue underline mb-2">
+        Add Ons
+      </h2>
+  {addOnProducts.filter((item) => item.quantity > 0 && item.status === "Active").slice(0, 3).map((item) => (
+    <div key={item._id} className="flex items-start mb-4 ">
+      {item.quantity > 0 && (
+        <input
+          type="checkbox"
+          className="mt-2 mr-3"
+          checked={selectedRelatedProducts.some(p => p._id === item._id)}
+          onChange={() => toggleRelatedProduct(item)}
+        />
+      )}
+
+      <div className="flex items-start gap-3 flex-1 min-w-0">
+        <Link
+          href={`/product/${item.slug}`}
+          onClick={() => handleProductClick(item)}
+        >
+          {item.images?.[0] && (
+            <img
+              src={`/uploads/products/${item.images[0]}`}
+              alt={item.name}
+              className="w-16 h-16 object-contain"
+            />
+          )}
+        </Link>
+
+        <div className="text-sm flex-1 min-w-0">
+          <Link
+            href={`/product/${item.slug}`}
+            onClick={() => handleProductClick(item)}
+          >
+            <h3 className="text-xs sm:text-sm font-medium text-[#0069c6] hover:text-[#00badb] line-clamp-2 min-h-[40px]">
+              {item.name}
+            </h3>
+          </Link>
+
+          <div className="flex items-center gap-2">
+            <span className="text-base font-semibold text-red-600">
+              ₹ {(item.special_price > 0 ? item.special_price : item.price).toLocaleString()}
+            </span>
+          </div>
+
+          <h4 className={`text-xs ${item.stock_status === "In Stock" ? "text-green-600" : "text-red-600"}`}>
+            {item.stock_status}
+          </h4>
+        </div>
+      </div>
+    </div>
+  ))}
+  </div>
+  </div>
+  )}
+  
+
+
+{/* {relatedProducts.filter((item) => item.quantity > 0 && item.status === "Active" && addOnIds.includes(item._id.toString())).length > 0 && (
   <div className="border border-gray-300 rounded-lg shadow-md bg-white max-h-[500px] overflow-y-scroll scrollbar-hide">
     <div className="px-4 py-4">
       <h2 className="text-sm font-bold text-customBlue underline mb-2">
@@ -1893,7 +2069,8 @@ const fetchBrand = async () => {
       </h2>
 
       {relatedProducts
-        .filter((item) => item.quantity > 0 && item.status === "Active")
+        .filter((item) => item.quantity > 0 && item.status === "Active" &&
+      addOnIds.includes(item._id.toString()))
         .slice(0, 3)
         .map((item) => (
           <div key={item._id} className="flex items-start mb-4">
@@ -1970,10 +2147,84 @@ const fetchBrand = async () => {
         ))}
     </div>
   </div>
-)}
-
-
+)} */}
+{relatedProducts?.filter(item => item.stock_status === "In Stock").length > 0 && (
+<div className="px-4 py-4 border border-gray-300 rounded-lg shadow-md bg-white max-h-[500px] overflow-y-scroll scrollbar-hide">
+        <h2 className="text-sm font-bold text-customBlue underline mb-2">
+          Similar Products
+        </h2>
+        {relatedProducts
+          .filter(item => item.stock_status === "In Stock")
+          .slice(0, 3)
+          .map((item) => (
+            <div key={item._id} className="flex items-start mb-4">
+              {product?.quantity > 0 && (
+              <input
+                type="checkbox"
+                className="mt-2 mr-3"
+                checked={selectedRelatedProducts.some(p => p._id === item._id)}
+                onChange={() => toggleRelatedProduct(item)}
+              />
+            )}
+              <div className="flex items-start gap-3">
+                {item.images?.[0] && (
+                  <img
+                    src={'/uploads/products/' + item.images[0]}
+                    alt={item.name}
+                    className="w-16 h-16 object-contain"
+                  />
+                )}
+                <div className="text-sm">
+                  <Link
+                    href={`/product/${item.slug}`}
+                    className="block mb-1"
+                    onClick={() => handleProductClick(item)}
+                  >
+                    <h3 className="text-xs sm:text-sm font-medium text-[#0069c6] hover:text-[#00badb] line-clamp-2 min-h-[40px]">
+                      {item.name}
+                    </h3>
+                  </Link>
   
+                  <div className="flex items-center gap-2">
+                    <span className="text-base font-semibold text-red-600">
+                      ₹ {(
+                        item.special_price &&
+                        item.special_price > 0 &&
+                        item.special_price !== "0" &&
+                        item.special_price < item.price
+                          ? item.special_price
+                          : item.price
+                      ).toLocaleString()}
+                    </span>
+  
+                    {item.special_price &&
+                      item.special_price > 0 &&
+                      item.special_price !== "0" &&
+                      item.special_price < item.price && (
+                        <span className="text-xs text-gray-500 line-through">
+                          ₹ {item.price.toLocaleString()}
+                        </span>
+                      )}
+                  </div>
+  
+                  <h4
+                    className={`text-xs ${
+                      item.stock_status === "In Stock"
+                        ? "text-green-600"
+                        : "text-red-600"
+                    }`}
+                  >
+                    {item.stock_status}
+                    {item.stock_status === "In Stock" && item.quantity
+                      ? `, ${item.quantity} units`
+                      : ""}
+                  </h4>
+                </div>
+              </div>
+            </div>
+          ))}
+      </div>
+  )}
    {/* <div className="px-4 py-4">
         <h2 className="text-sm font-bold text-customBlue underline mb-2">
           Similar Products

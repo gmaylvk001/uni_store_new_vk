@@ -35,6 +35,7 @@ export default function AddProductPage({ mode = "add", productData = null, produ
     stock_status: "In Stock",
     description: "",
     related_products: [],
+    add_ons: "",
     images: ["","","",""],
     key_specifications: "",
     featured: false,
@@ -137,6 +138,15 @@ const removeWarranty = (index) => {
   setProduct(prev => ({
     ...prev,
     related_products: selectedOptions.map(option => option.value),
+  }));
+};
+
+
+
+const handleAddOnsProductsChange = (selectedOptions) => {
+  setProduct(prev => ({
+    ...prev,
+    add_ons: selectedOptions.map(option => option.value),
   }));
 };
 
@@ -1305,6 +1315,7 @@ const handleSubmit = async (e) => {
       extend_warranty: validWarranties.length > 0 ? validWarranties : [],
       filters: (product.filters || []).map(f => f.value),
       related_products: product.related_products || [],
+      add_ons: product.add_ons || [],
       category: product.category || "",
       product_highlights: product.product_highlights || [],
       // Product images
@@ -2217,7 +2228,19 @@ const handleSubmit = async (e) => {
 </div>
 
 
-
+<div>
+  <label className="block text-sm font-medium text-gray-700 mb-1">Add Ons Products</label>
+  <Select
+    isMulti
+    options={allproducts.filter(p => p.value !== product._id)} // exclude current product if editing
+    onChange={handleAddOnsProductsChange}
+    value={allproducts.filter(option =>
+      Array.isArray(product.add_ons) && product.add_ons.includes(option.value)
+    )}
+    placeholder="Select add ons products..."
+    closeMenuOnSelect={false}
+  />
+</div>
 
             {/* <div>
               <label className="block text-sm font-medium text-gray-700">Warranty</label>
