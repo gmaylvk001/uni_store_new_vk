@@ -1365,6 +1365,8 @@ const handleSubmit = async (e) => {
     const method = mode === "edit" ? "PUT" : "POST";
 
     const response = await fetch(apiUrl, { method, body: formData });
+    console.log("sadusadahsdiuasdiuadiasdisuoiduasiduisudis",response);
+    console.log("jsadfksahfoiauerjsalkjfoiaeirowajfoaf9wqeurowjifiew9rilkadkfhw9rjsoje",finalProductData);
     const responseData = await response.json();
 
     if (response.ok) {
