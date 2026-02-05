@@ -335,6 +335,8 @@ const CustomOption = (props) => (
 // }, [mode, productData, setJsonHighlightsInput,setSelectedCategory]);
 
 useEffect(() => {
+  alert("jsadsd");
+  alert(productData.add_ons);
   if (mode === "edit" && productData) {
     console.log("Edit mode - Product data:", productData);
     console.log("Overview images from DB:", productData.overview_image);
@@ -360,7 +362,7 @@ useEffect(() => {
       variants: productData.variants || [],
       images: productData.images || ['', '', '', ''],
       files: productData.files || [],
-
+      add_ons : productData.add_ons || [],
       // Add new fields with fallbacks
       size: productData.size || "",
       movement: productData.movement || "",

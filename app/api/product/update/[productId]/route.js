@@ -338,7 +338,7 @@ if (req.files && req.files.overviewImages) {
 
     updatedProduct.removalReason = "Outdated";
 
-
+console.log("Update_product",updatedProduct);
     return NextResponse.json(
       { message: "Product updated successfully", product: updatedProduct, extend_warranty: updatedProduct.extend_warranty },
       { status: 200 }
