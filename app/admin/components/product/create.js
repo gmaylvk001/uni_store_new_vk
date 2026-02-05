@@ -335,8 +335,6 @@ const CustomOption = (props) => (
 // }, [mode, productData, setJsonHighlightsInput,setSelectedCategory]);
 
 useEffect(() => {
-  alert("jsadsd");
-  alert(productData.add_ons);
   if (mode === "edit" && productData) {
     console.log("Edit mode - Product data:", productData);
     console.log("Overview images from DB:", productData.overview_image);
@@ -1365,8 +1363,6 @@ const handleSubmit = async (e) => {
     const method = mode === "edit" ? "PUT" : "POST";
 
     const response = await fetch(apiUrl, { method, body: formData });
-    console.log("sadusadahsdiuasdiuadiasdisuoiduasiduisudis",response);
-    console.log("jsadfksahfoiauerjsalkjfoiaeirowajfoaf9wqeurowjifiew9rilkadkfhw9rjsoje",finalProductData);
     const responseData = await response.json();
 
     if (response.ok) {
