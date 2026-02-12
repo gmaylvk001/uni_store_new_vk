@@ -90,6 +90,18 @@ export async function POST(req) {
         Status = "Inactive";
       }
 
+      const isDemoItemcode = item.item_code.toUpperCase().includes("DEMO");
+
+      if (isDemoItemcode) {
+        Status = "Inactive";
+      }
+
+      const isDemoTitle = item.item_description.toUpperCase().includes(" DEMO");
+
+      if (isDemoTitle) {
+        Status = "Inactive";
+      }
+
       if (existingProduct) {
         const updateFields = {
           quantity: parseFloat(item.quantity),
@@ -194,7 +206,9 @@ export async function POST(req) {
       if (existingProductall) {
         await Product_all.updateOne({ item_code: item.item_code }, { $set: commonData });
       } else {
-        await Product_all.create(commonData);
+        if (!existingProduct) {
+          await Product_all.create(commonData);
+        }
       }
     }
    // await ZTrackApi.create({ type: 'prod_all_master' });
