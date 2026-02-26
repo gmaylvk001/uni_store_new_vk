@@ -24,7 +24,7 @@ export default function CategoryComponent() {
   
   
   // Filters
-  const [statusFilter, setStatusFilter] = useState("");
+  //const [statusFilter, setStatusFilter] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("");
   const [brandFilter, setBrandFilter] = useState("");
   const [dateFilter, setDateFilter] = useState({
@@ -35,6 +35,8 @@ export default function CategoryComponent() {
   const [showAlert, setShowAlert] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
+  const [statusFilter, setStatusFilter] = useState("Active");
+  const [eanFilter, setEanFilter] = useState(""); 
 
   // Pagination state
   const [currentPage, setCurrentPage] = useState(0);
@@ -359,6 +361,23 @@ const getFilteredProducts = () => {
           matchesCategory = false;
         }
       }
+
+      // EAN filter
+      let matchesEan = true;
+
+      if (eanFilter === "filled") {
+        matchesEan =
+          product.ean !== null &&
+          product.ean !== undefined &&
+          product.ean.toString().trim() !== "";
+      }
+
+      if (eanFilter === "empty") {
+        matchesEan =
+          product.ean === null ||
+          product.ean === undefined ||
+          product.ean.toString().trim() === "";
+      }
  
       // Brand filter
       let matchesBrand = true;
@@ -379,7 +398,7 @@ if (stockFilter) {
 }
  
  
-      return matchesSearch && matchesStatus && matchesDate && matchesCategory && matchesBrand && matchesStock;
+      return matchesSearch && matchesStatus && matchesDate && matchesCategory && matchesBrand && matchesStock && matchesEan;
     });
   };
  
@@ -435,7 +454,7 @@ if (stockFilter) {
             </div>
 
             {/* Status Filter */}
-            {/* <div>
+             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
               <select
                 value={statusFilter}
@@ -449,7 +468,25 @@ if (stockFilter) {
                 <option value="Active">Active</option>
                 <option value="Inactive">Inactive</option>
               </select>
-            </div> */}
+            </div> 
+
+            <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              EAN
+            </label>
+            <select
+              value={eanFilter}
+              onChange={(e) => {
+                setEanFilter(e.target.value);
+                setCurrentPage(0);
+              }}
+              className="w-full p-2 border border-gray-300 rounded-md focus:ring-red-500 focus:border-red-500"
+            >
+              <option value="">All</option>
+              <option value="filled">EAN Not Empty</option>
+              <option value="empty">EAN Empty</option>
+            </select>
+          </div>
 
             {/* Category Filter */}
             {/* <div>
@@ -512,6 +549,7 @@ if (stockFilter) {
             <thead>
               <tr className="bg-gray-200">
                 <th className="p-2">Item Code</th>
+                <th className="p-2">Ean</th>
                 {/* <th className="p-2">Image</th> */}
                 {/* <th className="p-2">Name</th> */}
                 <th className="p-2">Price</th>
@@ -529,6 +567,9 @@ if (stockFilter) {
                     {/* Item Code Column */}
                     <td className="p-2 text-center align-middle">
                       {product.item_code}
+                    </td>
+                    <td className="p-2 text-center align-middle">
+                      {product.ean}
                     </td>
                   
                     {/* Image Column */}

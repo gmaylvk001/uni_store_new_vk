@@ -822,6 +822,7 @@ if (stockFilter) {
             <thead>
               <tr className="bg-gray-200">
                 <th className="p-2">Item Code</th>
+                <th className="p-2">Ean</th>
                 <th className="p-2">Image</th>
                 <th className="p-2">Name</th>
                 <th className="p-2">Price</th>
@@ -838,6 +839,9 @@ if (stockFilter) {
                     {/* Item Code Column */}
                     <td className="p-2 text-center align-middle">
                       {product.item_code}
+                    </td>
+                    <td className="p-2 text-center align-middle">
+                      {product.ean}
                     </td>
                   
                     {/* Image Column */}
