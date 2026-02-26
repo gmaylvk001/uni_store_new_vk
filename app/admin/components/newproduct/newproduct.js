@@ -158,7 +158,7 @@ const exportToExcel = () => {
 
     return {
       'Item No.': product.item_code,
-    
+      'Ean': product.ean,
       'StockQty': product.quantity,
       
       'Brand': brandName,
@@ -174,7 +174,7 @@ const exportToExcel = () => {
   const worksheet = XLSX.utils.json_to_sheet(dataForExport, {
     header: [
       'Item No.',
-      
+      'Ean',
       'StockQty',
       
       'Brand',
@@ -552,8 +552,8 @@ if (stockFilter) {
                 <th className="p-2">Ean</th>
                 {/* <th className="p-2">Image</th> */}
                 {/* <th className="p-2">Name</th> */}
+               
                 <th className="p-2">Price</th>
-                <th className="p-2 whitespace-nowrap">Spl Price</th>
                 <th className="p-2">Quantity</th>
                 <th className="p-2">Brand</th>
                 {/* <th className="p-2">Status</th> */}
@@ -602,12 +602,23 @@ if (stockFilter) {
                       </a>
                     </td> */}
                     
-                    {/* Price Column */}
-                    <td className="p-2">{product.price}</td>
-                    
-                    {/* Special Price Column */}
-                    <td className="p-2">{product.special_price}</td>
-                    
+                    {/* Price Column Combined */}
+                    <td className="p-2">
+                      <div className="bg-gray-100 px-3 py-2 rounded inline-flex items-center gap-3 flex-nowrap whitespace-nowrap min-w-max">
+                        
+                        {/* Special Price */}
+                        <span className="text-red-600 font-bold text-2xl">
+                          ₹ {product.special_price}
+                        </span>
+
+                        {/* MRP */}
+                        <span className="text-gray-500 line-through text-base">
+                          MRP ₹ {product.price}
+                        </span>
+
+                      </div>
+                    </td>
+                                        
                     {/* Quantity Column */}
                     <td className="p-2">{product.quantity}</td>
                     <td className="p-2">{product.brand}</td>
