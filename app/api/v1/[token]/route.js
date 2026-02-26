@@ -86,7 +86,7 @@ export async function GET(req,{params}) {
             subcategory: categoryMap[product.sub_category] || "",
             price: product.special_price || 0,
             store_price: product.price || 0,
-            product_image: product.images?.[0] || "",
+            product_image: `${process.env.NEXT_PUBLIC_API_URL}/uploads/products/${product?.images?.[0]}` || "",
             product_url: product.slug
                 ? `${process.env.NEXT_PUBLIC_API_URL}/product/${product.slug}`
                 : "",
