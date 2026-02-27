@@ -875,10 +875,14 @@ if (stockFilter) {
                     </td>
                     
                     {/* Price Column */}
-                    <td className="p-2">{product.price}</td>
-                    
-                    {/* Special Price Column */}
-                    <td className="p-2">{product.special_price}</td>
+                    {/* MRP */}
+                    <td className="p-2 whitespace-nowrap">
+                      ₹ {Number(product.price).toLocaleString("en-IN")}
+                    </td>
+
+                    <td className="p-2 whitespace-nowrap">
+                      ₹ {Number(product.special_price).toLocaleString("en-IN")}
+                    </td>
                     
                     {/* Quantity Column */}
                     <td className="p-2">{product.quantity}</td>

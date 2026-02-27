@@ -848,6 +848,14 @@ const RightMegaMenu = ({ hoveredCategory }) => {
     const [loginData, setLoginData] = useState({ email: "", password: "" });
     const [registerData, setRegisterData] = useState({ name: "", email: "", mobile: "", password: "" });
 
+    // Phone OTP login states
+    const [otpPhone, setOtpPhone] = useState("");
+    const [otpPhoneStep, setOtpPhoneStep] = useState(1); // 1: enter phone, 2: enter OTP
+    const [otpValue, setOtpValue] = useState("");
+    const [otpPhoneError, setOtpPhoneError] = useState("");
+    const [otpPhoneLoading, setOtpPhoneLoading] = useState(false);
+    const [otpPhoneMessage, setOtpPhoneMessage] = useState("");
+
     const handleAuthSubmit = async (e) => {
       e.preventDefault();
       setLoadingAuth(false);
@@ -981,6 +989,77 @@ const RightMegaMenu = ({ hoveredCategory }) => {
         return;
       }
     };
+    const handleSendPhoneOtp = async (e) => {
+      e.preventDefault();
+      setOtpPhoneError("");
+      setOtpPhoneMessage("");
+      if (!isValidMobile(otpPhone)) {
+        setOtpPhoneError("Enter a valid 10-digit mobile number");
+        return;
+      }
+      try {
+        setOtpPhoneLoading(true);
+        const res = await fetch("/api/auth/phone-login/send-otp", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ mobile: otpPhone }),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || "Failed to send OTP");
+        setOtpPhoneMessage("OTP sent to your mobile number");
+        setOtpPhoneStep(2);
+      } catch (err) {
+        setOtpPhoneError(err.message);
+      } finally {
+        setOtpPhoneLoading(false);
+      }
+    };
+
+    const handleVerifyPhoneOtp = async (e) => {
+      e.preventDefault();
+      setOtpPhoneError("");
+      if (!otpValue || otpValue.length !== 6) {
+        setOtpPhoneError("Enter the 6-digit OTP");
+        return;
+      }
+      try {
+        setOtpPhoneLoading(true);
+        const guestId = localStorage.getItem("guestCartId");
+        const res = await fetch("/api/auth/phone-login/verify-otp", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ mobile: otpPhone, otp: otpValue, guestId }),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || "OTP verification failed");
+        if (data.token) {
+          localStorage.setItem("token", data.token);
+          setIsLoggedIn(true);
+          setIsAdmin(data.user.role === "admin");
+          setUserData(data.user);
+          setShowAuthModal(false);
+          setOtpPhone("");
+          setOtpValue("");
+          setOtpPhoneStep(1);
+          setOtpPhoneMessage("");
+          const cartResponse = await fetch("/api/cart/count", {
+            headers: { Authorization: `Bearer ${data.token}` },
+          });
+          if (cartResponse.ok) {
+            const cartDataCount = await cartResponse.json();
+            setCartCountSynced(cartDataCount.count);
+          }
+          try { await fetchCartLatest(); } catch {}
+          localStorage.removeItem("guestCartId");
+          location.reload();
+        }
+      } catch (err) {
+        setOtpPhoneError(err.message);
+      } finally {
+        setOtpPhoneLoading(false);
+      }
+    };
+
     useEffect(() => {
         setHasMounted(true);
     }, []);
@@ -2249,17 +2328,77 @@ const shouldShowArrow = (item, allItems = []) => {
                       {showAuthModal && (
                           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
                               <div className="bg-white rounded-lg p-8 w-96 max-w-full relative">
-                                  <button onClick={() => { setShowAuthModal(false); setFormError(''); setError(''); setErrors({ login: {}, register: {} }); setLoginData({ email: "", password: "" }); setRegisterData({ name: "", email: "", mobile: "", password: "" }); }} className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 text-2xl">
+                                  <button onClick={() => { setShowAuthModal(false); setFormError(''); setError(''); setErrors({ login: {}, register: {} }); setLoginData({ email: "", password: "" }); setRegisterData({ name: "", email: "", mobile: "", password: "" }); setOtpPhone(""); setOtpValue(""); setOtpPhoneStep(1); setOtpPhoneError(""); setOtpPhoneMessage(""); }} className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 text-2xl">
                                       &times;
                                   </button>
                                   <div className="flex gap-4 mb-6 border-b">
-                                      <button className={`pb-2 px-1 ${activeTab === 'login' ? 'border-b-2 border-blue-500 text-blue-600' : 'text-gray-500 hover:text-gray-700'}`} onClick={() => setActiveTab('login')}>
+                                      <button className={`pb-2 px-1 text-sm font-medium ${activeTab === 'login' ? 'border-b-2 border-blue-500 text-blue-600' : 'text-gray-500 hover:text-gray-700'}`} onClick={() => setActiveTab('login')}>
                                           Login
                                       </button>
-                                      <button className={`pb-2 px-1 ${activeTab === 'register' ? 'border-b-2 border-blue-500 text-blue-600' : 'text-gray-500 hover:text-gray-700'}`} onClick={() => setActiveTab('register')}>
+                                      <button className={`pb-2 px-1 text-sm font-medium ${activeTab === 'register' ? 'border-b-2 border-blue-500 text-blue-600' : 'text-gray-500 hover:text-gray-700'}`} onClick={() => setActiveTab('register')}>
                                           Register
                                       </button>
+                                      <button className={`pb-2 px-1 text-sm font-medium ${activeTab === 'otp' ? 'border-b-2 border-blue-500 text-blue-600' : 'text-gray-500 hover:text-gray-700'}`} onClick={() => { setActiveTab('otp'); setOtpPhoneStep(1); setOtpPhone(""); setOtpValue(""); setOtpPhoneError(""); setOtpPhoneMessage(""); }}>
+                                          OTP Login
+                                      </button>
                                   </div>
+                                  {/* Phone OTP Login Tab */}
+                                  {activeTab === "otp" ? (
+                                    <div className="space-y-4">
+                                      {otpPhoneStep === 1 ? (
+                                        <form onSubmit={handleSendPhoneOtp} className="space-y-4">
+                                          <p className="text-sm text-gray-500">Enter your registered mobile number to receive an OTP.</p>
+                                          <input
+                                            type="tel"
+                                            placeholder="10-digit mobile number"
+                                            value={otpPhone}
+                                            onChange={(e) => setOtpPhone(e.target.value.replace(/\D/g, "").slice(0, 10))}
+                                            className={`w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 ${otpPhoneError ? "border-red-500" : ""}`}
+                                            maxLength={10}
+                                          />
+                                          {otpPhoneError && <p className="text-red-500 text-sm">{otpPhoneError}</p>}
+                                          {otpPhoneMessage && <p className="text-green-600 text-sm">{otpPhoneMessage}</p>}
+                                          <button
+                                            type="submit"
+                                            disabled={otpPhoneLoading}
+                                            className="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 disabled:bg-gray-400 transition-colors duration-200"
+                                          >
+                                            {otpPhoneLoading ? "Sending..." : "Send OTP"}
+                                          </button>
+                                        </form>
+                                      ) : (
+                                        <form onSubmit={handleVerifyPhoneOtp} className="space-y-4">
+                                          <p className="text-sm text-gray-500">OTP sent to <strong>+91 {otpPhone}</strong>. Enter the 6-digit OTP below.</p>
+                                          <input
+                                            type="text"
+                                            placeholder="6-digit OTP"
+                                            value={otpValue}
+                                            onChange={(e) => setOtpValue(e.target.value.replace(/\D/g, "").slice(0, 6))}
+                                            className={`w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 tracking-widest text-center text-lg ${otpPhoneError ? "border-red-500" : ""}`}
+                                            maxLength={6}
+                                            autoFocus
+                                          />
+                                          {otpPhoneError && <p className="text-red-500 text-sm">{otpPhoneError}</p>}
+                                          <button
+                                            type="submit"
+                                            disabled={otpPhoneLoading}
+                                            className="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 disabled:bg-gray-400 transition-colors duration-200"
+                                          >
+                                            {otpPhoneLoading ? "Verifying..." : "Verify & Login"}
+                                          </button>
+                                          <div className="text-center">
+                                            <button
+                                              type="button"
+                                              onClick={() => { setOtpPhoneStep(1); setOtpValue(""); setOtpPhoneError(""); setOtpPhoneMessage(""); }}
+                                              className="text-sm text-blue-500 hover:underline"
+                                            >
+                                              Change number / Resend OTP
+                                            </button>
+                                          </div>
+                                        </form>
+                                      )}
+                                    </div>
+                                  ) : (
                                   <form onSubmit={handleAuthSubmit} className="space-y-4">
                                     {/* Register Name Field */}
                                     {activeTab === "register" && (
@@ -2280,7 +2419,7 @@ const shouldShowArrow = (item, allItems = []) => {
                                         )}
                                       </>
                                     )}
-      
+
                                     {/* Email Field */}
                                     <input
                                       type="text"
@@ -2300,7 +2439,7 @@ const shouldShowArrow = (item, allItems = []) => {
                                     {errors?.[activeTab]?.email && (
                                       <p className="text-red-500 text-sm">{errors[activeTab].email}</p>
                                     )}
-      
+
                                     {/* Register Mobile Field */}
                                     {activeTab === "register" && (
                                       <>
@@ -2320,7 +2459,7 @@ const shouldShowArrow = (item, allItems = []) => {
                                         )}
                                       </>
                                     )}
-      
+
                                     {/* Password Field */}
                                     <input
                                       type="password"
@@ -2341,12 +2480,12 @@ const shouldShowArrow = (item, allItems = []) => {
                                     {errors?.[activeTab]?.password && (
                                       <p className="text-red-500 text-sm">{errors[activeTab].password}</p>
                                     )}
-      
+
                                     {/* Global Form Error */}
                                     {(formError || error) && (
                                       <div className="text-red-500 text-sm">{formError || error}</div>
                                     )}
-      
+
                                     {/* Submit Button */}
                                     <button
                                       type="submit"
@@ -2359,7 +2498,7 @@ const shouldShowArrow = (item, allItems = []) => {
                                         ? "Login"
                                         : "Register"}
                                     </button>
-      
+
                                     {/* Forgot Password (only in login) */}
                                     {activeTab === "login" && (
                                       <div className="text-center mt-2">
@@ -2383,6 +2522,7 @@ const shouldShowArrow = (item, allItems = []) => {
                                       </div>
                                     )}
                                   </form>
+                                  )}
                               </div>
                           </div>
                       )}
