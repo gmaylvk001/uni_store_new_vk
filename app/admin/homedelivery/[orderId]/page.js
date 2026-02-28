@@ -223,8 +223,8 @@ const OrderDetails = () => {
 
     <td className="p-2">{item.model}</td>
     <td className="p-2 text-center">{item.quantity}</td>
-    <td className="p-2 text-right text-red-600">₹{item.product_price}</td>
-    <td className="p-2 text-right text-red-600">₹{item.quantity * item.product_price}</td>
+    <td className="p-2 text-right text-red-600">₹{Number(item.product_price || 0).toLocaleString("en-IN")}</td>
+    <td className="p-2 text-right text-red-600">₹{Number(item.quantity * item.product_price || 0).toLocaleString("en-IN")}</td>
   </tr>
 ))}
 
@@ -253,7 +253,7 @@ const OrderDetails = () => {
   </tr>
   <tr className="font-bold bg-gray-100">
     <td colSpan="4" className="p-2 text-right">Total:</td>
-    <td className="p-2 text-right">₹{order.order_amount}</td>
+    <td className="p-2 text-right">₹ {Number(order.order_amount).toLocaleString("en-IN")}</td>
   </tr>
 </tbody>
 

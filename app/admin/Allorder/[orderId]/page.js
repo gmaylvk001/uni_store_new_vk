@@ -271,8 +271,8 @@ const addHistory = async () => {
 
     <td className="p-2">{item.model}</td>
     <td className="p-2 text-center">{item.quantity}</td>
-    <td className="p-2 text-right text-red-600">₹{item.product_price}</td>
-    <td className="p-2 text-right text-red-600">₹{item.quantity * item.product_price}</td>
+    <td className="p-2 text-right text-red-600">₹{Number(item.product_price || 0).toLocaleString("en-IN")}</td>
+    <td className="p-2 text-right text-red-600">₹{Number(item.quantity * item.product_price || 0).toLocaleString("en-IN")}</td>
   </tr>
 ))}
   {order.order_item.map((item, index) =>
@@ -290,7 +290,7 @@ const addHistory = async () => {
 
   <tr className="font-semibold">
     <td colSpan="4" className="p-2 text-right">Sub-Total:</td>
-    <td className="p-2 text-right">₹{order.order_amount}</td>
+    <td className="p-2 text-right">₹{Number(order.order_amount || 0).toLocaleString("en-IN")}</td>
     {/* <td className="p-2 text-right">₹0.00</td> */}
   </tr>
   <tr>
@@ -300,7 +300,7 @@ const addHistory = async () => {
   </tr>
   <tr className="font-bold bg-gray-100">
     <td colSpan="4" className="p-2 text-right">Total:</td>
-    <td className="p-2 text-right">₹{order.order_amount}</td>
+    <td className="p-2 text-right">₹{Number(order.order_amount || 0).toLocaleString("en-IN")}</td>
   </tr>
 </tbody>
 
