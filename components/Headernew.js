@@ -1018,8 +1018,8 @@ const RightMegaMenu = ({ hoveredCategory }) => {
     const handleVerifyPhoneOtp = async (e) => {
       e.preventDefault();
       setOtpPhoneError("");
-      if (!otpValue || otpValue.length !== 6) {
-        setOtpPhoneError("Enter the 6-digit OTP");
+      if (!otpValue || otpValue.length !== 4) {
+        setOtpPhoneError("Enter the 4-digit OTP");
         return;
       }
       try {
@@ -2368,14 +2368,14 @@ const shouldShowArrow = (item, allItems = []) => {
                                         </form>
                                       ) : (
                                         <form onSubmit={handleVerifyPhoneOtp} className="space-y-4">
-                                          <p className="text-sm text-gray-500">OTP sent to <strong>+91 {otpPhone}</strong>. Enter the 6-digit OTP below.</p>
+                                          <p className="text-sm text-gray-500">OTP sent to <strong>+91 {otpPhone}</strong>. Enter the 4-digit OTP below.</p>
                                           <input
                                             type="text"
-                                            placeholder="6-digit OTP"
+                                            placeholder="4-digit OTP"
                                             value={otpValue}
-                                            onChange={(e) => setOtpValue(e.target.value.replace(/\D/g, "").slice(0, 6))}
+                                            onChange={(e) => setOtpValue(e.target.value.replace(/\D/g, "").slice(0, 4))}
                                             className={`w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 tracking-widest text-center text-lg ${otpPhoneError ? "border-red-500" : ""}`}
-                                            maxLength={6}
+                                            maxLength={4}
                                             autoFocus
                                           />
                                           {otpPhoneError && <p className="text-red-500 text-sm">{otpPhoneError}</p>}
