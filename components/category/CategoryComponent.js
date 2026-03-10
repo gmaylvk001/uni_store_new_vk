@@ -701,70 +701,53 @@ const fetchInitialData = async () => {
       categoryData.categoryTree.map((subcategory) => (
         
         <Link
-          key={subcategory._id}
-          href={`/category/${slug}/${subcategory.category_slug}`}
-          className="flex flex-row items-center flex-shrink-0 w-[295px] h-[264px] border border-gray-200 rounded-xl bg-white hover:-translate-y-1 transition-all duration-300 hover:shadow-lg hover:bg-gray-50"
-          style={{ scrollSnapAlign: "start" }}
-        >
-          {/* Image section */}
-          <div className="flex justify-center items-center w-[150px] h-full ml-4 flex-shrink-0">
-            {subcategory.image ? (
-              <div className="relative w-[170px] h-[220px] flex items-center justify-center">
-                <Image
-                  src={
-                    subcategory.image.startsWith("http")
-                      ? subcategory.image
-                      : `${subcategory.image}`
-                  }
-                  alt={subcategory.category_name}
-                  fill
-                  className="object-contain object-center"
-                  unoptimized
-                  onError={(e) => {
-                    e.target.style.display = "none";
-                    const fallback = e.target.nextSibling;
-                    if (fallback) fallback.style.display = "block";
-                  }}
-                />
-                <div className="relative w-full h-full hidden">
-                  <Image
-                    src="/no-catimg.png"
-                    alt="Fallback image"
-                    fill
-                    className="object-contain object-center"
-                    unoptimized
-                  />
-                </div>
-              </div>
-            ) : (
-              <div className="relative w-[170px] h-[220px] flex items-center justify-center">
-                <Image
-                  src="/no-catimg.png"
-                  alt="Fallback image"
-                  fill
-                  className="object-contain object-center"
-                  unoptimized
-                />
-              </div>
-            )}
-          </div>
+  key={subcategory._id}
+  href={`/category/${slug}/${subcategory.category_slug}`}
+  className="flex flex-col justify-between flex-shrink-0 w-[295px] h-[264px] border border-gray-200 rounded-xl bg-white hover:-translate-y-1 transition-all duration-300 hover:shadow-lg hover:bg-gray-50 p-4"
+  style={{ scrollSnapAlign: "start" }}
+>
 
-          {/* Content section */}
-         <div className="flex flex-col text-left px-1 py-10 w-[120px] h-full">
-          <h3 className="text-md font-bold text-gray-900 mb-3 truncate">
-            {subcategory.category_name}
-          </h3>
+  {/* Title Top Center */}
+  <h3 className="text-md font-bold text-gray-900 text-center truncate">
+    {subcategory.category_name}
+  </h3>
 
-          <p className="text-gray-600 text-sm leading-relaxed mb-4 line-clamp-2 min-h-[40px]">
-            {subcategory.content || ""}
-          </p>
+  {/* Bottom Section */}
+  <div className="flex items-center justify-between mt-4">
 
-          <button className="bg-[#2b8ef6] text-white rounded-md px-4 py-2 font-semibold w-fit hover:bg-[#1f77db] transition-colors">
-            Explore
-          </button>
-        </div>
+    {/* Image Left */}
+    <div className="relative w-[140px] h-[160px] flex items-center justify-center">
+      {subcategory.image ? (
+        <Image
+          src={
+            subcategory.image.startsWith("http")
+              ? subcategory.image
+              : `${subcategory.image}`
+          }
+          alt={subcategory.category_name}
+          fill
+          className="object-contain"
+          unoptimized
+        />
+      ) : (
+        <Image
+          src="/no-catimg.png"
+          alt="Fallback image"
+          fill
+          className="object-contain"
+          unoptimized
+        />
+      )}
+    </div>
 
-        </Link>
+    {/* Button Right */}
+    <button className="bg-[#2b8ef6] text-white rounded-md px-4 py-2 font-semibold hover:bg-[#1f77db] transition-colors">
+      Explore
+    </button>
+
+  </div>
+
+</Link>
       ))
     ) : (
       <div className="text-center w-full py-8">
