@@ -197,7 +197,7 @@ const scrollRight = (categoryId) => {
               {categoryProducts.map((categoryProduct) => {
                 const category = categoryProduct.subcategoryId;
                 const slug = category?.category_slug?.toLowerCase() || "";
-                const keywords = ["mobile-phones", "mobile", "phones"];
+                const keywords = ["smart-phone", "smart", "phone"];
                 const isAllowed = keywords.some((key) => slug.includes(key));
         
                 if (!isAllowed) return null;
@@ -321,7 +321,7 @@ const scrollRight = (categoryId) => {
 
     w-[50%] sm:w-[50%]
     md:w-[25%] lg:w-[24.1%]
-  " style={{ background: "linear-gradient(90deg, rgb(180, 223, 255) 0%, rgb(193 218 255) 50%, rgb(255 255 255) 100%)" }}
+  " style={{ background: "linear-gradient(90deg, rgb(180, 223, 255) 0%, rgb(193 218 255) 50%, rgb(212 212 212) 100%)" }}
 >
 
                                       {/* Image  bg-gradient-to-br from-[#f4d4ea] via-[#fff0e1] to-[#f198ea]*/}

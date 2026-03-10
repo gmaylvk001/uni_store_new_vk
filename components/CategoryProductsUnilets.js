@@ -364,7 +364,7 @@ const scrollRight = (categoryId) => {
 
     w-[50%] sm:w-[50%]
     md:w-[25%] lg:w-[24.1%]
-  " style={{ background: "linear-gradient(90deg, rgb(180, 223, 255) 0%, rgb(193 218 255) 50%, rgb(255 255 255) 100%)" }}
+  " style={{ background: "linear-gradient(90deg, rgb(180, 223, 255) 0%, rgb(193 218 255) 50%, rgb(212 212 212) 100%)" }}
 >
 
 
