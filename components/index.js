@@ -1352,32 +1352,26 @@ case 'brands':
                       </button>
                     )}
                     {/* <div ref={scrollContainerRef} className="flex items-start lg:justify-center justify-start gap-8 overflow-x-hidden no-scrollbar px-4 md:px-10">  */}
-                    <div ref={scrollContainerRef} className="flex items-start lg:justify-center justify-start overflow-x-hidden no-scrollbar px-4 md:px-10 gap-[1%] lg:gap-[5%]"> 
+                    <div ref={scrollContainerRef} className="flex items-start lg:justify-center justify-start overflow-x-hidden no-scrollbar px-4 md:px-10" style={{ columnGap: "5%" }}>
                       {categories.map((cat) => (
                         <Link key={cat._id} href={`/category/${cat.category_slug}`}>
-                          <div className="flex flex-col items-center min-w-[100px] cursor-pointer">
+                          <div className="flex flex-col items-center min-w-[70px] sm:min-w-[100px] cursor-pointer">
                             {/* ICON TILE */}
-                            {/* <div className="flex items-center justify-center
-                            hover:scale-105 transition"> */}
-                            <div className="w-10 h-10 sm:w-24 sm:h-24 rounded-2xl bg-gradient-to-br from-[#04a1fc] to-[#79c4f2] flex items-center justify-center shadow-lg transition-transform duration-300 group-hover:scale-105">
+                            <div className="w-14 h-14 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-2xl bg-gradient-to-br from-[#04a1fc] to-[#79c4f2] flex items-center justify-center shadow-lg transition-transform duration-300 group-hover:scale-105">
                               {cat.image ? (
                                 <img
                                   src={cat.image}
                                   alt={cat.category_name}
-                                  /* className="lg:w-24" */
-                                   className="h-10 w-12 sm:w-12 object-contain invert"
+                                  className="h-7 w-9 sm:h-10 sm:w-12 object-contain invert"
                                 />
                               ) : (
-                                <div className="w-10 h-10 bg-white/30 rounded-full" />
+                                <div className="w-8 h-8 sm:w-10 sm:h-10 bg-white/30 rounded-full" />
                               )}
                             </div>
 
                             {/* TEXT */}
                             <span
-                              title={cat.category_name}
-                              /* className="mt-1 text-xs sm:text-sm font-medium text-gray-800 
-                                        hover:text-[#1688c8] text-center truncate max-w-[80px]" */
-                                         className="mt-3 text-xs sm:text-sm font-medium text-gray-600 group-hover:text-black text-center truncate max-w-[90px]">
+                              className="mt-2 text-[10px] sm:text-xs md:text-sm font-medium text-gray-600 group-hover:text-black text-center break-words w-[70px] sm:w-[90px] leading-tight">
                               {cat.category_name}
                             </span>
                           </div>
@@ -1404,18 +1398,14 @@ case 'brands':
                         {/* Slide 1 */}
                         <SwiperSlide>
                           <Link href="/product/one-plus-mobile-13r-5g-16gb-512gb">
-                            <img src="uploads/flashsale/Banner-1.png" alt="Unilet" className="hidden md:block w-full h-[260px] md:h-[380px] lg:h-[420px]"/>
-                            {/* Mobile Image */}
-                            <img src="uploads/flashsale/banner-1-mob.png" alt="Unilet" className="block md:hidden w-full h-[260px]"/>
+                            <img src="uploads/flashsale/Banner-1.png" alt="Unilet" className="w-full h-[260px] md:h-[380px] lg:h-[420px]"/>
                           </Link>
                         </SwiperSlide>
 
                         {/* Slide 2 */}
                         <SwiperSlide>
                           <Link href="/product/apple-laptop-mba-m4-md-13-inch-midnight-black-16gb-256gb">
-                            <img src="uploads/flashsale/Banner-2.png" alt="Unilet" className="hidden md:block w-full h-[260px] md:h-[380px] lg:h-[420px]"/>
-                            {/* Mobile Image */}
-                            <img src="uploads/flashsale/banner-2-mob.png" alt="Unilet" className="block md:hidden w-full h-[260px]"/>
+                            <img src="uploads/flashsale/Banner-2.png" alt="Unilet" className="w-full h-[260px] md:h-[380px] lg:h-[420px]"/>
                           </Link>
                         </SwiperSlide>
 
@@ -1449,18 +1439,14 @@ case 'brands':
                         {/* Slide 1 */}
                         <SwiperSlide>
                           <Link href="/category/large-appliance">
-                            <img src="uploads/aboutus/banner-below-bvfu-1.png" alt="Unilet" className="hidden md:block  w-full h-[260px] md:h-[380px] lg:h-[420px]"/>
-                            {/* Mobile Image */}
-                            <img src="uploads/aboutus/banner-below-bvfu-1-mob.png" alt="Unilet" className="block md:hidden w-full h-[260px]"/>
+                            <img src="uploads/aboutus/banner-below-bvfu-1.png" alt="Unilet" className="w-full h-[260px] md:h-[380px] lg:h-[420px]"/>
                           </Link>
                         </SwiperSlide>
 
                         {/* Slide 2 */}
                         <SwiperSlide>
                           <Link href="/category/accessories">
-                            <img src="uploads/aboutus/banner-below-bvfu-2.png" alt="Unilet" className="hidden md:block w-full h-[260px] md:h-[380px] lg:h-[420px]"/>
-                            {/* Mobile Image */}
-                            <img src="uploads/aboutus/banner-below-bvfu-2-mob.png" alt="Unilet" className="block md:hidden w-full h-[260px]"/>
+                            <img src="uploads/aboutus/banner-below-bvfu-2.png" alt="Unilet" className="w-full h-[260px] md:h-[380px] lg:h-[420px]"/>
                           </Link>
                         </SwiperSlide>
 
