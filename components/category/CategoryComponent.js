@@ -708,7 +708,7 @@ const fetchInitialData = async () => {
 >
 
   {/* Title Top Center */}
-  <h3 className="text-md font-bold text-gray-900 text-center truncate">
+  <h3 className="text-md font-bold text-gray-900 text-center">
     {subcategory.category_name}
   </h3>
 
