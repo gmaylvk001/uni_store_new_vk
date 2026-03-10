@@ -297,7 +297,7 @@ const scrollRight = (categoryId) => {
     hover:border-[#0069c1] hover:shadow-md transition
     cursor-pointer
 
-    w-[calc(50%-0.5rem)]
+    w-[calc(80%-0.5rem)]
     md:w-[calc(33.333%-0.75rem)]
   " style={{ background: "linear-gradient(90deg, rgb(180, 223, 255) 0%, rgb(193 218 255) 50%, rgb(212 212 212) 100%)" }}
 >

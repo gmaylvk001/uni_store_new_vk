@@ -412,7 +412,7 @@ const fetchBrand = async () => {
         <div className="text-center">
           <h2 className="text-2xl font-bold">Product not found</h2>
           <Link href="/" className="mt-4 inline-flex items-center text-blue-600">
-            ← Back to Homee
+            ← Back to Home
           </Link>
         </div>
       </div>

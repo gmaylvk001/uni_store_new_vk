@@ -39,8 +39,9 @@ export default function NotFound() {
 
       </div>
 
-      {/* Footer */}
+      {/* Footer 
       <p className="mt-10 text-sm text-gray-500">Error code: 404</p>
+      */}
     </div>
   );
 }

@@ -39,6 +39,7 @@ export default function ProductClient() {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [productUnavailable, setProductUnavailable] = useState(false);
   const [quantity, setQuantity] = useState(1);
   const [showEMIModal, setShowEMIModal] = useState(false);
   const [featuredProducts, setFeaturedProducts] = useState([]);
@@ -643,7 +644,8 @@ const resolveImagePath = (image) => {
         const data = await response.json();
          // ✅ Final client-side check
         if (data.status !== "Active") {
-          router.push("/404");
+          setProductUnavailable(true);
+          setLoading(false);
           return;
         }
         // console.log(data);
@@ -881,13 +883,32 @@ const fetchBrand = async () => {
     );
   }
 
+  if (productUnavailable) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center px-6 py-12">
+          <div className="flex items-center justify-center w-20 h-20 mx-auto mb-6 bg-orange-100 rounded-full">
+            <svg xmlns="http://www.w3.org/2000/svg" className="w-10 h-10 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" />
+            </svg>
+          </div>
+          <h2 className="text-3xl font-bold text-gray-800 mb-3">Product Unavailable</h2>
+          <p className="text-gray-500 mb-8 max-w-sm mx-auto">This product is currently not available. Please check back later or explore other products.</p>
+          <Link href="/" className="inline-flex items-center gap-2 px-6 py-3 bg-orange-600 hover:bg-orange-700 text-white rounded-lg shadow transition">
+            ← Back to Home
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
   if (!product || !product.name ) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <h2 className="text-2xl font-bold">Product not found</h2>
           <Link href="/" className="mt-4 inline-flex items-center text-blue-600">
-            ← Back to Homee
+            ← Back to Home
           </Link>
         </div>
       </div>
