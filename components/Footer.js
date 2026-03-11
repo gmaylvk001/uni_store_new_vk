@@ -681,18 +681,7 @@ const capitalizeFirstLetter = (str) =>
       </div>
     </div>
 
-    <div>
-      <h3 className="font-semibold mb-2">
-        <a href="/category/accessories" className="hover:underline text-primary">
-          Accessories – Complete Your Technology Setup
-        </a>
-      </h3>
-      <div>
-        Complete your digital ecosystem with high-quality accessories designed to enhance performance and convenience. Browse chargers, cables, headphones, power banks, keyboards, and other essential accessories for your devices.  
-        These accessories help protect, power, and expand the functionality of your smartphones, laptops, and entertainment systems.  
-        At Unilet Stores, find durable and reliable accessories that deliver excellent value and long-lasting performance.
-      </div>
-    </div>
+    
 
   </div>
 </section>
