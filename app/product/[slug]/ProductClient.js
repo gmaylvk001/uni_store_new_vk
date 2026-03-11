@@ -1004,7 +1004,7 @@ const fetchBrand = async () => {
   <div 
     className="absolute hidden md:block left-full ml-4 top-0 w-full bg-no-repeat bg-white border rounded-lg overflow-hidden"
     style={{
-      backgroundImage: `url(${resolveImagePath(product.images[selectedImageIndex])})`,
+      backgroundImage: `url("${resolveImagePath(product.images[selectedImageIndex])}")`,
       backgroundSize: '200%',
       backgroundPosition: `${zoomPosition.x}% ${zoomPosition.y}%`,
       zIndex: 20,
