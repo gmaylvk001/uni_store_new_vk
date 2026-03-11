@@ -575,6 +575,127 @@ const capitalizeFirstLetter = (str) =>
             ))}
           </div>
         </div>
+
+        <section className="py-10 md:px-2">
+  <div className="max-w-7xl mx-auto space-y-8 text-sm leading-7">
+
+    <div>
+      <h2 className="font-semibold text-lg mb-3">
+        Buy Electronics Online at Unilet Stores – Karnataka’s Trusted Electronics Retailer
+      </h2>
+      <div>
+        Transform your home with the latest electronics and appliances from Unilet Stores. Discover a wide range of home appliances, televisions, laptops, smartphones, and smart gadgets designed to simplify modern living.  
+        Shop from top global brands with the assurance of genuine products, competitive pricing, and reliable after-sales service.  
+        Whether you shop online or visit our physical outlets across Karnataka, Unilet Stores ensures a convenient and trusted electronics shopping experience.
+      </div>
+    </div>
+
+    <div>
+      <h3 className="font-semibold mb-2">
+        <a href="/category/large-appliance" className="hover:underline text-primary">
+          Large Appliances – Upgrade Your Home Comfort
+        </a>
+      </h3>
+      <div>
+        Discover high-performance large appliances designed to make everyday household tasks easier and more efficient. From refrigerators and washing machines to air conditioners and dishwashers, Unilet Stores offers a wide selection of trusted appliances.  
+        Choose from advanced energy-efficient models with smart features, spacious designs, and modern technology that enhance convenience and performance.  
+        Enjoy reliable warranties, attractive deals, and professional installation support when purchasing large appliances from Unilet Stores.
+      </div>
+    </div>
+
+    <div>
+      <h3 className="font-semibold mb-2">
+        <a href="/category/small-appliances" className="hover:underline text-primary" target="_blank" rel="noopener noreferrer">
+          Small Appliances – Smart Solutions for Everyday Living
+        </a>
+      </h3>
+      <div>
+        Explore a versatile range of small appliances designed to simplify your daily routine and improve productivity in the kitchen and home. From mixer grinders and microwaves to electric kettles, juicers, and coffee makers, Unilet Stores offers reliable appliances for modern lifestyles.  
+        These compact yet powerful devices combine efficiency with convenience, helping you prepare meals faster and manage household tasks with ease.  
+        Shop quality small appliances with modern designs, energy-efficient performance, and affordable pricing at Unilet Stores.
+      </div>
+    </div>
+
+    <div>
+      <h3 className="font-semibold mb-2">
+        <a href="/category/televisions" className="hover:underline text-primary" target="_blank" rel="noopener noreferrer">
+          Televisions – Experience Next-Level Entertainment
+        </a>
+      </h3>
+      <div>
+        Upgrade your home entertainment setup with the latest televisions featuring stunning picture clarity and immersive sound technology. Choose from LED, QLED, and Ultra HD smart TVs equipped with advanced display technology and built-in streaming platforms.  
+        Enjoy seamless access to popular entertainment apps, voice control features, and high-definition visuals designed to enhance your viewing experience.  
+        At Unilet Stores, find televisions in multiple screen sizes with competitive pricing and reliable brand warranties.
+      </div>
+    </div>
+
+    <div>
+      <h3 className="font-semibold mb-2">
+        <a href="/category/computers-laptops" className="hover:underline text-primary" target="_blank" rel="noopener noreferrer">
+          Computers & Laptops – Power Your Productivity
+        </a>
+      </h3>
+      <div>
+        Discover a wide selection of computers and laptops designed for work, study, gaming, and everyday computing. From lightweight ultrabooks to powerful gaming laptops and desktop systems, Unilet Stores provides solutions for every user requirement.  
+        Explore devices equipped with the latest processors, fast SSD storage, high RAM capacity, and advanced graphics capabilities for seamless multitasking.  
+        With trusted brands, warranty protection, and flexible purchase options, Unilet Stores makes it easy to find the perfect computing device.
+      </div>
+    </div>
+
+    <div>
+      <h3 className="font-semibold mb-2">
+        <a href="/category/mobiles-tablets" className="hover:underline text-primary">
+          Mobiles & Tablets – Stay Connected Anywhere
+        </a>
+      </h3>
+      <div>
+        Browse the latest smartphones and tablets designed to keep you connected, productive, and entertained wherever you go. Choose from feature-rich devices with powerful processors, advanced camera systems, and long-lasting battery performance.  
+        Tablets provide a perfect balance between portability and functionality, making them ideal for learning, entertainment, and professional tasks.  
+        Unilet Stores offers a wide variety of mobile and tablet models from leading brands with competitive pricing and genuine warranty support.
+      </div>
+    </div>
+
+    <div>
+      <h3 className="font-semibold mb-2">
+        <a href="/category/sound-systems" className="hover:underline text-primary">
+          Sound Systems – Immersive Audio Experience
+        </a>
+      </h3>
+      <div>
+        Enhance your entertainment experience with powerful sound systems designed for crystal-clear audio and deep bass performance. From home theatre systems to wireless speakers and soundbars, Unilet Stores offers audio solutions for every space.  
+        Enjoy music, movies, and gaming with immersive surround sound technology and modern connectivity features such as Bluetooth and Wi-Fi streaming.  
+        Discover premium sound systems from trusted brands and transform your home into an entertainment hub.
+      </div>
+    </div>
+
+    <div>
+      <h3 className="font-semibold mb-2">
+        <a href="/category/gadgets" className="hover:underline text-primary">
+          Gadgets – Smart Technology for Everyday Use
+        </a>
+      </h3>
+      <div>
+        Explore innovative gadgets that enhance convenience, productivity, and entertainment in everyday life. From smartwatches and fitness trackers to wireless earbuds and portable electronics, Unilet Stores offers the latest tech accessories.  
+        These gadgets combine stylish design with advanced technology, helping you stay connected and organized throughout the day.  
+        Find the perfect gadget that complements your lifestyle and enjoy competitive prices with reliable warranty support.
+      </div>
+    </div>
+
+    <div>
+      <h3 className="font-semibold mb-2">
+        <a href="/category/accessories" className="hover:underline text-primary">
+          Accessories – Complete Your Technology Setup
+        </a>
+      </h3>
+      <div>
+        Complete your digital ecosystem with high-quality accessories designed to enhance performance and convenience. Browse chargers, cables, headphones, power banks, keyboards, and other essential accessories for your devices.  
+        These accessories help protect, power, and expand the functionality of your smartphones, laptops, and entertainment systems.  
+        At Unilet Stores, find durable and reliable accessories that deliver excellent value and long-lasting performance.
+      </div>
+    </div>
+
+  </div>
+</section>
       </div>
       </footer>
       {/* Auth Modal */}
