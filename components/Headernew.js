@@ -167,11 +167,13 @@ const RightMegaMenu = ({ hoveredCategory }) => {
       className="bg-white shadow-xl border-l"
       style={{ width }}
     >
-      <div className="flex h-[390px]">
+      {/* items-stretch helps children fill the full height of the parent */}
+      <div className="flex items-stretch min-h-[390px]"> 
         {columns.map((column, index) => (
           <div
             key={index}
-            className={`min-w-[220px] p-3 ${
+            // h-auto and flex-1 logic will ensure the grey background goes till the bottom
+            className={`min-w-[220px] p-3 flex-1 ${ 
               index % 2 === 0 ? "bg-[#f2f2f2]" : "bg-white"
             }`}
           >
@@ -2037,11 +2039,12 @@ const shouldShowArrow = (item, allItems = []) => {
 {open && (
   <div
     ref={menuRef}
-    className="absolute left-0 top-full mt-2 z-50 flex"
+    // items-stretch is crucial here to make Left and Right sections equal height
+    className="absolute left-0 top-full mt-2 z-50 flex items-stretch shadow-2xl" 
   >
     {/* LEFT MENU */}
-    <div className="w-56 bg-white shadow-lg">
-      <ul className="py-2 text-sm h-[390px]">
+    <div className="w-56 bg-white border-r">
+      <ul className="py-2 text-sm min-h-[390px] h-full">
         {categories.map((cat) => (
           <li
             key={cat._id}
@@ -2057,18 +2060,11 @@ const shouldShowArrow = (item, allItems = []) => {
             <Link href={`/category/${cat.category_slug}`}>
               {cat.category_name}
             </Link>
-
             {cat?.subcategories?.length > 0 && (
               <span className="text-gray-400">{">"}</span>
             )}
           </li>
         ))}
-        {/* <li>
-          <Link href={"/deals-offer"} className="px-4 py-2 flex justify-between cursor-pointer hover:bg-gray-100"> Deals </Link>
-        </li>
-        <li>
-          <Link href={"/open-box"} className="px-4 py-2 flex justify-between cursor-pointer hover:bg-gray-100"> Open Box </Link>
-        </li> */}
       </ul>
     </div>
 
@@ -2737,3 +2733,6 @@ const shouldShowArrow = (item, allItems = []) => {
   );
 };
 export default Header;
+ 
+
+ 
