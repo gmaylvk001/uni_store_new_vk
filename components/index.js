@@ -1397,14 +1397,14 @@ case 'brands':
                         }} loop slidesPerView={1} className="rounded-xl overflow-hidden">
                         {/* Slide 1 */}
                         <SwiperSlide>
-                          <Link href="/product/motorola-mobile-g96-5g-8128-8gb128gb">
+                          <Link href="/category/mobiles-tablets/smart-phone">
                             <img src="uploads/flashsale/Banner-1.png" alt="Unilet" className="w-full h-[260px] md:h-[380px] lg:h-[420px]"/>
                           </Link>
                         </SwiperSlide>
 
-                        {/* Slide 2 */}
+                        {/* Slide 2 */} 
                         <SwiperSlide>
-                          <Link href="/category/mobiles-tablets/tablet">
+                          <Link href="/category/mobiles-tablets/mobile-phones">
                             <img src="uploads/flashsale/Banner-2.png" alt="Unilet" className="w-full h-[260px] md:h-[380px] lg:h-[420px]"/>
                           </Link>
                         </SwiperSlide>

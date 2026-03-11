@@ -158,7 +158,7 @@ export default function CheckoutPage() {
     address: "",
     landmark: "",
     city: "",
-    state: "Tamilnadu",
+    state: "",
     postCode: "",
     phonenumber: "",
     email: "",
@@ -201,10 +201,51 @@ const [isSubmitting, setIsSubmitting] = useState(false);
     fetchStores();
   }, []);
 
-  const uniqueCities = [...new Set(stores.map(store => store.city))];
-  const extraCities = ["Ariyalur","Chennai","Coimbatore","Cuddalore","Dharmapuri","Dindigul","Erode","Kanchipuram","Kanyakumari","Karur","Krishnagiri","Madurai","Nagapattinam","Namakkal","Nilgiris","Perambalur","Pudukkottai","Ramanathapuram","Salem","Sivaganga","Thanjavur","Theni","Thoothukudi","Tirunelveli","Tiruvallur","Tiruvannamalai","Tiruvarur","Vellore","Viluppuram","Virudhunagar", "Singanallur", "Sivananthapuram", "Vadavalli", "Annur", "Mettupalayam", "Thennur", "Ariyamangalam", "Komarapalayam", "Kattur"];
+  const INDIA_STATES_CITIES = {
+    "Andhra Pradesh": ["Visakhapatnam","Vijayawada","Guntur","Nellore","Kurnool","Kakinada","Tirupati","Rajahmundry","Kadapa","Anantapur"],
+    "Arunachal Pradesh": ["Itanagar","Naharlagun","Pasighat","Tawang","Ziro"],
+    "Assam": ["Guwahati","Silchar","Dibrugarh","Jorhat","Nagaon","Tinsukia"],
+    "Bihar": ["Patna","Gaya","Bhagalpur","Muzaffarpur","Purnia","Darbhanga","Bihar Sharif"],
+    "Chhattisgarh": ["Raipur","Bhilai","Bilaspur","Korba","Rajnandgaon","Durg"],
+    "Goa": ["Panaji","Margao","Vasco da Gama","Mapusa","Ponda"],
+    "Gujarat": ["Ahmedabad","Surat","Vadodara","Rajkot","Bhavnagar","Jamnagar","Gandhinagar","Junagadh"],
+    "Haryana": ["Faridabad","Gurugram","Panipat","Ambala","Yamunanagar","Rohtak","Hisar","Karnal"],
+    "Himachal Pradesh": ["Shimla","Dharamsala","Solan","Mandi","Kullu","Hamirpur"],
+    "Jharkhand": ["Ranchi","Jamshedpur","Dhanbad","Bokaro","Deoghar","Hazaribagh"],
+    "Karnataka": ["Bengaluru","Mysuru","Mangaluru","Hubballi","Belagavi","Kalaburagi","Davangere","Ballari","Shivamogga","Tumakuru"],
+    "Kerala": ["Thiruvananthapuram","Kochi","Kozhikode","Thrissur","Kollam","Palakkad","Alappuzha","Kannur","Kottayam","Malappuram"],
+    "Madhya Pradesh": ["Bhopal","Indore","Jabalpur","Gwalior","Ujjain","Sagar","Satna","Rewa","Ratlam"],
+    "Maharashtra": ["Mumbai","Pune","Nagpur","Nashik","Aurangabad","Solapur","Thane","Amravati","Kolhapur"],
+    "Manipur": ["Imphal","Thoubal","Bishnupur","Churachandpur"],
+    "Meghalaya": ["Shillong","Tura","Jowai"],
+    "Mizoram": ["Aizawl","Lunglei","Champhai"],
+    "Nagaland": ["Kohima","Dimapur","Mokokchung"],
+    "Odisha": ["Bhubaneswar","Cuttack","Rourkela","Berhampur","Sambalpur","Puri"],
+    "Punjab": ["Ludhiana","Amritsar","Jalandhar","Patiala","Bathinda","Mohali","Gurdaspur"],
+    "Rajasthan": ["Jaipur","Jodhpur","Udaipur","Kota","Ajmer","Bikaner","Alwar","Bharatpur"],
+    "Sikkim": ["Gangtok","Namchi","Gyalshing"],
+    "Tamil Nadu": ["Ariyalur","Chennai","Coimbatore","Cuddalore","Dharmapuri","Dindigul","Erode","Kanchipuram","Kanyakumari","Karur","Krishnagiri","Madurai","Nagapattinam","Namakkal","Nilgiris","Perambalur","Pudukkottai","Ramanathapuram","Salem","Sivaganga","Thanjavur","Theni","Thoothukudi","Tirunelveli","Tiruvallur","Tiruvannamalai","Tiruvarur","Vellore","Viluppuram","Virudhunagar","Singanallur","Sivananthapuram","Vadavalli","Annur","Mettupalayam","Thennur","Ariyamangalam","Komarapalayam","Kattur"],
+    "Telangana": ["Hyderabad","Warangal","Nizamabad","Karimnagar","Khammam","Ramagundam","Mahbubnagar"],
+    "Tripura": ["Agartala","Udaipur","Dharmanagar"],
+    "Uttar Pradesh": ["Lucknow","Kanpur","Agra","Varanasi","Meerut","Allahabad","Ghaziabad","Noida","Bareilly","Aligarh","Moradabad","Gorakhpur","Mathura"],
+    "Uttarakhand": ["Dehradun","Haridwar","Roorkee","Rishikesh","Haldwani","Nainital"],
+    "West Bengal": ["Kolkata","Asansol","Siliguri","Durgapur","Bardhaman","Malda","Howrah","Kharagpur"],
+    "Delhi": ["New Delhi","Central Delhi","North Delhi","South Delhi","East Delhi","West Delhi","Dwarka","Rohini","Janakpuri"],
+    "Jammu and Kashmir": ["Srinagar","Jammu","Anantnag","Baramulla","Sopore"],
+    "Ladakh": ["Leh","Kargil"],
+    "Puducherry": ["Puducherry","Karaikal","Mahe","Yanam"],
+    "Chandigarh": ["Chandigarh"],
+    "Andaman and Nicobar Islands": ["Port Blair"],
+    "Dadra and Nagar Haveli and Daman and Diu": ["Daman","Diu","Silvassa"],
+    "Lakshadweep": ["Kavaratti"]
+  };
 
-  const finalCities = [...new Set([...uniqueCities, ...extraCities])];
+  const uniqueCities = [...new Set(stores.map(store => store.city))];
+  const citiesForState = formData.state && INDIA_STATES_CITIES[formData.state]
+    ? [...new Set([...uniqueCities.filter(c => INDIA_STATES_CITIES[formData.state].includes(c)), ...INDIA_STATES_CITIES[formData.state]])]
+    : [...new Set([...uniqueCities, ...Object.values(INDIA_STATES_CITIES).flat()])];
+
+  const finalCities = citiesForState.sort();
 
   useEffect(() => {
     const buyNowData = localStorage.getItem("buyNowData");
@@ -270,7 +311,7 @@ const [isSubmitting, setIsSubmitting] = useState(false);
         country: addr.country || "",
         address: addr.address || "",
         city: addr.city || "",
-        state: addr.state || "Tamilnadu",
+        state: addr.state || "",
         postCode: addr.postCode || "",
         phonenumber: addr.phonenumber || "",
         landmark: addr.landmark || "",
@@ -289,7 +330,63 @@ const [isSubmitting, setIsSubmitting] = useState(false);
 
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    if (name === "state") {
+      setFormData(prev => ({ ...prev, state: value, city: "" }));
+    } else {
+      setFormData(prev => ({ ...prev, [name]: value }));
+    }
+  };
+
+  const [isSavingAddress, setIsSavingAddress] = useState(false);
+
+  const handleSaveAddress = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) { setShowAuthModal(true); return; }
+    const decoded = jwtDecode(token);
+    const userId = decoded.userId;
+    const phoneRegex = /^[0-9]{10}$/;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!formData.firstName || !formData.lastName || !formData.address || !formData.city || !formData.state || !formData.postCode || !formData.phonenumber) {
+      toast.error("Please fill in all required fields.");
+      return;
+    }
+    if (!phoneRegex.test(formData.phonenumber)) { toast.error("Please enter a valid 10-digit phone number."); return; }
+    if (formData.email && !emailRegex.test(formData.email)) { toast.error("Please enter a valid email address."); return; }
+    setIsSavingAddress(true);
+    try {
+      const fd = new FormData();
+      fd.append("userId", userId);
+      fd.append("firstname", formData.firstName);
+      fd.append("lastName", formData.lastName);
+      fd.append("businessName", formData.businessName || "");
+      fd.append("country", formData.country || "India");
+      fd.append("email", formData.email || "");
+      fd.append("address", formData.address);
+      fd.append("postCode", formData.postCode);
+      fd.append("city", formData.city);
+      fd.append("state", formData.state);
+      fd.append("landmark", formData.landmark || "");
+      fd.append("phonenumber", formData.phonenumber);
+      fd.append("additionalInfo", formData.additionalInfo || "");
+      const res = await fetch("/api/useraddress/add", { method: "POST", body: fd });
+      if (!res.ok) throw new Error("Failed to save address");
+      const data = await res.json();
+      setUseraddress(prev => {
+        const existing = prev.findIndex(a => a._id === data.userAddress._id);
+        if (existing !== -1) {
+          const updated = [...prev];
+          updated[existing] = data.userAddress;
+          return updated;
+        }
+        return [...prev, data.userAddress];
+      });
+      toast.success("Address saved successfully!");
+    } catch (err) {
+      toast.error("Failed to save address.");
+    } finally {
+      setIsSavingAddress(false);
+    }
   };
 
   const handlePaymentChange = (e) => {
@@ -412,12 +509,12 @@ const grandTotal = subtotal - totalDiscount;
         const addressData = useSavedAddress && selectedAddress !== null
   ? {
       ...useraddress[selectedAddress],
-      state: useraddress[selectedAddress].state || "Tamilnadu",
+      state: useraddress[selectedAddress].state ,
       country: useraddress[selectedAddress].country || "India",
     }
   : {
       ...formData,
-      state: formData.state || "Tamilnadu",
+      state: formData.state ,
       country: formData.country || "India",
     };
   
@@ -963,7 +1060,7 @@ const grandTotal = subtotal - totalDiscount;
 </div>
 
     <div className="grid grid-cols-2 gap-4 mt-3">
-     {/* <div className="relative mt-3 w-full">
+    <div className="relative mt-3 w-full">
       <select
         name="state"
         value={formData.state}
@@ -971,34 +1068,19 @@ const grandTotal = subtotal - totalDiscount;
         className="border rounded-md w-full focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-200 pt-5 pb-1 px-2"
         required
       >
-        <option value="">--Select State--</option>
-        <option value="Tamilnadu">Tamilnadu</option>
+        <option value="" disabled hidden></option>
+        {Object.keys(INDIA_STATES_CITIES).sort().map((s) => (
+          <option key={s} value={s}>{s}</option>
+        ))}
       </select>
-        <span
-          className={`absolute left-2 transition-all duration-200 pointer-events-none ${
-            formData.state
-              ? 'top-1 text-xs text-gray-500'
-              : 'top-3 text-gray-400'
-          }`}
-        >
-          State
-        </span>
-      </div> */}
-
-    <div className="relative mt-3 w-full">
-  <input
-    type="text"
-    name="state"
-    value={formData.state}
-    readOnly
-    className="border rounded-md w-full focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-200 pt-5 pb-1 px-2 text-gray-700 cursor-not-allowed"
-  />
-  <label
-    className="absolute left-2 text-xs text-gray-500 top-1 pointer-events-none transition-all duration-200"
-  >
-    State
-  </label>
-</div>
+      <span
+        className={`absolute left-2 transition-all duration-200 pointer-events-none ${
+          formData.state ? 'top-1 text-xs text-gray-500' : 'top-3 text-gray-400'
+        }`}
+      >
+        State
+      </span>
+    </div>
 
 
 
@@ -1047,6 +1129,17 @@ const grandTotal = subtotal - totalDiscount;
     }`}>
       Post Code
     </span>
+  </div>
+
+  <div className="mt-4 flex justify-end">
+    <button
+      type="button"
+      onClick={handleSaveAddress}
+      disabled={isSavingAddress}
+      className="bg-orange-500 text-white px-5 py-2 rounded-md text-sm font-medium hover:bg-orange-600 disabled:opacity-60"
+    >
+      {isSavingAddress ? "Saving..." : "Save Address"}
+    </button>
   </div>
 
     <h2 className="text-xl font-semibold text-black mb-2 mt-6">
