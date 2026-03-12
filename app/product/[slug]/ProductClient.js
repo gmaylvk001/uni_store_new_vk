@@ -46,7 +46,7 @@ export default function ProductClient() {
   const [selectedWarrantyAmount, setSelectedWarrantyAmount] = useState(0);
   const [showNoWarrantyModal, setShowNoWarrantyModal] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
-  const [showStickyBar, setShowStickyBar] = useState(false);
+  const [showStickyBar, setShowStickyBar] = useState(true);
 
 const [deliveryInfo, setDeliveryInfo] = useState(null);
 
@@ -845,18 +845,6 @@ const fetchBrand = async () => {
   }, [lightboxOpen, lightboxIndex]);
 
 
-  useEffect(() => {
-  const handleScroll = () => {
-    if (window.scrollY > 300) {
-      setShowStickyBar(true);   // scroll down → show
-    } else {
-      setShowStickyBar(false);  // top → hide
-    }
-  };
-
-  window.addEventListener("scroll", handleScroll);
-  return () => window.removeEventListener("scroll", handleScroll);
-}, []);
 
 
 

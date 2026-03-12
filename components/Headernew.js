@@ -361,7 +361,7 @@ const RightMegaMenu = ({ hoveredCategory }) => {
     }, [router]);
     const menuWrapperRef = useRef(null);
     const dropdownRef = useRef(null);
-    const [activeTab, setActiveTab] = useState('login');
+    const [activeTab, setActiveTab] = useState('otp');
     // const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [showMenu, setShowMenu] = useState(false);
     // const [userData, setUserData] = useState(null);
@@ -980,7 +980,7 @@ const RightMegaMenu = ({ hoveredCategory }) => {
             location.reload();
           } else {
             setShowAuthModal(true);
-            setActiveTab("login");
+            setActiveTab("otp");
           }
         } catch (err) {
           setError(err.message);
@@ -2328,14 +2328,11 @@ const shouldShowArrow = (item, allItems = []) => {
                                       &times;
                                   </button>
                                   <div className="flex gap-4 mb-6 border-b">
-                                      <button className={`pb-2 px-1 text-sm font-medium ${activeTab === 'login' ? 'border-b-2 border-blue-500 text-blue-600' : 'text-gray-500 hover:text-gray-700'}`} onClick={() => setActiveTab('login')}>
+                                      <button className={`pb-2 px-1 text-sm font-medium ${activeTab === 'otp' ? 'border-b-2 border-blue-500 text-blue-600' : 'text-gray-500 hover:text-gray-700'}`} onClick={() => { setActiveTab('otp'); setOtpPhoneStep(1); setOtpPhone(""); setOtpValue(""); setOtpPhoneError(""); setOtpPhoneMessage(""); }}>
                                           Login
                                       </button>
                                       <button className={`pb-2 px-1 text-sm font-medium ${activeTab === 'register' ? 'border-b-2 border-blue-500 text-blue-600' : 'text-gray-500 hover:text-gray-700'}`} onClick={() => setActiveTab('register')}>
                                           Register
-                                      </button>
-                                      <button className={`pb-2 px-1 text-sm font-medium ${activeTab === 'otp' ? 'border-b-2 border-blue-500 text-blue-600' : 'text-gray-500 hover:text-gray-700'}`} onClick={() => { setActiveTab('otp'); setOtpPhoneStep(1); setOtpPhone(""); setOtpValue(""); setOtpPhoneError(""); setOtpPhoneMessage(""); }}>
-                                          OTP Login
                                       </button>
                                   </div>
                                   {/* Phone OTP Login Tab */}
