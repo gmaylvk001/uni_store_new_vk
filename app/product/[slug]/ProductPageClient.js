@@ -816,7 +816,7 @@ const fetchBrand = async () => {
                         className="h-6 w-auto"
                       />
                       <span className="text-sm text-blue-700">
-                        From <span className="font-bold">₹{Math.floor((product.special_price || product.price) / 6)}</span>/month
+                        From <span className="font-bold">₹{Math.floor((product.special_price || product.price) / 6).toLocaleString("en-IN")}</span>/month
                       </span>
                     </div>
                     <button className="text-sm font-semibold text-blue-700 hover:underline">
@@ -866,7 +866,7 @@ const fetchBrand = async () => {
                   <div className="font-medium text-sm">{option.bank}</div>
                   <div className="text-xs text-gray-500">{option.tenure}</div>
                 </div>
-                <div className="font-semibold">₹{option.emi}/month</div>
+                <div className="font-semibold">₹{Number(option.emi).toLocaleString("en-IN")}/month</div>
               </div>
             ))}
           </div>
@@ -884,7 +884,7 @@ const fetchBrand = async () => {
                   <div className="font-medium text-sm">{option.bank}</div>
                   <div className="text-xs text-gray-500">{option.tenure}</div>
                 </div>
-                <div className="font-semibold">₹{option.emi}/month</div>
+                <div className="font-semibold">₹{Number(option.emi).toLocaleString("en-IN")}/month</div>
               </div>
             ))}
           </div>

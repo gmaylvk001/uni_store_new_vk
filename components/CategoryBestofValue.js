@@ -362,11 +362,11 @@ const scrollRight = (categoryId) => {
                                               MRP ₹ {(product.special_price > 0 && product.special_price < product.price
                                                 ? Math.round(product.special_price)
                                                 : Math.round(product.price)
-                                              ).toLocaleString()}
+                                              ).toLocaleString("en-IN")}
                                             </span>
                                             {product.special_price > 0 && product.special_price < product.price && (
                                               <span className="text-[10px] sm:text-xs text-gray-500 line-through">
-                                                MRP ₹ {Math.round(product.price).toLocaleString()}
+                                                MRP ₹ {Math.round(product.price).toLocaleString("en-IN")}
                                               </span>
                                             )}
                                           </div> */}
@@ -378,13 +378,13 @@ const scrollRight = (categoryId) => {
                                               ₹ {(product.special_price > 0 && product.special_price < product.price
                                                 ? Math.round(product.special_price)
                                                 : Math.round(product.price)
-                                              ).toLocaleString()}
+                                              ).toLocaleString("en-IN")}
                                             </span>
                                             </div>
                                             <div>
                                               {product.special_price > 0 && product.special_price < product.price && (
                                               <span className="text-[10px] sm:text-xs text-gray-500 line-through">
-                                                MRP ₹ {Math.round(product.price).toLocaleString()}
+                                                MRP ₹ {Math.round(product.price).toLocaleString("en-IN")}
                                               </span>
                                             )}
                                             </div>

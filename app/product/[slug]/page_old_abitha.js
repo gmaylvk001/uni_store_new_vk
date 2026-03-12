@@ -1222,7 +1222,7 @@ const fetchBrand = async () => {
 
     {/* Right - Price + View Cart link below */}
     <div className="flex flex-col items-end leading-tight">
-      <span className="text-md font-semibold">₹{cartTotal.toLocaleString()}</span>
+      <span className="text-md font-semibold">₹{cartTotal.toLocaleString("en-IN")}</span>
       <Link href="/cart" className="text-[12px] text-blue-100 hover:underline mt-0.5">
         View Cart
       </Link>

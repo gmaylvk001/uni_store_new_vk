@@ -868,8 +868,8 @@ console.log("Fetched products:", products);
                 />
           
                 <div className="flex justify-between text-sm text-gray-600 mt-6">
-                  <span>₹{values[0].toLocaleString()}</span>
-                  <span>₹{values[1].toLocaleString()}</span>
+                  <span>₹{values[0].toLocaleString("en-IN")}</span>
+                  <span>₹{values[1].toLocaleString("en-IN")}</span>
                 </div>
               </div>
 
@@ -1137,8 +1137,8 @@ console.log("Fetched products:", products);
                 />
           
                 <div className="flex justify-between text-sm text-gray-600 mt-6">
-                  <span>₹{values[0].toLocaleString()}</span>
-                  <span>₹{values[1].toLocaleString()}</span>
+                  <span>₹{values[0].toLocaleString("en-IN")}</span>
+                  <span>₹{values[1].toLocaleString("en-IN")}</span>
                 </div>
               </div>
 
@@ -1336,14 +1336,14 @@ console.log("Fetched products:", products);
                                   product.special_price < product.price
                                     ? Math.round(product.special_price)
                                     : Math.round(product.price)
-                                ).toLocaleString()}
+                                ).toLocaleString("en-IN")}
                               </span>
 
                               {product.special_price > 0 &&
                                 product.special_price !== '0' &&
                                 product.special_price < product.price && (
                                   <span className="text-xs text-gray-500 line-through">
-                                    MRP ₹ {Math.round(product.price).toLocaleString()}
+                                    MRP ₹ {Math.round(product.price).toLocaleString("en-IN")}
                                   </span>
                               )}
                             </div>

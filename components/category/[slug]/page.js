@@ -819,8 +819,8 @@ const STEP = 100;
                     />
               
                     <div className="flex justify-between text-sm text-gray-600 mt-6">
-                      <span>₹{values[0].toLocaleString()}</span>
-                      <span>₹{values[1].toLocaleString()}</span>
+                      <span>₹{values[0].toLocaleString("en-IN")}</span>
+                      <span>₹{values[1].toLocaleString("en-IN")}</span>
                     </div>
                   </div>
 
@@ -982,7 +982,7 @@ const STEP = 100;
                             product.special_price < product.price
                               ? Math.round(product.special_price)
                               : Math.round(product.price)
-                          ).toLocaleString()}
+                          ).toLocaleString("en-IN")}
                         </span>
 
                         {product.special_price > 0 &&
@@ -991,18 +991,18 @@ const STEP = 100;
                           product.special_price &&
                           product.special_price < product.price && (
                             <span className="text-xs text-gray-500 line-through">
-                              MRP ₹ {Math.round(product.price).toLocaleString()}
+                              MRP ₹ {Math.round(product.price).toLocaleString("en-IN")}
                             </span>
                         )}
                       </div>
                       {/* <div className="flex items-center gap-2 mb-3">
                         
                         <span className="text-base font-semibold text-blue-600">
-                          ₹{(product.special_price || product.price).toLocaleString()}
+                          ₹{(product.special_price || product.price).toLocaleString("en-IN")}
                         </span>
                           {product.special_price && product.special_price !== product.price && (
                           <span className="text-xs text-gray-500 line-through">
-                            ₹{product.price.toLocaleString()}
+                            ₹{product.price.toLocaleString("en-IN")}
                           </span>
                         )}
                       </div>

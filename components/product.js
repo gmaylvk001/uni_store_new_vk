@@ -157,7 +157,7 @@ console.log(data)
             {/* Rating */}
             <div className="mt-2 pb-3 border-b border-gray-400">
               <div className="flex items-center space-x-2 text-yellow-500 text-sm">
-                ⭐⭐⭐⭐⭐ <span className="text-gray-500 text-xs">({product.rating || "N/A"} Star Rating) | {product.reviews ? product.reviews.toLocaleString() : "0"} Reviews</span>
+                ⭐⭐⭐⭐⭐ <span className="text-gray-500 text-xs">({product.rating || "N/A"} Star Rating) | {product.reviews ? product.reviews.toLocaleString("en-IN") : "0"} Reviews</span>
               </div>
             </div>
             

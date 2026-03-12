@@ -712,14 +712,14 @@ export default function CategoryBrandComponent({ categorySlug, brandSlug }) {
                                 product.special_price && product.special_price > 0 && product.special_price != '0' && product.special_price != 0 && product.special_price < product.price
                                   ? product.special_price
                                   : product.price
-                              ).toLocaleString()}
+                              ).toLocaleString("en-IN")}
                             </span>
 
                             {product.special_price > 0 && product.special_price != '0' && product.special_price != 0 &&   product.special_price &&
                               product.special_price < product.price &&
                               (
                                 <span className="text-xs text-gray-500 line-through">
-                                  ₹{product.price.toLocaleString()}
+                                  ₹{product.price.toLocaleString("en-IN")}
                                 </span>
                             )}
                           </div>

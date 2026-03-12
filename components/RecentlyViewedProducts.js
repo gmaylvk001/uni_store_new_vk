@@ -342,7 +342,7 @@ const RecentlyViewedProducts = () => {
                               product.special_price && product.special_price > 0 && product.special_price != '0'  && product.special_price != 0 && product.special_price < product.price
                                 ? product.special_price
                                 : product.price
-                            ).toLocaleString()}
+                            ).toLocaleString("en-IN")}
                           </span>
     
     
@@ -350,7 +350,7 @@ const RecentlyViewedProducts = () => {
                             product.special_price < product.price &&
                             (
                               <span className="text-xs text-gray-500 line-through">
-                                MRP ₹ {product.price.toLocaleString()}
+                                MRP ₹ {product.price.toLocaleString("en-IN")}
                               </span>
                           )}
                         </div>

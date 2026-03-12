@@ -48,7 +48,7 @@ function Counter({ end, duration = 2000 }) {
     requestAnimationFrame(animate);
   }, [shouldStart, end, duration]);
 
-  return <span ref={ref}>{value.toLocaleString()}</span>;
+  return <span ref={ref}>{value.toLocaleString("en-IN")}</span>;
 }
 
 const DetailsPageStatusBar = () => {

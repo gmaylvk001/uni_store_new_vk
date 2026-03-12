@@ -1181,12 +1181,12 @@ const fetchBrand = async () => {
                     {(Number(product.special_price) > 0 || Number(product.price) > 0) && (
                       <>
                         <span className="text-2xl font-bold text-blue-800">
-                          ₹{Math.round(Number(product.special_price) || Number(product.price)).toLocaleString()}
+                          ₹{Math.round(Number(product.special_price) || Number(product.price)).toLocaleString("en-IN")}
                         </span>
 
                         {Number(product.special_price) > 0 && Number(product.price) > 0 && (
                           <span className="text-gray-800 line-through text-sm">
-                           MRP ₹ {Math.round(Number(product.price)).toLocaleString()}
+                           MRP ₹ {Math.round(Number(product.price)).toLocaleString("en-IN")}
                           </span>
                         )}
                       </>
@@ -1323,7 +1323,7 @@ const fetchBrand = async () => {
             <span className="text-base font-bold text-blue-800">
               Rs.{Math.round(
                 Number(product.special_price) || Number(product.price)
-              ).toLocaleString()}
+              ).toLocaleString("en-IN")}
             </span>
           )}
         </div>
@@ -1918,7 +1918,7 @@ const fetchBrand = async () => {
                     item.special_price < item.price
                       ? item.special_price
                       : item.price
-                  ).toLocaleString()}
+                  ).toLocaleString("en-IN")}
                 </span>
 
                 {item.special_price &&
@@ -1926,7 +1926,7 @@ const fetchBrand = async () => {
                   item.special_price !== "0" &&
                   item.special_price < item.price && (
                     <span className="text-xs text-gray-500 line-through">
-                      ₹ {item.price.toLocaleString()}
+                      ₹ {item.price.toLocaleString("en-IN")}
                     </span>
                   )}
               </div>
@@ -2065,7 +2065,7 @@ const fetchBrand = async () => {
 
           <div className="flex items-center gap-2">
             <span className="text-base font-semibold text-red-600">
-              ₹ {(item.special_price > 0 ? item.special_price : item.price).toLocaleString()}
+              ₹ {(item.special_price > 0 ? item.special_price : item.price).toLocaleString("en-IN")}
             </span>
           </div>
 
@@ -2137,7 +2137,7 @@ const fetchBrand = async () => {
                       item.special_price < item.price
                         ? item.special_price
                         : item.price
-                    ).toLocaleString()}
+                    ).toLocaleString("en-IN")}
                   </span>
 
                   {item.special_price &&
@@ -2145,7 +2145,7 @@ const fetchBrand = async () => {
                     item.special_price !== "0" &&
                     item.special_price < item.price && (
                       <span className="text-xs text-gray-500 line-through">
-                        MRP ₹ {item.price.toLocaleString()}
+                        MRP ₹ {item.price.toLocaleString("en-IN")}
                       </span>
                     )}
                 </div>
@@ -2215,7 +2215,7 @@ const fetchBrand = async () => {
                         item.special_price < item.price
                           ? item.special_price
                           : item.price
-                      ).toLocaleString()}
+                      ).toLocaleString("en-IN")}
                     </span>
   
                     {item.special_price &&
@@ -2223,7 +2223,7 @@ const fetchBrand = async () => {
                       item.special_price !== "0" &&
                       item.special_price < item.price && (
                         <span className="text-xs text-gray-500 line-through">
-                          ₹ {item.price.toLocaleString()}
+                          ₹ {item.price.toLocaleString("en-IN")}
                         </span>
                       )}
                   </div>
@@ -2291,7 +2291,7 @@ const fetchBrand = async () => {
                         item.special_price < item.price
                           ? item.special_price
                           : item.price
-                      ).toLocaleString()}
+                      ).toLocaleString("en-IN")}
                     </span>
   
                     {item.special_price &&
@@ -2299,7 +2299,7 @@ const fetchBrand = async () => {
                       item.special_price !== "0" &&
                       item.special_price < item.price && (
                         <span className="text-xs text-gray-500 line-through">
-                          ₹ {item.price.toLocaleString()}
+                          ₹ {item.price.toLocaleString("en-IN")}
                         </span>
                       )}
                   </div>
@@ -2342,7 +2342,7 @@ const fetchBrand = async () => {
 
       {/* Right - Price + View Cart */}
       <div className="flex flex-col items-end leading-tight">
-        <span className="text-md font-semibold">₹{cartTotal.toLocaleString()}</span>
+        <span className="text-md font-semibold">₹{cartTotal.toLocaleString("en-IN")}</span>
         <Link
           href="/cart"
           className="text-[12px] text-white hover:underline mt-0.5"

@@ -148,7 +148,7 @@ export default function SearchBar() {
                 <img src={p.image} alt={p.name} className="w-10 h-10 rounded object-cover" />
                 <div className="flex-1 min-w-0">
                   <div className="text-sm text-gray-800 truncate">{highlight(p.name, query)}</div>
-                  <div className="text-xs text-green-600 mt-1">₹{p.price.toLocaleString()}</div>
+                  <div className="text-xs text-green-600 mt-1">₹{p.price.toLocaleString("en-IN")}</div>
                 </div>
               </button>
             ))

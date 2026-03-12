@@ -38,9 +38,9 @@ export default function ViewOrderPage() {
       <h1 className="text-2xl font-bold mb-4">Order Details</h1>
       <p><strong>Order Number:</strong> {order.order_number}</p>
       <p><strong>Email:</strong> {order.email_address}</p>
-      <p><strong>Amount:</strong> ₹{order.order_amount}</p>
+      <p><strong>Amount:</strong> ₹{Number(order.order_amount).toLocaleString("en-IN")}</p>
       <p><strong>Status:</strong> {order.order_status}</p>
-      <p><strong>Created At:</strong> {new Date(order.createdAt).toLocaleString()}</p>
+      <p><strong>Created At:</strong> {new Date(order.createdAt).toLocaleString("en-IN")}</p>
       {/* Add more fields as needed */}
     </div>
   );

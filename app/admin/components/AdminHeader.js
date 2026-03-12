@@ -124,7 +124,7 @@ const AdminHeader = ({ toggleSidebar }) => {
                     {notif.orderId && (
                       <div className="text-xs text-gray-500">Order: #{notif.orderId.order_number} | Amount: {notif.orderId.order_amount} | Status: {notif.orderId.order_status}</div>
                     )}
-                    <div className="text-xs text-gray-400">{new Date(notif.createdAt).toLocaleString()}</div>
+                    <div className="text-xs text-gray-400">{new Date(notif.createdAt).toLocaleString("en-IN")}</div>
                   </div>
                 ))
               )}

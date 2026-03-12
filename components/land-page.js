@@ -210,10 +210,10 @@ export default function TestCategoryPage() {
                   {/* ✅ Price */}
                   <div className="flex items-center gap-2 mb-1">
                     <span className="text-red-600 font-semibold">
-                      ₹ {product.sale.toLocaleString()}
+                      ₹ {product.sale.toLocaleString("en-IN")}
                     </span>
                     <span className="text-xs line-through text-gray-500">
-                      ₹ {product.price.toLocaleString()}
+                      ₹ {product.price.toLocaleString("en-IN")}
                     </span>
                   </div>
 
@@ -338,10 +338,10 @@ export default function TestCategoryPage() {
                   {/* ✅ Price */}
                   <div className="flex items-center gap-2 mb-1">
                     <span className="text-red-600 font-semibold">
-                      ₹ {product.sale.toLocaleString()}
+                      ₹ {product.sale.toLocaleString("en-IN")}
                     </span>
                     <span className="text-xs line-through text-gray-500">
-                      ₹ {product.price.toLocaleString()}
+                      ₹ {product.price.toLocaleString("en-IN")}
                     </span>
                   </div>
 
@@ -466,10 +466,10 @@ export default function TestCategoryPage() {
                   {/* ✅ Price */}
                   <div className="flex items-center gap-2 mb-1">
                     <span className="text-red-600 font-semibold">
-                      ₹ {product.sale.toLocaleString()}
+                      ₹ {product.sale.toLocaleString("en-IN")}
                     </span>
                     <span className="text-xs line-through text-gray-500">
-                      ₹ {product.price.toLocaleString()}
+                      ₹ {product.price.toLocaleString("en-IN")}
                     </span>
                   </div>
 
@@ -594,10 +594,10 @@ export default function TestCategoryPage() {
                   {/* ✅ Price */}
                   <div className="flex items-center gap-2 mb-1">
                     <span className="text-red-600 font-semibold">
-                      ₹ {product.sale.toLocaleString()}
+                      ₹ {product.sale.toLocaleString("en-IN")}
                     </span>
                     <span className="text-xs line-through text-gray-500">
-                      ₹ {product.price.toLocaleString()}
+                      ₹ {product.price.toLocaleString("en-IN")}
                     </span>
                   </div>
 

@@ -707,11 +707,11 @@ export default function CategoryPage() {
                     <div className="flex items-center gap-2 mb-4">
                       {product.special_price && product.special_price !== product.price && (
                         <span className="text-gray-500 line-through">
-                          ₹{product.price.toLocaleString()}
+                          ₹{product.price.toLocaleString("en-IN")}
                         </span>
                       )}
                       <span className="text-xl font-bold text-blue-600">
-                        ₹{(product.special_price || product.price).toLocaleString()}
+                        ₹{(product.special_price || product.price).toLocaleString("en-IN")}
                       </span>
                     </div>
                     <button className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition-colors">
@@ -778,15 +778,15 @@ export default function CategoryPage() {
                           {product.special_price && product.special_price !== product.price ? (
                             <>
                               <span className="text-gray-500 line-through text-sm">
-                                ₹{product.price.toLocaleString()}
+                                ₹{product.price.toLocaleString("en-IN")}
                               </span>
                               <span className="text-xl font-bold text-blue-600">
-                                ₹{product.special_price.toLocaleString()}
+                                ₹{product.special_price.toLocaleString("en-IN")}
                               </span>
                             </>
                           ) : (
                             <span className="text-xl font-bold text-gray-800">
-                              ₹{product.price.toLocaleString()}
+                              ₹{product.price.toLocaleString("en-IN")}
                             </span>
                           )}
                         </div>

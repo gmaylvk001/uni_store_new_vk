@@ -1197,7 +1197,7 @@ useEffect(() => {
                 <p className="mt-2 text-lg font-bold text-green-600">${product.price}{" "}
                   <span className="line-through text-gray-400 text-sm">${product.originalPrice}</span>
                 </p>
-                <p className="text-sm text-gray-600">⭐ {product.rating} ({product.reviews.toLocaleString()})</p>
+                <p className="text-sm text-gray-600">⭐ {product.rating} ({product.reviews.toLocaleString("en-IN")})</p>
                 <button className="mt-3 bg-green-500 text-white px-4 py-2 rounded-md w-full">
                   Add To Cart
                 </button>

@@ -246,15 +246,15 @@ const handlePrint = () => {
                     <td className="border px-4 py-2">{item.product_name}</td>
                     <td className="border px-4 py-2">{item.quantity}</td>
                     <td className="border px-4 py-2"></td>
-                    <td className="border px-4 py-2">₹{item.product_price.toFixed(2)}</td>
-                    <td className="border px-4 py-2 text-end">₹{(item.product_price * item.quantity).toFixed(2)}</td>
+                    <td className="border px-4 py-2">₹{Number(item.product_price).toLocaleString("en-IN", {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+                    <td className="border px-4 py-2 text-end">₹{Number(item.product_price * item.quantity).toLocaleString("en-IN", {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
                   </tr>
                 ))}
               </tbody>
               <tfoot>
                 <tr>
                   <td colSpan="5" className="px-4 py-2 text-right">Subtotal:</td>
-                  <td className="px-4 py-2 text-end">₹{calculateOrderTotal().toFixed(2)}</td>
+                  <td className="px-4 py-2 text-end">₹{Number(calculateOrderTotal()).toLocaleString("en-IN", {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
                 </tr>
                 <tr>
                   <td colSpan="5" className="px-4 py-2 text-right">Discount:</td>
@@ -266,7 +266,7 @@ const handlePrint = () => {
                 </tr>
                 <tr className="font-semibold bg-gray-100">
                   <td colSpan="5" className="border px-4 py-2 text-right">Grand Total:</td>
-                  <td className="border px-4 py-2 text-end">₹{calculateOrderTotal().toFixed(2)}</td>
+                  <td className="border px-4 py-2 text-end">₹{Number(calculateOrderTotal()).toLocaleString("en-IN", {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
                 </tr>
               </tfoot>
             </table>

@@ -34,7 +34,7 @@ export default function InvoicePage() {
   };
 
   const calculateTotal = () => {
-    return order?.order_details?.reduce((sum, item) => sum + item.product_price * item.quantity, 0).toFixed(2);
+    return order?.order_details?.reduce((sum, item) => sum + item.product_price * item.quantity, 0) ?? 0;
   };
 
   if (loading) return <div className="p-6">Loading...</div>;
@@ -81,9 +81,9 @@ export default function InvoicePage() {
               <tr key={i} className="border-b">
                 <td className="p-2">{item.product_name}</td>
                 <td className="p-2">{item.model || '-'}</td>
-                <td className="p-2 text-right">₹{item.product_price}</td>
+                <td className="p-2 text-right">₹{Number(item.product_price).toLocaleString("en-IN", {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
                 <td className="p-2 text-right">{item.quantity}</td>
-                <td className="p-2 text-right">₹{(item.product_price * item.quantity).toFixed(2)}</td>
+                <td className="p-2 text-right">₹{Number(item.product_price * item.quantity).toLocaleString("en-IN", {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
               </tr>
             ))}
           </tbody>
@@ -94,7 +94,7 @@ export default function InvoicePage() {
         <div className="w-64">
           <div className="flex justify-between mb-2">
             <span>Subtotal:</span>
-            <span>₹{calculateTotal()}</span>
+            <span>₹{Number(calculateTotal()).toLocaleString("en-IN", {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span>
           </div>
           <div className="flex justify-between mb-2">
             <span>Shipping:</span>
@@ -102,7 +102,7 @@ export default function InvoicePage() {
           </div>
           <div className="flex justify-between font-bold text-lg border-t pt-2">
             <span>Total:</span>
-            <span>₹{calculateTotal()}</span>
+            <span>₹{Number(calculateTotal()).toLocaleString("en-IN", {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span>
           </div>
         </div>
       </div>

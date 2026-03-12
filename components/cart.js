@@ -1327,7 +1327,7 @@ export default function CartComponent() {
             </button>
           </div>
           <div className="text-base font-semibold text-red-600">
-            ₹{(((item.price > 0 ? item.price : item.actual_price) ?? 0) * (item.quantity ?? 1)).toFixed(2)}
+            ₹{(((item.price > 0 ? item.price : item.actual_price) ?? 0) * (item.quantity ?? 1)).toLocaleString("en-IN", {minimumFractionDigits: 2, maximumFractionDigits: 2})}
           </div>
         </div>
       </div>
@@ -1500,7 +1500,7 @@ export default function CartComponent() {
               <div className="flex justify-between items-center">
                 <span>Discount</span>
                 <span className="font-semibold text-green-600">
-                  -₹{calculateDiscount().toFixed(2)}
+                  -₹{calculateDiscount().toLocaleString("en-IN", {minimumFractionDigits: 2, maximumFractionDigits: 2})}
                 </span>
               </div>
             )}
