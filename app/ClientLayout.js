@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import CustomHeader from "@/components/Headernew";
 import CustomFooter from "@/components/Footer";
 import GlobalModals from "@/components/GlobalModals";
+import CookieConsent from "@/components/CookieConsent";
 import { AuthProvider } from "@/context/AuthContext";
 import { ModalProvider } from "@/context/ModalContext";
 import { WishlistProvider } from "@/context/WishlistContext";
@@ -31,6 +32,7 @@ export default function ClientLayout({ children }) {
 
               {!pathname?.startsWith("/admin") && !hideHeaderFooter && <CustomFooter />}
               <GlobalModals />
+              <CookieConsent />
             </AuthProvider>
           </CartProvider>
         </WishlistProvider>
