@@ -4,6 +4,7 @@
 import ProductDetailsSection from "@/components/ProductDetailsSection";
 // import RelatedProducts from "@/components/RelatedProducts";
 import {  useEffect, useState, useRef, useCallback } from "react";
+import { createPortal } from "react-dom";
 import { ShieldHalf } from 'lucide-react';
 import { Icon } from '@iconify/react';
 import { useParams } from "next/navigation";
@@ -909,6 +910,7 @@ const fetchBrand = async () => {
   
 
   return (
+    <>
     <div className="bg-white min-h-screen overflow-x-hidden">
       {/* 🟠 Wishlist Header Bar */}
       {/* <div className="bg-blue-50 py-6 px-8 flex justify-between items-center">
@@ -1293,64 +1295,6 @@ const fetchBrand = async () => {
 </p>
 
             </div>
-{showStickyBar && (
-  <div className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t shadow-lg block">
-
-    <div className="max-w-7xl mx-auto px-4 py-3">
-
-      {/* ONE ROW LAYOUT */}
-      <div className="flex items-center justify-between gap-6">
-
-        {/* LEFT: Product name + price */}
-        <div className="flex flex-col min-w-0">
-          <h1 className="text-sm font-semibold text-gray-800 truncate max-w-[420px]">
-            {product.name}
-          </h1>
-
-          {(Number(product.special_price) > 0 || Number(product.price) > 0) && (
-            <span className="text-base font-bold text-blue-800">
-              Rs.{Math.round(
-                Number(product.special_price) || Number(product.price)
-              ).toLocaleString("en-IN")}
-            </span>
-          )}
-        </div>
-
-        {/* RIGHT: Buttons */}
-        {/* RIGHT: Buttons */}
-<div className="flex items-center gap-3 flex-shrink-0">
-
-  {product.stock_status === "In Stock" && product.quantity > 0 && (
-    <button
-      onClick={handleBuyNow}
-      className="h-11 px-6 py-3 rounded-md shadow-md bg-[#1689C8] hover:bg-[#1689C8] hover:text-white text-white border border-blue-200 font-semibold rounded-md flex items-center justify-center gap-2 whitespace-nowrap"
-    >
-      <FaStore />
-      Buy Now
-    </button>
-  )}
-
-  <ProductAddtoCart
-    productId={product._id}
-    stockQuantity={product.quantity}
-    quantity={quantity}
-    additionalProducts={[
-      ...selectedFrequentProducts.map(p => p._id),
-      ...selectedRelatedProducts.map(p => p._id),
-    ]}
-    selectedRelatedProducts={selectedRelatedProducts}
-    extendedWarranty={selectedWarrantyAmount}
-    selectedFrequentProducts={selectedFrequentProducts}
-    className="h-11 px-6 bg-customBlue text-white bg-customBlue hover:bg-blue-700 text-white font-semibold py-2 rounded-md shadow-md flex items-center justify-center whitespace-nowrap"
-  />
-</div>
-
-
-      </div>
-
-    </div>
-  </div>
-)}
 
 
 
@@ -2592,10 +2536,57 @@ const fetchBrand = async () => {
          
          
          </div>
-      
+
     </div>
-    
-    
+
+    {showStickyBar && typeof document !== 'undefined' && createPortal(
+      <div className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t shadow-lg">
+        <div className="max-w-7xl mx-auto px-4 py-3">
+          <div className="flex items-center justify-between gap-6">
+            {/* LEFT: Product name + price */}
+            <div className="flex flex-col min-w-0">
+              <h1 className="text-sm font-semibold text-gray-800 truncate max-w-[420px]">
+                {product.name}
+              </h1>
+              {(Number(product.special_price) > 0 || Number(product.price) > 0) && (
+                <span className="text-base font-bold text-blue-800">
+                  Rs.{Math.round(
+                    Number(product.special_price) || Number(product.price)
+                  ).toLocaleString("en-IN")}
+                </span>
+              )}
+            </div>
+            {/* RIGHT: Buttons */}
+            <div className="flex items-center gap-3 flex-shrink-0">
+              {product.stock_status === "In Stock" && product.quantity > 0 && (
+                <button
+                  onClick={handleBuyNow}
+                  className="h-11 px-6 py-3 rounded-md shadow-md bg-[#1689C8] hover:bg-[#1689C8] hover:text-white text-white border border-blue-200 font-semibold flex items-center justify-center gap-2 whitespace-nowrap"
+                >
+                  <FaStore />
+                  Buy Now
+                </button>
+              )}
+              <ProductAddtoCart
+                productId={product._id}
+                stockQuantity={product.quantity}
+                quantity={quantity}
+                additionalProducts={[
+                  ...selectedFrequentProducts.map(p => p._id),
+                  ...selectedRelatedProducts.map(p => p._id),
+                ]}
+                selectedRelatedProducts={selectedRelatedProducts}
+                extendedWarranty={selectedWarrantyAmount}
+                selectedFrequentProducts={selectedFrequentProducts}
+                className="h-11 px-6 bg-customBlue text-white hover:bg-blue-700 font-semibold py-2 rounded-md shadow-md flex items-center justify-center whitespace-nowrap"
+              />
+            </div>
+          </div>
+        </div>
+      </div>,
+      document.body
+    )}
+</>
   );
 }
 
