@@ -255,6 +255,10 @@ const maxIndex = Math.max(0, products.length - CARDS_PER_VIEW);
 
 
     useEffect(() => {
+      window.scrollTo(0, 0);
+    }, []);
+
+    useEffect(() => {
       fetchBrand();
     }, []);
     useEffect(() => {
