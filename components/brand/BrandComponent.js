@@ -941,7 +941,7 @@ export default function BrandPage() {
                             className="block mb-2"
                             onClick={() => handleProductClick(product)}
                           >
-                            <h3 className="text-xs sm:text-sm font-medium text-[#0069c6] hover:text-[#00badb] line-clamp-2 min-h-[40px]">
+                            <h3 className="text-xs sm:text-sm font-medium text-black hover:text-gray-700 line-clamp-2 min-h-[40px]">
                               {product.name}
                             </h3>
                           </Link>

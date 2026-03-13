@@ -200,11 +200,11 @@ export default function Order() {
       <div className="hidden lg:block bg-blue-50 py-6 px-8 flex justify-between items-center border-b border-gray-200 shadow-sm">
         <h2 className="text-2xl font-bold text-gray-800">My Orders</h2>
         <div className="flex items-center space-x-2 text-sm mt-1">
-          <span className="text-gray-600">🏠 Home</span>
+          <Link href='/'><span className="text-gray-600">🏠 Home</span></Link>
           <FiChevronRight className="text-gray-400" />
           <span className="text-gray-500">Shop</span>
           <FiChevronRight className="text-gray-400" />
-          <span className="text-customBlue font-medium">Orders</span>
+          <span className="text-black font-medium">Orders</span>
         </div>
       </div>
 
@@ -213,7 +213,7 @@ export default function Order() {
           {/* Sidebar Navigation - Desktop */}
           <div className="hidden lg:block w-full lg:w-72 flex-shrink-0">
             <div className="bg-white p-6 rounded-xl border border-gray-200 hover:border-customBlue transition-all duration-300 shadow-sm">
-              <h3 className="text-lg font-semibold text-customBlue mb-6 pb-2 border-b border-gray-100">My Account</h3>
+              <h3 className="text-lg font-semibold text-black mb-6 pb-2 border-b border-gray-100">My Account</h3>
               <nav className="space-y-2">
                 <Link href="/orders" className="w-full flex items-center gap-2 px-5 py-3 text-base font-medium text-gray-600 rounded-lg hover:text-customBlue hover:bg-blue-100 hover:pl-6 transition-all">
                   <HiShoppingBag className="text-customBlue text-xl" />
@@ -370,7 +370,7 @@ export default function Order() {
                           <div className="mt-4 sm:mt-6 flex flex-wrap gap-2 sm:gap-3">
                             <button 
                               onClick={handleBuyAgain}
-                              className="px-3 sm:px-4 py-1 sm:py-2 bg-blue-50 text-customBlue rounded-md hover:bg-blue-100 transition-colors flex items-center text-xs sm:text-sm"
+                              className="px-3 sm:px-4 py-1 sm:py-2 bg-blue-50 text-black rounded-md hover:bg-blue-100 transition-colors flex items-center text-xs sm:text-sm"
                             >
                               <FiShoppingBag className="mr-1 sm:mr-2 text-xs sm:text-sm" />
                               Buy Again

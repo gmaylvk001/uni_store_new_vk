@@ -1382,7 +1382,7 @@ const shouldShowArrow = (item, allItems = []) => {
                 href={href}
                 className={`flex items-center justify-between mb-1 text-sm py-1 ${
                   item.level === 0
-                    ? "font-semibold text-[#1688c8]"
+                    ? "font-semibold text-black"
                     : "text-[#8c8c8c] !p-[5px] hover:text-[#1688c8]"
                 }`}
               >
@@ -1676,7 +1676,7 @@ const shouldShowArrow = (item, allItems = []) => {
         <div
           className={`w-full flex items-center ${rowJustify} ${
             level === 0 ? "px-3 py-3 text-sm" : "pl-5 pr-3 py-2 text-[13px]"
-          } ${isOpen ? "text-blue-700 bg-[#f2f2f2]" : "text-gray-800 hover:bg-[#f2f2f2]"}`}
+          } ${isOpen ? "text-black bg-[#f2f2f2]" : "text-gray-800 hover:bg-[#f2f2f2]"}`}
         >
           <Link
             href={href}
@@ -2291,14 +2291,14 @@ const shouldShowArrow = (item, allItems = []) => {
                         >
                           {/* Internal sticky header */}
                           <div className="flex items-center justify-between mb-3 sticky top-0 bg-white pb-2 border-b">
-                            <div className="flex items-center gap-2 text-customBlue font-semibold text-sm">
+                            <div className="flex items-center gap-2 text-black font-semibold text-sm">
                               <FiMenu size={18} />
                               <span>Menu</span>
                             </div>
                             <button
                               onClick={() => setIsMobileMenuOpen(false)}
                               aria-label="Close menu"
-                              className="p-2 rounded-full text-customBlue hover:bg-blue-50 active:bg-blue-100 focus:outline-none focus:ring focus:ring-blue-200"
+                              className="p-2 rounded-full text-black hover:bg-blue-50 active:bg-blue-100 focus:outline-none focus:ring focus:ring-blue-200"
                             >
                               <FiX size={22} />
                             </button>

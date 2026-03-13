@@ -1186,7 +1186,7 @@ export default function CartComponent() {
     {/* Header */}
       <div className=" sm:pl-[3rem] sm:pr-[2rem] flex flex-col sm:flex-row justify-between items-center gap-2 my-[35px]">
         <div style={{ "--heading-color": "#0069c6" }}>
-          <h1 className="font-bold text-[1.75rem] text-[#0069c6]"> My Cart</h1>
+          <h1 className="font-bold text-[1.75rem] text-black"> My Cart</h1>
         </div>
         
       </div>
@@ -1226,7 +1226,7 @@ export default function CartComponent() {
               <div className="flex flex-col gap-1 text-sm md:text-base">
                 <h3 className="text-xs text-gray-500 uppercase">{item.item_code}</h3>
                 <Link href={`/product/${slugify(item.name)}`}>
-                  <p className="text-xs sm:text-sm font-medium text-[#0069c6] hover:text-[#00badb] line-clamp-2 min-h-[40px]">
+                  <p className="text-xs sm:text-sm font-medium text-black hover:text-gray-700 line-clamp-2 min-h-[40px]">
                     {item.name.length > 50 ? item.name.slice(0, 50) + "..." : item.name}
                   </p>
                 </Link>
@@ -1253,7 +1253,7 @@ export default function CartComponent() {
             <td className="py-4 px-4 text-center">
               <div className="flex justify-center items-center gap-2 border border-gray-300 rounded p-1">
                 <button
-                  className="px-2 py-1 text-black hover:text-blue-600"
+                  className="px-2 py-1 text-black hover:text-gray-400"
                   onClick={() => updateQuantity(item.productId, item.quantity - 1, null)}
                   disabled={item.quantity <= 1}
                 >
@@ -1261,7 +1261,7 @@ export default function CartComponent() {
                 </button>
                 <span>{item.quantity}</span>
                 <button
-                  className="px-2 py-1 text-black hover:text-blue-600"
+                  className="px-2 py-1 text-black hover:text-gray-400"
                   onClick={() => updateQuantity(item.productId, item.quantity + 1, item.original_quantity)}
                 >
                   +
@@ -1303,7 +1303,7 @@ export default function CartComponent() {
       <div className="flex flex-col justify-between w-full">
         <div>
            <Link href={`/product/${slugify(item.name)}`}>
-          <p className="text-sm font-medium text-[#0069c6] hover:text-[#00badb]">
+          <p className="text-sm font-medium text-black hover:text-gray-700">
             {item.name.length > 40 ? item.name.slice(0, 40) + "..." : item.name}
           </p>
           </Link>
@@ -1327,15 +1327,9 @@ export default function CartComponent() {
             </button>
           </div>
           <div className="text-base font-semibold text-red-600">
-            ₹{(((item.price > 0 ? item.price : item.actual_price) ?? 0) * (item.quantity ?? 1)).toLocaleString("en-IN", {minimumFractionDigits: 2, maximumFractionDigits: 2})}
+            ₹{(((item.price > 0 ? item.price : item.actual_price) ?? 0) * (item.quantity ?? 1)).toFixed(2)}
           </div>
         </div>
-        <button
-          className="text-gray-500 text-xs font-semibold hover:text-blue-600 mt-1"
-          onClick={() => confirmRemoveItem(item.productId)}
-        >
-          Remove
-        </button>
       </div>
     </div>
   ))}
@@ -1506,7 +1500,7 @@ export default function CartComponent() {
               <div className="flex justify-between items-center">
                 <span>Discount</span>
                 <span className="font-semibold text-green-600">
-                  -₹{calculateDiscount().toLocaleString("en-IN", {minimumFractionDigits: 2, maximumFractionDigits: 2})}
+                  -₹{calculateDiscount().toFixed(2)}
                 </span>
               </div>
             )}
