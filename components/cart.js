@@ -1330,6 +1330,12 @@ export default function CartComponent() {
             ₹{(((item.price > 0 ? item.price : item.actual_price) ?? 0) * (item.quantity ?? 1)).toLocaleString("en-IN", {minimumFractionDigits: 2, maximumFractionDigits: 2})}
           </div>
         </div>
+        <button
+          className="text-gray-500 text-xs font-semibold hover:text-blue-600 mt-1"
+          onClick={() => confirmRemoveItem(item.productId)}
+        >
+          Remove
+        </button>
       </div>
     </div>
   ))}
