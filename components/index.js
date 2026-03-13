@@ -1600,8 +1600,8 @@ case 'brands':
                   </section>
 
                   {/* UNILET Only */}
-                  <div className=" py-10 px-2 lg:px-6 relative">
-                    {/* <h2 className="text-white text-2xl font-semibold mb-6">UNILET Only</h2> */}
+                {/*  <div className=" py-10 px-2 lg:px-6 relative">
+                     <h2 className="text-white text-2xl font-semibold mb-6">UNILET Only</h2> */}
                     {/* //Left Arrow
                     <button
                       onClick={prev}
@@ -1668,10 +1668,10 @@ case 'brands':
                           </div>
                         ))}
                       </div>
-                    </div> */}
+                    </div> 
                     <CategoryProductsUnilets/>
                   </div>
-
+*/}
                   {/* Special Deals for you */}
                   <section className="px-4 md:px-8 py-1">
                     <h2 className="text-xl md:text-2xl font-semibold mb-6">Special Deals for you</h2>
