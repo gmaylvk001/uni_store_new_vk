@@ -305,7 +305,7 @@ const capitalizeFirstLetter = (str) =>
                 </div>
                 <hr className="border-gray-600 my-3" />
                 <p>
-                  <strong>Business Hours:</strong> 09:30AM - 09:30 PM (Mon to Sun)
+                  <strong>Business Hours:</strong> 10:30AM - 09:30 PM (Mon to Sun)
                 </p>
               </div>
               {/* My Account & Policy */}

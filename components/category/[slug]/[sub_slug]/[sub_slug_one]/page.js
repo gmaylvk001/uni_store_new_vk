@@ -1359,11 +1359,13 @@ export default function CategoryPage() {
                                 {product.stock_status === "In Stock" && product.quantity ? `, ${product.quantity} units` : ""}
                               </h4> */}
 
-                       <h4 className={`text-xs mb-3 ${product.quantity > 0 ? "text-green-600" : "text-red-600"}`}>
-                        {product.quantity > 0
-                          ? `In Stock, ${product.quantity} units`
-                          : "Out Of Stock"}
-                      </h4>
+                       {/* 
+                          <h4 className={`text-[10px] sm:text-xs mb-2 ${product.stock_status === "In Stock" ? "text-green-600" : "text-red-600"}`}>
+                            {product.stock_status}{product.stock_status === "In Stock" && product.quantity ? `, ${product.quantity} units` : ""}
+                          </h4> */}
+                          <h4 className={`text-[10px] sm:text-xs mb-2 ${product.stock_status === "In Stock" ? "text-green-600" : "text-red-600"}`}>
+                            {product.stock_status}{product.stock_status === "In Stock" }
+                          </h4>
          
                               {/* Bottom Buttons */}
                               <div className="mt-auto flex items-center justify-between gap-2">
