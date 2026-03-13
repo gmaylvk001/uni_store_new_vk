@@ -1357,12 +1357,12 @@ case 'brands':
                         <Link key={cat._id} href={`/category/${cat.category_slug}`}>
                           <div className="flex flex-col items-center min-w-[70px] sm:min-w-[100px] cursor-pointer">
                             {/* ICON TILE */}
-                            <div className="w-14 h-14 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-2xl bg-gradient-to-br from-[#04a1fc] to-[#79c4f2] flex items-center justify-center shadow-lg transition-transform duration-300 group-hover:scale-105">
+                            <div className="w-14 h-14 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-2xl bg-gradient-to-br from-[#0369a1] to-[#0ea5e9] flex items-center justify-center shadow-lg transition-transform duration-300 group-hover:scale-105">
                               {cat.image ? (
                                 <img
                                   src={cat.image}
                                   alt={cat.category_name}
-                                  className="h-7 w-9 sm:h-10 sm:w-12 object-contain invert"
+                                  className="h-9 w-11 sm:h-12 sm:w-14 object-contain [filter:invert(1)_drop-shadow(0_0_2px_rgba(255,255,255,0.9))_drop-shadow(0_0_1px_rgba(255,255,255,0.9))]"
                                 />
                               ) : (
                                 <div className="w-8 h-8 sm:w-10 sm:h-10 bg-white/30 rounded-full" />
@@ -1382,43 +1382,46 @@ case 'brands':
                 </motion.section>
                 {/* <div className="home-container bg-gradient-to-r from-[#1688C8] to-[#33a7b5]"> */}
                 <div className="home-container bg-gradient-to-br from-[#B0D7EE] via-[#ffffff] to-[#E4F1F9]">
+
+                  {/* Best of Apple */}
+                  <div className="py-10 px-2 lg:px-6 relative">
+                    <CategoryBestofApple/>
+                  </div>
+
                   {/* LATEST @ UNILET STORES */}
+{/*
                   <section className="px-4 md:px-6 py-8">
                     <h2 className="text-xl md:text-2xl font-bold mb-6">Latest @Unilet</h2>
                     <div className="relative max-w-12xl mx-auto">
-                      {/* LEFT ARROW */}
+                      
                       <button className="unilet-prev absolute left-3 top-1/2 -translate-y-1/2 z-20 h-9 w-9 rounded-full bg-black/40 text-white flex items-center justify-center text-xl hover:bg-black/70">‹</button>
-                      {/* RIGHT ARROW */}
+                      
                       <button className="unilet-next absolute right-3 top-1/2 -translate-y-1/2 z-20 h-9 w-9 rounded-full bg-black/40 text-white flex items-center justify-center text-xl hover:bg-black/70">›</button>
                       <Swiper modules={[Autoplay, Navigation]} autoplay={{ delay: 3000, disableOnInteraction: false }}
                         navigation={{
                           prevEl: ".unilet-prev",
                           nextEl: ".unilet-next",
                         }} loop slidesPerView={1} className="rounded-xl overflow-hidden">
-                        {/* Slide 1 */}
+                        
                         <SwiperSlide>
                           <Link href="/category/mobiles-tablets/smart-phone">
                             <img src="uploads/flashsale/Banner-1.png" alt="Unilet" className="w-full h-[260px] md:h-[380px] lg:h-[420px]"/>
                           </Link>
                         </SwiperSlide>
 
-                        {/* Slide 2 */} 
+                       
                         <SwiperSlide>
                           <Link href="/category/mobiles-tablets/mobile-phones">
                             <img src="uploads/flashsale/Banner-2.png" alt="Unilet" className="w-full h-[260px] md:h-[380px] lg:h-[420px]"/>
                           </Link>
                         </SwiperSlide>
 
-                        {/* Slide 3 */}
-                        {/* <SwiperSlide>
-                          <Link href="/">
-                            <img src="uploads/flashsale/unilet-latest-pro-n-.png" alt="Unilet" className="w-full h-[260px] md:h-[380px] lg:h-[420px]"/>
-                          </Link>
-                        </SwiperSlide> */}
+                        
                       </Swiper>
                     </div>
                   </section>
 
+                */}
                   {/* Best Value for you */}
                   <section className="px-4 md:px-6 py-1">
                     <h2 className="text-xl md:text-2xl font-bold mb-6">Best Value for you</h2>
@@ -1462,10 +1465,7 @@ case 'brands':
 
 
 
-                  {/* Best of Apple */}
-                  <div className="py-10 px-2 lg:px-6 relative">
-                    <CategoryBestofApple/>
-                  </div>
+                  
 
 
 
