@@ -566,13 +566,16 @@ const capitalizeFirstLetter = (str) =>
           {/* RIGHT SECTION (Our Location) */}
           <div className="space-y-4">
             <h3 className="text-white font-semibold text-lg mb-4">Our Location</h3>
-            {Object.entries(groupedStores).map(([city, orgs], index) => (
-              <div key={index}>
-                <Link href={`/store/${city}`}>
-                <p className="text-sm text-gray-400">{orgs.join(", ")}</p>
-                </Link>
-              </div>
-            ))}
+            <p className="text-sm text-gray-400">
+              {Object.entries(groupedStores).map(([city, orgs], index, arr) => (
+                <span key={index}>
+                  <Link href={`/store/${city}`} className="hover:text-white hover:underline transition-colors duration-200">
+                    {orgs.join(", ")}
+                  </Link>
+                  {index < arr.length - 1 && ", "}
+                </span>
+              ))}
+            </p>
           </div>
         </div>
 
