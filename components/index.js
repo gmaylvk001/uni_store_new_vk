@@ -1426,63 +1426,8 @@ case 'brands':
                   </section>
 
                 */}
-                  {/* Best Value for you */}
-                  <section className="px-4 md:px-6 py-1">
-                    <h2 className="text-xl md:text-2xl font-bold mb-6">Best Value for you</h2>
-                    {/* Best of Apple */}
-                    <div className="mt-1">
-                      <CategoryBestofValue/>
-                    </div>
-                    <div className="relative max-w-12xl mx-auto">
-                      {/* LEFT ARROW */}
-                      <button className="unilet-prev absolute left-3 top-1/2 -translate-y-1/2 z-20 h-9 w-9 rounded-full bg-black/40 text-white flex items-center justify-center text-xl hover:bg-black/70">‹</button>
-                      {/* RIGHT ARROW */}
-                      <button className="unilet-next absolute right-3 top-1/2 -translate-y-1/2 z-20 h-9 w-9 rounded-full bg-black/40 text-white flex items-center justify-center text-xl hover:bg-black/70">›</button>
-                      <Swiper modules={[Autoplay, Navigation]} autoplay={{ delay: 3000, disableOnInteraction: false }}
-                        navigation={{
-                          prevEl: ".unilet-prev",
-                          nextEl: ".unilet-next",
-                        }} loop slidesPerView={1} className="rounded-xl overflow-hidden">
-                        {/* Slide 1 */}
-                        <SwiperSlide>
-                          <Link href="/category/large-appliance">
-                            <img src="uploads/aboutus/banner-below-bvfu-1.png" alt="Unilet" className="w-full h-[260px] md:h-[380px] lg:h-[420px]"/>
-                          </Link>
-                        </SwiperSlide>
 
-                        {/* Slide 2 */}
-                        <SwiperSlide>
-                          <Link href="/category/accessories">
-                            <img src="uploads/aboutus/banner-below-bvfu-2.png" alt="Unilet" className="w-full h-[260px] md:h-[380px] lg:h-[420px]"/>
-                          </Link>
-                        </SwiperSlide>
-
-                        {/* Slide 3 */}
-                        {/* <SwiperSlide>
-                          <Link href="/category/others">
-                            <img src="uploads/aboutus/BestValueSaleImg2.png" alt="Unilet" className="w-full h-[260px] md:h-[380px] lg:h-[420px]"/>
-                          </Link>
-                        </SwiperSlide> */}
-                      </Swiper>
-                    </div>
-                  </section>
-
-
-
-                  
-
-
-
-
-                  {/* Best for the season */}
-                  {/* <div className=" py-5 px-6 relative">
-                    <div className="grid grid-cols-2 md:grid-cols-1 gap-4">
-                      <CategoryProducts/>
-                    </div>
-                   
-                  </div> */}
-
-                  {/* Unilet Brands */}
+                   {/* Unilet Brands */}
                   <section className="px-4 md:px-8 py-1">
                     <h2 className="text-xl md:text-2xl font-semibold mb-6">Brand Spotlight</h2>
                     <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-5">
@@ -1537,13 +1482,71 @@ case 'brands':
                     </div>
                   </section>
 
-                  <div className="py-10 px-2 lg:px-6 relative pt-1">
+                  {/* Best Value for you */}
+                  <section className="px-4 md:px-8 py-6">
+                    <h2 className="text-xl md:text-2xl font-bold mb-2">Best Value for you</h2>
+                    {/* Best of Apple */}
+                    <div className="mt-1">
+                      <CategoryBestofValue/>
+                    </div>
+                    <div className="relative max-w-12xl mx-auto">
+                      {/* LEFT ARROW */}
+                      <button className="unilet-prev absolute left-3 top-1/2 -translate-y-1/2 z-20 h-9 w-9 rounded-full bg-black/40 text-white flex items-center justify-center text-xl hover:bg-black/70">‹</button>
+                      {/* RIGHT ARROW */}
+                      <button className="unilet-next absolute right-3 top-1/2 -translate-y-1/2 z-20 h-9 w-9 rounded-full bg-black/40 text-white flex items-center justify-center text-xl hover:bg-black/70">›</button>
+                      <Swiper modules={[Autoplay, Navigation]} autoplay={{ delay: 3000, disableOnInteraction: false }}
+                        navigation={{
+                          prevEl: ".unilet-prev",
+                          nextEl: ".unilet-next",
+                        }} loop slidesPerView={1} className="rounded-xl overflow-hidden">
+                        {/* Slide 1 */}
+                        <SwiperSlide>
+                          <Link href="/category/large-appliance">
+                            <img src="uploads/aboutus/banner-below-bvfu-1.png" alt="Unilet" className="w-full h-[260px] md:h-[380px] lg:h-[420px]"/>
+                          </Link>
+                        </SwiperSlide>
+
+                        {/* Slide 2 */}
+                        <SwiperSlide>
+                          <Link href="/category/accessories">
+                            <img src="uploads/aboutus/banner-below-bvfu-2.png" alt="Unilet" className="w-full h-[260px] md:h-[380px] lg:h-[420px]"/>
+                          </Link>
+                        </SwiperSlide>
+
+                        {/* Slide 3 */}
+                        {/* <SwiperSlide>
+                          <Link href="/category/others">
+                            <img src="uploads/aboutus/BestValueSaleImg2.png" alt="Unilet" className="w-full h-[260px] md:h-[380px] lg:h-[420px]"/>
+                          </Link>
+                        </SwiperSlide> */}
+                      </Swiper>
+                    </div>
+                  </section>
+
+
+
+                  
+
+
+
+
+                  {/* Best for the season */}
+                  {/* <div className=" py-5 px-6 relative">
+                    <div className="grid grid-cols-2 md:grid-cols-1 gap-4">
+                      <CategoryProducts/>
+                    </div>
+                   
+                  </div> */}
+
+                 
+
+                  <div className="py-4 px-2 lg:px-6 relative pt-1">
                       <CategoryProducts/>
                   </div>
 
                   {/* What's Hot */}
-                  <section className="px-4 md:px-8 py-1">
-                    <h2 className="text-xl md:text-2xl font-semibold mb-6">What's Hot</h2>
+                  <section className="px-1 md:px-8 py-1">
+                    <h2 className="text-xl md:text-2xl font-semibold mb-4">What's Hot</h2>
                     <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-5">
                       
                       {/* Image 1 */}
