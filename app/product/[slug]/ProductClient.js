@@ -2103,7 +2103,7 @@ const fetchBrand = async () => {
 )} */}
 {relatedProducts?.filter(item => item.stock_status === "In Stock").length > 0 && (
 <div className="px-4 py-4 border border-gray-300 rounded-lg shadow-md bg-white max-h-[500px] overflow-y-scroll scrollbar-hide">
-        <h2 className="text-sm font-bold text-customBlue underline mb-2">
+        <h2 className="text-sm font-bold text-black underline mb-2">
           Similar Products
         </h2>
         {relatedProducts
@@ -2133,7 +2133,7 @@ const fetchBrand = async () => {
                     className="block mb-1"
                     onClick={() => handleProductClick(item)}
                   >
-                    <h3 className="text-xs sm:text-sm font-medium text-[#0069c6] hover:text-[#00badb] line-clamp-2 min-h-[40px]">
+                    <h3 className="text-xs sm:text-sm font-medium text-black hover:text-gray-700 line-clamp-2 min-h-[40px]">
                       {item.name}
                     </h3>
                   </Link>

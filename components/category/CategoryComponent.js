@@ -1444,7 +1444,7 @@ const fetchInitialData = async () => {
   className="block mb-2 flex-1"
   onClick={() => handleProductClick(product)}
 >
-  <h3 className="text-xs sm:text-sm font-medium text-[#0069c6] hover:text-[#00badb] min-h-[32px] sm:min-h-[40px]">
+  <h3 className="text-xs sm:text-sm font-medium text-black hover:text-gray-700 min-h-[32px] sm:min-h-[40px]">
                                             {(() => {
                                               const model = product.model_number ? `(${product.model_number.trim()})` : "";
                                               const name = product.name ? product.name.trim() : "";

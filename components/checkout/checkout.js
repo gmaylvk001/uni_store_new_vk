@@ -1298,7 +1298,7 @@ const grandTotal = subtotal - totalDiscount;
 
                       {/* Product Details */}
                       <div className="flex-1">
-                        <div title={item.name} className="leading-snug text-xs sm:text-sm font-medium text-[#0069c6] hover:text-[#00badb] line-clamp-3 min-h-[40px]">
+                        <div title={item.name} className="leading-snug text-xs sm:text-sm font-medium text-black hover:text-gray-700 line-clamp-3 min-h-[40px]">
                           {item.name}
                         </div>
 
