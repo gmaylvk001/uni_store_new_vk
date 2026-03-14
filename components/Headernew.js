@@ -2175,6 +2175,14 @@ const shouldShowArrow = (item, allItems = []) => {
               
             </div>
 
+            <Link href="/lg-exclusive" className="flex items-center justify-center
+              
+               text-white text-xs font-semibold shadow-md
+               hover:bg-[#1688c8] transition-all whitespace-nowrap">
+              <img src="/images/lg-exclusive.png" alt="LG" className="h-7 w-auto object-contain" />
+              
+            </Link>
+
             <div className="relative flex items-center">
   {isLoggedIn ? (
     <>

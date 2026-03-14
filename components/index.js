@@ -825,7 +825,7 @@ const maxIndex = Math.max(0, products.length - CARDS_PER_VIEW);
     const brandSettings = {
       infinite: true,
       speed: 3000, // Continuous effect
-      slidesToShow: 6, // Default for large screens
+      slidesToShow: 8, // Default for large screens
       slidesToScroll: 1,
       autoplay: true,
       autoplaySpeed: 0,
@@ -836,19 +836,19 @@ const maxIndex = Math.max(0, products.length - CARDS_PER_VIEW);
         {
           breakpoint: 1024, // Tablets
           settings: {
-            slidesToShow: 5,
+            slidesToShow: 6,
           },
         },
         {
           breakpoint: 768, // Mobile
           settings: {
-            slidesToShow: 3,
+            slidesToShow: 4,
           },
         },
         {
           breakpoint: 480, // Extra-small devices
           settings: {
-            slidesToShow: 2,
+            slidesToShow: 3,
           },
         },
       ],
@@ -1147,8 +1147,10 @@ case 'brands':
                       <div>
                           <motion.div variants={containerVariants} className="  rounded-[23px] mx-2">
                               <motion.div variants={itemVariants} className="flex justify-between items-center mb-4">
-                                  <h5 className= "text-lg font-semibold">Shop by Brands</h5>
+                                 
+                                  <h2 className="text-xl md:text-2xl font-semibold mb-2">Shop by Brands</h2>
                               </motion.div>
+                              <hr className="border-t-2 border-gray-300 mb-4" />
 
                               {isBrandsLoading ? (
                                   <div className="flex justify-center items-center h-32">
@@ -1156,7 +1158,7 @@ case 'brands':
                                   </div>
                               ) : (
                                   <motion.div variants={itemVariants}>
-                                      <Slider {...brandSettings} className="brand-slider px-2 sm:px-[50px] relative">
+                                      <Slider {...brandSettings} className="brand-slider px-0 relative">
                                           {brands
                                         .filter(
                                           (brand) =>
@@ -1165,16 +1167,16 @@ case 'brands':
                                         ).map((brand) => (
                                               <motion.div
                                                   key={brand.id}
-                                                  className="p-4 flex justify-center items-center"
+                                                  className="p-1 flex justify-center items-center"
                                                   whileHover={{ scale: 1.1 }}
                                               >
-                                              <div className="w-24 h-24 flex items-center justify-center overflow-hidden">
+                                              <div className="w-32 h-24 flex items-center justify-center overflow-hidden">
                                                 <Link href={`/brand/${slugify(brand.brand_name)}`}>
                                                   <Image
                                                     src={`/uploads/Brands/${brand.image}`}
                                                     alt={brand.brand_name || "Brand Logo"}
-                                                    width={100}
-                                                    height={100}
+                                                    width={128}
+                                                    height={128}
                                                     className="object-contain w-full h-full cursor-pointer"
                                                     unoptimized
                                                   />
@@ -1186,6 +1188,7 @@ case 'brands':
                                   </motion.div>
                               )}
                           </motion.div>
+                           <hr className="border-t-2 border-gray-300 mb-4" />
                       </div>
                   </motion.section>
               );
@@ -1388,7 +1391,7 @@ case 'brands':
                 <div className="home-container bg-gradient-to-br from-[#B0D7EE] via-[#ffffff] to-[#E4F1F9]">
 
                   {/* Best of Apple */}
-                  <div className="py-10 px-2 lg:px-6 relative">
+                  <div className="py-2 px-2 lg:px-6 relative">
                     <CategoryBestofApple/>
                   </div>
 
@@ -1428,7 +1431,7 @@ case 'brands':
                 */}
 
                    {/* Unilet Brands */}
-                  <section className="px-4 md:px-8 py-1">
+                  <section className="px-4 md:px-8 py-6">
                     <h2 className="text-xl md:text-2xl font-semibold mb-6">Brand Spotlight</h2>
                     <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-5">
                       
@@ -1483,7 +1486,7 @@ case 'brands':
                   </section>
 
                   {/* Best Value for you */}
-                  <section className="px-4 md:px-8 py-6">
+                  <section className="px-4 md:px-8 py-4">
                     <h2 className="text-xl md:text-2xl font-bold mb-2">Best Value for you</h2>
                     {/* Best of Apple */}
                     <div className="mt-1">
@@ -1540,12 +1543,12 @@ case 'brands':
 
                  
 
-                  <div className="py-4 px-2 lg:px-6 relative pt-1">
+                  <div className="py-2 px-2 lg:px-6 relative">
                       <CategoryProducts/>
                   </div>
 
                   {/* What's Hot */}
-                  <section className="px-1 md:px-8 py-1">
+                  <section className="px-4 md:px-8 py-2">
                     <h2 className="text-xl md:text-2xl font-semibold mb-4">What's Hot</h2>
                     <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-5">
                       
@@ -1673,7 +1676,7 @@ case 'brands':
                   </div>
 */}
                   {/* Special Deals for you */}
-                  <section className="px-4 md:px-8 py-1">
+                  <section className="px-4 md:px-8 py-6">
                     <h2 className="text-xl md:text-2xl font-semibold mb-6">Special Deals for you</h2>
                     <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-5">
                       
@@ -1750,7 +1753,7 @@ case 'brands':
                     )}
                   </div>
                   
-                  <section className="px-4 md:px-8 py-3">
+                  <section className="px-4 md:px-8 py-6">
                     {/* <h2 className="text-xl md:text-2xl font-semibold text-white mb-6">
                      Onsite Service Options: UniShield, Unisure, UniCare, UniGuard, UniProtect, UniSafe
                     </h2> */}
