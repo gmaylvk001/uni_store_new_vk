@@ -843,12 +843,14 @@ const maxIndex = Math.max(0, products.length - CARDS_PER_VIEW);
           breakpoint: 768, // Mobile
           settings: {
             slidesToShow: 4,
+            centerPadding: "10px",
           },
         },
         {
           breakpoint: 480, // Extra-small devices
           settings: {
             slidesToShow: 3,
+            centerPadding: "10px",
           },
         },
       ],
@@ -1167,19 +1169,20 @@ case 'brands':
                                         ).map((brand) => (
                                               <motion.div
                                                   key={brand.id}
-                                                  className="p-1 flex justify-center items-center"
+                                                  className="flex justify-center items-center"
                                                   whileHover={{ scale: 1.1 }}
                                               >
-                                              <div className="w-32 h-24 flex items-center justify-center overflow-hidden">
+                                              <div className="w-42 h-42 flex items-center justify-center overflow-hidden">
                                                 <Link href={`/brand/${slugify(brand.brand_name)}`}>
                                                   <Image
                                                     src={`/uploads/Brands/${brand.image}`}
                                                     alt={brand.brand_name || "Brand Logo"}
                                                     width={128}
                                                     height={128}
-                                                    className="object-contain w-full h-full cursor-pointer"
+                                                    className="object-contain w-full h-full cursor-pointer p-2"
                                                     unoptimized
                                                   />
+                                                  
                                                 </Link>
                                               </div>
                                               </motion.div>
