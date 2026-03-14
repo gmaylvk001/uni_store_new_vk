@@ -2104,7 +2104,7 @@ const fetchBrand = async () => {
 {relatedProducts?.filter(item => item.stock_status === "In Stock").length > 0 && (
 <div className="px-4 py-4 border border-gray-300 rounded-lg shadow-md bg-white max-h-[500px] overflow-y-scroll scrollbar-hide">
         <h2 className="text-sm font-bold text-black underline mb-2">
-          Similar Products
+          Add-ons
         </h2>
         {relatedProducts
           .filter(item => item.stock_status === "In Stock")
