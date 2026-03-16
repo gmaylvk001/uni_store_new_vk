@@ -843,14 +843,12 @@ const maxIndex = Math.max(0, products.length - CARDS_PER_VIEW);
           breakpoint: 768, // Mobile
           settings: {
             slidesToShow: 4,
-            centerPadding: "10px",
           },
         },
         {
           breakpoint: 480, // Extra-small devices
           settings: {
             slidesToShow: 3,
-            centerPadding: "10px",
           },
         },
       ],
@@ -1169,20 +1167,19 @@ case 'brands':
                                         ).map((brand) => (
                                               <motion.div
                                                   key={brand.id}
-                                                  className="flex justify-center items-center"
+                                                  className="p-1 flex justify-center items-center"
                                                   whileHover={{ scale: 1.1 }}
                                               >
-                                              <div className="w-42 h-42 flex items-center justify-center overflow-hidden">
+                                              <div className="w-32 h-24 flex items-center justify-center overflow-hidden">
                                                 <Link href={`/brand/${slugify(brand.brand_name)}`}>
                                                   <Image
                                                     src={`/uploads/Brands/${brand.image}`}
                                                     alt={brand.brand_name || "Brand Logo"}
                                                     width={128}
                                                     height={128}
-                                                    className="object-contain w-full h-full cursor-pointer p-2"
+                                                    className="object-contain w-full h-full cursor-pointer"
                                                     unoptimized
                                                   />
-                                                  
                                                 </Link>
                                               </div>
                                               </motion.div>
@@ -1434,12 +1431,12 @@ case 'brands':
                 */}
 
                    {/* Unilet Brands */}
-                  <section className="px-4 md:px-8 py-6">
+                  {/* <section className="px-4 md:px-8 py-6">
                     <h2 className="text-xl md:text-2xl font-semibold mb-6">Brand Spotlight</h2>
                     <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-5">
-                      
+                       */}
                       {/* Image 1 */}
-                      <div className="rounded-xl overflow-hidden bg-[#111] hover:scale-[1.02] transition">
+                      {/* <div className="rounded-xl overflow-hidden bg-[#111] hover:scale-[1.02] transition">
                         <Link href={`/brand/preethi`}>
                         <img
                           src="uploads/aboutus/whats-hot-unilet-mg.png"
@@ -1448,10 +1445,10 @@ case 'brands':
                         />
                         </Link>
                         
-                      </div>
+                      </div> */}
 
                       {/* Image 2 */}
-                      <div className="rounded-xl overflow-hidden bg-[#111] hover:scale-[1.02] transition">
+                      {/* <div className="rounded-xl overflow-hidden bg-[#111] hover:scale-[1.02] transition">
                         <Link href={`/brand/voltas`}>
                         <img
                           src="uploads/aboutus/whats-hot-unilet-ac.png"
@@ -1459,10 +1456,10 @@ case 'brands':
                           className="w-full h-full object-cover"
                         />
                         </Link>
-                      </div>
+                      </div> */}
 
                       {/* Image 3 */}
-                      <div className="rounded-xl overflow-hidden bg-[#111] hover:scale-[1.02] transition">
+                      {/* <div className="rounded-xl overflow-hidden bg-[#111] hover:scale-[1.02] transition">
                         <Link href={`/brand/lg`}>
                         
                         <img
@@ -1471,10 +1468,10 @@ case 'brands':
                           className="w-full h-full object-cover"
                         />
                         </Link>
-                      </div>
+                      </div> */}
 
                       {/* Image 4 */}
-                      <div className="rounded-xl overflow-hidden bg-[#111] hover:scale-[1.02] transition">
+                      {/* <div className="rounded-xl overflow-hidden bg-[#111] hover:scale-[1.02] transition">
                         <Link href={`/brand/apple`}>
                        
                         <img
@@ -1486,7 +1483,41 @@ case 'brands':
                       </div>
 
                     </div>
-                  </section>
+                  </section> */}
+           {/* --- Section 1: Brand Spotlight --- */}
+<section className="px-4 md:px-8 py-10">
+  <h2 className="text-xl md:text-2xl font-semibold mb-8 text-black">Brand Spotlight</h2>
+
+  <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">  
+    {[
+      { href: "/brand/preethi", src: "uploads/aboutus/whats-hot-unilet-mg.png" },
+      { href: "/brand/voltas", src: "uploads/aboutus/whats-hot-unilet-ac.png" },
+      { href: "/brand/lg", src: "uploads/aboutus/whats-hot-unilet.png" },
+      { href: "/brand/apple", src: "uploads/aboutus/whats-hot-unilet-mb.png" },
+      { href: "/brand/hp", src: "uploads/aboutus/HP-Laptop.jpg" }
+    ].map((item, i) => (
+       <div
+        key={i}
+        className={`hover:scale-[1.03] transition-transform duration-300 ${
+          i === 4 ? "hidden lg:block" : ""
+        }`}
+      >
+        <Link href={item.href}>
+         <div className="w-full aspect-[4/5] rounded-2xl flex items-center justify-center overflow-hidden">
+            <img 
+              src={item.src} 
+              alt="Brand Spotlight" 
+            className="max-w-full max-h-full object-contain rounded-2xl shadow-sm"
+            />       
+          </div>    
+        </Link>
+      </div>
+    ))}
+    
+    <div className="hidden lg:block"></div>
+  </div>
+</section>
+
 
                   {/* Best Value for you */}
                   <section className="px-4 md:px-8 py-4">
@@ -1551,12 +1582,12 @@ case 'brands':
                   </div>
 
                   {/* What's Hot */}
-                  <section className="px-4 md:px-8 py-2">
+                  {/* <section className="px-4 md:px-8 py-2">
                     <h2 className="text-xl md:text-2xl font-semibold mb-4">What's Hot</h2>
-                    <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-5">
+                    <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-5"> */}
                       
                       {/* Image 1 */}
-                      <div className="rounded-xl overflow-hidden bg-[#111] hover:scale-[1.02] transition">
+                      {/* <div className="rounded-xl overflow-hidden bg-[#111] hover:scale-[1.02] transition">
                         <Link href={`/brand/realme`}>
                         <img
                           src="uploads/aboutus/HP_What'sHot_RealmeP4x_02Jan2026_ZNy77FWpt.webp"
@@ -1565,10 +1596,10 @@ case 'brands':
                         />
                         </Link>
                         
-                      </div>
+                      </div> */}
 
                       {/* Image 2 */}
-                      <div className="rounded-xl overflow-hidden bg-[#111] hover:scale-[1.02] transition">
+                      {/* <div className="rounded-xl overflow-hidden bg-[#111] hover:scale-[1.02] transition">
                         <Link href={`/category/televisions`}>
                         <img
                           src="uploads/aboutus/HP_What'sHot_TVs_02Jan2026_8MouoeMk4B.webp"
@@ -1576,10 +1607,10 @@ case 'brands':
                           className="w-full h-full object-cover"
                         />
                         </Link>
-                      </div>
+                      </div> */}
 
                       {/* Image 3 */}
-                      <div className="rounded-xl overflow-hidden bg-[#111] hover:scale-[1.02] transition">
+                      {/* <div className="rounded-xl overflow-hidden bg-[#111] hover:scale-[1.02] transition">
                         <Link href={`/category/large-appliance`}>
                         
                         <img
@@ -1588,10 +1619,10 @@ case 'brands':
                           className="w-full h-full object-cover"
                         />
                         </Link>
-                      </div>
+                      </div> */}
 
                       {/* Image 4 */}
-                      <div className="rounded-xl overflow-hidden bg-[#111] hover:scale-[1.02] transition">
+                      {/* <div className="rounded-xl overflow-hidden bg-[#111] hover:scale-[1.02] transition">
                         <Link href={`/category/mobiles-accessories/mobile-phones/iphone`}>
                        
                         <img
@@ -1603,7 +1634,43 @@ case 'brands':
                       </div>
 
                     </div>
-                  </section>
+                  </section> */}
+     {/* --- Section 2: What's Hot --- */}
+<section className="px-4 md:px-8 py-10">
+  <h2 className="text-xl md:text-2xl font-semibold mb-8 text-black">What's Hot</h2>
+  
+  <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">
+    {[
+      { href: "/brand/realme", src: "uploads/aboutus/HP_What'sHot_RealmeP4x_02Jan2026_ZNy77FWpt.webp" },
+      { href: "/category/televisions", src: "uploads/aboutus/HP_What'sHot_TVs_02Jan2026_8MouoeMk4B.webp" },
+      { href: "/category/large-appliance", src: "uploads/aboutus/HP_What'sHot_WM_02Jan2026_Yt-KWCCDR.webp" },
+      { href: "/category/mobiles-accessories/mobile-phones/iphone", src: "uploads/aboutus/HP_What'sHot_iPad11_02Jan2026_PhoUjE9mF.webp" },
+       { href: "/category/accessories/stabilizer", src: "uploads/aboutus/Stabilizer.png" }
+
+    ].map((item, i) => (
+     <div
+        key={i}
+        className={`hover:scale-[1.03] transition-transform duration-300 ${
+          i === 4 ? "hidden lg:block" : ""
+        }`}
+      >
+        <Link href={item.href}>
+          
+         <div className="w-full aspect-[4/5] rounded-2xl flex items-center justify-center overflow-hidden">
+            <img 
+              src={item.src} 
+              alt="What's Hot" 
+              className="max-w-full max-h-full object-contain rounded-2xl shadow-sm"
+            />
+          </div>
+          
+        </Link>
+      </div>
+    ))}
+    
+    <div className="hidden lg:block"></div>
+  </div>
+</section>
 
                   {/* UNILET Only */}
                 {/*  <div className=" py-10 px-2 lg:px-6 relative">
@@ -1679,12 +1746,12 @@ case 'brands':
                   </div>
 */}
                   {/* Special Deals for you */}
-                  <section className="px-4 md:px-8 py-6">
+                  {/* <section className="px-4 md:px-8 py-6">
                     <h2 className="text-xl md:text-2xl font-semibold mb-6">Special Deals for you</h2>
                     <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-5">
-                      
+                       */}
                       {/* Image 1 */}
-                      <div className="rounded-xl overflow-hidden bg-[#111] hover:scale-[1.02] transition">
+                      {/* <div className="rounded-xl overflow-hidden bg-[#111] hover:scale-[1.02] transition">
                         <Link href={`/category/small-appliances/kitchen-appliance/air-fryer`}>
                         
                        
@@ -1694,10 +1761,10 @@ case 'brands':
                           className="w-full h-full object-cover"
                         />
                          </Link>
-                      </div>
+                      </div> */}
 
                       {/* Image 2 */}
-                      <div className="rounded-xl overflow-hidden bg-[#111] hover:scale-[1.02] transition">
+                      {/* <div className="rounded-xl overflow-hidden bg-[#111] hover:scale-[1.02] transition">
                         <Link href={`/category/sound-systems/speaker`}>
                         <img
                           src="uploads/aboutus/HP_DOTD_BTSpeakers_02Jan2026_-VhhZiYFRG.jpg"
@@ -1705,10 +1772,10 @@ case 'brands':
                           className="w-full h-full object-cover"
                         />
                         </Link>
-                      </div>
+                      </div> */}
 
                       {/* Image 3 */}
-                      <div className="rounded-xl overflow-hidden bg-[#111] hover:scale-[1.02] transition">
+                      {/* <div className="rounded-xl overflow-hidden bg-[#111] hover:scale-[1.02] transition">
                         <Link href={`/category/accessories`}>
                         <img
                           src="uploads/aboutus/HP_DOTD_Chargers_02Jan2026_i5NEs4ycP.webp"
@@ -1716,10 +1783,10 @@ case 'brands':
                           className="w-full h-full object-cover"
                         />
                         </Link>
-                      </div>
+                      </div> */}
 
                       {/* Image 4 */}
-                      <div className="rounded-xl overflow-hidden bg-[#111] hover:scale-[1.02] transition">
+                      {/* <div className="rounded-xl overflow-hidden bg-[#111] hover:scale-[1.02] transition">
                         <Link href={`/category/gadgets/smart-watches`}>
                         <img
                           src="uploads/aboutus/HP_DOTD_SW_02Jan2026_bvnroJbzi.webp"
@@ -1730,7 +1797,43 @@ case 'brands':
                       </div>
 
                     </div>
-                  </section>
+                  </section> */}
+
+          {/* --- Section 3: Special Deals for you --- */}
+<section className="px-4 md:px-8 py-10">
+  <h2 className="text-xl md:text-2xl font-semibold mb-8 text-black">Special Deals for you</h2>
+  
+  <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">
+    {[
+      { href: "/category/small-appliances/kitchen-appliance/air-fryer", src: "uploads/aboutus/HP_DOTD_AirFryers_02Jan2026_iSrQ_kbJl.jpg" },
+      { href: "/category/sound-systems/speaker", src: "uploads/aboutus/HP_DOTD_BTSpeakers_02Jan2026_-VhhZiYFRG.jpg" },
+      { href: "/category/accessories", src: "uploads/aboutus/HP_DOTD_Chargers_02Jan2026_i5NEs4ycP.webp" },
+      { href: "/category/gadgets/smart-watches", src: "uploads/aboutus/HP_DOTD_SW_02Jan2026_bvnroJbzi.webp" },
+       { href: "/category/large-appliance/dishwasher", src: "uploads/aboutus/Dishwasher.jpg" },
+      
+    ].map((item, i) => (
+        <div
+        key={i}
+        className={`hover:scale-[1.03] transition-transform duration-300 ${
+          i === 4 ? "hidden lg:block" : ""
+        }`}
+      >
+        <Link href={item.href}>
+   <div className="w-full aspect-[4/5] rounded-2xl flex items-center justify-center overflow-hidden">
+            <img 
+              src={item.src} 
+              alt="Special Deals" 
+              className="max-w-full max-h-full object-contain rounded-2xl shadow-sm"
+            />
+          </div>
+          
+        </Link>
+      </div>
+    ))}
+    
+    <div className="hidden lg:block"></div>
+  </div>
+</section>
 
 {/* Banner Section start */} 
               
