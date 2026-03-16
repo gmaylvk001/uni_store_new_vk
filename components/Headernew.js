@@ -1007,6 +1007,7 @@ const RightMegaMenu = ({ hoveredCategory }) => {
           body: JSON.stringify({ mobile: otpPhone }),
         });
         const data = await res.json();
+        //console.log("OTP send response:", data);
         if (!res.ok) throw new Error(data.error || "Failed to send OTP");
         setOtpPhoneMessage("OTP sent to your mobile number");
         setOtpPhoneStep(2);
@@ -2179,7 +2180,7 @@ const shouldShowArrow = (item, allItems = []) => {
               
                text-white text-xs font-semibold shadow-md
                hover:bg-[#1688c8] transition-all whitespace-nowrap">
-              <img src="/images/lg-exclusive.png" alt="LG" className="h-7 w-auto object-contain" />
+              <img src="/images/lg-exclusive.png" alt="LG" className="h-8 w-auto object-contain" />
               
             </Link>
 
