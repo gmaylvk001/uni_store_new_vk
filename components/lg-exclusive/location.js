@@ -93,7 +93,8 @@ export default function LocationPage() {
               {store.google_location && (
                 <div className="mt-3">
                   <iframe
-                    src={store.google_location}
+                    //src={store.google_location}
+                    src={`https://www.google.com/maps?q=${encodeURIComponent(store.address)}&output=embed`}
                     width="100%"
                     height="200"
                     style={{ border: 0 }}
@@ -104,7 +105,7 @@ export default function LocationPage() {
 
               {/* Visit Store */}
               <Link
-                href={`/store/${store.slug || store._id}`}
+                href={store.google_location ? store.google_location : "#"}
                 className="mt-3 inline-block bg-blue-600 hover:bg-blue-700 text-white text-sm px-4 py-2 rounded-md transition-colors"
               >
                 Visit Store
