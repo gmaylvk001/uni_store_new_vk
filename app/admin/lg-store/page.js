@@ -1,122 +1,159 @@
-'use client';
+"use client";
 
-import React, { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import Link from "next/link";
+import { FaEdit, FaTrash } from "react-icons/fa";
 
-export default function LocationPage() {
+export default function StoreList() {
 
   const [stores, setStores] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const itemsPerPage = 10;
 
   useEffect(() => {
-    async function fetchStores() {
-      try {
-        const res = await fetch("/api/lg-store/get");
-        const data = await res.json();
-
-        if (data.success) {
-          setStores(data.data);
-        }
-      } catch (err) {
-        console.error("Failed to fetch stores", err);
-      } finally {
-        setLoading(false);
-      }
-    }
-
     fetchStores();
   }, []);
 
-  if (loading) return <p>Loading stores...</p>;
+  const fetchStores = async () => {
+    const res = await fetch("/api/lg-store/get");
+    const data = await res.json();
+    setStores(data.data || []);
+  };
 
-  if (!stores || stores.length === 0) {
-    return <p>No stores found.</p>;
-  }
+  const deleteStore = async (id) => {
+    if (!confirm("Delete this store?")) return;
+
+    await fetch("/api/lg-store/delete", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id }),
+    });
+
+    fetchStores();
+  };
+
+  /* SEARCH FILTER */
+  const filteredStores = useMemo(() => {
+    return stores.filter((store) =>
+      store.name?.toLowerCase().includes(search.toLowerCase())
+    );
+  }, [stores, search]);
+
+  /* PAGINATION */
+  const totalPages = Math.ceil(filteredStores.length / itemsPerPage);
+
+  const paginatedStores = filteredStores.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
 
   return (
-    <div className="min-h-screen bg-white py-12 px-4 md:px-8">
-      <div className="max-w-7xl mx-auto">
+    <div className="container mx-auto mt-6">
 
-        <h1 className="text-3xl font-bold text-customBlue mb-10">
-          Our Stores
-        </h1>
+      {/* Header */}
+      <div className="flex justify-between mb-4">
+        <h2 className="text-xl font-bold">Stores</h2>
 
-        {/* Store Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        <Link href="/admin/lg-store/create">
+          <button className="bg-red-500 text-white px-4 py-2 rounded">
+            + Add New Store
+          </button>
+        </Link>
+      </div>
 
-          {stores.map((store) => (
+      {/* Search */}
+      <div className="mb-4">
+        <input
+          type="text"
+          placeholder="Search by store name..."
+          value={search}
+          onChange={(e) => {
+            setSearch(e.target.value);
+            setCurrentPage(1);
+          }}
+          className="border p-2 rounded w-64"
+        />
+      </div>
 
-            <div
-              key={store._id}
-              className="border border-blue-300 rounded-lg shadow-sm p-4 hover:shadow-md transition"
-            >
+      {/* Table */}
+      <table className="w-full border">
+        <thead>
+          <tr className="bg-gray-200">
+            <th className="p-2 text-left">Store Name</th>
+            <th className="p-2 text-left">City</th>
+            <th className="p-2 text-left">State</th>
+            <th className="p-2 text-left">Pincode</th>
+            <th className="p-2 text-left">Action</th>
+          </tr>
+        </thead>
 
-              {/* Store Name */}
-              <h2 className="text-lg font-semibold text-gray-800 mb-2">
-                {store.name}
-              </h2>
+        <tbody>
+          {paginatedStores.length === 0 ? (
+            <tr>
+              <td colSpan="5" className="text-center p-4">
+                No stores found
+              </td>
+            </tr>
+          ) : (
+            paginatedStores.map((store) => (
+              <tr key={store._id} className="border-b">
+                <td className="p-2">{store.name}</td>
+                <td className="p-2">{store.city}</td>
+                <td className="p-2">{store.state}</td>
+                <td className="p-2">{store.pincode}</td>
 
-              {/* Address */}
-              <p className="text-sm text-gray-700">
-                {store.address}
-              </p>
+                <td className="p-2 flex gap-3">
+                  <Link href={`/admin/lg-store/edit/${store._id}`}>
+                    <FaEdit className="text-blue-600 cursor-pointer" />
+                  </Link>
 
-              <p className="text-sm text-gray-700">
-                {store.city}, {store.state} - {store.pincode}
-              </p>
+                  <FaTrash
+                    className="text-red-600 cursor-pointer"
+                    onClick={() => deleteStore(store._id)}
+                  />
+                </td>
+              </tr>
+            ))
+          )}
+        </tbody>
+      </table>
 
-              {/* Contact */}
-              {store.contact && (
-                <p className="text-sm text-gray-700 mt-1">
-                  📞 {store.contact}
-                </p>
-              )}
+      {/* Pagination */}
+      <div className="flex justify-between items-center mt-4">
 
-              {/* Email */}
-              {store.email && (
-                <a
-                  href={`mailto:${store.email}`}
-                  className="block text-blue-600 hover:underline text-sm mt-1"
-                >
-                  {store.email}
-                </a>
-              )}
+        <p className="text-sm text-gray-600">
+          Showing {(currentPage - 1) * itemsPerPage + 1} to{" "}
+          {Math.min(currentPage * itemsPerPage, filteredStores.length)} of{" "}
+          {filteredStores.length} entries
+        </p>
 
-              {/* Work Hours */}
-              {store.work_hours && (
-                <p className="text-sm text-gray-600 mt-1">
-                  ⏰ {store.work_hours}
-                </p>
-              )}
+        <div className="flex gap-2">
 
-              {/* Google Map */}
-              {store.google_location && (
-                <div className="mt-3">
-                  <iframe
-                    src={store.google_location}
-                    width="100%"
-                    height="200"
-                    style={{ border: 0 }}
-                    loading="lazy"
-                  ></iframe>
-                </div>
-              )}
+          <button
+            disabled={currentPage === 1}
+            onClick={() => setCurrentPage(currentPage - 1)}
+            className="px-3 py-1 border rounded disabled:opacity-50"
+          >
+            Previous
+          </button>
 
-              {/* Visit Store */}
-              <Link
-                href={`/store/${store.slug || store._id}`}
-                className="mt-3 inline-block bg-blue-600 hover:bg-blue-700 text-white text-sm px-4 py-2 rounded-md transition-colors"
-              >
-                Visit Store
-              </Link>
+          <span className="px-3 py-1 border rounded bg-gray-100">
+            {currentPage} / {totalPages || 1}
+          </span>
 
-            </div>
-
-          ))}
+          <button
+            disabled={currentPage === totalPages || totalPages === 0}
+            onClick={() => setCurrentPage(currentPage + 1)}
+            className="px-3 py-1 border rounded disabled:opacity-50"
+          >
+            Next
+          </button>
 
         </div>
-
       </div>
+
     </div>
   );
 }

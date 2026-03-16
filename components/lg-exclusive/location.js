@@ -35,7 +35,37 @@ export default function LocationPage() {
 
   return (
     <div className="min-h-screen bg-white py-12 px-4 md:px-8">
+      
       <div className="max-w-7xl mx-auto">
+       {/* Desktop Banner */}
+<div
+  className="hidden md:flex w-full h-[380px] bg-cover bg-center items-center justify-center"
+  style={{
+    backgroundImage: "url('/uploads/banners/lg-store-banner.png')",
+  }}
+>
+        <div className="bg-black/50 w-full h-full flex items-center justify-center">
+            <h1 className="text-white text-5xl font-bold">
+              LG Exclusive Store
+            </h1>
+          </div>
+        </div>
+
+        {/* Mobile Banner */}
+        <div
+          className="flex md:hidden w-full h-[200px] bg-cover bg-center items-center justify-center"
+          style={{
+            backgroundImage: "url('/uploads/banners/m-lg-store-banner.png')",
+          }}
+        >
+          <div className="bg-black/50 w-full h-full flex items-center justify-center px-4 text-center">
+            <h1 className="text-white text-2xl font-bold">
+              LG Exclusive Store
+            </h1>
+          </div>
+        </div>
+
+
 
         <h1 className="text-3xl font-bold text-customBlue mb-10">
           Our Stores
