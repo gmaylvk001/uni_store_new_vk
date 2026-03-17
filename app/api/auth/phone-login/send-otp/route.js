@@ -4,22 +4,39 @@ import User from "@/models/User";
 import Otp from "@/models/Otp";
 
 async function sendOtpViaSms(mobile, otp) {
-  const apiKey = process.env.MSG4_API_KEY;
+  const authKey = process.env.SMS_BASIC_AUTH; // Base64 encoded
   const templateId = process.env.MSG4_TEMPLATE_ID;
   const senderId = process.env.MSG4_SENDER_ID || "UNILET";
 
-  if (!apiKey) throw new Error("SMS service not configured");
+  if (!authKey) throw new Error("SMS service not configured");
 
-  const smsText = encodeURIComponent(`Unilet Login Verification Your OTP is: ${otp} This code is valid for 10 minutes. Happy Shopping! Security Note: Do not share this code with anyone.`);
-  const url = `https://api.msg4.cloud.robeeta.com/sms.aspx?apikey=${apiKey}&tmpid=${templateId}&sid=${senderId}&to=${mobile}&msg=${smsText}`;
+  const payload = {
+    smstosend: [
+      {
+        to: mobile,
+        from: senderId,
+        smstext: `Unilet Login Verification Your OTP is: ${otp} This code is valid for 10 minutes. Happy Shopping! Security Note: Do not share this code with anyone.`,
+        templateid: templateId,
+      },
+    ],
+  };
 
-  //const url = "https://api.msg4.cloud.robeeta.com/sms.aspx?apikey=ecacbce1df124e0fa60115dbc98cf8a12eebdf0a1fe8407fb339d9cd223331bf&tmpid=1607100000000337908&sid=SATHYA&to=+919942705899&msg=Your%20OTP%20${otp}%20is%20your%20SATHYA%20verification%20code.";
+  const res = await fetch("https://sms.sendmsg.in/datasend", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Basic ${authKey}`, // from .env
+    },
+    body: JSON.stringify(payload),
+  });
 
-  const res = await fetch(url);
+  const data = await res.text(); // API usually returns text
+
   if (!res.ok) {
-    const text = await res.text();
-    throw new Error(`SMS gateway error: ${text}`);
+    throw new Error(`SMS gateway error: ${data}`);
   }
+
+  return data;
 }
 
 export async function POST(req) {
