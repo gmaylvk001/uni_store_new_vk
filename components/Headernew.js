@@ -1779,6 +1779,14 @@ const shouldShowArrow = (item, allItems = []) => {
                             <Link href="/contact" className="relative">
                                 <FiPhoneCall size={16}  />
                             </Link>
+                            <Link href="/lg-exclusive" className="flex items-center">
+                                <Image
+                                  src="/uploads/logo-lg.png"
+                                  alt="LG"
+                                  width={16}
+                                  height={16}
+                                />
+                            </Link>
                             <Link href="/location">
                               <FiMapPin size={16} />
                             </Link>
@@ -1794,6 +1802,7 @@ const shouldShowArrow = (item, allItems = []) => {
                                   {cartCount}
                                 </span>
                               </Link>
+                              
                               <div className="relative">
                                 {isLoggedIn ? (
                                   <button onClick={() => setDropdownOpen(!dropdownOpen)}>
