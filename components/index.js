@@ -30,7 +30,6 @@ import CategoryBestofValue from '@/components/CategoryBestofValue';
 import { ChevronRight } from "lucide-react";
 import 'swiper/css';
 import 'swiper/css/navigation';
-import DoubleBanner from "@/components/DoubleBanner"; 
 
 
 export default function HomeComponent() {
@@ -1637,7 +1636,7 @@ case 'brands':
                     </div>
                   </section> */}
 
-          <DoubleBanner/>
+         
      {/* --- Section 2: What's Hot --- */}
 <section className="px-4 md:px-8 py-10">
   <h2 className="text-xl md:text-2xl font-semibold mb-8 text-black">What's Hot</h2>
