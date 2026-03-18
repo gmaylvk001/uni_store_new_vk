@@ -19,7 +19,8 @@ const Footer = () => {
   }, []);
   const [categories, setCategories] = useState([]);
   const [groupedCategories, setGroupedCategories] = useState({ main: [], subs: {} });
-    const [stores, setStores] = useState([]);
+  const [stores, setStores] = useState([]);
+  const [lgstores, setLgStores] = useState([]);
   // Auth state
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [activeTab, setActiveTab] = useState('login');
@@ -96,6 +97,18 @@ const Footer = () => {
   };
 
   const fetchStores = async () => {
+    try {
+      const res = await fetch('/api/lg-store/get');
+      const data = await res.json();
+      console.log("LG Stores API response:", data);
+      if (data ) {
+        setLgStores(data.data);
+        //setCached(key, data.data);
+      }
+    } catch (err) {
+      console.error('Error fetching stores:', err);
+    }
+
     const key = 'cache_footer_stores_v1';
     const cached = getCached(key);
     if (cached) {
@@ -113,6 +126,8 @@ const Footer = () => {
     } catch (err) {
       console.error('Error fetching stores:', err);
     }
+    
+    
   };
 
   fetchCategories();
@@ -191,13 +206,27 @@ const Footer = () => {
     setUserData(null);
   };
   const groupedStores = stores.reduce((acc, store) => {
-  const city = store.slug; // or store.store_city based on your API
+    const city = store.slug; // or store.store_city based on your API
+    if (!acc[city]) {
+      acc[city] = [];
+    }
+    acc[city].push(store.organisation_name);
+    return acc;
+  }, {});
+
+  //console.log("lg stores : ",lgstores);
+
+  const groupedlgStores = (lgstores || []).reduce((acc, store) => {
+  const city = store.google_location || "Unknown"; // use correct field
+
   if (!acc[city]) {
     acc[city] = [];
   }
-  acc[city].push(store.organisation_name);
+
+  acc[city].push(store.name);
   return acc;
 }, {});
+
 const capitalizeFirstLetter = (str) =>
   str.charAt(0).toUpperCase() + str.slice(1);
   // Case-insensitive membership helper
@@ -576,7 +605,23 @@ const capitalizeFirstLetter = (str) =>
                 </span>
               ))}
             </p>
+
+            <h3 className="text-white font-semibold text-lg mb-4">LG Electronics Stores</h3>
+           <p className="text-sm text-gray-400">
+              {Object.entries(groupedlgStores).map(([city, orgs], index, arr) => (
+                <span key={city}>
+                  <Link
+                    href={city}
+                    className="hover:text-white hover:underline transition-colors duration-200"
+                  >
+                    {orgs.join(", ")}
+                  </Link>
+                  {index < arr.length - 1 && ", "}
+                </span>
+              ))}
+            </p>
           </div>
+         
         </div>
 
         <section className="py-10 md:px-2">
