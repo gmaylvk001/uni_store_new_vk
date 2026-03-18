@@ -30,6 +30,7 @@ import CategoryBestofValue from '@/components/CategoryBestofValue';
 import { ChevronRight } from "lucide-react";
 import 'swiper/css';
 import 'swiper/css/navigation';
+import DoubleBanner from "@/components/DoubleBanner"; 
 
 
 export default function HomeComponent() {
@@ -1484,6 +1485,28 @@ case 'brands':
 
                     </div>
                   </section> */}
+
+            {/* Google Pixel 9 Banner Section */}
+<section className="px-4 md:px-8 py-8"> {/* Increased vertical padding (py-8) for breathing room */}
+  <Link 
+    href="/product/google-pixel-mobile-pixel-xl-9-pro-256gb" 
+    className="block overflow-hidden rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300"
+  >
+    <div className="relative w-full h-[180px] sm:h-[250px] md:h-[320px] lg:h-[385px]"> 
+      {/* Height logic:
+         - Mobile: 180px (keeps it from looking like a thin line)
+         - Tablet: 250px
+         - Desktop: 380px (large and impactful)
+      */}
+      <img
+        src="/uploads/aboutus/G-Pixel-9.jpeg" 
+        alt="Google Pixel 9 Pro XL"
+        className="w-full h-full object-fill rounded-2xl" 
+        /* 'object-cover' ensures the image fills the space without stretching the faces/phones */
+      />
+    </div>
+  </Link>
+</section>
            {/* --- Section 1: Brand Spotlight --- */}
 <section className="px-4 md:px-8 py-10">
   <h2 className="text-xl md:text-2xl font-semibold mb-8 text-black">Brand Spotlight</h2>
@@ -1526,38 +1549,39 @@ case 'brands':
                     <div className="mt-1">
                       <CategoryBestofValue/>
                     </div>
-                    <div className="relative max-w-12xl mx-auto">
-                      {/* LEFT ARROW */}
-                      <button className="unilet-prev absolute left-3 top-1/2 -translate-y-1/2 z-20 h-9 w-9 rounded-full bg-black/40 text-white flex items-center justify-center text-xl hover:bg-black/70">‹</button>
-                      {/* RIGHT ARROW */}
-                      <button className="unilet-next absolute right-3 top-1/2 -translate-y-1/2 z-20 h-9 w-9 rounded-full bg-black/40 text-white flex items-center justify-center text-xl hover:bg-black/70">›</button>
-                      <Swiper modules={[Autoplay, Navigation]} autoplay={{ delay: 3000, disableOnInteraction: false }}
-                        navigation={{
-                          prevEl: ".unilet-prev",
-                          nextEl: ".unilet-next",
-                        }} loop slidesPerView={1} className="rounded-xl overflow-hidden">
-                        {/* Slide 1 */}
-                        <SwiperSlide>
-                          <Link href="/category/large-appliance">
-                            <img src="uploads/aboutus/banner-below-bvfu-1.png" alt="Unilet" className="w-full h-[260px] md:h-[380px] lg:h-[420px]"/>
-                          </Link>
-                        </SwiperSlide>
+                    <div className="w-full py-4 px-0"> {/* Removed the extra px-4 md:px-8 to fix the squeeze */}
+  <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-3 lg:gap-4">
+    
+    {/* Image 1: Helping You Get More Value */}
+    <Link 
+      href="/category/large-appliance" 
+      className="block overflow-hidden rounded-lg shadow-sm hover:shadow-md transition-shadow"
+    >
+      <div className="relative w-full h-[100px] sm:h-[120px] md:h-[140px] lg:h-[180px]">
+        <img
+          src="uploads/aboutus/Banner1.jpg" /* Make sure this matches your filename */
+          alt="Get More Value"
+          className="w-full h-full object-stretch object-center"
+        />
+      </div>
+    </Link>
 
-                        {/* Slide 2 */}
-                        <SwiperSlide>
-                          <Link href="/category/accessories">
-                            <img src="uploads/aboutus/banner-below-bvfu-2.png" alt="Unilet" className="w-full h-[260px] md:h-[380px] lg:h-[420px]"/>
-                          </Link>
-                        </SwiperSlide>
+    {/* Image 2: Deals Corner */}
+    <Link 
+      href="/category/offers" 
+      className="block overflow-hidden rounded-lg shadow-sm hover:shadow-md transition-shadow"
+    >
+      <div className="relative w-full h-[100px] sm:h-[120px] md:h-[140px] lg:h-[180px]">
+        <img
+          src="uploads/aboutus/Banner2.jpg" /* Make sure this matches your filename */
+          alt="Deals Corner"
+          className="w-full h-full object-fill object-center"
+        />
+      </div>
+    </Link>
 
-                        {/* Slide 3 */}
-                        {/* <SwiperSlide>
-                          <Link href="/category/others">
-                            <img src="uploads/aboutus/BestValueSaleImg2.png" alt="Unilet" className="w-full h-[260px] md:h-[380px] lg:h-[420px]"/>
-                          </Link>
-                        </SwiperSlide> */}
-                      </Swiper>
-                    </div>
+  </div>
+</div>
                   </section>
 
 
@@ -1636,7 +1660,7 @@ case 'brands':
                     </div>
                   </section> */}
 
-         
+          <DoubleBanner/>
      {/* --- Section 2: What's Hot --- */}
 <section className="px-4 md:px-8 py-10">
   <h2 className="text-xl md:text-2xl font-semibold mb-8 text-black">What's Hot</h2>
