@@ -1378,7 +1378,7 @@ case 'brands':
 
                             {/* TEXT */}
                             <span
-                              className="mt-2 text-[10px] sm:text-xs md:text-sm font-medium text-gray-600 group-hover:text-black text-center break-words w-[70px] sm:w-[90px] leading-tight">
+                              className="mt-2 text-[10px] sm:text-xs md:text-sm font-medium text-gray-600 group-hover:text-black text-center break-words w-[70px] sm:w-[100px] leading-tight">
                               {cat.category_name}
                             </span>
                           </div>
