@@ -6,7 +6,7 @@ const DoubleBanner = () => {
   const banners = [
     {
       id: 1,
-      img: "uploads/Apple-banner.jpeg",
+      img: "uploads/aboutus/Apple-banner.jpeg",
       link: "/category/mobiles-accessories/mobile-phones/iphone",
       alt: "New iPhone Launch",
     },
