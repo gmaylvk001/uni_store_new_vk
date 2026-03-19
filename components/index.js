@@ -1559,7 +1559,7 @@ case 'brands':
     >
       <div className="relative w-full h-[100px] sm:h-[120px] md:h-[140px] lg:h-[180px]">
         <img
-          src="uploads/aboutus/Banner1.jpg" /* Make sure this matches your filename */
+          src="uploads/aboutus/Banner-Image-1.jpeg" /* Make sure this matches your filename */
           alt="Get More Value"
           className="w-full h-full object-stretch object-center"
         />
@@ -1573,7 +1573,7 @@ case 'brands':
     >
       <div className="relative w-full h-[100px] sm:h-[120px] md:h-[140px] lg:h-[180px]">
         <img
-          src="uploads/aboutus/Banner2.jpg" /* Make sure this matches your filename */
+          src="uploads/aboutus/Banner-Image-2.jpeg" /* Make sure this matches your filename */
           alt="Deals Corner"
           className="w-full h-full object-fill object-center"
         />
