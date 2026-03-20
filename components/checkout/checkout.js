@@ -19,9 +19,6 @@ const loadRazorpay = () => {
   });
 };
 
-
-
-
 const DeliveryOptions = ({ formData, handleChange, isDeliverySaved, setIsDeliverySaved, stores }) => {
   const [fetchedStores, setFetchedStores] = useState(stores || []);
 
@@ -173,16 +170,25 @@ export default function CheckoutPage() {
   const [paymentMethod, setPaymentMethod] = useState("Cash on Delivery");
   const [error, setError] = useState("");
   const [showAuthModal, setShowAuthModal] = useState(false);
-  const [authError, setAuthError] = useState('');
+  const [authModalMessage, setAuthModalMessage] = useState("");
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isGuestCheckout, setIsGuestCheckout] = useState(false);
+  const [isPhoneVerified, setIsPhoneVerified] = useState(false);
+  const [guestCheckoutToken, setGuestCheckoutToken] = useState("");
+  const [guestOtpStep, setGuestOtpStep] = useState(1);
+  const [guestOtpValue, setGuestOtpValue] = useState("");
+  const [guestOtpMessage, setGuestOtpMessage] = useState("");
+  const [guestOtpError, setGuestOtpError] = useState("");
+  const [guestOtpLoading, setGuestOtpLoading] = useState(false);
+  const [isAddressSaved, setIsAddressSaved] = useState(false);
   // / ✅ NEW: summary state
   const [orderSummary, setOrderSummary] = useState({
     discount: 0,
     subtotal: 0,
     total: 0
   });
-  console.log(cartItems);
+  //console.log(cartItems);
 const [isSubmitting, setIsSubmitting] = useState(false);
   useEffect(() => {
     const fetchStores = async () => {
@@ -246,6 +252,99 @@ const [isSubmitting, setIsSubmitting] = useState(false);
     : [...new Set([...uniqueCities, ...Object.values(INDIA_STATES_CITIES).flat()])];
 
   const finalCities = citiesForState.sort();
+  const GUEST_CHECKOUT_VERIFICATION_KEY = "guestCheckoutVerification";
+
+  const ensureGuestCartId = () => {
+    let guestId = localStorage.getItem("guestCartId");
+    if (!guestId) {
+      guestId =
+        globalThis.crypto?.randomUUID?.() ||
+        `guest-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
+      localStorage.setItem("guestCartId", guestId);
+    }
+    return guestId;
+  };
+
+  const clearGuestVerification = () => {
+    setIsPhoneVerified(false);
+    setGuestCheckoutToken("");
+    setGuestOtpStep(1);
+    setGuestOtpValue("");
+    setGuestOtpMessage("");
+    setGuestOtpError("");
+    setIsAddressSaved(false);
+    sessionStorage.removeItem(GUEST_CHECKOUT_VERIFICATION_KEY);
+  };
+
+  const getCheckoutUserId = (token, phoneNumber = formData.phonenumber) => {
+    if (token) {
+      const decoded = jwtDecode(token);
+      return decoded.userId;
+    }
+    return `guest:${phoneNumber || "checkout"}`;
+  };
+
+  const establishCheckoutUser = async ({
+    firstName = formData.firstName,
+    lastName = formData.lastName,
+    email = formData.email,
+    mobile = formData.phonenumber,
+  } = {}) => {
+    const existingToken = localStorage.getItem("token");
+    if (existingToken) return existingToken;
+
+    const response = await fetch("/api/auth/checkout/ensure-user", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name: `${firstName} ${lastName}`.trim(),
+        email,
+        mobile,
+        guestId: localStorage.getItem("guestCartId"),
+      }),
+    });
+
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error(data.error || "Failed to prepare checkout user");
+    }
+
+    localStorage.setItem("token", data.token);
+    setIsGuestCheckout(false);
+    setIsPhoneVerified(true);
+    setGuestCheckoutToken("");
+    sessionStorage.removeItem(GUEST_CHECKOUT_VERIFICATION_KEY);
+
+    return data.token;
+  };
+
+  const loadSavedAddresses = async (userId) => {
+    const addressResponse = await fetch(`/api/useraddress?user_id=${userId}`);
+    if (!addressResponse.ok) throw new Error("Failed to fetch address data");
+
+    const addressData = await addressResponse.json();
+    setUseraddress(addressData.userAddress);
+    setIsAddressSaved(addressData.userAddress.length > 0);
+
+    if (addressData.userAddress.length > 0) {
+      const addr = addressData.userAddress[0];
+      setFormData(prev => ({
+        ...prev,
+        firstName: addr.firstName || "",
+        lastName: addr.lastName || "",
+        country: addr.country || "",
+        address: addr.address || "",
+        city: addr.city || "",
+        state: addr.state || "",
+        postCode: addr.postCode || "",
+        phonenumber: addr.phonenumber || prev.phonenumber,
+        landmark: addr.landmark || "",
+        email: addr.email || "",
+        businessName: addr.businessName || "",
+        additionalInfo: addr.additionalInfo || ""
+      }));
+    }
+  };
 
   useEffect(() => {
     const buyNowData = localStorage.getItem("buyNowData");
@@ -270,18 +369,75 @@ const [isSubmitting, setIsSubmitting] = useState(false);
     fetchData();
   }, []);
 
+  useEffect(() => {
+    if (loading) return;
+    if (localStorage.getItem("token")) return;
+    if (cartItems.length === 0) return;
+
+    setAuthModalMessage("New users can get a 5% offer or continue with guest checkout.");
+    setShowAuthModal(true);
+  }, [loading, cartItems.length]);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      setIsGuestCheckout(false);
+      setIsPhoneVerified(true);
+      return;
+    }
+
+    const storedVerification = sessionStorage.getItem(GUEST_CHECKOUT_VERIFICATION_KEY);
+    if (!storedVerification) return;
+
+    try {
+      const parsed = JSON.parse(storedVerification);
+      if (parsed?.mobile === formData.phonenumber && parsed?.token) {
+        setIsPhoneVerified(true);
+        setGuestCheckoutToken(parsed.token);
+        setGuestOtpStep(2);
+        setGuestOtpMessage("Mobile number verified for guest checkout");
+      }
+    } catch (err) {
+      sessionStorage.removeItem(GUEST_CHECKOUT_VERIFICATION_KEY);
+    }
+  }, [formData.phonenumber]);
+
+  useEffect(() => {
+    if (!isGuestCheckout || !isPhoneVerified || !formData.phonenumber) return;
+
+    const guestUserId = getCheckoutUserId(null, formData.phonenumber);
+    loadSavedAddresses(guestUserId).catch((err) => {
+      console.error("Error fetching guest address:", err);
+    });
+  }, [isGuestCheckout, isPhoneVerified, formData.phonenumber]);
+
 
   const fetchData = async () => {
   const token = localStorage.getItem("token");
   if (!token) {
-    setShowAuthModal(true);
+    setIsGuestCheckout(true);
+    setIsPhoneVerified(false);
+    if (cartItems.length === 0) {
+      try {
+        const cartResponse = await fetch("/api/cart", {
+          headers: { guestCartId: ensureGuestCartId() },
+        });
+        if (cartResponse.ok) {
+          const cartData = await cartResponse.json();
+          setCartItems(cartData.cart.items || []);
+        }
+      } catch (guestCartError) {
+        console.error("Error fetching guest cart:", guestCartError);
+      }
+    }
     setLoading(false);
     return;
   }
 
   try {
-    const decoded = jwtDecode(token);
-    const userId = decoded.userId;
+    setIsGuestCheckout(false);
+    setIsPhoneVerified(true);
+    const userId = getCheckoutUserId(token);
 
     // ✅ Only fetch cart if no items already set
     if (cartItems.length === 0) {
@@ -295,31 +451,7 @@ const [isSubmitting, setIsSubmitting] = useState(false);
       setCartItems(cartData.cart.items);
     }
 
-    // Fetch user address
-    const addressResponse = await fetch(`/api/useraddress?user_id=${userId}`);
-    if (!addressResponse.ok) throw new Error("Failed to fetch address data");
-
-    const addressData = await addressResponse.json();
-    setUseraddress(addressData.userAddress);
-
-    if (addressData.userAddress.length > 0) {
-      const addr = addressData.userAddress[0];
-      setFormData(prev => ({
-        ...prev,
-        firstName: addr.firstName || "",
-        lastName: addr.lastName || "",
-        country: addr.country || "",
-        address: addr.address || "",
-        city: addr.city || "",
-        state: addr.state || "",
-        postCode: addr.postCode || "",
-        phonenumber: addr.phonenumber || "",
-        landmark: addr.landmark || "",
-        email: addr.email || "",
-        businessName: addr.businessName || "",
-        additionalInfo: addr.additionalInfo || ""
-      }));
-    }
+    await loadSavedAddresses(userId);
   } catch (error) {
     console.error("Error fetching data:", error);
     toast.error("Failed to load checkout data");
@@ -331,9 +463,21 @@ const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    if (name === "phonenumber") {
+      const sanitizedPhone = value.replace(/\D/g, "").slice(0, 10);
+      if (!localStorage.getItem("token") && sanitizedPhone !== formData.phonenumber) {
+        clearGuestVerification();
+      }
+      setFormData(prev => ({ ...prev, phonenumber: sanitizedPhone }));
+      return;
+    }
     if (name === "state") {
+      setIsAddressSaved(false);
       setFormData(prev => ({ ...prev, state: value, city: "" }));
     } else {
+      if (name !== "deliveryType" && name !== "selectedStore") {
+        setIsAddressSaved(false);
+      }
       setFormData(prev => ({ ...prev, [name]: value }));
     }
   };
@@ -341,10 +485,11 @@ const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSavingAddress, setIsSavingAddress] = useState(false);
 
   const handleSaveAddress = async () => {
-    const token = localStorage.getItem("token");
-    if (!token) { setShowAuthModal(true); return; }
-    const decoded = jwtDecode(token);
-    const userId = decoded.userId;
+    let token = localStorage.getItem("token");
+    if (!token && !isPhoneVerified) {
+      toast.info("Verify your mobile number first to save a guest address.");
+      return;
+    }
     const phoneRegex = /^[0-9]{10}$/;
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!formData.firstName || !formData.lastName || !formData.address || !formData.city || !formData.state || !formData.postCode || !formData.phonenumber) {
@@ -355,6 +500,10 @@ const [isSubmitting, setIsSubmitting] = useState(false);
     if (formData.email && !emailRegex.test(formData.email)) { toast.error("Please enter a valid email address."); return; }
     setIsSavingAddress(true);
     try {
+      if (!token) {
+        token = await establishCheckoutUser();
+      }
+      const userId = getCheckoutUserId(token, formData.phonenumber);
       const fd = new FormData();
       fd.append("userId", userId);
       fd.append("firstname", formData.firstName);
@@ -381,9 +530,12 @@ const [isSubmitting, setIsSubmitting] = useState(false);
         }
         return [...prev, data.userAddress];
       });
+      setSelectedAddress(0);
+      setUseSavedAddress(true);
+      setIsAddressSaved(true);
       toast.success("Address saved successfully!");
     } catch (err) {
-      toast.error("Failed to save address.");
+      toast.error(err.message || "Failed to save address.");
     } finally {
       setIsSavingAddress(false);
     }
@@ -391,6 +543,85 @@ const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handlePaymentChange = (e) => {
     setPaymentMethod(e.target.value);
+  };
+
+  const handleSendGuestOtp = async () => {
+    setGuestOtpError("");
+    setGuestOtpMessage("");
+
+    if (!/^[0-9]{10}$/.test(formData.phonenumber)) {
+      setGuestOtpError("Enter a valid 10-digit mobile number");
+      return;
+    }
+
+    try {
+      setGuestOtpLoading(true);
+      const res = await fetch("/api/auth/checkout/send-otp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ mobile: formData.phonenumber }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Failed to send OTP");
+      setGuestOtpStep(2);
+      setGuestOtpMessage("OTP sent to your mobile number");
+    } catch (err) {
+      setGuestOtpError(err.message);
+    } finally {
+      setGuestOtpLoading(false);
+    }
+  };
+
+  const handleVerifyGuestOtp = async () => {
+    setGuestOtpError("");
+
+    if (!/^\d{4}$/.test(guestOtpValue)) {
+      setGuestOtpError("Enter the 4-digit OTP");
+      return;
+    }
+
+    try {
+      setGuestOtpLoading(true);
+      const res = await fetch("/api/auth/checkout/verify-otp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          mobile: formData.phonenumber,
+          otp: guestOtpValue,
+          guestId: localStorage.getItem("guestCartId"),
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Failed to verify OTP");
+
+      if (data.existingUser && data.token) {
+        localStorage.setItem("token", data.token);
+        setIsGuestCheckout(false);
+        setIsPhoneVerified(true);
+        setGuestCheckoutToken("");
+        setGuestOtpMessage("Existing account found. Logged in successfully.");
+        sessionStorage.removeItem(GUEST_CHECKOUT_VERIFICATION_KEY);
+        await loadSavedAddresses(data.user.userId);
+        return;
+      }
+
+      setIsPhoneVerified(true);
+      setGuestCheckoutToken(data.verificationToken);
+      setGuestOtpMessage("Mobile number verified for guest checkout");
+      sessionStorage.setItem(
+        GUEST_CHECKOUT_VERIFICATION_KEY,
+        JSON.stringify({
+          mobile: formData.phonenumber,
+          token: data.verificationToken,
+        })
+      );
+    } catch (err) {
+      setIsPhoneVerified(false);
+      setGuestCheckoutToken("");
+      setGuestOtpError(err.message);
+    } finally {
+      setGuestOtpLoading(false);
+    }
   };
 
   const initializeRazorpay = async () => {
@@ -489,6 +720,8 @@ const handleOnlinePayment = async (totalAmount) => {
 const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 const totalDiscount = cartItems.reduce((sum, item) => sum + (item.discount || 0), 0);
 const grandTotal = subtotal - totalDiscount;
+const isGuestOrderReady = !isGuestCheckout || (isPhoneVerified && isAddressSaved);
+const canPlaceOrder = !isSubmitting && !loading && cartItems.length > 0 && isDeliverySaved && isGuestOrderReady;
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (isSubmitting) return;
@@ -496,14 +729,7 @@ const grandTotal = subtotal - totalDiscount;
 
   setError("");
     try {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        setShowAuthModal(true);
-        setIsSubmitting(false);
-        return;
-      }
-      const decoded = jwtDecode(token);
-      const userId = decoded.userId;
+      let token = localStorage.getItem("token");
   
       // Use saved address data if selected, otherwise use form data
         const addressData = useSavedAddress && selectedAddress !== null
@@ -517,6 +743,18 @@ const grandTotal = subtotal - totalDiscount;
       state: formData.state ,
       country: formData.country || "India",
     };
+      if (!token && isPhoneVerified) {
+        token = await establishCheckoutUser({
+          firstName: addressData.firstName,
+          lastName: addressData.lastName,
+          email: addressData.email,
+          mobile: addressData.phonenumber,
+        });
+      }
+
+      const isLoggedInUser = Boolean(token);
+
+      const userId = getCheckoutUserId(token, addressData.phonenumber || formData.phonenumber);
   
       // Validation Checks (only if not using saved address)
       if (!useSavedAddress || selectedAddress === null) {
@@ -548,6 +786,10 @@ const grandTotal = subtotal - totalDiscount;
           toast.error("Please enter a valid postal code (4-6 digits).");
           return;
         }
+      }
+      if (!isLoggedInUser && !isPhoneVerified) {
+        toast.error("Please verify your mobile number with OTP to continue.");
+        return;
       }
     setIsSubmitting(true);
       setError("");
@@ -607,7 +849,15 @@ const grandTotal = subtotal - totalDiscount;
           throw new Error('Failed to save address');
         }
         const newAddressData = await addressRes.json();
-        setUseraddress(prev => [...prev, newAddressData.userAddress]);
+        setUseraddress(prev => {
+          const existing = prev.findIndex(a => a._id === newAddressData.userAddress._id);
+          if (existing !== -1) {
+            const updated = [...prev];
+            updated[existing] = newAddressData.userAddress;
+            return updated;
+          }
+          return [...prev, newAddressData.userAddress];
+        });
       }
   
       // Save Payment
@@ -644,7 +894,9 @@ const grandTotal = subtotal - totalDiscount;
           user_id: userId,
           user_adddeliveryid: useSavedAddress && selectedAddress !== null 
             ? useraddress[selectedAddress]._id 
-            : useraddress[0]?._id,
+            : isLoggedInUser
+            ? useraddress[0]?._id
+            : undefined,
           order_username: `${addressData.firstName} ${addressData.lastName}`,
           order_phonenumber: addressData.phonenumber,
           email_address: addressData.email,
@@ -660,6 +912,7 @@ const grandTotal = subtotal - totalDiscount;
       : undefined,
           payment_id: paymentData._id,
           payment_status: paymentData.status,
+          guest_checkout_token: !isLoggedInUser ? guestCheckoutToken : undefined,
           order_number: "ORD" + Date.now(),
           order_details: cartItems.map((item) => ({
             item_code: `ITEM${item.item_code}`,
@@ -687,13 +940,15 @@ const grandTotal = subtotal - totalDiscount;
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          ...(token
+            ? { 'Authorization': `Bearer ${token}` }
+            : { guestCartId: ensureGuestCartId() })
         },
         body: JSON.stringify({ clearAll: true })
       });
 
 
-      if (cartdelte.status === 401) {
+      if (token && cartdelte.status === 401) {
         localStorage.removeItem('token');
         router.push('/login');
         return;
@@ -729,21 +984,12 @@ const grandTotal = subtotal - totalDiscount;
        
         const productData = await proresponse.json();
  
-        const authResponse = await fetch('/api/auth/check', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: token ? `Bearer ${token}` : '',
-        },
-        });
-        const authData = await authResponse.json();
-        //console.log(cartItems);
         const apiUrl = process.env.NEXT_PUBLIC_API_URL;
         trackCheckout({
           user: {
-            name: authData.user.name,
-            phone: authData.phone,
-            email: authData.user.email,
+            name: `${addressData.firstName} ${addressData.lastName}`.trim(),
+            phone: addressData.phonenumber,
+            email: addressData.email,
           },
           product: {
             id: cartItems[0].productId,
@@ -808,9 +1054,8 @@ const grandTotal = subtotal - totalDiscount;
           JSON.stringify([name,addressData.email,addressData.phonenumber,deliveryAddress, adminItemsTableHtml])
         );
 
-        // const emailadmin = ["arunkarthik@bharathelectronics.in","ecom@bharathelectronics.in","itadmin@bharathelectronics.in","telemarketing@bharathelectronics.in","sekarcorp@bharathelectronics.in"];
-
-        const emailadmin = ["sorambeeviuit@gmail.com"];
+        
+        const emailadmin = ["muneeswaran@eywamedia.com"];
         //const emailadmin = ["gmaylvk001@gmail.com"]; "siva96852@gmail.com"
         emailadmin.forEach(async (adminEmail) => {
           adminemailFormData.set("email", adminEmail);
@@ -839,7 +1084,10 @@ const grandTotal = subtotal - totalDiscount;
 
 
         toast.success("Order placed successfully!");
-        router.push('/orders');
+        if (!token) {
+          clearGuestVerification();
+        }
+        router.push(token ? '/orders' : '/thank-you');
         updateCartCount(0);
 
       }
@@ -923,6 +1171,69 @@ const grandTotal = subtotal - totalDiscount;
     Phone Number
   </span>
 </div>
+    {isGuestCheckout && (
+      <div className="col-span-2 mt-1 rounded-md border border-orange-200 bg-orange-50 p-3">
+        <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+          <div>
+            <p className="text-sm font-medium text-orange-700">
+              {isPhoneVerified ? "Mobile verified for guest checkout" : "Verify mobile number for guest checkout"}
+            </p>
+            <p className="text-xs text-gray-600">
+              Guests can place an order after OTP verification on this phone number.
+            </p>
+          </div>
+          <div className="flex gap-2">
+            {!isPhoneVerified && (
+              <button
+                type="button"
+                onClick={handleSendGuestOtp}
+                disabled={guestOtpLoading}
+                className="rounded-md bg-orange-500 px-4 py-2 text-sm font-medium text-white hover:bg-orange-600 disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                {guestOtpLoading && guestOtpStep === 1 ? "Sending..." : "Send OTP"}
+              </button>
+            )}
+            {isPhoneVerified && (
+              <button
+                type="button"
+                onClick={clearGuestVerification}
+                className="rounded-md border border-orange-300 px-4 py-2 text-sm font-medium text-orange-700 hover:bg-orange-100"
+              >
+                Change Number
+              </button>
+            )}
+          </div>
+        </div>
+        {guestOtpStep === 2 && !isPhoneVerified && (
+          <div className="mt-3 flex flex-col gap-2 sm:flex-row">
+            <input
+              type="text"
+              value={guestOtpValue}
+              onChange={(e) => setGuestOtpValue(e.target.value.replace(/\D/g, "").slice(0, 4))}
+              placeholder="Enter 4-digit OTP"
+              className="w-full rounded-md border p-2 text-center tracking-[0.4em] focus:outline-none focus:ring-2 focus:ring-orange-500"
+              maxLength={4}
+            />
+            <button
+              type="button"
+              onClick={handleVerifyGuestOtp}
+              disabled={guestOtpLoading}
+              className="rounded-md bg-green-600 px-4 py-2 text-sm font-medium text-white hover:bg-green-700 disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              {guestOtpLoading ? "Verifying..." : "Verify OTP"}
+            </button>
+          </div>
+        )}
+        {guestOtpMessage && (
+          <p className={`mt-2 text-sm ${isPhoneVerified ? "text-green-600" : "text-gray-700"}`}>
+            {guestOtpMessage}
+          </p>
+        )}
+        {guestOtpError && (
+          <p className="mt-2 text-sm text-red-500">{guestOtpError}</p>
+        )}
+      </div>
+    )}
     <div className="relative mt-3 ">
   <input
     type="email"
@@ -1135,10 +1446,10 @@ const grandTotal = subtotal - totalDiscount;
     <button
       type="button"
       onClick={handleSaveAddress}
-      disabled={isSavingAddress}
+      disabled={isSavingAddress || (isGuestCheckout && !isPhoneVerified)}
       className="bg-orange-500 text-white px-5 py-2 rounded-md text-sm font-medium hover:bg-orange-600 disabled:opacity-60"
     >
-      {isSavingAddress ? "Saving..." : "Save Address"}
+      {isSavingAddress ? "Saving..." : isGuestCheckout ? (isPhoneVerified ? "Save Guest Address" : "Verify Mobile to Save Address") : "Save Address"}
     </button>
   </div>
 
@@ -1392,6 +1703,7 @@ const grandTotal = subtotal - totalDiscount;
                     />
                     <span>Online Payment</span>
                   </label>
+                  {/*
                   <label className="flex items-center space-x-2">
                     <input 
                       type="radio" 
@@ -1403,13 +1715,14 @@ const grandTotal = subtotal - totalDiscount;
                     />
                     <span>Cash on Delivery</span>
                   </label>
+                    */}
                 </div>
               </div>
              <button 
   onClick={handleSubmit} 
-  disabled={isSubmitting || loading || cartItems.length === 0 || !isDeliverySaved}
+  disabled={!canPlaceOrder}
   className={`mt-6 w-1/2 md:w-1/3 text-white font-semibold py-2 rounded-lg transition ${
-    isSubmitting || loading || cartItems.length === 0 || !isDeliverySaved
+    !canPlaceOrder
       ? 'bg-gray-400 cursor-not-allowed' 
       : 'bg-red-500 hover:bg-red-600'
   }`}
@@ -1456,18 +1769,16 @@ const grandTotal = subtotal - totalDiscount;
           </div>
         </div>
       </div>
-
       {showAuthModal && (
-        <AuthModal 
+        <AuthModal
           onClose={() => setShowAuthModal(false)}
           onSuccess={() => {
             setShowAuthModal(false);
             window.location.reload();
           }}
-          error={authError}
+          message={authModalMessage}
         />
       )}
-      
 {isSubmitting && (
   <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
     <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full text-center">
