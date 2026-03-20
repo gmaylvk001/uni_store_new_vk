@@ -1554,7 +1554,7 @@ case 'brands':
     
     {/* Image 1: Helping You Get More Value */}
     <Link 
-      href="/category/large-appliance" 
+      href="/category/home-appliances" 
       className="block overflow-hidden rounded-lg shadow-sm hover:shadow-md transition-shadow"
     >
       <div className="relative w-full h-[100px] sm:h-[120px] md:h-[140px] lg:h-[180px]">
@@ -1635,7 +1635,7 @@ case 'brands':
 
                       {/* Image 3 */}
                       {/* <div className="rounded-xl overflow-hidden bg-[#111] hover:scale-[1.02] transition">
-                        <Link href={`/category/large-appliance`}>
+                        <Link href={`/category/home-appliances`}>
                         
                         <img
                           src="uploads/aboutus/HP_What'sHot_WM_02Jan2026_Yt-KWCCDR.webp"
@@ -1664,13 +1664,13 @@ case 'brands':
      {/* --- Section 2: What's Hot --- */}
 <section className="px-4 md:px-8 py-10">
   <h2 className="text-xl md:text-2xl font-semibold mb-8 text-black">What's Hot</h2>
-  
+
   <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">
     {[
       { href: "/brand/realme", src: "uploads/aboutus/HP_What'sHot_RealmeP4x_02Jan2026_ZNy77FWpt.webp" },
-      { href: "/category/televisions", src: "uploads/aboutus/HP_What'sHot_TVs_02Jan2026_8MouoeMk4B.webp" },
-      { href: "/category/large-appliance", src: "uploads/aboutus/HP_What'sHot_WM_02Jan2026_Yt-KWCCDR.webp" },
-      { href: "/category/mobiles-accessories/mobile-phones/iphone", src: "uploads/aboutus/HP_What'sHot_iPad11_02Jan2026_PhoUjE9mF.webp" },
+      { href: "/category/tv-entertainment", src: "uploads/aboutus/HP_What'sHot_TVs_02Jan2026_8MouoeMk4B.webp" },
+      { href: "/category/home-appliances", src: "uploads/aboutus/HP_What'sHot_WM_02Jan2026_Yt-KWCCDR.webp" },
+      { href: "/category/mobiles-tablets/iphone", src: "uploads/aboutus/HP_What'sHot_iPad11_02Jan2026_PhoUjE9mF.webp" },
        { href: "/category/accessories/stabilizer", src: "uploads/aboutus/Stabilizer.png" }
 
     ].map((item, i) => (
@@ -1778,7 +1778,7 @@ case 'brands':
                        */}
                       {/* Image 1 */}
                       {/* <div className="rounded-xl overflow-hidden bg-[#111] hover:scale-[1.02] transition">
-                        <Link href={`/category/small-appliances/kitchen-appliance/air-fryer`}>
+                        <Link href={`/category/kitchen-appliances/kitchen-appliance/air-fryer`}>
                         
                        
                         <img
@@ -1831,11 +1831,11 @@ case 'brands':
   
   <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">
     {[
-      { href: "/category/small-appliances/kitchen-appliance/air-fryer", src: "uploads/aboutus/HP_DOTD_AirFryers_02Jan2026_iSrQ_kbJl.jpg" },
+      { href: "/category/kitchen-appliances/kitchen-appliance/air-fryer", src: "uploads/aboutus/HP_DOTD_AirFryers_02Jan2026_iSrQ_kbJl.jpg" },
       { href: "/category/sound-systems/speaker", src: "uploads/aboutus/HP_DOTD_BTSpeakers_02Jan2026_-VhhZiYFRG.jpg" },
       { href: "/category/accessories", src: "uploads/aboutus/HP_DOTD_Chargers_02Jan2026_i5NEs4ycP.webp" },
       { href: "/category/gadgets/smart-watches", src: "uploads/aboutus/HP_DOTD_SW_02Jan2026_bvnroJbzi.webp" },
-       { href: "/category/large-appliance/dishwasher", src: "uploads/aboutus/Dishwasher.jpg" },
+       { href: "/category/home-appliances/dishwasher", src: "uploads/aboutus/Dishwasher.jpg" },
       
     ].map((item, i) => (
         <div

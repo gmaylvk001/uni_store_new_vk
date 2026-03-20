@@ -159,7 +159,7 @@ export default function Order() {
         "params",
         JSON.stringify([name, order.order_number])
       );
-
+        {/*
       const response = await fetch("https://bea.eygr.in/api/email/send-msg", {
         method: "POST",
         headers: {
@@ -170,6 +170,7 @@ export default function Order() {
 
       const data = await response.json();
       results.push({ email, data });
+        */}
     }
 
     toast.success("Cancellation email sent successfully");

@@ -655,7 +655,7 @@ const grandTotal = subtotal - totalDiscount;
           "params",
           JSON.stringify([name,orderData.order.order_number,order_amount,orderData.order.payment_method, itemHtml])
         );
-       
+       {/*
         const response = await fetch("https://bea.eygr.in/api/email/send-msg", {
           method: "POST",
           headers: {
@@ -665,7 +665,7 @@ const grandTotal = subtotal - totalDiscount;
         });
  
         const data = await response.json();
- 
+        */}
         
       const adminItemsHtml = orderData.order.order_item.map(item => {
        return `<li>${item.name} - ₹${item.price.toFixed(2)} x ${item.quantity}</li>`;
@@ -683,9 +683,11 @@ const grandTotal = subtotal - totalDiscount;
         // const emailadmin = ["arunkarthik@bharathelectronics.in","ecom@bharathelectronics.in","itadmin@bharathelectronics.in","telemarketing@bharathelectronics.in","sekarcorp@bharathelectronics.in","siva96852@gmail.com"];
 
         // const emailadmin = ["siva96852@gmail.com"];
+        
         const emailadmin = ["sorambeeviuit@gmail.com"];
         emailadmin.forEach(async (adminEmail) => {
           adminemailFormData.set("email", adminEmail);
+          {/*
         let adminresponse = await fetch("https://bea.eygr.in/api/email/send-msg", {
           method: "POST",
           headers: {
@@ -693,7 +695,7 @@ const grandTotal = subtotal - totalDiscount;
           },
           body: adminemailFormData, // Use the renamed variable
         });
-
+            */}
         let adminData = await adminresponse.json();
         });
 

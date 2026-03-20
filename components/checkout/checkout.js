@@ -1029,16 +1029,17 @@ const canPlaceOrder = !isSubmitting && !loading && cartItems.length > 0 && isDel
           "params",
           JSON.stringify([name,orderData.order.order_number,order_amount,orderData.order.payment_method, itemHtml])
         );
-       
+       {/*
         const response = await fetch("https://bea.eygr.in/api/email/send-msg", {
           method: "POST",
           headers: {
-            Authorization: "Bearer 2|DC7TldSOIhrILsnzAf0gzgBizJcpYz23GHHs0Y2L",
+            Authorization: "Bearer 2|DC7TldSOIhrILsnzAf0gzgBizJcpYz23GHHs0Y2",
           },
           body: emailFormData, // Use the renamed variable
         });
  
         const data = await response.json();
+        */}
  
         
       const adminItemsHtml = orderData.order.order_item.map(item => {
@@ -1059,14 +1060,15 @@ const canPlaceOrder = !isSubmitting && !loading && cartItems.length > 0 && isDel
         //const emailadmin = ["gmaylvk001@gmail.com"]; "siva96852@gmail.com"
         emailadmin.forEach(async (adminEmail) => {
           adminemailFormData.set("email", adminEmail);
+          {/*
         let adminresponse = await fetch("https://bea.eygr.in/api/email/send-msg", {
           method: "POST",
           headers: {
-            Authorization: "Bearer 2|DC7TldSOIhrILsnzAf0gzgBizJcpYz23GHHs0Y2L",
+            Authorization: "Bearer 2|DC7TldSOIhrILsnzAf0gzgBizJcpYz23GHHs0Y2",
           },
           body: adminemailFormData, // Use the renamed variable
         });
-
+            */}
         let adminData = await adminresponse.json();
         });
         
