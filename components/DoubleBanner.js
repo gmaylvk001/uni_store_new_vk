@@ -13,7 +13,7 @@ const DoubleBanner = () => {
     {
       id: 2,
       img: "uploads/aboutus/GodrejAc.png", 
-      link: "/category/large-appliance/air-conditioner",
+      link: "/category/home-appliances/air-conditioner",
       alt: "Godrej AC Sale",
     },
   ];
