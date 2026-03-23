@@ -477,18 +477,19 @@ const capitalizeFirstLetter = (str) =>
                             <br />
                             <span className="font-semibold text-white">Brands :</span>
                             <span className="ml-2 text-gray-500">
-                              {brands.map((brand, i) => (
-                                <span key={brand._id || `${la._id}-brand-${i}`}>
-                                  <Link
-                                    href={`/category/brand/${main.category_slug}/${brand.brand_slug}`}
-                                    className="hover:text-white hover:underline"
-                                  >
-                                    {brand.brand_name.charAt(0).toUpperCase() +
-                                      brand.brand_name.slice(1).toLowerCase()}
-                                  </Link>
-                                  {i < brands.length - 1 && " / "}
-                                </span>
-                              ))}
+                              
+{brands.map((brand, i) => (
+  <span key={brand._id || `${la._id}-brand-${i}`}>
+    <Link
+      href={`/brand-landing/${main.category_slug}/${brand.brand_slug}`}
+      className="hover:text-white hover:underline"
+    >
+      {brand.brand_name.charAt(0).toUpperCase() +
+        brand.brand_name.slice(1).toLowerCase()}
+    </Link>
+    {i < brands.length - 1 && " / "}
+  </span>
+))}
                             </span>
                           </>
                         )}
@@ -539,18 +540,19 @@ const capitalizeFirstLetter = (str) =>
                               <span>
                                 <span className="font-semibold text-white">Brands :</span>
                                 <span className="ml-2 text-gray-500">
-                                  {brands.map((brand, bi) => (
-                                    <span key={brand._id || `${main._id}-brand-${bi}`}>
-                                      <Link
-                                        href={`/category/brand/${subcat.category_slug}/${brand.brand_slug}`}
-                                        className="hover:text-white hover:underline"
-                                      >
-                                        {brand.brand_name.charAt(0).toUpperCase() +
-                                          brand.brand_name.slice(1).toLowerCase()}
-                                      </Link>
-                                      {bi < brands.length - 1 && " / "}
-                                    </span>
-                                  ))}
+                                  {/* ✅ FIXED BRAND LINK FOR DEFAULT CATEGORIES (Subcategory level) */}
+{brands.map((brand, bi) => (
+  <span key={brand._id || `${main._id}-brand-${bi}`}>
+    <Link
+      href={`/brand-landing/${subcat.category_slug}/${brand.brand_slug}`}
+      className="hover:text-white hover:underline"
+    >
+      {brand.brand_name.charAt(0).toUpperCase() +
+        brand.brand_name.slice(1).toLowerCase()}
+    </Link>
+    {bi < brands.length - 1 && " / "}
+  </span>
+))}
                                 </span>
                               </span>
                             )}
@@ -576,18 +578,19 @@ const capitalizeFirstLetter = (str) =>
                            
                             <span className="font-semibold text-white">Brands :</span>
                             <span className="ml-2 text-gray-500">
-                              {brands.map((brand, i) => (
-                                <span key={brand._id || `${main._id}-brand-${i}`}>
-                                  <Link
-                                    href={`/category/brand/${main.category_slug}/${brand.brand_slug}`}
-                                    className="hover:text-white hover:underline"
-                                  >
-                                    {brand.brand_name.charAt(0).toUpperCase() +
-                                      brand.brand_name.slice(1).toLowerCase()}
-                                  </Link>
-                                  {i < brands.length - 1 && " / "}
-                                </span>
-                              ))}
+                             {/* ✅ FIXED FALLBACK BRAND LINK */}
+                      {brands.map((brand, i) => (
+                        <span key={brand._id || `${main._id}-brand-${i}`}>
+                          <Link
+                            href={`/brand-landing/${main.category_slug}/${brand.brand_slug}`}
+                            className="hover:text-white hover:underline"
+                          >
+                            {brand.brand_name.charAt(0).toUpperCase() +
+                              brand.brand_name.slice(1).toLowerCase()}
+                          </Link>
+                          {i < brands.length - 1 && " / "}
+                        </span>
+                      ))}
                             </span>
                           </>
                         )}

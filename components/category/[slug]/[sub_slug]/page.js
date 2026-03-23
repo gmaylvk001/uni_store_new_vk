@@ -1137,7 +1137,7 @@ const scroll = (direction) => {
                               <span>₹{values[1].toLocaleString("en-IN")}</span>
                             </div>
                           </div>
-        
+ 
                       {/* Brand Filter */}
                       <div className="bg-white p-4 rounded-lg shadow-sm border mb-3">
                         <div className="flex items-center justify-between pb-2">
@@ -1148,7 +1148,9 @@ const scroll = (direction) => {
                         </div>
                         {isBrandsExpanded && (
                           <ul className="mt-2 max-h-48 overflow-y-auto pr-2">
-                            {categoryData.brands.map(brand => (
+                            {categoryData.brands
+                            .filter(brand => brand.brand_name && brand.brand_name.toLowerCase() !== "no brand")
+                            .map(brand => (
                               <li key={brand._id} className="flex items-center">
                                 <label className="flex items-center space-x-2 w-full cursor-pointer hover:bg-gray-50 rounded p-2 transition-colors">
                                 <input
@@ -1389,7 +1391,9 @@ const scroll = (direction) => {
                               </div>
                               {isBrandsExpanded && (
                                 <ul className="mt-2 space-y-2 max-h-48 overflow-y-auto">
-                                  {categoryData.brands.map(brand => (
+                                  {categoryData.brands
+                                  .filter(brand => brand.brand_name && brand.brand_name.toLowerCase() !== "no brand")
+                                  .map(brand => (
                                     <li key={brand._id} className="flex items-center">
                                       <label className="flex items-center space-x-2 w-full cursor-pointer hover:bg-gray-50 rounded p-2 transition-colors">
                                         <input
@@ -1529,7 +1533,7 @@ const scroll = (direction) => {
                     className="block mb-2 flex-1"
                     onClick={() => handleProductClick(product)}
                   >
-                   <h3 className="text-xs sm:text-sm font-medium text-[#0069c6] hover:text-[#00badb] min-h-[32px] sm:min-h-[40px]">
+                   <h3 className="text-xs sm:text-sm font-medium text-black hover:text-gray-600 min-h-[32px] sm:min-h-[40px]">
                                             {(() => {
                                               const model = product.model_number ? `(${product.model_number.trim()})` : "";
                                               const name = product.name ? product.name.trim() : "";
