@@ -246,15 +246,17 @@ const capitalizeFirstLetter = (str) =>
     return grouped;
   };
 
-  // Prepare normalized sections for rendering:
-  // - For Large Appliances: one block per ["Dishwasher","Air Conditioner","Washing Machine","Refrigerator"]
-  //   with order: title -> all subcategories -> single Brands list.
-  // - For others: keep existing brand logic (subcategories + nested + one Brands list).
   const prepareFooterSections = (grouped) => {
     const sections = [];
     if (!grouped || !Array.isArray(grouped.main)) return sections;
 
-    // Use lowercase for consistent matching
+    // Helper to filter out "No Brand" from any brand array
+    const cleanBrands = (brandArray) => {
+      return (brandArray || []).filter(b => 
+        b.brand_name && b.brand_name.toLowerCase() !== "no brand"
+      );
+    };
+
     const LARGE_SET = new Set([
       "dishwasher",
       "air conditioner",
@@ -269,27 +271,31 @@ const capitalizeFirstLetter = (str) =>
           const subName = subcat.category_name?.toLowerCase();
           if (LARGE_SET.has(subName)) {
             const children = grouped.subs[subcat._id] || [];
-            const brands =
-              (Array.isArray(subcat.brands) && subcat.brands.length
+            
+            // Get raw brands
+            const rawBrands = (Array.isArray(subcat.brands) && subcat.brands.length
                 ? subcat.brands
                 : mainCat.brands) || [];
+            
+            // ✅ FIX 1: Clean brands for Large Appliances
             sections.push({
               type: "la",
               key: `la-${subcat._id}`,
               main: mainCat,
               la: subcat,
               children,
-              brands,
+              brands: cleanBrands(rawBrands),
             });
           }
         });
       } else {
+        // ✅ FIX 2: Clean brands for Default categories
         sections.push({
           type: "default",
           key: `def-${mainCat._id}`,
           main: mainCat,
           subs,
-          brands: mainCat.brands || [],
+          brands: cleanBrands(mainCat.brands || []),
         });
       }
     });

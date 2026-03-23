@@ -1,7 +1,7 @@
 // 'use client';
 import Link from "next/link";
 import Image from 'next/image';
-import { FiSearch, FiMapPin, FiHeart,FiPhone, FiShoppingCart, FiUser, FiMenu, FiX, FiPhoneCall, FiMessageSquare, FiChevronRight } from "react-icons/fi";
+import { FiSearch, FiMapPin, FiHeart,FiPhone, FiShoppingCart, FiUser, FiMenu, FiX, FiPhoneCall, FiMessageSquare, FiChevronRight, FiLoader } from "react-icons/fi";
 import { MdPermPhoneMsg } from "react-icons/md";
 import { FaBars, FaShoppingBag, FaUserShield, FaSearch } from "react-icons/fa";
 import { useState, useRef, useEffect, useLayoutEffect, useCallback, useMemo } from 'react';
@@ -112,28 +112,33 @@ const CascadingMenu = ({ categories, onClose }) => {
   
   useEffect(() => () => cancelClose(), [cancelClose]);
 
-  const fetchBrands = useCallback(async (categoryId) => {
-    if (!categoryId) return;
-    if (brandCache.current[categoryId]) { 
-        setBrands(brandCache.current[categoryId]); 
-        return; 
+const fetchBrands = useCallback(async (categoryId) => {
+  if (!categoryId) return;
+  if (brandCache.current[categoryId]) { 
+      setBrands(brandCache.current[categoryId]); 
+      return; 
+  }
+  setBrandsLoading(true);
+  setBrands([]);
+  try {
+    const res = await fetch(`/api/brand/by-category?categoryId=${categoryId}`);
+    if (res.ok) {
+      const result = await res.json();
+      
+      // ✅ FIX: Filter out "No Brand" from the fetched list
+      const fetchedBrands = (result.brands || []).filter(b => 
+        b.brand_name && b.brand_name.toLowerCase() !== "no brand"
+      );
+      
+      brandCache.current[categoryId] = fetchedBrands;
+      setBrands(fetchedBrands);
     }
-    setBrandsLoading(true);
-    setBrands([]);
-    try {
-      const res = await fetch(`/api/brand/by-category?categoryId=${categoryId}`);
-      if (res.ok) {
-        const result = await res.json();
-        const fetchedBrands = result.brands || [];
-        brandCache.current[categoryId] = fetchedBrands;
-        setBrands(fetchedBrands);
-      }
-    } catch (e) { 
-        console.error('Failed to fetch matched brands', e); 
-    } finally { 
-        setBrandsLoading(false); 
-    }
-  }, []);
+  } catch (e) { 
+      console.error('Failed to fetch matched brands', e); 
+  } finally { 
+      setBrandsLoading(false); 
+  }
+}, []);
 
   // SMART CHECK: Does this category have a middle subcategory layer?
   // (e.g., Home Appliances = True. Televisions = False)
@@ -197,13 +202,11 @@ const CascadingMenu = ({ categories, onClose }) => {
     }
 
     if (activeL3 === 'brand') {
-    if (brandsLoading) return <div className="px-4 py-3 text-sm text-gray-400">Loading…</div>;
+    if (brandsLoading) return <div className="flex items-center justify-center h-full"><FiLoader className="animate-spin size-6" /></div>;
     if (brands.length === 0) return <div className="px-4 py-3 text-sm text-gray-400">No brands found</div>;
       
       return brands.map((b) => {
-      // ✅ LOGIC FIX: Determine the correct category slug for the mapping
-      // If we are in a middle layer (like AC), use that slug. 
-      // If no middle layer (like TV), use the top-level slug.
+
       const targetCategorySlug = isFromL2 
         ? sourceCat?.category_slug 
         : activeL1?.category_slug;
@@ -300,35 +303,39 @@ const CascadingMenu = ({ categories, onClose }) => {
   );
 };
 
-// ─────────────────────────────────────────────────────────────
-// MobileTypeBrandChooser — Mobile specific sub-accordion
-// ─────────────────────────────────────────────────────────────
+
 const MobileTypeBrandChooser = ({ sourceCat, ancestorSlugs, level, onClose }) => {
   const [activeTab, setActiveTab] = useState(null);
   const [brands, setBrands] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const handleBrandClick = async () => {
-    if (activeTab === 'brand') {
-      setActiveTab(null);
-      return;
-    }
-    setActiveTab('brand');
-    if (brands.length === 0) {
-      setLoading(true);
-      try {
-        const fetchId = sourceCat.md5_cat_name || sourceCat._id;
-        const res = await fetch(`/api/brand/by-category?categoryId=${fetchId}`);
-        if (res.ok) {
-          const result = await res.json();
-          setBrands(result.brands || []);
-        }
-      } catch(e) {
-        console.error(e);
+ const handleBrandClick = async () => {
+  if (activeTab === 'brand') {
+    setActiveTab(null);
+    return;
+  }
+  setActiveTab('brand');
+  if (brands.length === 0) {
+    setLoading(true);
+    try {
+      const fetchId = sourceCat.md5_cat_name || sourceCat._id;
+      const res = await fetch(`/api/brand/by-category?categoryId=${fetchId}`);
+      if (res.ok) {
+        const result = await res.json();
+        
+        // ✅ FIX: Filter out "No Brand" for Mobile view
+        const filteredBrands = (result.brands || []).filter(b => 
+          b.brand_name && b.brand_name.toLowerCase() !== "no brand"
+        );
+        
+        setBrands(filteredBrands);
       }
-      setLoading(false);
+    } catch(e) {
+      console.error(e);
     }
-  };
+    setLoading(false);
+  }
+};
 
   const types = sourceCat.subcategories || [];
   const paddingLeft = Math.min((level + 1) * 8, 24);
