@@ -18,6 +18,7 @@ import { useHeaderdetails } from "@/context/HeaderContext";
 import { getProducts } from '@/lib/productApi';
 
 
+
 // ADD: alphaSortString - case-insensitive, null-safe string comparator
 const alphaSortString = (a, b) => {
   const sa = (a ?? '').toString().trim();
@@ -88,6 +89,319 @@ const prepareFlatListAlpha = (flatList = []) => {
   return result;
 };
 
+// ─────────────────────────────────────────────────────────────
+// CascadingMenu — TOP-LEVEL component (NOT inside Header)
+// ─────────────────────────────────────────────────────────────
+const CascadingMenu = ({ categories, onClose }) => {
+  const [activeL1, setActiveL1] = useState(null);
+  const [activeL2, setActiveL2] = useState(null);
+  const [activeL3, setActiveL3] = useState(null); // 'type' | 'brand'
+  const [brands, setBrands] = useState([]);
+  const [brandsLoading, setBrandsLoading] = useState(false);
+  const brandCache = useRef({});
+  const closeTimer = useRef(null);
+
+  const cancelClose = useCallback(() => {
+    if (closeTimer.current) { clearTimeout(closeTimer.current); closeTimer.current = null; }
+  }, []);
+  
+  const scheduleClose = useCallback(() => {
+    cancelClose();
+    closeTimer.current = setTimeout(onClose, 150);
+  }, [cancelClose, onClose]);
+  
+  useEffect(() => () => cancelClose(), [cancelClose]);
+
+  const fetchBrands = useCallback(async (categoryId) => {
+    if (!categoryId) return;
+    if (brandCache.current[categoryId]) { 
+        setBrands(brandCache.current[categoryId]); 
+        return; 
+    }
+    setBrandsLoading(true);
+    setBrands([]);
+    try {
+      const res = await fetch(`/api/brand/by-category?categoryId=${categoryId}`);
+      if (res.ok) {
+        const result = await res.json();
+        const fetchedBrands = result.brands || [];
+        brandCache.current[categoryId] = fetchedBrands;
+        setBrands(fetchedBrands);
+      }
+    } catch (e) { 
+        console.error('Failed to fetch matched brands', e); 
+    } finally { 
+        setBrandsLoading(false); 
+    }
+  }, []);
+
+  // SMART CHECK: Does this category have a middle subcategory layer?
+  // (e.g., Home Appliances = True. Televisions = False)
+  const hasMiddleLayer = activeL1?.subcategories?.some(sub => sub?.subcategories?.length > 0);
+  
+  const l2Items = activeL1?.subcategories || [];
+
+  const col = (visible, bg = '#fff') => ({
+    width: 190, minWidth: 190, flexShrink: 0, height: '100%',
+    overflowY: 'auto', background: bg, borderRight: '1px solid #e8e8e8',
+    display: visible ? 'block' : 'none', 
+  });
+
+  const itemCls = (active) =>
+    `flex items-center justify-between w-full px-4 py-[10px] text-sm cursor-pointer select-none ${
+      active ? 'bg-[#e8f4fd] text-[#1688c8] font-semibold' : 'text-gray-700 hover:bg-gray-100 hover:text-[#1688c8]'
+    }`;
+
+  const renderChooser = (sourceCat) => (
+    <>
+      <div
+        className={itemCls(activeL3 === 'type')}
+        onMouseEnter={() => { cancelClose(); setActiveL3('type'); }}
+      >
+        <span className="flex-1">Shop by Type</span>
+        <FiChevronRight size={13} className="opacity-40 flex-shrink-0" />
+      </div>
+      
+      <div
+        className={itemCls(activeL3 === 'brand')}
+        onMouseEnter={() => {
+          cancelClose();
+          setActiveL3('brand');
+          if (sourceCat) {
+            fetchBrands(sourceCat.md5_cat_name || sourceCat._id); 
+          }
+        }}
+      >
+        <span className="flex-1">Shop by Brand</span>
+        <FiChevronRight size={13} className="opacity-40 flex-shrink-0" />
+      </div>
+    </>
+  );
+
+  const renderList = (sourceCat, isFromL2) => {
+    if (activeL3 === 'type') {
+      const types = sourceCat?.subcategories || [];
+      if (types.length === 0) return <div className="px-4 py-3 text-sm text-gray-400">No types available</div>;
+      
+      return types.map((t) => {
+        const href = isFromL2
+          ? `/category/${encodeURIComponent(activeL1?.category_slug || '')}/${encodeURIComponent(sourceCat?.category_slug || '')}/${encodeURIComponent(t.category_slug || '')}`
+          : `/category/${encodeURIComponent(activeL1?.category_slug || '')}/${encodeURIComponent(t.category_slug || '')}`;
+        
+        return (
+          <div key={t._id} className={itemCls(false)}>
+            <Link href={href} onClick={onClose} className="flex-1 truncate">{t.category_name}</Link>
+          </div>
+        );
+      });
+    }
+
+    if (activeL3 === 'brand') {
+    if (brandsLoading) return <div className="px-4 py-3 text-sm text-gray-400">Loading…</div>;
+    if (brands.length === 0) return <div className="px-4 py-3 text-sm text-gray-400">No brands found</div>;
+      
+      return brands.map((b) => {
+      // ✅ LOGIC FIX: Determine the correct category slug for the mapping
+      // If we are in a middle layer (like AC), use that slug. 
+      // If no middle layer (like TV), use the top-level slug.
+      const targetCategorySlug = isFromL2 
+        ? sourceCat?.category_slug 
+        : activeL1?.category_slug;
+
+      // This points to our new brand-landing route with the specific sub-category
+      const href = `/brand-landing/${encodeURIComponent(targetCategorySlug)}/${encodeURIComponent(b.brand_slug || b.brand_name.toLowerCase())}`;
+
+      return (
+        <div key={b._id || b.brand_slug} className={itemCls(false)}>
+          <Link 
+            href={href} 
+            onClick={() => {
+              onClose();
+              setActiveL3(null);
+            }} 
+            className="flex-1 truncate"
+          >
+            {b.brand_name || b.name}
+          </Link>
+        </div>
+      );
+    });
+  }
+  return null;
+};
+
+  return (
+    <div
+      onMouseEnter={cancelClose}
+      onMouseLeave={scheduleClose}
+      style={{
+        position: 'absolute', left: 0, top: '100%', zIndex: 50,
+        display: 'flex', height: 420,
+        boxShadow: '0 8px 30px rgba(0,0,0,0.18)',
+        border: '1px solid #e2e8f0', borderRadius: '0 0 8px 8px',
+        overflow: 'hidden', background: '#fff',
+        width: 'fit-content' // Dynamic width!
+      }}
+    >
+      {/* COL 1: Top-level categories */}
+      <div style={col(true)}>
+        {categories.map((cat) => (
+          <div key={cat._id} className={itemCls(activeL1?._id === cat._id)}
+            onMouseEnter={() => {
+              cancelClose();
+              setActiveL1(cat);
+              setActiveL2(null);
+              setActiveL3(null);
+              setBrands([]); 
+            }}>
+            <Link href={`/category/${encodeURIComponent(cat.category_slug || '')}`} onClick={onClose} className="flex-1 truncate">
+              {cat.category_name}
+            </Link>
+            <FiChevronRight size={13} className="opacity-40 flex-shrink-0" />
+          </div>
+        ))}
+      </div>
+
+      {/* COL 2: Subcategories OR Chooser (if NO middle layer) */}
+      <div style={col(activeL1 !== null, '#f8fafc')}>
+        {hasMiddleLayer ? (
+          l2Items.map((sub) => (
+            <div key={sub._id} className={itemCls(activeL2?._id === sub._id)}
+              onMouseEnter={() => {
+                cancelClose();
+                setActiveL2(sub);
+                setActiveL3(null);
+                setBrands([]); 
+              }}>
+              <Link href={`/category/${encodeURIComponent(activeL1?.category_slug || '')}/${encodeURIComponent(sub.category_slug || '')}`} onClick={onClose} className="flex-1 truncate">
+                {sub.category_name}
+              </Link>
+              <FiChevronRight size={13} className="opacity-40 flex-shrink-0" />
+            </div>
+          ))
+        ) : (
+          renderChooser(activeL1)
+        )}
+      </div>
+
+      {/* COL 3: Chooser (if has middle layer) OR Final List (if NO middle layer) */}
+      <div style={col((hasMiddleLayer && activeL2 !== null) || (!hasMiddleLayer && activeL3 !== null))}>
+        {hasMiddleLayer 
+          ? renderChooser(activeL2) 
+          : renderList(activeL1, false)
+        }
+      </div>
+
+      {/* COL 4: Final List (Only used if has middle layer) */}
+      <div style={col(hasMiddleLayer && activeL3 !== null, '#f8fafc')}>
+        {hasMiddleLayer && renderList(activeL2, true)}
+      </div>
+    </div>
+  );
+};
+
+// ─────────────────────────────────────────────────────────────
+// MobileTypeBrandChooser — Mobile specific sub-accordion
+// ─────────────────────────────────────────────────────────────
+const MobileTypeBrandChooser = ({ sourceCat, ancestorSlugs, level, onClose }) => {
+  const [activeTab, setActiveTab] = useState(null);
+  const [brands, setBrands] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const handleBrandClick = async () => {
+    if (activeTab === 'brand') {
+      setActiveTab(null);
+      return;
+    }
+    setActiveTab('brand');
+    if (brands.length === 0) {
+      setLoading(true);
+      try {
+        const fetchId = sourceCat.md5_cat_name || sourceCat._id;
+        const res = await fetch(`/api/brand/by-category?categoryId=${fetchId}`);
+        if (res.ok) {
+          const result = await res.json();
+          setBrands(result.brands || []);
+        }
+      } catch(e) {
+        console.error(e);
+      }
+      setLoading(false);
+    }
+  };
+
+  const types = sourceCat.subcategories || [];
+  const paddingLeft = Math.min((level + 1) * 8, 24);
+
+  return (
+    <div className="flex flex-col w-full bg-[#f8fafc] border-t border-gray-100 shadow-inner">
+      {/* ... Shop by Type logic stays the same ... */}
+      {types.length > 0 && (
+        <div className="border-b border-gray-100 last:border-0">
+          <button
+            onClick={() => setActiveTab(activeTab === 'type' ? null : 'type')}
+            className="w-full relative z-10 flex items-center justify-between pr-3 py-3 text-[13px] text-black hover:bg-blue-50/50"
+          >
+            <span style={{ paddingLeft: paddingLeft + 12 }} className="font-semibold">Shop by Type</span>
+            <FiChevronRight size={16} className={`transition-transform duration-200 ${activeTab === 'type' ? 'rotate-90' : ''}`} />
+          </button>
+          {activeTab === 'type' && (
+            <div className="bg-white py-1">
+              {types.map(t => {
+                const href = `/category/${[...ancestorSlugs, t.category_slug].map(encodeURIComponent).join('/')}`;
+                return (
+                  <Link key={t._id} href={href} onClick={onClose} className="block w-full text-left py-2.5 text-[13px] text-gray-600 hover:text-[#1688c8]">
+                    <span style={{ paddingLeft: paddingLeft + 24 }}>{t.category_name}</span>
+                  </Link>
+                )
+              })}
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* ✅ FIXED BRAND SECTION FOR MOBILE */}
+      <div className="border-b border-gray-100 last:border-0">
+        <button
+          onClick={handleBrandClick}
+          className="w-full relative z-10 flex items-center justify-between pr-3 py-3 text-[13px] text-black hover:bg-blue-50/50"
+        >
+          <span style={{ paddingLeft: paddingLeft + 12 }} className="font-semibold">Shop by Brand</span>
+          <FiChevronRight size={16} className={`transition-transform duration-200 ${activeTab === 'brand' ? 'rotate-90' : ''}`} />
+        </button>
+        {activeTab === 'brand' && (
+          <div className="bg-white py-1">
+            {loading ? (
+              <div className="py-2.5 text-[13px] text-gray-400" style={{ paddingLeft: paddingLeft + 24 }}>Loading brands...</div>
+            ) : brands.length === 0 ? (
+              <div className="py-2.5 text-[13px] text-gray-400" style={{ paddingLeft: paddingLeft + 24 }}>No brands found</div>
+            ) : (
+              brands.map(b => {
+                // ✅ LOGIC FIX: Determine target category slug
+                // Mobile ancestorSlugs already contains the path (e.g. ['home-appliances', 'air-conditioner'])
+                // We want the last one in the array for specific mapping.
+                const targetCategorySlug = ancestorSlugs[ancestorSlugs.length - 1];
+
+                const href = `/brand-landing/${encodeURIComponent(targetCategorySlug)}/${encodeURIComponent(b.brand_slug || b.brand_name.toLowerCase())}`;
+                
+                return (
+                  <Link 
+                    key={b._id || b.brand_slug} 
+                    href={href} 
+                    onClick={onClose} 
+                    className="block w-full text-left py-2.5 text-[13px] text-gray-600 hover:text-[#1688c8]"
+                  >
+                    <span style={{ paddingLeft: paddingLeft + 24 }}>{b.brand_name || b.name}</span>
+                  </Link>
+                )
+              })
+            )}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
 const Header = () => {
   const [search, setSearch] = useState("");
 
@@ -1357,17 +1671,21 @@ const shouldShowArrow = (item, allItems = []) => {
         let content = null;
         if (item.type === "brands-header") {
           content = (
-              <h3 className="flex items-center justify-between mb-1 text-sm font-semibold text-[#1688c8] ml-1">
+              <h3 className="flex items-center justify-between mb-1 text-sm font-semibold text-black ml-1">
                   {item.category_name}
               </h3>
           );
-        }else if (item.type === "brand") {
-          const href = `/category/brand/${encodeURIComponent(hoveredCategory.category_slug)}/${encodeURIComponent(item.brand_slug)}`;
+       } else if (item.type === "brand") {
+          // This ensures the link goes to /brand-landing/category-slug/brand-slug
+          const href = `/brand-landing/${encodeURIComponent(hoveredCategory.category_slug)}/${encodeURIComponent(item.brand_slug || item.slug)}`;
               
-
           content = (
             <Link
               href={href}
+              onClick={() => {
+                setOpen(false); // Closes the menu on click
+                setHoveredCategory(null);
+              }}
               className="flex items-center mb-1 text-sm text-[#8c8c8c] p-[5px] hover:text-[#0e54e6]"
             >
               <span className="font-normal">{item.brand_name}</span>
@@ -1648,110 +1966,112 @@ const shouldShowArrow = (item, allItems = []) => {
 
       return `/category/${fullPath}`;
     };
-    // NEW: recursive renderer for unlimited category levels
-    function renderCategoryLevel(nodes, ancestorSlugs = [], level = 0) {
-      if (!Array.isArray(nodes) || nodes.length === 0) return null;
-      return (
-        <div className="divide-y divide-gray-100">
-         {nodes
-  .slice() // make a shallow copy to avoid mutating original
-  .sort((a, b) => {
-    const nameA = (a.category_name || "").toLowerCase();
-    const nameB = (b.category_name || "").toLowerCase();
-    return nameA.localeCompare(nameB);
-  })
-  .map((node) => {
-    const hasChildren =
-      Array.isArray(node.subcategories) && node.subcategories.length > 0;
-    const isOpen = !!openCategories[node._id];
-    const nodeSlug = getCategorySlug(node);
-    const slugs = [...ancestorSlugs, nodeSlug];
-    const href = getNodeHref(ancestorSlugs, nodeSlug, level);
-    const rowJustify = hasChildren ? "justify-between" : "justify-start";
-
+  // NEW: recursive renderer for unlimited category levels
+  function renderCategoryLevel(nodes, ancestorSlugs = [], level = 0) {
+    if (!Array.isArray(nodes) || nodes.length === 0) return null;
     return (
-      <div
-        key={node._id}
-        className={`${isOpen ? "bg-blue-50/40" : "bg-white"} hover:bg-[#f2f2f2]`}
-      >
-        <div
-          className={`w-full flex items-center ${rowJustify} ${
-            level === 0 ? "px-3 py-3 text-sm" : "pl-5 pr-3 py-2 text-[13px]"
-          } ${isOpen ? "text-black bg-[#f2f2f2]" : "text-gray-800 hover:bg-[#f2f2f2]"}`}
-        >
-          <Link
-            href={href}
-            onClick={async (e) => {
-              if (level === 0 || hasChildren) {
-                e.preventDefault();
-                e.stopPropagation();
-                await ensureSubcategories(node._id);
-                setOpenCategories((prev) => {
-                  const next = { ...prev };
-                  const willOpen = !prev[node._id];
-                  if (level === 0) {
-                    Object.keys(next).forEach((k) => delete next[k]);
-                    if (willOpen) next[node._id] = true;
-                    return next;
-                  }
-                  next[node._id] = willOpen;
-                  return next;
-                });
-                setIsMobileMenuOpen(true);
-                return;
-              }
-              setIsMobileMenuOpen(false);
-            }}
-            className="flex-1 text-left truncate"
-            style={{ paddingLeft: level > 0 ? Math.min(level * 8, 24) : 0 }}
-          >
-            {node.category_name || "Category"}
-          </Link>
+      <div className="divide-y divide-gray-100">
+       {nodes
+        .slice()
+        .sort((a, b) => {
+          const nameA = (a.category_name || "").toLowerCase();
+          const nameB = (b.category_name || "").toLowerCase();
+          return nameA.localeCompare(nameB);
+        })
+        .map((node) => {
+          const hasChildren = Array.isArray(node.subcategories) && node.subcategories.length > 0;
+          
+          // SMART CHECK: Does this node have grandchildren?
+          const hasGrandchildren = hasChildren && node.subcategories.some(child => Array.isArray(child.subcategories) && child.subcategories.length > 0);
 
-          {hasChildren && (
-            <button
-              type="button"
-              onClick={async (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                await ensureSubcategories(node._id);
-                setOpenCategories((prev) => {
-                  const next = { ...prev };
-                  const willOpen = !prev[node._id];
-                  if (level === 0) {
-                    Object.keys(next).forEach((k) => delete next[k]);
-                    if (willOpen) next[node._id] = true;
-                    return next;
-                  }
-                  next[node._id] = willOpen;
-                  return next;
-                });
-              }}
-              aria-label="Toggle"
-              className="ml-2"
-            >
-              <FiChevronRight
-                className={`text-white rounded-full p-1 transition-transform duration-200 bg-[#2453D3] ${
-                  isOpen ? "rotate-90" : "rotate-0"
-                }`}
-                size={18}
-              />
-            </button>
-          )}
-        </div>
+          const isOpen = !!openCategories[node._id];
+          const nodeSlug = getCategorySlug(node);
+          const slugs = [...ancestorSlugs, nodeSlug];
+          const href = getNodeHref(ancestorSlugs, nodeSlug, level);
+          const rowJustify = hasChildren ? "justify-between" : "justify-start";
 
-        {isOpen && hasChildren && (
-          <div className="pb-2">
-            {renderCategoryLevel(node.subcategories, slugs, level + 1)}
-          </div>
-        )}
+          return (
+            <div key={node._id} className={`${isOpen ? "bg-blue-50/40" : "bg-white"} hover:bg-[#f2f2f2]`}>
+              <div className={`w-full flex items-center ${rowJustify} ${level === 0 ? "px-3 py-3 text-sm" : "pl-5 pr-3 py-2 text-[13px]"} ${isOpen ? "text-black bg-[#f2f2f2]" : "text-gray-800 hover:bg-[#f2f2f2]"}`}>
+                <Link
+                  href={href}
+                  onClick={async (e) => {
+                    if (level === 0 || hasChildren) {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      await ensureSubcategories(node._id);
+                      setOpenCategories((prev) => {
+                        const next = { ...prev };
+                        const willOpen = !prev[node._id];
+                        if (level === 0) {
+                          Object.keys(next).forEach((k) => delete next[k]);
+                          if (willOpen) next[node._id] = true;
+                          return next;
+                        }
+                        next[node._id] = willOpen;
+                        return next;
+                      });
+                      setIsMobileMenuOpen(true);
+                      return;
+                    }
+                    setIsMobileMenuOpen(false);
+                  }}
+                  className="flex-1 text-left truncate"
+                  style={{ paddingLeft: level > 0 ? Math.min(level * 8, 24) : 0 }}
+                >
+                  {node.category_name || "Category"}
+                </Link>
+
+                {hasChildren && (
+                  <button
+                    type="button"
+                    onClick={async (e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      await ensureSubcategories(node._id);
+                      setOpenCategories((prev) => {
+                        const next = { ...prev };
+                        const willOpen = !prev[node._id];
+                        if (level === 0) {
+                          Object.keys(next).forEach((k) => delete next[k]);
+                          if (willOpen) next[node._id] = true;
+                          return next;
+                        }
+                        next[node._id] = willOpen;
+                        return next;
+                      });
+                    }}
+                    aria-label="Toggle"
+                    className="ml-2 p-1 text-gray-500 hover:text-blue-600"
+                  >
+                    <FiChevronRight
+                      className={`transition-transform duration-200 ${isOpen ? "rotate-90" : "rotate-0"}`}
+                      size={18}
+                    />
+                  </button>
+                )}
+              </div>
+
+              {isOpen && hasChildren && (
+                <div className="pb-2">
+                  {hasGrandchildren ? (
+                    renderCategoryLevel(node.subcategories, slugs, level + 1)
+                  ) : (
+                    <MobileTypeBrandChooser 
+                      sourceCat={node} 
+                      ancestorSlugs={slugs} 
+                      level={level} 
+                      onClose={() => setIsMobileMenuOpen(false)} 
+                    />
+                  )}
+                </div>
+              )}
+            </div>
+          );
+        })}
       </div>
     );
-  })}
-
-        </div>
-      );
-    }
+  }
     useEffect(() => {
       if (!isMobileMenuOpen) return;
       const ids = (Array.isArray(categories) ? categories : []).slice(0, 5).map(c => c._id);
@@ -2045,44 +2365,12 @@ const shouldShowArrow = (item, allItems = []) => {
   <span className="font-medium">Menu</span>
 </button>
 
-{/* MENU WRAPPER */}
+{/* CASCADING MENU */}
 {open && (
-  <div
-    ref={menuRef}
-    // items-stretch is crucial here to make Left and Right sections equal height
-    className="absolute left-0 top-full mt-2 z-50 flex items-stretch shadow-2xl" 
-  >
-    {/* LEFT MENU */}
-    <div className="w-56 bg-white border-r">
-      <ul className="py-2 text-sm min-h-[390px] h-full">
-        {categories.map((cat) => (
-          <li
-            key={cat._id}
-            className="px-4 py-2 flex justify-between cursor-pointer hover:bg-gray-100"
-            onMouseEnter={() => {
-              if (cat?.subcategories?.length > 0) {
-                setHoveredCategory(cat);
-              } else {
-                setHoveredCategory(null);
-              }
-            }}
-          >
-            <Link href={`/category/${cat.category_slug}`}>
-              {cat.category_name}
-            </Link>
-            {cat?.subcategories?.length > 0 && (
-              <span className="text-gray-400">{">"}</span>
-            )}
-          </li>
-        ))}
-      </ul>
-    </div>
-
-    {/* RIGHT MEGA MENU */}
-    {hoveredCategory && hoveredCategory.subcategories?.length > 0 && (
-      <RightMegaMenu hoveredCategory={hoveredCategory} />
-    )}
-  </div>
+  <CascadingMenu
+    categories={categories}
+    onClose={() => setOpen(false)}
+  />
 )}
 
 
