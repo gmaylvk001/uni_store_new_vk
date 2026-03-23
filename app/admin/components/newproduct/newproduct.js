@@ -159,6 +159,7 @@ const exportToExcel = () => {
     return {
       'Item No.': product.item_code,
       'Ean': product.ean,
+      'Name': product.name,
       'StockQty': product.quantity,
       
       'Brand': brandName,
@@ -551,7 +552,7 @@ if (stockFilter) {
                 <th className="p-2">Item Code</th>
                 <th className="p-2">Ean</th>
                 {/* <th className="p-2">Image</th> */}
-                {/* <th className="p-2">Name</th> */}
+                 <th className="p-2">Name</th> 
                
                 <th className="p-2">Price</th>
                 <th className="p-2">Special Price</th>
@@ -571,6 +572,9 @@ if (stockFilter) {
                     </td>
                     <td className="p-2 text-center align-middle">
                       {product.ean}
+                    </td>
+                    <td className="p-2 text-center align-middle">
+                      {product.name}
                     </td>
                   
                     {/* Image Column */}
