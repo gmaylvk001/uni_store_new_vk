@@ -16,6 +16,7 @@ import { jwtDecode } from 'jwt-decode';
 import ProductReviews from "./ProductReviews";
 
 export default function ProductDetailsSection({ product, reviews=[], avgRating=0, reviewCount=0}) {
+  const PLACEHOLDER = "There is no product overview available for this item.";
   const [brand, setBrand] = useState([]);
   const [activeTab, setActiveTab] = useState("overview");
   // NEW: ensure default tab is set only once per product id
@@ -185,18 +186,28 @@ const removeImage = (index) => {
   // const tabs = ["overview", "description", "videos", "reviews"];
   const uiTabs = ["overview", "description", "reviews"];
 
+  const overviewImages = Array.isArray(product?.overview_image)
+    ? product.overview_image.filter(Boolean)
+    : String(product?.overview_image || "")
+        .split(",")
+        .map((img) => img.trim())
+        .filter(Boolean);
+
+  const hasOverviewText =
+    Boolean(product?.overview && product.overview.trim() !== "" && product.overview.trim() !== PLACEHOLDER);
+
+  const hasOverviewImages = overviewImages.length > 0;
+
+  const hasFlixContent = Boolean(product?.flix_data && (product.flix_data.inpage || product.flix_data.widget));
+
   // Check if a tab has content
   const hasTabContent = (tabId) => {
-    const PLACEHOLDER = "There is no product overview available for this item.";
     switch (tabId) {
       case "overview":
         return Boolean(
-          ((product.overview && product.overview.trim() !== "" && product.overview.trim() !== PLACEHOLDER)) ||
-          (product.overview_image &&
-            (Array.isArray(product.overview_image)
-              ? product.overview_image.length > 0
-              : String(product.overview_image).split(",").filter(Boolean).length > 0)) ||
-          (product.flix_data && (product.flix_data.inpage || product.flix_data.widget))
+          hasOverviewText ||
+          hasOverviewImages ||
+          hasFlixContent
         );
       case "description":
         return product.description && product.description.trim() !== "";
@@ -358,11 +369,7 @@ const removeImage = (index) => {
   useEffect(() => {
     if (!product) return;
     const hasTextOrImages =
-      (product.overview && product.overview.trim() !== "") ||
-      (product.overview_image &&
-        (Array.isArray(product.overview_image)
-          ? product.overview_image.length > 0
-          : String(product.overview_image).split(",").filter(Boolean).length > 0));
+      hasOverviewText || hasOverviewImages;
 
     if (flixLoaded || hasTextOrImages) {
       setActiveTab("overview");
@@ -373,7 +380,7 @@ const removeImage = (index) => {
       setActiveTab(next);
     }
     // run when product changes or cache becomes available
-  }, [product?._id, flixLoaded]);
+  }, [product?._id, flixLoaded, hasOverviewImages, hasOverviewText]);
   // Avoid re-initializing Flix if already loaded once for this product
   const initializeFlixMedia = () => {
     // Strong guards to avoid multiple loads
@@ -675,28 +682,10 @@ const removeImage = (index) => {
       return;
     }
 
-    if (product.overview_image && product.overview_image.length > 0) {
-      const images = Array.isArray(product.overview_image)
-        ? product.overview_image
-        : String(product.overview_image).split(",").filter(Boolean);
-
-      // Only append images if no existing images were added before
-      if (!overviewTab.querySelector('[data-overview-images="1"]')) {
-        const wrap = document.createElement("div");
-        wrap.setAttribute("data-overview-images", "1");
-        images.forEach((imgName) => {
-          const img = document.createElement("img");
-          img.src = `/uploads/products/${imgName.trim()}`;
-          img.alt = "Product Overview";
-          img.className = "w-full h-auto object-contain rounded-lg shadow-lg my-4";
-          wrap.appendChild(img);
-        });
-        overviewTab.appendChild(wrap);
-      }
-    } else {
+    if (!hasOverviewText && !hasOverviewImages) {
       const fallbackMessage = document.createElement("p");
       fallbackMessage.className = "no-overview-message text-gray-500 text-center py-4";
-      fallbackMessage.textContent = "There is no product overview available for this item.";
+      fallbackMessage.textContent = PLACEHOLDER;
       overviewTab.appendChild(fallbackMessage);
     }
 
@@ -1027,14 +1016,43 @@ const removeImage = (index) => {
   const overviewContent = (
     <div className="mx-auto px-4 py-6 text-center">
       <div id="overview-tab">
-        <div className="col-md-12">
-          {/* Stable placeholder to prevent layout collapse while Flix loads */}
-          <div
-            id="flix-placeholder"
-            className="min-h-[240px] w-full flex items-center justify-center text-gray-400"
-          >
-            There is no product overview available for this item. 
-          </div>
+        <div className="col-md-12 ">
+          {hasOverviewText && (
+            <div
+              className="prose prose-sm sm:prose max-w-none text-left"
+              dangerouslySetInnerHTML={{ __html: product.overview }}
+            />
+          )}
+
+          {hasOverviewImages && (
+            <div className="space-y-1" data-overview-images="1">
+              {overviewImages.map((imgName, index) => (
+                <div key={`${imgName}-${index}`} className="relative w-full min-h-[320px] sm:min-h-[460px] lg:min-h-[560px]">
+                  <Image
+                    src={`/uploads/products/${imgName}`}
+                    alt={`${product?.name || "Product"} overview ${index + 1}`}
+                    fill
+                    className="object-contain rounded-lg shadow-lg"
+                    unoptimized
+                  />
+                </div>
+              ))}
+            </div>
+          )}
+
+          {hasFlixContent && (
+            <div
+              id="flix-placeholder"
+              className="min-h-[240px] w-full flex items-center justify-center text-gray-400"
+            >
+              {PLACEHOLDER}
+            </div>
+          )}
+
+          {!hasOverviewText && !hasOverviewImages && !hasFlixContent && (
+            <p className="text-gray-500 text-center py-4">{PLACEHOLDER}</p>
+          )}
+
           {/* flix-inpage will be inserted here */}
         </div>
       </div>
