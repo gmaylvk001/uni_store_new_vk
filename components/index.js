@@ -1219,7 +1219,7 @@ case 'brands':
         <>
           {navigating && (
             <div className="fixed inset-0 z-[9999] flex justify-center items-center bg-black bg-opacity-30">
-              <div className="p-4  shadow-lg">
+              <div className="p-4 shadow-lg">
                 <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-600 mx-auto"></div>
               </div>
             </div>
@@ -1336,7 +1336,7 @@ case 'brands':
                           }
                         }}
                         className="absolute left-1 top-1/2 -translate-y-1/2
-                                  bg-white p-2 rounded-full shadow z-50"
+                                  bg-white p-2 rounded-full shadow"
                       >
                         <FiChevronLeft size={22} />
                       </button>
@@ -1354,7 +1354,7 @@ case 'brands':
                           }
                         }}
                         className="absolute right-1 top-1/2 -translate-y-1/2
-                                  bg-white p-2 rounded-full shadow z-50"
+                                  bg-white p-2 rounded-full shadow"
                       >
                         <FiChevronRight size={22} />
                       </button>

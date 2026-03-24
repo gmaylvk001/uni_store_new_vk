@@ -2083,6 +2083,7 @@ const shouldShowArrow = (item, allItems = []) => {
       if (!isMobileMenuOpen) return;
       const ids = (Array.isArray(categories) ? categories : []).slice(0, 5).map(c => c._id);
       ids.forEach((id) => { ensureSubcategories(id); });
+    
     }, [isMobileMenuOpen, categories, ensureSubcategories]);
   return (
     <>
@@ -2090,7 +2091,14 @@ const shouldShowArrow = (item, allItems = []) => {
 
 
       {/* Main Header bg-white */}
-                  <div className={`${isMobileMenuOpen ? "fixed inset-0 mt-0 pt-0 z-50 overflow-y-auto" : "px-4 sm:px-6 md:px-0 py-0 sticky top-0 z-40"}`} style={{ backgroundColor: "#1689C8" }}>
+                 <div 
+  className={`${
+    isMobileMenuOpen 
+      ? "fixed inset-0 lg:relative lg:inset-auto mt-0 pt-0 z-50 overflow-y-auto lg:overflow-visible" 
+      : "px-4 sm:px-6 md:px-0 py-0 sticky top-0 z-40"
+  }`} 
+  style={{ backgroundColor: "#1689C8" }}
+>
                       {/* NEW MOBILE TOP ROW (from reference) */}
                       <div className="lg:hidden flex items-center justify-between relative md:mx-4">
                           <Link href="/" className="p-1 rounded-lg">
@@ -2599,7 +2607,7 @@ const shouldShowArrow = (item, allItems = []) => {
 
       {/* Mobile Menu (Hidden on desktop) */}
                       {isMobileMenuOpen && (
-                        <div className="sm:hidden bg-white fixed inset-0 z-50 p-4 pt-3 rounded-lg shadow-lg overflow-y-auto transition-all duration-300"
+                        <div className="lg:hidden bg-white fixed inset-0 z-50 p-4 pt-3 rounded-lg shadow-lg overflow-y-auto transition-all duration-300"
                           style={{ touchAction: 'auto', userSelect: 'auto', WebkitUserSelect: 'auto' }}
                         >
                           {/* Internal sticky header */}
