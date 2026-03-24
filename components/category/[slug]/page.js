@@ -924,7 +924,7 @@ const STEP = 100;
             <>
             <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-3">
                 {getSortedProducts().map(product => (
-                  <div key={product._id} className="group relative bg-white rounded-lg border hover:border-blue-200 transition-all shadow-sm hover:shadow-md flex flex-col h-full">
+                  <div key={product._id} className="group relative bg-white rounded-lg border hover:border-blue-200 transition-all shadow-sm hover:shadow-md flex flex-col h-full overflow-hidden">
                     {/* Product Image */}
                     <div className="relative aspect-square bg-white">
                       {product.images?.[0] && (
@@ -966,7 +966,7 @@ const STEP = 100;
                         className="block mb-2"
                         onClick={() => handleProductClick(product)}
                       >
-                        <h3 className="text-xs sm:text-sm font-medium text-gray-800 hover:text-blue-600 line-clamp-2 min-h-[40px]">
+                        <h3 className="w-full text-xs sm:text-sm font-medium text-gray-800 hover:text-blue-600 line-clamp-2 min-h-[40px] break-words leading-snug">
                           {product.name}
                         </h3>
                       </Link>

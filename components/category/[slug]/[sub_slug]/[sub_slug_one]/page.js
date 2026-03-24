@@ -1236,7 +1236,7 @@ export default function CategoryPage() {
             <>
              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-3">
                         {getSortedProducts().map(product => (
-                          <div key={product._id} className="group relative bg-white rounded-lg border hover:border-blue-200 transition-all shadow-sm hover:shadow-md flex flex-col h-full">
+                          <div key={product._id} className="group relative bg-white rounded-lg border hover:border-blue-200 transition-all shadow-sm hover:shadow-md flex flex-col h-full overflow-hidden">
                             {/* Product Image */}
                             <div className="relative aspect-square bg-white">
                               <Link
@@ -1304,7 +1304,7 @@ export default function CategoryPage() {
                                                 className="block mb-2 flex-1"
                                                 onClick={() => handleProductClick(product)}
                                               >
-                                               <h3 className="text-xs sm:text-sm font-medium text-black hover:text-gray-700 min-h-[32px] sm:min-h-[40px]">
+                                               <h3 className="w-full text-xs sm:text-sm font-medium text-black hover:text-gray-700 min-h-[32px] sm:min-h-[40px] break-words leading-snug">
                                             {(() => {
                                               const model = product.model_number ? `(${product.model_number.trim()})` : "";
                                               const name = product.name ? product.name.trim() : "";

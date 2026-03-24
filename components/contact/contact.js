@@ -159,8 +159,8 @@ export default function ContactForm() {
                 </svg>
                 <p>
                   <b>Telephone No:</b>{" "}
-                  <a href="tel:9243585858" className="hover:underline text-gray-600">
-                    +91 9243585858
+                  <a href="tel:9880582002" className="hover:underline text-gray-600">
+                    +91 98805 82002
                   </a>
                 </p>
               </div>

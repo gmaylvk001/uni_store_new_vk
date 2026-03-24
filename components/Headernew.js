@@ -3,7 +3,7 @@ import Link from "next/link";
 import Image from 'next/image';
 import { FiSearch, FiMapPin, FiHeart,FiPhone, FiShoppingCart, FiUser, FiMenu, FiX, FiPhoneCall, FiMessageSquare, FiChevronRight, FiLoader } from "react-icons/fi";
 import { MdPermPhoneMsg } from "react-icons/md";
-import { FaBars, FaShoppingBag, FaUserShield, FaSearch } from "react-icons/fa";
+import { FaBars, FaShoppingBag, FaUserShield, FaSearch, FaWhatsapp } from "react-icons/fa";
 import { useState, useRef, useEffect, useLayoutEffect, useCallback, useMemo } from 'react';
 import { IoLogOut } from "react-icons/io5";
 import { useCart } from '@/context/CartContext';
@@ -2116,7 +2116,7 @@ const shouldShowArrow = (item, allItems = []) => {
                             </Link>
                             <Link href="/lg-exclusive" className="flex items-center">
                                 <Image
-                                  src="/uploads/lg-logo-black-and-white.png"
+                                  src="/uploads/logo-lg.png"
                                   alt="LG"
                                   width={16}
                                   height={16}
@@ -2492,7 +2492,7 @@ const shouldShowArrow = (item, allItems = []) => {
               
                text-white text-xs font-semibold shadow-md
                hover:bg-[#1688c8] transition-all whitespace-nowrap">
-              <img src="/uploads/lg-logo.png" alt="LG" className="h-8 w-auto object-contain" />
+              <img src="/uploads/logo-lg.png" alt="LG" className="h-8 w-auto object-contain" />
               
             </Link>
 
@@ -3047,6 +3047,15 @@ const shouldShowArrow = (item, allItems = []) => {
           </div>
         )}
         
+          <a
+            href="https://wa.me/919880582002?text=Hi"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Chat on WhatsApp"
+            className="fixed bottom-5 right-5 z-[90] flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg transition-transform duration-200 hover:scale-105"
+          >
+            <FaWhatsapp className="text-[30px]" />
+          </a>
         </>
   );
 };

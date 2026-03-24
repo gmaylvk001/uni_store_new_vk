@@ -807,7 +807,7 @@ const scroll = (direction) => {
     <Link
       key={subcategory._id}
       href={`/category/${slug}/${sub_slug}/${subcategory.category_slug}`}
-      className="flex flex-row items-center flex-shrink-0 w-[295px] h-[264px] border border-gray-200 rounded-xl bg-white hover:-translate-y-1 transition-all duration-300 hover:shadow-lg hover:bg-gray-50"
+      className="flex flex-row items-center flex-shrink-0 w-[295px] h-[264px] border border-gray-200 rounded-xl bg-white hover:-translate-y-1 transition-all duration-300 hover:shadow-lg hover:bg-gray-50 overflow-hidden"
       style={{ scrollSnapAlign: "start" }}
     >
       {/* Image section */}
@@ -840,8 +840,8 @@ const scroll = (direction) => {
       </div>
 
       {/* Content section */}
-      <div className="flex flex-col text-left px-3 py-10 w-[150px] h-full">
-        <h3 className="text-md font-bold text-gray-900 mb-3 truncate">
+      <div className="flex flex-col text-left px-3 py-10 w-[150px] h-full min-w-0">
+        <h3 className="w-full text-md font-bold text-gray-900 mb-3 break-words leading-snug line-clamp-2 min-h-[3.5rem]">
           {subcategory.category_name}
         </h3>
 
@@ -1478,7 +1478,7 @@ const scroll = (direction) => {
             <>
               <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-3">
                 {getSortedProducts().map(product => (
-                  <div key={product._id} className="group relative bg-white rounded-lg border hover:border-blue-200 transition-all shadow-sm hover:shadow-md flex flex-col h-full">
+                  <div key={product._id} className="group relative bg-white rounded-lg border hover:border-blue-200 transition-all shadow-sm hover:shadow-md flex flex-col h-full overflow-hidden">
                     {/* Product Image */}
                     <div className="relative aspect-square bg-white">
                       <Link
@@ -1533,7 +1533,7 @@ const scroll = (direction) => {
                     className="block mb-2 flex-1"
                     onClick={() => handleProductClick(product)}
                   >
-                   <h3 className="text-xs sm:text-sm font-medium text-black hover:text-gray-600 min-h-[32px] sm:min-h-[40px]">
+                   <h3 className="w-full text-xs sm:text-sm font-medium text-black hover:text-gray-600 min-h-[32px] sm:min-h-[40px] break-words leading-snug">
                                             {(() => {
                                               const model = product.model_number ? `(${product.model_number.trim()})` : "";
                                               const name = product.name ? product.name.trim() : "";

@@ -649,25 +649,25 @@ const capitalizeFirstLetter = (str) =>
 
     <div>
       <h3 className="font-semibold mb-2">
-        <a href="/category/large-appliance" className="hover:underline text-primary">
-          Large Appliances – Upgrade Your Home Comfort
+        <a href="/category/home-appliances" className="hover:underline text-primary">
+          Home Appliances – Upgrade Your Home Comfort
         </a>
       </h3>
       <div>
-        Discover high-performance large appliances designed to make everyday household tasks easier and more efficient. From refrigerators and washing machines to air conditioners and dishwashers, Unilet Stores offers a wide selection of trusted appliances.  
+        Discover high-performance home appliances designed to make everyday household tasks easier and more efficient. From refrigerators and washing machines to air conditioners and dishwashers, Unilet Stores offers a wide selection of trusted appliances.  
         Choose from advanced energy-efficient models with smart features, spacious designs, and modern technology that enhance convenience and performance.  
-        Enjoy reliable warranties, attractive deals, and professional installation support when purchasing large appliances from Unilet Stores.
+        Enjoy reliable warranties, attractive deals, and professional installation support when purchasing home appliances from Unilet Stores.
       </div>
     </div>
 
     <div>
       <h3 className="font-semibold mb-2">
-        <a href="/category/small-appliances" className="hover:underline text-primary" target="_blank" rel="noopener noreferrer">
-          Small Appliances – Smart Solutions for Everyday Living
+        <a href="/category/kitchen-appliances" className="hover:underline text-primary" target="_blank" rel="noopener noreferrer">
+          Kitchen Appliances – Smart Solutions for Everyday Living
         </a>
       </h3>
       <div>
-        Explore a versatile range of small appliances designed to simplify your daily routine and improve productivity in the kitchen and home. From mixer grinders and microwaves to electric kettles, juicers, and coffee makers, Unilet Stores offers reliable appliances for modern lifestyles.  
+        Explore a versatile range of Kitchen appliances designed to simplify your daily routine and improve productivity in the kitchen and home. From mixer grinders and microwaves to electric kettles, juicers, and coffee makers, Unilet Stores offers reliable appliances for modern lifestyles.  
         These compact yet powerful devices combine efficiency with convenience, helping you prepare meals faster and manage household tasks with ease.  
         Shop quality small appliances with modern designs, energy-efficient performance, and affordable pricing at Unilet Stores.
       </div>
@@ -675,7 +675,7 @@ const capitalizeFirstLetter = (str) =>
 
     <div>
       <h3 className="font-semibold mb-2">
-        <a href="/category/televisions" className="hover:underline text-primary" target="_blank" rel="noopener noreferrer">
+        <a href="/category/tv-entertainment" className="hover:underline text-primary" target="_blank" rel="noopener noreferrer">
           Televisions – Experience Next-Level Entertainment
         </a>
       </h3>
@@ -688,8 +688,8 @@ const capitalizeFirstLetter = (str) =>
 
     <div>
       <h3 className="font-semibold mb-2">
-        <a href="/category/computers-laptops" className="hover:underline text-primary" target="_blank" rel="noopener noreferrer">
-          Computers & Laptops – Power Your Productivity
+        <a href="/category/laptops" className="hover:underline text-primary" target="_blank" rel="noopener noreferrer">
+         Laptops – Power Your Productivity
         </a>
       </h3>
       <div>
@@ -711,7 +711,7 @@ const capitalizeFirstLetter = (str) =>
         Unilet Stores offers a wide variety of mobile and tablet models from leading brands with competitive pricing and genuine warranty support.
       </div>
     </div>
-
+    {/*
     <div>
       <h3 className="font-semibold mb-2">
         <a href="/category/sound-systems" className="hover:underline text-primary">
@@ -737,6 +737,7 @@ const capitalizeFirstLetter = (str) =>
         Find the perfect gadget that complements your lifestyle and enjoy competitive prices with reliable warranty support.
       </div>
     </div>
+    */}
 
     
 

@@ -700,15 +700,15 @@ const fetchInitialData = async () => {
     {categoryData?.categoryTree?.length > 0 ? (
       categoryData.categoryTree.map((subcategory) => (
         
-        <Link
+<Link
   key={subcategory._id}
   href={`/category/${slug}/${subcategory.category_slug}`}
-  className="flex flex-col justify-between flex-shrink-0 w-[295px] h-[264px] border border-gray-200 rounded-xl bg-white hover:-translate-y-1 transition-all duration-300 hover:shadow-lg hover:bg-gray-50 p-4"
+  className="flex flex-col justify-between flex-shrink-0 w-[295px] h-[264px] border border-gray-200 rounded-xl bg-white hover:-translate-y-1 transition-all duration-300 hover:shadow-lg hover:bg-gray-50 p-4 overflow-hidden"
   style={{ scrollSnapAlign: "start" }}
 >
 
   {/* Title Top Center */}
-  <h3 className="text-md font-bold text-gray-900 text-center">
+  <h3 className="w-full text-md font-bold text-gray-900 text-center break-words leading-snug line-clamp-2 min-h-[3.5rem]">
     {subcategory.category_name}
   </h3>
 

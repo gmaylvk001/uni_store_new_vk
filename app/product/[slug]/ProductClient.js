@@ -937,7 +937,7 @@ const fetchBrand = async () => {
 )}
 
 
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-5 sm:px-6 lg:px-8 py-8">
          {/* Breadcrumb - moved outside the grid but inside container */}
          <ProductBreadcrumb product={product} />
         <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
@@ -2293,7 +2293,7 @@ const fetchBrand = async () => {
        
       </div>
      {/* changed code for 3 boxes 13-12-25 */}
-      <div className="container mx-auto px-1 py-0 w-full grid grid-cols-1 md:grid-cols-3 gap-3 -mt-7">
+      <div className="container mx-auto px-5 sm:px-6 lg:px-8 py-0 w-full grid grid-cols-1 md:grid-cols-3 gap-3 -mt-7">
         <div className="bg-gray-50 p-4 rounded-md shadow-md h-full">
           <h3 className="text-sm font-semibold text-gray-900 mb-3">MORE INFO</h3>
 
