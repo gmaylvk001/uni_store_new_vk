@@ -117,6 +117,26 @@ export async function GET(req) {
       _id: -1 // Secondary sort by _id or any other field you prefer
     });
       
+      const matchingProductIds = await Product.find(query).distinct("_id");
+      const matchingProductIdStrings = matchingProductIds.map((id) => id.toString());
+
+      let availableFilters = [];
+      if (matchingProductIdStrings.length > 0) {
+        availableFilters = await ProductFilter.aggregate([
+          {
+            $match: {
+              product_id: { $in: matchingProductIdStrings },
+            },
+          },
+          {
+            $group: {
+              _id: "$filter_id",
+              count: { $sum: 1 },
+            },
+          },
+        ]);
+      }
+
       // Apply pagination
       const skip = (page - 1) * limit;
       const products = await productsQuery
@@ -130,11 +150,14 @@ export async function GET(req) {
       
       return Response.json({
         products,
+        availableFilters,
         pagination: {
           currentPage: page,
           totalPages,
           totalProducts,
-          hasMore: page < totalPages
+          hasMore: page < totalPages,
+          hasNext: page < totalPages,
+          hasPrev: page > 1
         }
       });
 

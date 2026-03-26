@@ -29,6 +29,7 @@ export default function CategoryPage() {
   const [isSortPanelOpen, setIsSortPanelOpen] = useState(false);
   const [priceRange, setPriceRange] = useState([0, 100000]);
   const [filterGroups, setFilterGroups] = useState({});
+  const [availableFilterCounts, setAvailableFilterCounts] = useState({});
   const [loading, setLoading] = useState(true);
   const { slug,sub_slug } = useParams();
   const [sortOption, setSortOption] = useState('');
@@ -184,9 +185,19 @@ const scroll = (direction) => {
       }
 
       const res = await fetch(`/api/product/filter/main?${query}`);
-      const { products, pagination: paginationData } = await res.json();
+      const {
+        products,
+        pagination: paginationData,
+        availableFilters = []
+      } = await res.json();
       //console.log('products: ',products);
       setProducts(products);
+      setAvailableFilterCounts(
+        availableFilters.reduce((acc, filter) => {
+          acc[filter._id] = filter.count;
+          return acc;
+        }, {})
+      );
       
       // Update pagination state
       setPagination({
@@ -401,9 +412,20 @@ const scroll = (direction) => {
     ]);
   
      // sync with external filters (e.g. reset button)
-      useEffect(() => {
+     useEffect(() => {
         setValues([selectedFilters.price.min, selectedFilters.price.max]);
       }, [selectedFilters.price.min, selectedFilters.price.max]);
+
+  const visibleFilterGroups = Object.values(filterGroups)
+    .map((group) => {
+      const filters = group.filters.filter((filter) => {
+        const count = availableFilterCounts[filter._id] || 0;
+        return count > 0 || selectedFilters.filters.includes(filter._id);
+      });
+
+      return filters.length > 0 ? { ...group, filters } : null;
+    })
+    .filter(Boolean);
 
   const CategoryTree = ({ 
     categories, 
@@ -1181,13 +1203,13 @@ const scroll = (direction) => {
                       </div>
         
                       {/* Dynamic Filters */}
-                      {isFiltersExpanded && Object.values(filterGroups).length > 0 &&  (
+                      {isFiltersExpanded && visibleFilterGroups.length > 0 &&  (
                         <div className="bg-white p-4 rounded-lg shadow-sm border mb-3 border-gray-100">
                           <div className="pb-2 mb-2">
                             <h3 className="text-base font-semibold text-gray-700">Product Filters</h3>
                           </div>
                           <div className="space-y-4">
-                            {Object.values(filterGroups).map(group => (
+                            {visibleFilterGroups.map(group => (
                               <div key={group._id} className="border-b border-gray-100 last:border-0 pb-4 last:pb-0">
                                 <button onClick={() => toggleFilterGroup(group._id)} className="flex justify-between items-center w-full group">
                                   <span className="text-sm font-medium text-gray-700 group-hover:text-blue-600 transition-colors">{group.name}</span>
@@ -1211,9 +1233,9 @@ const scroll = (direction) => {
                                             className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
                                           />
                                           <span className="text-sm text-gray-600">{filter.filter_name}</span>
-                                          {filter.count && (
+                                          {(availableFilterCounts[filter._id] || 0) > 0 && (
                                             <span className="text-xs text-gray-400 ml-auto">
-                                              ({filter.count})
+                                              ({availableFilterCounts[filter._id]})
                                             </span>
                                           )}
                                         </label>
@@ -1411,13 +1433,13 @@ const scroll = (direction) => {
                             </div>
             
                             {/* Dynamic Filters */}
-                            {isFiltersExpanded && Object.values(filterGroups).length > 0 &&  (
+                            {isFiltersExpanded && visibleFilterGroups.length > 0 &&  (
                               <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-100">
                                 <div className="pb-2 mb-2">
                                   <h3 className="text-base font-semibold text-gray-700">Product Filters</h3>
                                 </div>
                                 <div className="space-y-4">
-                                  {Object.values(filterGroups).map(group => (
+                                  {visibleFilterGroups.map(group => (
                                     <div key={group._id} className="border-b border-gray-100 last:border-0 pb-4 last:pb-0">
                                       <button onClick={() => toggleFilterGroup(group._id)} className="flex justify-between items-center w-full group">
                                         <span className="text-sm font-medium text-gray-700 group-hover:text-blue-600 transition-colors">{group.name}</span>
@@ -1441,9 +1463,9 @@ const scroll = (direction) => {
                                                   className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
                                                 />
                                                 <span className="text-sm text-gray-600">{filter.filter_name}</span>
-                                                {filter.count && (
+                                                {(availableFilterCounts[filter._id] || 0) > 0 && (
                                                   <span className="text-xs text-gray-400 ml-auto">
-                                                    ({filter.count})
+                                                    ({availableFilterCounts[filter._id]})
                                                   </span>
                                                 )}
                                               </label>
