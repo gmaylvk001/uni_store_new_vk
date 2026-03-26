@@ -112,38 +112,32 @@ const CascadingMenu = ({ categories, onClose }) => {
   
   useEffect(() => () => cancelClose(), [cancelClose]);
 
-const fetchBrands = useCallback(async (categoryId) => {
-  if (!categoryId) return;
-  if (brandCache.current[categoryId]) { 
-      setBrands(brandCache.current[categoryId]); 
-      return; 
-  }
-  setBrandsLoading(true);
-  setBrands([]);
-  try {
-    const res = await fetch(`/api/brand/by-category?categoryId=${categoryId}`);
-    if (res.ok) {
-      const result = await res.json();
-      
-      // ✅ FIX: Filter out "No Brand" from the fetched list
-      const fetchedBrands = (result.brands || []).filter(b => 
-        b.brand_name && b.brand_name.toLowerCase() !== "no brand"
-      );
-      
-      brandCache.current[categoryId] = fetchedBrands;
-      setBrands(fetchedBrands);
+  const fetchBrands = useCallback(async (categoryId) => {
+    if (!categoryId) return;
+    if (brandCache.current[categoryId]) { 
+        setBrands(brandCache.current[categoryId]); 
+        return; 
     }
-  } catch (e) { 
-      console.error('Failed to fetch matched brands', e); 
-  } finally { 
-      setBrandsLoading(false); 
-  }
-}, []);
+    setBrandsLoading(true);
+    setBrands([]);
+    try {
+      const res = await fetch(`/api/brand/by-category?categoryId=${categoryId}`);
+      if (res.ok) {
+        const result = await res.json();
+        const fetchedBrands = (result.brands || []).filter(b => 
+          b.brand_name && b.brand_name.toLowerCase() !== "no brand"
+        );
+        brandCache.current[categoryId] = fetchedBrands;
+        setBrands(fetchedBrands);
+      }
+    } catch (e) { 
+        console.error('Failed to fetch matched brands', e); 
+    } finally { 
+        setBrandsLoading(false); 
+    }
+  }, []);
 
-  // SMART CHECK: Does this category have a middle subcategory layer?
-  // (e.g., Home Appliances = True. Televisions = False)
   const hasMiddleLayer = activeL1?.subcategories?.some(sub => sub?.subcategories?.length > 0);
-  
   const l2Items = activeL1?.subcategories || [];
 
   const col = (visible, bg = '#fff') => ({
@@ -157,36 +151,43 @@ const fetchBrands = useCallback(async (categoryId) => {
       active ? 'bg-[#e8f4fd] text-[#1688c8] font-semibold' : 'text-gray-700 hover:bg-gray-100 hover:text-[#1688c8]'
     }`;
 
-  const renderChooser = (sourceCat) => (
-    <>
-      <div
-        className={itemCls(activeL3 === 'type')}
-        onMouseEnter={() => { cancelClose(); setActiveL3('type'); }}
-      >
-        <span className="flex-1">Shop by Type</span>
-        <FiChevronRight size={13} className="opacity-40 flex-shrink-0" />
-      </div>
-      
-      <div
-        className={itemCls(activeL3 === 'brand')}
-        onMouseEnter={() => {
-          cancelClose();
-          setActiveL3('brand');
-          if (sourceCat) {
-            fetchBrands(sourceCat.md5_cat_name || sourceCat._id); 
-          }
-        }}
-      >
-        <span className="flex-1">Shop by Brand</span>
-        <FiChevronRight size={13} className="opacity-40 flex-shrink-0" />
-      </div>
-    </>
-  );
+  // ✅ UPDATED: Added check to hide "Shop by Type" if subcategories are empty
+  const renderChooser = (sourceCat) => {
+    const hasSubcategories = sourceCat?.subcategories && sourceCat.subcategories.length > 0;
+    
+    return (
+      <>
+        {hasSubcategories && (
+          <div
+            className={itemCls(activeL3 === 'type')}
+            onMouseEnter={() => { cancelClose(); setActiveL3('type'); }}
+          >
+            <span className="flex-1">Shop by Type</span>
+            <FiChevronRight size={13} className="opacity-40 flex-shrink-0" />
+          </div>
+        )}
+        
+        <div
+          className={itemCls(activeL3 === 'brand')}
+          onMouseEnter={() => {
+            cancelClose();
+            setActiveL3('brand');
+            if (sourceCat) {
+              fetchBrands(sourceCat.md5_cat_name || sourceCat._id); 
+            }
+          }}
+        >
+          <span className="flex-1">Shop by Brand</span>
+          <FiChevronRight size={13} className="opacity-40 flex-shrink-0" />
+        </div>
+      </>
+    );
+  };
 
   const renderList = (sourceCat, isFromL2) => {
     if (activeL3 === 'type') {
       const types = sourceCat?.subcategories || [];
-      if (types.length === 0) return <div className="px-4 py-3 text-sm text-gray-400">No types available</div>;
+      if (types.length === 0) return null; // Logic handled by renderChooser now
       
       return types.map((t) => {
         const href = isFromL2
@@ -202,36 +203,31 @@ const fetchBrands = useCallback(async (categoryId) => {
     }
 
     if (activeL3 === 'brand') {
-    if (brandsLoading) return <div className="flex items-center justify-center h-full"><FiLoader className="animate-spin size-6" /></div>;
-    if (brands.length === 0) return <div className="px-4 py-3 text-sm text-gray-400">No brands found</div>;
+      if (brandsLoading) return <div className="flex items-center justify-center h-full"><FiLoader className="animate-spin size-6" /></div>;
+      if (brands.length === 0) return <div className="px-4 py-3 text-sm text-gray-400">No brands found</div>;
       
       return brands.map((b) => {
+        const targetCategorySlug = isFromL2 ? sourceCat?.category_slug : activeL1?.category_slug;
+        const href = `/brand-landing/${encodeURIComponent(targetCategorySlug)}/${encodeURIComponent(b.brand_slug || b.brand_name.toLowerCase())}`;
 
-      const targetCategorySlug = isFromL2 
-        ? sourceCat?.category_slug 
-        : activeL1?.category_slug;
-
-      // This points to our new brand-landing route with the specific sub-category
-      const href = `/brand-landing/${encodeURIComponent(targetCategorySlug)}/${encodeURIComponent(b.brand_slug || b.brand_name.toLowerCase())}`;
-
-      return (
-        <div key={b._id || b.brand_slug} className={itemCls(false)}>
-          <Link 
-            href={href} 
-            onClick={() => {
-              onClose();
-              setActiveL3(null);
-            }} 
-            className="flex-1 truncate"
-          >
-            {b.brand_name || b.name}
-          </Link>
-        </div>
-      );
-    });
-  }
-  return null;
-};
+        return (
+          <div key={b._id || b.brand_slug} className={itemCls(false)}>
+            <Link 
+              href={href} 
+              onClick={() => {
+                onClose();
+                setActiveL3(null);
+              }} 
+              className="flex-1 truncate"
+            >
+              {b.brand_name || b.name}
+            </Link>
+          </div>
+        );
+      });
+    }
+    return null;
+  };
 
   return (
     <div
@@ -243,10 +239,9 @@ const fetchBrands = useCallback(async (categoryId) => {
         boxShadow: '0 8px 30px rgba(0,0,0,0.18)',
         border: '1px solid #e2e8f0', borderRadius: '0 0 8px 8px',
         overflow: 'hidden', background: '#fff',
-        width: 'fit-content' // Dynamic width!
+        width: 'fit-content'
       }}
     >
-      {/* COL 1: Top-level categories */}
       <div style={col(true)}>
         {categories.map((cat) => (
           <div key={cat._id} className={itemCls(activeL1?._id === cat._id)}
@@ -265,7 +260,6 @@ const fetchBrands = useCallback(async (categoryId) => {
         ))}
       </div>
 
-      {/* COL 2: Subcategories OR Chooser (if NO middle layer) */}
       <div style={col(activeL1 !== null, '#f8fafc')}>
         {hasMiddleLayer ? (
           l2Items.map((sub) => (
@@ -287,15 +281,10 @@ const fetchBrands = useCallback(async (categoryId) => {
         )}
       </div>
 
-      {/* COL 3: Chooser (if has middle layer) OR Final List (if NO middle layer) */}
       <div style={col((hasMiddleLayer && activeL2 !== null) || (!hasMiddleLayer && activeL3 !== null))}>
-        {hasMiddleLayer 
-          ? renderChooser(activeL2) 
-          : renderList(activeL1, false)
-        }
+        {hasMiddleLayer ? renderChooser(activeL2) : renderList(activeL1, false)}
       </div>
 
-      {/* COL 4: Final List (Only used if has middle layer) */}
       <div style={col(hasMiddleLayer && activeL3 !== null, '#f8fafc')}>
         {hasMiddleLayer && renderList(activeL2, true)}
       </div>
@@ -303,46 +292,40 @@ const fetchBrands = useCallback(async (categoryId) => {
   );
 };
 
-
 const MobileTypeBrandChooser = ({ sourceCat, ancestorSlugs, level, onClose }) => {
   const [activeTab, setActiveTab] = useState(null);
   const [brands, setBrands] = useState([]);
   const [loading, setLoading] = useState(false);
 
- const handleBrandClick = async () => {
-  if (activeTab === 'brand') {
-    setActiveTab(null);
-    return;
-  }
-  setActiveTab('brand');
-  if (brands.length === 0) {
-    setLoading(true);
-    try {
-      const fetchId = sourceCat.md5_cat_name || sourceCat._id;
-      const res = await fetch(`/api/brand/by-category?categoryId=${fetchId}`);
-      if (res.ok) {
-        const result = await res.json();
-        
-        // ✅ FIX: Filter out "No Brand" for Mobile view
-        const filteredBrands = (result.brands || []).filter(b => 
-          b.brand_name && b.brand_name.toLowerCase() !== "no brand"
-        );
-        
-        setBrands(filteredBrands);
-      }
-    } catch(e) {
-      console.error(e);
+  const handleBrandClick = async () => {
+    if (activeTab === 'brand') {
+      setActiveTab(null);
+      return;
     }
-    setLoading(false);
-  }
-};
+    setActiveTab('brand');
+    if (brands.length === 0) {
+      setLoading(true);
+      try {
+        const fetchId = sourceCat.md5_cat_name || sourceCat._id;
+        const res = await fetch(`/api/brand/by-category?categoryId=${fetchId}`);
+        if (res.ok) {
+          const result = await res.json();
+          const filteredBrands = (result.brands || []).filter(b => 
+            b.brand_name && b.brand_name.toLowerCase() !== "no brand"
+          );
+          setBrands(filteredBrands);
+        }
+      } catch(e) { console.error(e); }
+      setLoading(false);
+    }
+  };
 
   const types = sourceCat.subcategories || [];
   const paddingLeft = Math.min((level + 1) * 8, 24);
 
   return (
     <div className="flex flex-col w-full bg-[#f8fafc] border-t border-gray-100 shadow-inner">
-      {/* ... Shop by Type logic stays the same ... */}
+      {/* ✅ UPDATED: Mobile check ensures "Shop by Type" accordion only renders if types exist */}
       {types.length > 0 && (
         <div className="border-b border-gray-100 last:border-0">
           <button
@@ -367,7 +350,6 @@ const MobileTypeBrandChooser = ({ sourceCat, ancestorSlugs, level, onClose }) =>
         </div>
       )}
 
-      {/* ✅ FIXED BRAND SECTION FOR MOBILE */}
       <div className="border-b border-gray-100 last:border-0">
         <button
           onClick={handleBrandClick}
@@ -384,13 +366,8 @@ const MobileTypeBrandChooser = ({ sourceCat, ancestorSlugs, level, onClose }) =>
               <div className="py-2.5 text-[13px] text-gray-400" style={{ paddingLeft: paddingLeft + 24 }}>No brands found</div>
             ) : (
               brands.map(b => {
-                // ✅ LOGIC FIX: Determine target category slug
-                // Mobile ancestorSlugs already contains the path (e.g. ['home-appliances', 'air-conditioner'])
-                // We want the last one in the array for specific mapping.
                 const targetCategorySlug = ancestorSlugs[ancestorSlugs.length - 1];
-
                 const href = `/brand-landing/${encodeURIComponent(targetCategorySlug)}/${encodeURIComponent(b.brand_slug || b.brand_name.toLowerCase())}`;
-                
                 return (
                   <Link 
                     key={b._id || b.brand_slug} 
