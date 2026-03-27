@@ -14,7 +14,7 @@ export async function GET(req, { params }) {
     const {sub_slug} = await params;
     
     // Fetch category
-    const category = await ecom_category_info.findOne({ category_slug: sub_slug });
+    const category = await ecom_category_info.findOne({ category_slug: sub_slug, status: "Active" });
     if (!category) {
       return Response.json({ error: "Category not found" }, { status: 404 });
     }

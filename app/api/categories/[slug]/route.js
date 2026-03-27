@@ -8,7 +8,10 @@ import CategoryFilter from "@/models/ecom_categoryfilters_infos"; // <-- new imp
 import mongoose from "mongoose";
 
 async function getCategoryTree(parentId) {
-  const categories = await ecom_category_info.find({ parentid: parentId }).lean();
+  const categories = await ecom_category_info.find({
+    status: "Active",
+    parentid: String(parentId),
+  });
   for (const category of categories) {
     category.subCategories = await getCategoryTree(category._id);
   }
