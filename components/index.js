@@ -292,43 +292,83 @@ const maxIndex = Math.max(0, products.length - CARDS_PER_VIEW);
       }
     };
     useEffect(() => {
-        const fetchBannerData = async () => {
-            setIsBannerLoading(true);
-            try {
-                const response = await fetch('/api/topbanner');
-                const data = await response.json();
-                // console.log("Banner data:", data);
-                if (data.success && data.banners?.length > 0) {
-                    const bannerItems = data.banners
-                        .filter(banner => banner.status === "Active") // ✅ only Active
-                        .map(banner => ({
-                            id: banner._id,
-                            buttonLink: banner.redirect_url || "/shop",
-                            bgImageUrl: banner.banner_image,
-                            bannerImageUrl: banner.banner_image,
-                            redirectUrl: banner.redirect_url
-                        }));
+        // const fetchBannerData = async () => {
+        //     setIsBannerLoading(true);
+        //     try {
+        //         const response = await fetch('/api/topbanner');
+        //         const data = await response.json();
+        //         // console.log("Banner data:", data);
+        //         if (data.success && data.banners?.length > 0) {
+        //             const bannerItems = data.banners
+        //                 .filter(banner => banner.status === "Active") // ✅ only Active
+        //                 .map(banner => ({
+        //                     id: banner._id,
+        //                     buttonLink: banner.redirect_url || "/shop",
+        //                     bgImageUrl: banner.banner_image,
+        //                     bannerImageUrl: banner.banner_image,
+        //                     redirectUrl: banner.redirect_url
+        //                 }));
 
-                    setBannerData({
-                        banner: { items: bannerItems }
-                    });
-                }
-            } catch (error) {
-                console.error("Error fetching banner data:", error);
-                setBannerData({
-                    banner: {
-                        items: [{
-                            id: 1,
-                            buttonLink: "/shop",
-                            bgImageUrl: "/images/banner-img1.png",
-                            bannerImageUrl: "/images/banner-product.png"
-                        }]
-                    }
-                });
-            } finally {
-                setIsBannerLoading(false);
+        //             setBannerData({
+        //                 banner: { items: bannerItems }
+        //             });
+        //         }
+        //     } catch (error) {
+        //         console.error("Error fetching banner data:", error);
+        //         setBannerData({
+        //             banner: {
+        //                 items: [{
+        //                     id: 1,
+        //                     buttonLink: "/shop",
+        //                     bgImageUrl: "/images/banner-img1.png",
+        //                     bannerImageUrl: "/images/banner-product.png"
+        //                 }]
+        //             }
+        //         });
+        //     } finally {
+        //         setIsBannerLoading(false);
+        //     }
+        // };
+        
+        const fetchBannerData = async () => {
+    setIsBannerLoading(true);
+    try {
+        
+        // const response = await fetch('/api/topbanner'); 
+        
+        const manualItems = [
+            {
+                id: 1,
+                bannerImageUrl: "/uploads/aboutus/Hero-1.jpeg", 
+                redirectUrl: "/mega-sale",
+                bgImageUrl: "/uploads/aboutus/Hero-1.jpeg",
+                alt: "Mega Sale - Up to 50% Off on Electronics and Home Appliances"
+            },
+            {
+                id: 2,
+                bannerImageUrl: "/uploads/aboutus/Hero-2.jpeg",
+                redirectUrl: "/apple-store",
+                bgImageUrl: "/uploads/aboutus/Hero-2.jpeg",
+                alt: "Apple Store - Latest iPhones, MacBooks, and Accessories at Unbeatable Prices"
+            },
+            {
+                id: 2,
+                bannerImageUrl: "/uploads/aboutus/Hero-3.jpeg", 
+                redirectUrl: "/apple-store",
+                bgImageUrl: "/uploads/aboutus/Hero-3.jpeg",
+                alt: "Apple Store - Latest iPhones, MacBooks, and Accessories at Unbeatable Prices"
             }
-        };
+        ];
+
+        setBannerData({
+            banner: { items: manualItems }
+        });
+    } catch (error) {
+        console.error("Error setting manual banners:", error);
+    } finally {
+        setIsBannerLoading(false);
+    }
+};
         const fetchFlashSales = async () => {
           setIsFlashSalesLoading(true);
           try {
