@@ -24,7 +24,7 @@ import Addtocart from "@/components/AddToCart";
 import ProductBreadcrumb from "@/components/ProductBreadcrumb";
 import RecentlyViewedProducts from '@/components/RecentlyViewedProducts';
 import RelatedProducts from "@/components/RelatedProducts";
-import RazorpayOffers from "@/components/RazorpayOffers";
+import PayUOffers from "@/components/PayUOffers";
 import { v4 as uuidv4 } from "uuid";
 
 export default function ProductClient() {
@@ -1348,7 +1348,11 @@ const fetchBrand = async () => {
 {/* <h4><b>Available offers</b></h4> */}
                   
                            
-                           <RazorpayOffers amount={product.special_price} />
+                           <PayUOffers
+                             amount={product.special_price}
+                             skuId={product._id || product.id || product.product_id}
+                             skuAmount={product.special_price}
+                           />
  
  {/* 🚚 Delivery Check */}
 <div className="border border-gray-300 rounded-lg p-4 bg-white shadow-md">

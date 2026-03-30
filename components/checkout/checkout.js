@@ -1,23 +1,9 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { useCart } from '@/context/CartContext';
 import { ToastContainer, toast } from 'react-toastify';
 import { jwtDecode } from 'jwt-decode';
-import { useRouter } from 'next/navigation';
 import { AuthModal } from '@/components/AuthModal';
-import { trackCheckout } from "@/utils/nextjs-event-tracking.js";
-
-// Dynamically load Razorpay script
-const loadRazorpay = () => {
-  return new Promise((resolve) => {
-    const script = document.createElement('script');
-    script.src = 'https://checkout.razorpay.com/v1/checkout.js';
-    script.onload = () => resolve(true);
-    script.onerror = () => resolve(false);
-    document.body.appendChild(script);
-  });
-};
 
 const DeliveryOptions = ({ formData, handleChange, isDeliverySaved, setIsDeliverySaved, stores }) => {
   const [fetchedStores, setFetchedStores] = useState(stores || []);
@@ -144,8 +130,6 @@ const DeliveryOptions = ({ formData, handleChange, isDeliverySaved, setIsDeliver
 };
 
 export default function CheckoutPage() {
-  const { cartCount, updateCartCount } = useCart();
-  const router = useRouter();
   const [stores, setStores] = useState([]);
   const [formData, setFormData] = useState({
     firstName: "",
@@ -167,7 +151,7 @@ export default function CheckoutPage() {
   const [useraddress, setUseraddress] = useState([]);
   const [selectedAddress, setSelectedAddress] = useState(null);
   const [useSavedAddress, setUseSavedAddress] = useState(false);
-  const [paymentMethod, setPaymentMethod] = useState("Cash on Delivery");
+  const [paymentMethod, setPaymentMethod] = useState("payu");
   const [error, setError] = useState("");
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [authModalMessage, setAuthModalMessage] = useState("");
@@ -624,102 +608,68 @@ const [isSubmitting, setIsSubmitting] = useState(false);
     }
   };
 
-  const initializeRazorpay = async () => {
-    return await loadRazorpay();
-  };
+  const createPayUPaymentRequest = async ({
+    totalAmount,
+    addressData,
+    orderNumber,
+    transactionId,
+  }) => {
+    const productinfo =
+      cartItems.length === 1
+        ? cartItems[0].name
+        : `Order ${orderNumber} (${cartItems.length} items)`;
 
-  const createRazorpayOrder = async (amount) => {
-    try {
-      const res = await fetch('/api/create-razorpay-order', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ amount: amount * 100 }) // Convert to paise
-      });
-      return await res.json();
-    } catch (error) {
-      throw new Error('Failed to create Razorpay order');
-    }
-  };
-const handleOnlinePayment = async (totalAmount) => {
-  try {
-    const razorpayLoaded = await initializeRazorpay();
-    if (!razorpayLoaded) {
-      toast.error('Razorpay SDK failed to load');
-      setIsSubmitting(false);
-      return;
-    }
-
-    const orderResponse = await createRazorpayOrder(totalAmount);
-    const { order } = orderResponse;
-
-    return new Promise((resolve, reject) => {
-      const options = {
-        key: process.env.NEXT_PUBLIC_RAZORPAY_TEST_KEY,
-        amount: order.amount,
-        currency: "INR",
-        name: "UNILETSTORES",
-        description: "Product Purchase",
-        order_id: order.id,
-        handler: async function (response) {
-          try {
-            const verificationRes = await fetch('/api/verify-payment', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                razorpay_payment_id: response.razorpay_payment_id,
-                razorpay_order_id: response.razorpay_order_id,
-                razorpay_signature: response.razorpay_signature
-              })
-            });
-
-            if (verificationRes.ok) {
-              resolve({
-                paymentId: response.razorpay_payment_id,
-                status: "paid",
-                mode: "online"
-              });
-            } else {
-              reject(new Error('Payment verification failed'));
-            }
-          } catch (err) {
-            reject(err);
-          }
-        },
-        prefill: {
-          name: `${formData.firstName} ${formData.lastName}`,
-          email: formData.email,
-          contact: formData.phonenumber
-        },
-        theme: {
-          color: "#4b41d8ff"
-        },
-        modal: {
-          ondismiss: () => {
-            setIsSubmitting(false);
-            reject(new Error('Payment window closed'));
-          }
-        }
-      };
-
-      const razorpay = new window.Razorpay(options);
-      razorpay.open();
-
-      razorpay.on('payment.failed', function (response) {
-        setIsSubmitting(false);
-        reject(new Error(response.error.description));
-      });
+    const res = await fetch('/api/payu/initiate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        amount: totalAmount,
+        firstname: addressData.firstName,
+        lastname: addressData.lastName,
+        email: addressData.email,
+        phone: addressData.phonenumber,
+        txnid: transactionId,
+        orderNumber,
+        productinfo,
+      }),
     });
-  } catch (error) {
-    console.error('Razorpay error:', error);
-    toast.error('Payment processing failed');
-    setIsSubmitting(false);
-    throw error;
-  }
-};
-// Calculate totals
-const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-const totalDiscount = cartItems.reduce((sum, item) => sum + (item.discount || 0), 0);
-const grandTotal = subtotal - totalDiscount;
+
+    const data = await res.json();
+    if (!res.ok) {
+      throw new Error(data.error || 'Failed to initialize PayU payment');
+    }
+
+    return data;
+  };
+
+  const submitPayUForm = ({ payuUrl, fields }) => {
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = payuUrl;
+
+    Object.entries(fields).forEach(([key, value]) => {
+      const input = document.createElement('input');
+      input.type = 'hidden';
+      input.name = key;
+      input.value = value ?? '';
+      form.appendChild(input);
+    });
+
+    document.body.appendChild(form);
+    form.submit();
+  };
+// Calculate totals from the current cart items so checkout always reflects all products.
+const subtotal = cartItems.reduce((sum, item) => {
+  const itemPrice = Number(item.price) > 0 ? Number(item.price) : Number(item.actual_price || 0);
+  const itemQuantity = Number(item.quantity || 0);
+  const warranty = Number(item.warranty || 0);
+  const extendedWarranty = Number(item.extendedWarranty || 0);
+
+  return sum + (itemPrice * itemQuantity) + warranty + extendedWarranty;
+}, 0);
+const totalDiscount = cartItems.reduce((sum, item) => sum + Number(item.discount || 0), 0);
+const effectiveDiscount = totalDiscount > 0 ? totalDiscount : Number(orderSummary.discount || 0);
+const grandTotal = subtotal - effectiveDiscount;
 const isGuestOrderReady = !isGuestCheckout || (isPhoneVerified && isAddressSaved);
 const canPlaceOrder = !isSubmitting && !loading && cartItems.length > 0 && isDeliverySaved && isGuestOrderReady;
   const handleSubmit = async (e) => {
@@ -794,33 +744,27 @@ const canPlaceOrder = !isSubmitting && !loading && cartItems.length > 0 && isDel
     setIsSubmitting(true);
       setError("");
   
-           const totalAmount = orderSummary.total;
+      const totalAmount = grandTotal;
+      const orderNumber = `ORD${Date.now()}`;
+      const transactionId = `PAYU_${Date.now()}_${Math.random().toString(36).slice(2, 8).toUpperCase()}`;
 
-      let paymentId = "";
-      let paymentStatus = "";
-      let paymentMode = "";
-  
-      if (paymentMethod === 'Cash on Delivery') {
-        paymentId = "COD_" + Date.now();
-        paymentStatus = "pending";
-        paymentMode = "Cash on Delivery";
-      } else if (paymentMethod === 'online') {
-        try {
-          const result = await handleOnlinePayment(totalAmount);
-          paymentId = result.paymentId;
-          paymentStatus = result.status;
-          paymentMode = result.mode;
-        } catch (error) {
-          toast.error(`Payment failed: ${error.message}`);
-          setIsSubmitting(false);
-          return;
-        }
-      } else {
-        console.log("Invalid Payment Method");
+      if (paymentMethod !== 'payu' && paymentMethod !== 'online') {
+        toast.error("Please select PayU payment to continue.");
+        setIsSubmitting(false);
         return;
       }
+
+      const payuRequest = await createPayUPaymentRequest({
+        totalAmount,
+        addressData,
+        orderNumber,
+        transactionId,
+      });
  
-      // Only save new address if not using saved address
+      let savedAddressRecord = useSavedAddress && selectedAddress !== null
+        ? useraddress[selectedAddress]
+        : null;
+
       if (!useSavedAddress || selectedAddress === null) {
         const formDataToSend = new FormData();
         formDataToSend.append('userId', userId);
@@ -832,23 +776,25 @@ const canPlaceOrder = !isSubmitting && !loading && cartItems.length > 0 && isDel
         formDataToSend.append('address', addressData.address);
         formDataToSend.append('postCode', addressData.postCode);
         formDataToSend.append('city', addressData.city);
-        formDataToSend.append('state', addressData.state); 
+        formDataToSend.append('state', addressData.state);
         formDataToSend.append('landmark', addressData.landmark || '');
         formDataToSend.append('phonenumber', addressData.phonenumber);
         formDataToSend.append('altnumber', addressData.altnumber || '');
         formDataToSend.append('gst_name', addressData.gst_name || '');
         formDataToSend.append('gst_number', addressData.gst_number || '');
         formDataToSend.append('additionalInfo', addressData.additionalInfo || '');
-  
+
         const addressRes = await fetch('/api/useraddress/add', {
           method: 'POST',
           body: formDataToSend,
         });
-  
+
         if (!addressRes.ok) {
           throw new Error('Failed to save address');
         }
+
         const newAddressData = await addressRes.json();
+        savedAddressRecord = newAddressData.userAddress;
         setUseraddress(prev => {
           const existing = prev.findIndex(a => a._id === newAddressData.userAddress._id);
           if (existing !== -1) {
@@ -859,243 +805,71 @@ const canPlaceOrder = !isSubmitting && !loading && cartItems.length > 0 && isDel
           return [...prev, newAddressData.userAddress];
         });
       }
-  
-      // Save Payment
+
+      const deliveryAddressSource = savedAddressRecord || addressData;
+      const deliveryAddress = `${deliveryAddressSource.address}, ${deliveryAddressSource.city}, ${deliveryAddressSource.state}, ${deliveryAddressSource.country}, ${deliveryAddressSource.postCode}`;
+      const deliveryAddressId = savedAddressRecord?._id || (useSavedAddress && selectedAddress !== null
+        ? useraddress[selectedAddress]?._id
+        : isLoggedInUser
+        ? useraddress[0]?._id
+        : undefined);
+
+      const checkoutPayload = {
+        user_id: userId,
+        user_adddeliveryid: deliveryAddressId,
+        order_username: `${addressData.firstName} ${addressData.lastName}`,
+        order_phonenumber: addressData.phonenumber,
+        email_address: addressData.email,
+        order_item: cartItems,
+        order_amount: totalAmount,
+        order_deliveryaddress: deliveryAddress,
+        payment_method: 'PayU',
+        payment_type: 'payu',
+        order_status: 'Order Placed',
+        delivery_type: formData.deliveryType === 'store' ? 'store_pickup' : 'home',
+        pickup_store: formData.deliveryType === 'store'
+          ? stores.find(s => s._id === formData.selectedStore)?.organisation_name
+          : undefined,
+        payment_status: 'paid',
+        guest_checkout_token: !isLoggedInUser ? guestCheckoutToken : undefined,
+        order_number: orderNumber,
+        order_details: cartItems.map((item) => ({
+          item_code: `ITEM${item.item_code}`,
+          product_id: item.id,
+          product_name: item.name,
+          product_price: item.price,
+          model: 'N/A',
+          user_id: userId,
+          coupondiscount: 0,
+          created_at: new Date(),
+          updated_at: new Date(),
+          quantity: item.quantity,
+          orderNumber,
+        })),
+      };
+
       const paymentRes = await fetch('/api/payment', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           user_id: userId,
-          payment_mode: paymentMode,
-          status: paymentStatus,
+          payment_mode: 'payu',
+          status: 'pending',
           modevalue: totalAmount,
-          payment_id: paymentId,
-          payment_Date: new Date(),
+          payment_id: transactionId,
+          payment_Date: new Date().toISOString(),
+          checkout_payload: checkoutPayload,
         }),
       });
-  
+
       if (!paymentRes.ok) {
         throw new Error('Payment processing failed');
       }
-  
-      const res = await paymentRes.json();
-      const paymentData = res.paymentData;
-      
-      // Prepare delivery address string
-      const deliveryAddress = useSavedAddress && selectedAddress !== null
-        ? `${useraddress[selectedAddress].address}, ${useraddress[selectedAddress].city}, ${useraddress[selectedAddress].state}, ${useraddress[selectedAddress].country}, ${useraddress[selectedAddress].postCode}`
-        : `${addressData.address}, ${addressData.city}, ${addressData.state}, ${addressData.country}, ${addressData.postCode}`;
-  
-      // Save Order
-      const orderRes = await fetch('/api/orders/add', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          user_id: userId,
-          user_adddeliveryid: useSavedAddress && selectedAddress !== null 
-            ? useraddress[selectedAddress]._id 
-            : isLoggedInUser
-            ? useraddress[0]?._id
-            : undefined,
-          order_username: `${addressData.firstName} ${addressData.lastName}`,
-          order_phonenumber: addressData.phonenumber,
-          email_address: addressData.email,
-          order_item: cartItems,
-          order_amount: totalAmount,
-          order_deliveryaddress: deliveryAddress,
-          payment_method: paymentMethod,
-          payment_type: paymentMode,
-          order_status: "pending",
-         delivery_type: formData.deliveryType === "store" ? "store_pickup" : "home",
-         pickup_store: formData.deliveryType === "store" 
-      ? stores.find(s => s._id === formData.selectedStore)?.organisation_name 
-      : undefined,
-          payment_id: paymentData._id,
-          payment_status: paymentData.status,
-          guest_checkout_token: !isLoggedInUser ? guestCheckoutToken : undefined,
-          order_number: "ORD" + Date.now(),
-          order_details: cartItems.map((item) => ({
-            item_code: `ITEM${item.item_code}`,
-            product_id: item.id,
-            product_name: item.name,
-            product_price: item.price,
-            model: "N/A",
-            user_id: userId,
-            coupondiscount: 0,
-            created_at: new Date(),
-            updated_at: new Date(),
-            quantity: 1,
-            //store_id: formData.deliveryType === "store" ? formData.selectedStore : "STORE01",
-            orderNumber: "ORD" + Date.now(),
-          })),
-        }),
-      });
-      
-      if (!orderRes.ok) {
-        throw new Error('Order creation failed');
-      }
-
-      // Clear cart after successful order
-      const cartdelte = await fetch('/api/cart', {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-          ...(token
-            ? { 'Authorization': `Bearer ${token}` }
-            : { guestCartId: ensureGuestCartId() })
-        },
-        body: JSON.stringify({ clearAll: true })
-      });
-
-
-      if (token && cartdelte.status === 401) {
-        localStorage.removeItem('token');
-        router.push('/login');
-        return;
-      }
-
-      if (cartdelte.status === 200) {
-        localStorage.removeItem('checkoutData');
-        localStorage.removeItem('appliedCoupon')
-        const orderData = await orderRes.json()
-        // Prepare email data
-        // console.log(orderData,orderData.order.order_number);
-        // const emailData = {
-        //   orderDetails: {
-        //     order_number: orderData.order.order_number || "ORD" + Date.now(),
-        //     order_amount: totalAmount,
-        //     payment_method: paymentMethod === 'Cash on Delivery' ? 'Cash on Delivery' : 'Online Payment',
-        //     order_item: cartItems,
-        //     order_username: `${addressData.firstName} ${addressData.lastName}`,
-        //     order_phonenumber: addressData.phonenumber,
-        //     order_deliveryaddress: deliveryAddress
-        //   },
-        //   customerEmail: addressData.email,
-        //   adminEmail: 'msivaranjani2036@gmail.com'
-        // };
- 
-       // console.log(cartItems);
- 
-        const proresponse = await fetch(`/api/product/get/${cartItems[0].productId}`);
-       
-        if (!proresponse.ok) {
-          throw new Error(`HTTP error! status: ${proresponse.status}`);
-        }
-       
-        const productData = await proresponse.json();
- 
-        const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-        trackCheckout({
-          user: {
-            name: `${addressData.firstName} ${addressData.lastName}`.trim(),
-            phone: addressData.phonenumber,
-            email: addressData.email,
-          },
-          product: {
-            id: cartItems[0].productId,
-            name: productData.data.name,
-            price: cartItems[0].price,
-            link: `${apiUrl}/product/${productData.data.slug}`,
-            image: `${apiUrl}/uploads/products/`+cartItems[0].image,
-            qty: cartItems[0].quantity,
-            currency: "INR",
-          },
-        });
-       
-       
-        // Send confirmation emails
-        // const emailResponse = await fetch('/api/send-order-email', {
-        //   method: 'POST',
-        //   headers: { 'Content-Type': 'application/json' },
-        //   body: JSON.stringify(emailData)
-        // });
- 
-        // if (!emailResponse.ok) {
-        //   const errorData = await emailResponse.json();
-        //   console.error('Email sending failed:', errorData.error);
-        // }
-     
-          const name = addressData.firstName + ' ' + addressData.lastName;
-       const itemsHtml = orderData.order.order_item.map(item => {
-          return `<li>${item.name} - ₹${item.price.toFixed(2)} x ${item.quantity}</li>`;
-        }).join('');
-        const itemHtml = `<ul style="padding-left: 20px; color: #555555;">${itemsHtml}</ul>`;
-        const order_amount = `₹${Number(orderData.order.order_amount).toFixed(2)}`;
-        // FIXED: Renamed this variable as well to avoid conflict
-        const emailFormData = new FormData();
-        emailFormData.append("campaign_id", "0800f221-7805-4b76-988c-bbecd66e7500");
-        emailFormData.append("email", addressData.email);
-        emailFormData.append(
-          "params",
-          JSON.stringify([name,orderData.order.order_number,order_amount,orderData.order.payment_method, itemHtml])
-        );
-       {/*
-        const response = await fetch("https://bea.eygr.in/api/email/send-msg", {
-          method: "POST",
-          headers: {
-            Authorization: "Bearer 2|DC7TldSOIhrILsnzAf0gzgBizJcpYz23GHHs0Y2",
-          },
-          body: emailFormData, // Use the renamed variable
-        });
- 
-        const data = await response.json();
-        */}
- 
-        
-      const adminItemsHtml = orderData.order.order_item.map(item => {
-       return `<li>${item.name} - ₹${item.price.toFixed(2)} x ${item.quantity}</li>`;
-        }).join('');
-
-      const adminItemsTableHtml = `<ul style="padding-left: 20px; color: #555555;">${adminItemsHtml}</ul>`;
-
-        const adminemailFormData = new FormData();
-        adminemailFormData.append("campaign_id", "dd7b5f8d-5bf1-45a5-9116-fcb40f69ede6");
-        adminemailFormData.append(
-          "params",
-          JSON.stringify([name,addressData.email,addressData.phonenumber,deliveryAddress, adminItemsTableHtml])
-        );
-
-        
-        const emailadmin = ["muneeswaran@eywamedia.com"];
-        //const emailadmin = ["gmaylvk001@gmail.com"]; "siva96852@gmail.com"
-        emailadmin.forEach(async (adminEmail) => {
-          adminemailFormData.set("email", adminEmail);
-          {/*
-        let adminresponse = await fetch("https://bea.eygr.in/api/email/send-msg", {
-          method: "POST",
-          headers: {
-            Authorization: "Bearer 2|DC7TldSOIhrILsnzAf0gzgBizJcpYz23GHHs0Y2",
-          },
-          body: adminemailFormData, // Use the renamed variable
-        });
-            */}
-        let adminData = await adminresponse.json();
-        });
-        
-        
-        // send_order_detail_to_sap
-        const Send_SAP_Res = await fetch('/api/send-order-detail-to-sap', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          order_number: orderData.order.order_number,
-        }),
-      });
-  
-        //console.log("SAP_STATUS", Send_SAP_Res.status); 
-
-
-        toast.success("Order placed successfully!");
-        if (!token) {
-          clearGuestVerification();
-        }
-        router.push(token ? '/orders' : '/thank-you');
-        updateCartCount(0);
-
-      }
+      submitPayUForm(payuRequest);
+      return;
     } catch (error) {
       console.error("Error submitting order:", error);
-      toast.error("Failed to place order. Please try again.");
+      toast.error(error.message || "Failed to place order. Please try again.");
       setIsSubmitting(false);
     }
   };
@@ -1647,10 +1421,10 @@ const canPlaceOrder = !isSubmitting && !loading && cartItems.length > 0 && isDel
 
 
               {/* Add Discount row if there's any discount */}
-              {totalDiscount > 0 && (
+              {effectiveDiscount > 0 && (
                 <div className="flex justify-between text-green-600 mb-2">
                   <span>Discount:</span>
-                  <span>-₹{totalDiscount.toFixed(2)}</span>
+                  <span>-₹{effectiveDiscount.toFixed(2)}</span>
                 </div>
               )}
               {cartItems.some(item => item.warranty > 0) && (
@@ -1671,24 +1445,16 @@ const canPlaceOrder = !isSubmitting && !loading && cartItems.length > 0 && isDel
               )}
 
 
-              {/* Discount Row */}
-              {orderSummary.discount > 0 && (
-                <div className="flex justify-between text-green-600 mb-2">
-                  <span>Discount:</span>
-                  <span>-₹{orderSummary.discount.toFixed(2)}</span>
-                </div>
-              )}
-
               {/* Subtotal */}
               <div className="flex justify-between text-gray-800 font-semibold  pt-2 mt-2">
                 <span>Subtotal:</span>
-                <span>₹{orderSummary.subtotal.toLocaleString("en-IN", {minimumFractionDigits: 2,maximumFractionDigits: 2,})}</span>
+                <span>₹{subtotal.toLocaleString("en-IN", {minimumFractionDigits: 2,maximumFractionDigits: 2,})}</span>
               </div>
 
               {/* Total */}
               <div className="flex justify-between text-gray-800 font-semibold pt-2 mt-2">
                 <span>Total:</span>
-                <span>₹{orderSummary.total.toLocaleString("en-IN", {minimumFractionDigits: 2,maximumFractionDigits: 2,})}</span>
+                <span>₹{grandTotal.toLocaleString("en-IN", {minimumFractionDigits: 2,maximumFractionDigits: 2,})}</span>
               </div>
 
               <div className="mt-6">
@@ -1698,12 +1464,12 @@ const canPlaceOrder = !isSubmitting && !loading && cartItems.length > 0 && isDel
                     <input 
                       type="radio" 
                       name="payment" 
-                      value="online" 
-                      checked={paymentMethod === "online"} 
+                      value="payu" 
+                      checked={paymentMethod === "payu"} 
                       onChange={handlePaymentChange} 
                       className="w-4 h-4 text-orange-500"
                     />
-                    <span>Online Payment</span>
+                    <span>PayU Online Payment</span>
                   </label>
                   {/*
                   <label className="flex items-center space-x-2">
@@ -1793,3 +1559,5 @@ const canPlaceOrder = !isSubmitting && !loading && cartItems.length > 0 && isDel
     </div>
   );
 }
+
+

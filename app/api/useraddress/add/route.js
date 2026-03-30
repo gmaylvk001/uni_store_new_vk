@@ -4,8 +4,8 @@ import Useraddress from "@/models/ecom_user_address_info";
 export async function POST(req) {
   try {
     const formData        = await req.formData();
-    //console.log(formData);
     const userId = formData.get("userId");
+    const addressId = formData.get("addressId");
     if (!userId) {
       return NextResponse.json(
         { error: "User ID is required" },
@@ -48,23 +48,46 @@ export async function POST(req) {
           gst_number      :  gst_number,
           additionalInfo  :  additionalInfo,
         };
-console.log(addressData);
-    //existing user 
-    const existingUser = await Useraddress.findOne({ userId });
+
     let result;
-    if (existingUser) {
-      // Update existing user by adding new address to addresses array
+    if (addressId) {
       result = await Useraddress.findOneAndUpdate(
-        { userId },
-        { $set: addressData },  // Changed from $push to $set
+        { _id: addressId, userId },
+        { $set: addressData },
         { new: true }
       );
+
+      if (!result) {
+        return NextResponse.json(
+          { error: "Address not found" },
+          { status: 404 }
+        );
+      }
     } else {
-      // Create new user with first address
-      result = await Useraddress.create({
-        userId,
-        ...addressData
-      });
+      const existingUser = await Useraddress.findOne({ userId });
+
+      if (existingUser) {
+        // Keep current behavior for users who only have one saved address.
+        // If multiple records exist, create a new one unless an addressId was supplied.
+        const userAddressCount = await Useraddress.countDocuments({ userId });
+        if (userAddressCount === 1) {
+          result = await Useraddress.findOneAndUpdate(
+            { userId },
+            { $set: addressData },
+            { new: true }
+          );
+        } else {
+          result = await Useraddress.create({
+            userId,
+            ...addressData
+          });
+        }
+      } else {
+        result = await Useraddress.create({
+          userId,
+          ...addressData
+        });
+      }
     }
 
     return NextResponse.json(

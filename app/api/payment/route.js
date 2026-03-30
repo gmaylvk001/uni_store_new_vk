@@ -4,9 +4,8 @@ import Payment from "@/models/ecom_payment_info";
 
 export async function POST(req) {
   try {
-    // Parse JSON body instead of formData
     const body = await req.json();
-    
+
     const userId = body.user_id;
     if (!userId) {
       return NextResponse.json(
@@ -20,9 +19,10 @@ export async function POST(req) {
     const payment_id = body.payment_id || undefined;
     const status = body.status || undefined;
     const payment_mode = body.payment_mode || undefined;
+    const checkout_payload = body.checkout_payload || undefined;
 
     await connectDB();
-    
+
     const paymentData = new Payment({
       userId: userId,
       modevalue: modevalue,
@@ -30,18 +30,18 @@ export async function POST(req) {
       payment_Date: payment_Date,
       payment_mode: payment_mode,
       status: status,
+      checkout_payload,
     });
-    
+
     await paymentData.save();
 
     return NextResponse.json(
-      { 
-        message: "Payment saved successfully", 
-        paymentData: paymentData 
+      {
+        message: "Payment saved successfully",
+        paymentData: paymentData,
       },
       { status: 201 }
     );
-
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
