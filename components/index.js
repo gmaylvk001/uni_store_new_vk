@@ -360,20 +360,6 @@ const maxIndex = Math.max(0, products.length - CARDS_PER_VIEW);
             },
                {
                 id: 4,
-                bannerImageUrl: "/uploads/aboutus/Hero-4.jpeg", 
-                redirectUrl: "/category/kitchen-appliances",
-                bgImageUrl: "/uploads/aboutus/Hero-4.jpeg",
-                alt: "Kitchen Essentials Sale - Up to 40% Off on Mixers, Juicers, and More"
-            },
-               {
-                id: 5,
-                bannerImageUrl: "/uploads/aboutus/Hero-5.jpeg", 
-                redirectUrl: "/category/accessories",
-                bgImageUrl: "/uploads/aboutus/Hero-5.jpeg",
-                alt: "Accessories Galore - Exclusive Discounts on Phone Cases, Chargers, and More"
-            },
-               {
-                id: 6,
                 bannerImageUrl: "/uploads/aboutus/Hero-6.jpeg", 
                 redirectUrl: "/category/tv-entertainment",
                 bgImageUrl: "/uploads/aboutus/Hero-6.jpeg",
