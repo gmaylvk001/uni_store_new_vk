@@ -17,12 +17,45 @@ export default function Order() {
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [authError, setAuthError] = useState('');
   const [loading, setLoading] = useState(true);
+  const [orders, setOrders] = useState([]);
   const [filteredOrders, setFilteredOrders] = useState([]);
   const [processingPaymentId, setProcessingPaymentId] = useState(null);
   const [showCancelConfirm, setShowCancelConfirm] = useState(false);
   const [showEmailConfirm, setShowEmailConfirm] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const router = useRouter();
+
+  const formatDate = (dateString) => {
+    const options = { year: 'numeric', month: 'short', day: 'numeric' };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+  };
+
+  const normalizeFilterStatus = (order) => {
+    const orderStatus = String(order?.order_status || "").toLowerCase();
+    const paymentStatus = String(order?.payment_status || "").toLowerCase();
+
+    if (paymentStatus === "failed" || orderStatus === "payment failed" || orderStatus === "failure") {
+      return "cancelled";
+    }
+
+    if (["cancelled", "rejected"].includes(orderStatus)) {
+      return "cancelled";
+    }
+
+    if (["delivered", "completed"].includes(orderStatus)) {
+      return "delivered";
+    }
+
+    if (orderStatus === "shipped") {
+      return "shipped";
+    }
+
+    if (["pending", "order placed", "invoiced", "accepted", "processing"].includes(orderStatus)) {
+      return "pending";
+    }
+
+    return "pending";
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -34,10 +67,9 @@ export default function Order() {
       }
 
       try {
-        const decoded = jwtDecode(token);
-        const userId = decoded.userId;
+        jwtDecode(token);
 
-        const response = await fetch(`/api/orders/get?status=${activeFilter === 'all' ? '' : activeFilter}`, {
+        const response = await fetch(`/api/orders/get`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -48,7 +80,7 @@ export default function Order() {
         }
 
         const data = await response.json();
-        setFilteredOrders(data.orders || []);
+        setOrders(data.orders || []);
       } catch (error) {
         toast.error("Failed to load orders data");
         console.error(error);
@@ -58,12 +90,18 @@ export default function Order() {
     };
 
     fetchData();
-  }, [activeFilter]);
+  }, []);
 
-  const formatDate = (dateString) => {
-    const options = { year: 'numeric', month: 'short', day: 'numeric' };
-    return new Date(dateString).toLocaleDateString(undefined, options);
-  };
+  useEffect(() => {
+    if (activeFilter === 'all') {
+      setFilteredOrders(orders);
+      return;
+    }
+
+    setFilteredOrders(
+      orders.filter((order) => normalizeFilterStatus(order) === activeFilter)
+    );
+  }, [activeFilter, orders]);
 
   const handleBuyAgain = () => {
     router.push('/');
@@ -149,18 +187,11 @@ export default function Order() {
         throw new Error(data.message || 'Failed to cancel order');
       }
 
-      // Update local state
-      if (activeFilter === 'pending') {
-        // Remove from pending view
-        setFilteredOrders(prev => prev.filter(order => order._id !== selectedOrder._id));
-      } else {
-        // Update status in all/cancelled view
-        setFilteredOrders(prev => 
-          prev.map(order => 
-            order._id === selectedOrder._id ? { ...order, order_status: 'cancelled' } : order
-          )
-        );
-      }
+      setOrders(prev =>
+        prev.map(order =>
+          order._id === selectedOrder._id ? { ...order, order_status: 'cancelled' } : order
+        )
+      );
 
       toast.success("Order cancelled successfully");
       

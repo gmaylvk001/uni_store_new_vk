@@ -1964,7 +1964,7 @@ const fetchBrand = async () => {
       <h2 className="text-sm font-bold text-customBlue underline mb-2">
         Add Ons
       </h2>
-  {addOnProducts.filter((item) => item.quantity > 0 && item.status === "Active").slice(0, 3).map((item) => (
+  {addOnProducts.filter((item) => item.quantity > 0 && item.status === "Active").slice(0, 5).map((item) => (
     <div key={item._id} className="flex items-start mb-4 ">
       {item.quantity > 0 && (
         <input
