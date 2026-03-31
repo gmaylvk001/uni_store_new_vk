@@ -120,6 +120,32 @@ const addHistory = async () => {
         </tr>
         <tr className="border-b">
           <td className="p-2 flex items-center gap-2 font-semibold text-gray-700">
+            <IoWalletSharp className="bg-red-500 text-white p-1 rounded-md w-6 h-6" />
+            Payment Status:
+          </td>
+          <td className="p-2">
+            <span
+              className={`inline-flex rounded px-2 py-0.5 text-xs font-semibold ${
+                order.payment_status === "paid"
+                  ? "bg-green-100 text-green-700"
+                  : order.payment_status === "failed"
+                  ? "bg-red-100 text-red-700"
+                  : "bg-amber-100 text-amber-700"
+              }`}
+            >
+              {order.payment_status || "N/A"}
+            </span>
+          </td>
+        </tr>
+        <tr className="border-b">
+          <td className="p-2 flex items-center gap-2 font-semibold text-gray-700">
+            <IoWalletSharp className="bg-red-500 text-white p-1 rounded-md w-6 h-6" />
+            Payment ID:
+          </td>
+          <td className="p-2 break-all">{order.payment_id || "N/A"}</td>
+        </tr>
+        <tr className="border-b">
+          <td className="p-2 flex items-center gap-2 font-semibold text-gray-700">
             <MdDateRange className="bg-red-500 text-white p-1 rounded-md w-6 h-6" />
             Date: </td>
           <td className="p-2 ">{new Date(order.createdAt).toLocaleDateString()}</td>

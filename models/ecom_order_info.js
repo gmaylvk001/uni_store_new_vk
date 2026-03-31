@@ -71,7 +71,7 @@ const OrderSchema = new mongoose.Schema(
    delivery_date: { type: Date },
   order_status: {
     type: String,
-    enum: ["pending", "cancelled", "shipped","Order Placed","Failure"],
+    enum: ["pending", "cancelled", "shipped", "Order Placed", "Failure", "Payment Failed"],
     default: "pending",
   },
   payment_status: {

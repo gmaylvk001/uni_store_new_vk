@@ -18,6 +18,7 @@ export default function Order() {
   const [authError, setAuthError] = useState('');
   const [loading, setLoading] = useState(true);
   const [filteredOrders, setFilteredOrders] = useState([]);
+  const [processingPaymentId, setProcessingPaymentId] = useState(null);
   const [showCancelConfirm, setShowCancelConfirm] = useState(false);
   const [showEmailConfirm, setShowEmailConfirm] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(null);
@@ -66,6 +67,57 @@ export default function Order() {
 
   const handleBuyAgain = () => {
     router.push('/');
+  };
+
+  const submitPayUForm = ({ payuUrl, fields }) => {
+    const form = document.createElement("form");
+    form.method = "POST";
+    form.action = payuUrl;
+
+    Object.entries(fields || {}).forEach(([key, value]) => {
+      const input = document.createElement("input");
+      input.type = "hidden";
+      input.name = key;
+      input.value = value ?? "";
+      form.appendChild(input);
+    });
+
+    document.body.appendChild(form);
+    form.submit();
+  };
+
+  const handleRetryPayment = async (order) => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      setShowAuthModal(true);
+      return;
+    }
+
+    try {
+      setProcessingPaymentId(order._id);
+
+      const response = await fetch("/api/orders/payu-session", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ order_id: order._id }),
+      });
+
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error || data.message || "Failed to retry payment");
+      }
+
+      toast.info(`Redirecting to payment for order #${order.order_number}`);
+      submitPayUForm(data);
+    } catch (error) {
+      toast.error(error.message || "Failed to retry payment");
+      console.error(error);
+    } finally {
+      setProcessingPaymentId(null);
+    }
   };
 
   const handleCancelClick = (order) => {
@@ -313,7 +365,9 @@ export default function Order() {
 
                             {/* Status Badge */}
                             <div className={`px-2 py-1 sm:px-3 sm:py-1 rounded-full text-xs font-medium self-start ${
-                              order.order_status === 'delivered'
+                              order.order_status === 'Payment Failed' || order.payment_status === 'failed'
+                                ? 'bg-red-100 text-red-800'
+                                : order.order_status === 'delivered'
                                 ? 'bg-green-100 text-green-800'
                                 : order.order_status === 'shipped'
                                 ? 'bg-blue-100 text-blue-800'
@@ -321,7 +375,11 @@ export default function Order() {
                                 ? 'bg-red-100 text-red-800'
                                 : 'bg-amber-100 text-amber-800'
                             }`}>
-                              {order.order_status === 'delivered' ? (
+                              {order.order_status === 'Payment Failed' || order.payment_status === 'failed' ? (
+                                <span className="flex items-center">
+                                  <FiXCircle className="mr-1 text-xs" /> Payment Failed
+                                </span>
+                              ) : order.order_status === 'delivered' ? (
                                 <span className="flex items-center">
                                   <FiCheckCircle className="mr-1 text-xs" /> Delivered
                                 </span>
@@ -346,7 +404,9 @@ export default function Order() {
                             <div className="flex items-center text-gray-600">
                               <FiTruck className="mr-2 text-gray-400 text-xs sm:text-sm" />
                               <span>
-                                {order.order_status === 'delivered'
+                                {order.order_status === 'Payment Failed' || order.payment_status === 'failed'
+                                  ? `Payment failed on ${formatDate(order.updatedAt)}`
+                                  : order.order_status === 'delivered'
                                   ? `Delivered on ${formatDate(order.updatedAt)}`
                                   : order.order_status === 'shipped'
                                   ? `Shipped on ${formatDate(order.updatedAt)}`
@@ -357,12 +417,20 @@ export default function Order() {
                             </div>
                             <div className="text-gray-600 flex items-center gap-1 sm:gap-2">
                               <span>Payment:</span>
-                              {order.payment_type === 'online' ? (
+                              {order.payment_status === 'paid' ? (
                                 <span className="inline-flex items-center px-2 py-0.5 sm:py-1 bg-green-100 text-green-800 text-xs font-semibold rounded-full">
                                   <FiCheckCircle className="mr-1 text-xs" /> Paid
                                 </span>
                               ) : (
-                                <span className="text-gray-700 capitalize">{order.payment_type || 'Not specified'}</span>
+                                order.payment_status === 'failed' ? (
+                                  <span className="inline-flex items-center px-2 py-0.5 sm:py-1 bg-red-100 text-red-800 text-xs font-semibold rounded-full">
+                                    <FiXCircle className="mr-1 text-xs" /> Failed
+                                  </span>
+                                ) : (
+                                  <span className="inline-flex items-center px-2 py-0.5 sm:py-1 bg-amber-100 text-amber-800 text-xs font-semibold rounded-full">
+                                    <FiClock className="mr-1 text-xs" /> Pending
+                                  </span>
+                                )
                               )}
                             </div>
                           </div>
@@ -382,6 +450,16 @@ export default function Order() {
                                 className="px-3 sm:px-4 py-1 sm:py-2 border border-gray-300 text-gray-600 rounded-md hover:bg-gray-50 transition-colors text-xs sm:text-sm"
                               >
                                 Cancel Order
+                              </button>
+                            )}
+
+                            {order.payment_status !== 'paid' && order.payment_type === 'payu' && (
+                              <button
+                                onClick={() => handleRetryPayment(order)}
+                                disabled={processingPaymentId === order._id}
+                                className="px-3 sm:px-4 py-1 sm:py-2 bg-red-500 text-white rounded-md hover:bg-red-600 disabled:cursor-not-allowed disabled:opacity-60 transition-colors text-xs sm:text-sm"
+                              >
+                                {processingPaymentId === order._id ? 'Redirecting...' : 'Retry Payment'}
                               </button>
                             )}
 
@@ -457,7 +535,7 @@ export default function Order() {
                 onClick={handleEmailReject}
                 className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
               >
-                No, Don't Send
+                No, Don&apos;t Send
               </button>
               <button
                 onClick={handleEmailConfirm(selectedOrder)}

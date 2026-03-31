@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { ToastContainer, toast } from 'react-toastify';
 import { jwtDecode } from 'jwt-decode';
 import { AuthModal } from '@/components/AuthModal';
+import { useCart } from "@/context/CartContext";
 
 const DeliveryOptions = ({ formData, handleChange, isDeliverySaved, setIsDeliverySaved, stores }) => {
   const [fetchedStores, setFetchedStores] = useState(stores || []);
@@ -130,6 +131,7 @@ const DeliveryOptions = ({ formData, handleChange, isDeliverySaved, setIsDeliver
 };
 
 export default function CheckoutPage() {
+  const { updateCartCount } = useCart();
   const [stores, setStores] = useState([]);
   const [formData, setFormData] = useState({
     firstName: "",
@@ -608,40 +610,6 @@ const [isSubmitting, setIsSubmitting] = useState(false);
     }
   };
 
-  const createPayUPaymentRequest = async ({
-    totalAmount,
-    addressData,
-    orderNumber,
-    transactionId,
-  }) => {
-    const productinfo =
-      cartItems.length === 1
-        ? cartItems[0].name
-        : `Order ${orderNumber} (${cartItems.length} items)`;
-
-    const res = await fetch('/api/payu/initiate', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        amount: totalAmount,
-        firstname: addressData.firstName,
-        lastname: addressData.lastName,
-        email: addressData.email,
-        phone: addressData.phonenumber,
-        txnid: transactionId,
-        orderNumber,
-        productinfo,
-      }),
-    });
-
-    const data = await res.json();
-    if (!res.ok) {
-      throw new Error(data.error || 'Failed to initialize PayU payment');
-    }
-
-    return data;
-  };
-
   const submitPayUForm = ({ payuUrl, fields }) => {
     const form = document.createElement('form');
     form.method = 'POST';
@@ -657,6 +625,86 @@ const [isSubmitting, setIsSubmitting] = useState(false);
 
     document.body.appendChild(form);
     form.submit();
+  };
+
+  const clearCheckoutClientState = () => {
+    localStorage.removeItem("checkoutData");
+    localStorage.removeItem("buyNowData");
+    localStorage.removeItem("appliedCoupon");
+    sessionStorage.removeItem(GUEST_CHECKOUT_VERIFICATION_KEY);
+    setCartItems([]);
+    updateCartCount(0);
+  };
+
+  const clearCheckoutCart = async (token) => {
+    const guestCartId = localStorage.getItem("guestCartId");
+
+    try {
+      const response = await fetch("/api/cart", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          ...(token
+            ? { Authorization: `Bearer ${token}` }
+            : guestCartId
+            ? { guestCartId }
+            : {}),
+        },
+        body: JSON.stringify({ clearAll: true }),
+      });
+
+      if (!response.ok) {
+        console.error("Failed to clear checkout cart:", await response.text());
+      }
+    } catch (error) {
+      console.error("Failed to clear checkout cart:", error);
+    } finally {
+      clearCheckoutClientState();
+    }
+  };
+
+  const createPayUSession = async ({ orderId, token }) => {
+    const response = await fetch("/api/orders/payu-session", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
+      body: JSON.stringify({ order_id: orderId }),
+    });
+
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error(data.error || data.message || "Failed to initialize payment");
+    }
+
+    return data;
+  };
+
+  const updateOrderPaymentStatus = async ({
+    orderId,
+    token,
+    paymentStatus,
+    orderStatus,
+    reason,
+  }) => {
+    try {
+      await fetch("/api/orders/payment-status", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        body: JSON.stringify({
+          order_id: orderId,
+          payment_status: paymentStatus,
+          order_status: orderStatus,
+          api_reason: reason,
+        }),
+      });
+    } catch (error) {
+      console.error("Failed to sync order payment status:", error);
+    }
   };
 // Calculate totals from the current cart items so checkout always reflects all products.
 const subtotal = cartItems.reduce((sum, item) => {
@@ -675,9 +723,10 @@ const canPlaceOrder = !isSubmitting && !loading && cartItems.length > 0 && isDel
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (isSubmitting) return;
-  
+    let createdOrderId = null;
+    let checkoutToken = null;
 
-  setError("");
+    setError("");
     try {
       let token = localStorage.getItem("token");
   
@@ -703,6 +752,7 @@ const canPlaceOrder = !isSubmitting && !loading && cartItems.length > 0 && isDel
       }
 
       const isLoggedInUser = Boolean(token);
+      checkoutToken = token;
 
       const userId = getCheckoutUserId(token, addressData.phonenumber || formData.phonenumber);
   
@@ -746,20 +796,12 @@ const canPlaceOrder = !isSubmitting && !loading && cartItems.length > 0 && isDel
   
       const totalAmount = grandTotal;
       const orderNumber = `ORD${Date.now()}`;
-      const transactionId = `PAYU_${Date.now()}_${Math.random().toString(36).slice(2, 8).toUpperCase()}`;
 
       if (paymentMethod !== 'payu' && paymentMethod !== 'online') {
         toast.error("Please select PayU payment to continue.");
         setIsSubmitting(false);
         return;
       }
-
-      const payuRequest = await createPayUPaymentRequest({
-        totalAmount,
-        addressData,
-        orderNumber,
-        transactionId,
-      });
  
       let savedAddressRecord = useSavedAddress && selectedAddress !== null
         ? useraddress[selectedAddress]
@@ -830,7 +872,7 @@ const canPlaceOrder = !isSubmitting && !loading && cartItems.length > 0 && isDel
         pickup_store: formData.deliveryType === 'store'
           ? stores.find(s => s._id === formData.selectedStore)?.organisation_name
           : undefined,
-        payment_status: 'paid',
+        payment_status: 'pending',
         guest_checkout_token: !isLoggedInUser ? guestCheckoutToken : undefined,
         order_number: orderNumber,
         order_details: cartItems.map((item) => ({
@@ -848,26 +890,38 @@ const canPlaceOrder = !isSubmitting && !loading && cartItems.length > 0 && isDel
         })),
       };
 
-      const paymentRes = await fetch('/api/payment', {
+      const orderRes = await fetch('/api/orders/add', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          user_id: userId,
-          payment_mode: 'payu',
-          status: 'pending',
-          modevalue: totalAmount,
-          payment_id: transactionId,
-          payment_Date: new Date().toISOString(),
-          checkout_payload: checkoutPayload,
-        }),
+        body: JSON.stringify(checkoutPayload),
       });
 
-      if (!paymentRes.ok) {
-        throw new Error('Payment processing failed');
+      const orderData = await orderRes.json();
+      if (!orderRes.ok || !orderData?.order?._id) {
+        throw new Error(orderData?.error || orderData?.message || 'Failed to create order');
       }
+
+      createdOrderId = orderData.order._id;
+
+      const payuRequest = await createPayUSession({
+        orderId: createdOrderId,
+        token,
+      });
+
+      await clearCheckoutCart(token);
+      toast.success("Order created. Redirecting to payment...");
       submitPayUForm(payuRequest);
       return;
     } catch (error) {
+      if (createdOrderId) {
+        await updateOrderPaymentStatus({
+          orderId: createdOrderId,
+          token: checkoutToken,
+          paymentStatus: "failed",
+          orderStatus: "Payment Failed",
+          reason: error.message,
+        });
+      }
       console.error("Error submitting order:", error);
       toast.error(error.message || "Failed to place order. Please try again.");
       setIsSubmitting(false);

@@ -451,6 +451,7 @@ const updateOrderStatusWithDeliveryDate = async () => {
                   <th className="p-2">Action</th>
                   <th className="p-2">Order Id</th>
                   <th className="p-2">Order Status</th>
+                  <th className="p-2">Payment Status</th>
                   <th className="p-2">Delivery Date</th>
                   <th className="p-2">Name</th>
                   <th className="p-2">Amount</th>
@@ -474,7 +475,6 @@ const updateOrderStatusWithDeliveryDate = async () => {
 
                       <td className="p-2 border">{o.order_number}</td>
 
-                      {/* Status dropdown */}
                       <td className="p-2 border">
                         <select
                           value={o.order_status}
@@ -539,6 +539,20 @@ const updateOrderStatusWithDeliveryDate = async () => {
                         </select>
                       </td>
 
+                      <td className="p-2 border text-center">
+                        <span
+                          className={`inline-flex rounded px-2 py-1 text-xs font-semibold ${
+                            o.payment_status?.toLowerCase() === "paid"
+                              ? "bg-green-100 text-green-700"
+                              : o.payment_status?.toLowerCase() === "failed"
+                              ? "bg-red-100 text-red-700"
+                              : "bg-amber-100 text-amber-700"
+                          }`}
+                        >
+                          {o.payment_status || "N/A"}
+                        </span>
+                      </td>
+
                       <td className="p-2 border">
                         {o.delivery_date 
                           ? new Date(o.delivery_date).toLocaleDateString()
@@ -556,7 +570,7 @@ const updateOrderStatusWithDeliveryDate = async () => {
                 ) : (
                   <tr>
                     <td
-                      colSpan="7"
+                      colSpan="8"
                       className="text-center text-gray-500 p-4"
                     >
                       No orders found.

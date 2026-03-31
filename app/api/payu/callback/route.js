@@ -62,7 +62,9 @@ export async function POST(req) {
     }
 
     let order = payment
-      ? await EcomOrderInfo.findOne({ payment_id: payment._id.toString() })
+      ? payment.order_id
+        ? await EcomOrderInfo.findById(payment.order_id)
+        : await EcomOrderInfo.findOne({ payment_id: payment._id.toString() })
       : orderNumber
       ? await EcomOrderInfo.findOne({ order_number: orderNumber })
       : null;
@@ -84,11 +86,14 @@ export async function POST(req) {
       await payment.save();
     }
 
-    if (order && !isSuccess) {
+    if (order) {
       order.payment_method = "PayU";
       order.payment_type = "payu";
-      order.payment_status = "failed";
-      order.order_status = "Failure";
+      order.payment_id = payment?._id?.toString() || order.payment_id;
+      order.payment_status = isSuccess ? "paid" : "failed";
+      order.order_status = isSuccess ? "Order Placed" : "Payment Failed";
+      order.api_status = status || "";
+      order.api_reason = isSuccess ? "" : (payuMessage || unmappedStatus || "Payment failed");
       await order.save();
     }
 

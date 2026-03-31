@@ -19,46 +19,25 @@ export default function PayUStatusPage() {
   const isSuccess = status === "success";
 
   useEffect(() => {
-    const finalizeSuccess = async () => {
+    const finalizeStatusPage = async () => {
+      localStorage.removeItem("checkoutData");
+      localStorage.removeItem("buyNowData");
+      localStorage.removeItem("appliedCoupon");
+      sessionStorage.removeItem("guestCheckoutVerification");
+      updateCartCount(0);
+      setIsFinishing(false);
+
       if (!isSuccess) {
-        setIsFinishing(false);
         return;
       }
 
-      try {
-        const token = localStorage.getItem("token");
-        const guestCartId = localStorage.getItem("guestCartId");
-
-        await fetch("/api/cart", {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-            ...(token
-              ? { Authorization: `Bearer ${token}` }
-              : guestCartId
-              ? { guestCartId }
-              : {}),
-          },
-          body: JSON.stringify({ clearAll: true }),
-        });
-      } catch (error) {
-        console.error("Failed to clear cart after PayU payment:", error);
-      } finally {
-        localStorage.removeItem("checkoutData");
-        localStorage.removeItem("buyNowData");
-        localStorage.removeItem("appliedCoupon");
-        sessionStorage.removeItem("guestCheckoutVerification");
-        updateCartCount(0);
-        setIsFinishing(false);
-
-        const hasToken = Boolean(localStorage.getItem("token"));
-        setTimeout(() => {
-          router.replace(hasToken ? "/orders" : "/thank-you");
-        }, 1800);
-      }
+      const hasToken = Boolean(localStorage.getItem("token"));
+      setTimeout(() => {
+        router.replace(hasToken ? "/orders" : "/thank-you");
+      }, 1800);
     };
 
-    finalizeSuccess();
+    finalizeStatusPage();
   }, [isSuccess, router, updateCartCount]);
 
   return (
@@ -69,8 +48,8 @@ export default function PayUStatusPage() {
         </h1>
         <p className="mt-3 text-gray-600">
           {isSuccess
-            ? "Your PayU payment was received and your order is being finalized."
-            : "Your PayU payment could not be completed. You can try checkout again."}
+            ? "Your PayU payment was received. You can track the order from your Orders page."
+            : "Your PayU payment could not be completed. The order is saved and marked as payment failed in your Orders page."}
         </p>
         {!isSuccess && reason && (
           <p className="mt-4 text-sm text-red-600 break-words">{reason}</p>
@@ -90,10 +69,10 @@ export default function PayUStatusPage() {
         {!isSuccess && (
           <div className="mt-6">
             <Link
-              href="/checkout"
+              href="/orders"
               className="inline-flex items-center justify-center rounded-lg bg-red-500 px-5 py-2.5 text-white hover:bg-red-600"
             >
-              Return to Checkout
+              Go To Orders
             </Link>
           </div>
         )}
