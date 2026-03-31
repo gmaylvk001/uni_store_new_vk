@@ -340,23 +340,44 @@ const maxIndex = Math.max(0, products.length - CARDS_PER_VIEW);
             {
                 id: 1,
                 bannerImageUrl: "/uploads/aboutus/Hero-1.jpeg", 
-                redirectUrl: "/mega-sale",
+                redirectUrl: "/category/home-appliances",
                 bgImageUrl: "/uploads/aboutus/Hero-1.jpeg",
                 alt: "Mega Sale - Up to 50% Off on Electronics and Home Appliances"
             },
             {
                 id: 2,
                 bannerImageUrl: "/uploads/aboutus/Hero-2.jpeg",
-                redirectUrl: "/apple-store",
+                redirectUrl: "/category/laptops",
                 bgImageUrl: "/uploads/aboutus/Hero-2.jpeg",
-                alt: "Apple Store - Latest iPhones, MacBooks, and Accessories at Unbeatable Prices"
+                alt: "Apple Store - Latest Laptops, MacBooks, and Accessories at Unbeatable Prices"
             },
             {
-                id: 2,
+                id: 3,
                 bannerImageUrl: "/uploads/aboutus/Hero-3.jpeg", 
-                redirectUrl: "/apple-store",
+                redirectUrl: "/category/home-appliances/air-conditioner",
                 bgImageUrl: "/uploads/aboutus/Hero-3.jpeg",
-                alt: "Apple Store - Latest iPhones, MacBooks, and Accessories at Unbeatable Prices"
+                alt: "AC Season Sale - Best Deals on Air Conditioners, Fans, and Cooling Appliances"
+            },
+               {
+                id: 4,
+                bannerImageUrl: "/uploads/aboutus/Hero-4.jpeg", 
+                redirectUrl: "/category/kitchen-appliances",
+                bgImageUrl: "/uploads/aboutus/Hero-4.jpeg",
+                alt: "Kitchen Essentials Sale - Up to 40% Off on Mixers, Juicers, and More"
+            },
+               {
+                id: 5,
+                bannerImageUrl: "/uploads/aboutus/Hero-5.jpeg", 
+                redirectUrl: "/uploads/accessories",
+                bgImageUrl: "/uploads/aboutus/Hero-5.jpeg",
+                alt: "Accessories Galore - Exclusive Discounts on Phone Cases, Chargers, and More"
+            },
+               {
+                id: 6,
+                bannerImageUrl: "/uploads/aboutus/Hero-6.jpeg", 
+                redirectUrl: "/category/tv-entertainment",
+                bgImageUrl: "/uploads/aboutus/Hero-6.jpeg",
+                alt: "TV & Entertainment Sale - Best Prices on Televisions, Sound Systems, and Streaming Devices"
             }
         ];
 
