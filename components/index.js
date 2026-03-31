@@ -368,7 +368,7 @@ const maxIndex = Math.max(0, products.length - CARDS_PER_VIEW);
                {
                 id: 5,
                 bannerImageUrl: "/uploads/aboutus/Hero-5.jpeg", 
-                redirectUrl: "/uploads/accessories",
+                redirectUrl: "/category/accessories",
                 bgImageUrl: "/uploads/aboutus/Hero-5.jpeg",
                 alt: "Accessories Galore - Exclusive Discounts on Phone Cases, Chargers, and More"
             },
