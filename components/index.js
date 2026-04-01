@@ -358,8 +358,15 @@ const maxIndex = Math.max(0, products.length - CARDS_PER_VIEW);
                 bgImageUrl: "/uploads/aboutus/Hero-3.jpeg",
                 alt: "AC Season Sale - Best Deals on Air Conditioners, Fans, and Cooling Appliances"
             },
-               {
+            {
                 id: 4,
+                bannerImageUrl: "/uploads/aboutus/hero-banner4.jpeg", 
+                redirectUrl: "/category/kitchen-appliances/kitchen-appliance",
+                bgImageUrl: "/uploads/aboutus/hero-banner4.jpeg",
+                alt: "Kitchen appliances Season Sale - Best Deals on Kitchen Appliances, Small Appliances, and Cooking Essentials"
+            },
+               {
+                id: 5,
                 bannerImageUrl: "/uploads/aboutus/Hero-6.jpeg", 
                 redirectUrl: "/category/tv-entertainment",
                 bgImageUrl: "/uploads/aboutus/Hero-6.jpeg",
@@ -1599,6 +1606,19 @@ case 'brands':
                     <div className="w-full py-4 px-0"> {/* Removed the extra px-4 md:px-8 to fix the squeeze */}
   <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-3 lg:gap-4">
     
+    <Link 
+      href="/category/tv-entertainment" 
+      className="block overflow-hidden rounded-lg shadow-sm hover:shadow-md transition-shadow"
+    >
+      <div className="relative w-full h-[100px] sm:h-[120px] md:h-[140px] lg:h-[180px]">
+        <img
+          src="uploads/banners/ipl_banner.jpeg" /* Make sure this matches your filename */
+          alt="Get More Value"
+          className="w-full h-full object-stretch object-center"
+        />
+      </div>
+    </Link>
+
     {/* Image 1: Helping You Get More Value */}
     <Link 
       href="/category/home-appliances" 
@@ -1614,19 +1634,20 @@ case 'brands':
     </Link>
 
     {/* Image 2: Deals Corner */}
+    {/*
     <Link 
       href="/category/offers" 
       className="block overflow-hidden rounded-lg shadow-sm hover:shadow-md transition-shadow"
     >
       <div className="relative w-full h-[100px] sm:h-[120px] md:h-[140px] lg:h-[180px]">
         <img
-          src="uploads/aboutus/Banner-Image-2.jpeg" /* Make sure this matches your filename */
+          src="uploads/aboutus/Banner-Image-2.jpeg" 
           alt="Deals Corner"
           className="w-full h-full object-fill object-center"
         />
       </div>
     </Link>
-
+*/}
   </div>
 </div>
                   </section>
