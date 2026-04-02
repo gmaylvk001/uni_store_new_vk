@@ -7,7 +7,7 @@ const DoubleBanner = () => {
     {
       id: 1,
       img: "uploads/aboutus/Fridge-bannerr.jpeg",
-      link: "/category/home-appliances/refrigerators",
+      link: "/category/home-appliances/refrigerator",
       alt: "Fridge Sale Hot Offers",
     },
     {
