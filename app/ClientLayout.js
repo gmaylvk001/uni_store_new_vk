@@ -26,7 +26,7 @@ export default function ClientLayout({ children }) {
             <AuthProvider>
               {!pathname?.startsWith("/admin") && !hideHeaderFooter && <CustomHeader />}
 
-              <main className="relative bg-gradient-to-br from-[#B0D7EE] via-[#ffffff] to-[#E4F1F9] ">
+              <main className="relative bg-gradient-to-br from-[#B0D7EE] via-[#ffffff] to-[#E4F1F9] px-4">
                 {children}
               </main>
 
