@@ -2093,7 +2093,7 @@ const shouldShowArrow = (item, allItems = []) => {
                             </Link>
                             <Link href="/lg-exclusive" className="flex items-center">
                                 <Image
-                                  src="/uploads/logo-lg.png"
+                                  src="/uploads/lg_cir.png"
                                   alt="LG"
                                   width={16}
                                   height={16}
@@ -2469,7 +2469,7 @@ const shouldShowArrow = (item, allItems = []) => {
               
                text-white text-xs font-semibold shadow-md
                hover:bg-[#1688c8] transition-all whitespace-nowrap">
-              <img src="/uploads/logo-lg.png" alt="LG" className="h-8 w-auto object-contain" />
+              <img src="/uploads/lg_cir.png" alt="LG" className="h-8 w-auto object-contain" />
               
             </Link>
 

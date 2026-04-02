@@ -1289,7 +1289,7 @@ case 'brands':
                 {/* Banner Section start */}
 
                 <motion.section  id="topbanner" ref={refs.banner} initial="hidden" animate="visible" variants={containerVariants} className="overflow-hidden pt-0 m-0">
-                  <div className="relative">
+                  <div className="relative px-6">
                     {isBannerLoading ? (
                       <div className="p-6 flex justify-center items-center h-64">
                         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600"></div>
@@ -1376,7 +1376,7 @@ case 'brands':
                     )}
                   </div>
                   {/* ================= ROUND CATEGORY ICONS ================= */}
-                  <div className="relative bg-white py-2">
+                  <div className="relative py-2 px-6">
                     {/* LEFT ARROW */}
                     {(showArrows || true) && (
                       <button
@@ -1414,7 +1414,7 @@ case 'brands':
                       </button>
                     )}
                     {/* <div ref={scrollContainerRef} className="flex items-start lg:justify-center justify-start gap-8 overflow-x-hidden no-scrollbar px-4 md:px-10">  */}
-                    <div ref={scrollContainerRef} className="flex items-start lg:justify-center justify-start overflow-x-hidden no-scrollbar px-4 md:px-10" style={{ columnGap: "5%" }}>
+                    <div ref={scrollContainerRef} className="flex items-start lg:justify-center justify-start overflow-x-hidden no-scrollbar px-6 md:px-10" style={{ columnGap: "5%" }}>
                       {categories.map((cat) => (
                         <Link key={cat._id} href={`/category/${cat.category_slug}`}>
                           <div className="flex flex-col items-center min-w-[70px] sm:min-w-[100px] cursor-pointer">
@@ -1443,7 +1443,7 @@ case 'brands':
                   </div>
                 </motion.section>
                 {/* <div className="home-container bg-gradient-to-r from-[#1688C8] to-[#33a7b5]"> */}
-                <div className="home-container bg-gradient-to-br from-[#B0D7EE] via-[#ffffff] to-[#E4F1F9]">
+                <div className="home-container ">
 
                   {/* Best of Apple */}
                   <div className="py-2 px-2 lg:px-6 relative">
