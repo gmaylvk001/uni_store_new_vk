@@ -16,7 +16,7 @@ const DoubleBanner = () => {
       link: "/category/mobiles-accessories/mobile-phones/iphone",
       alt: "New iPhone Launch",
     },
-     {
+    {
       id: 3,
       img: "uploads/aboutus/Ac-Banner-Square.png",
       link: "/category/home-appliances/air-conditioner",
@@ -26,14 +26,14 @@ const DoubleBanner = () => {
 
   return (
     <section className="px-4 md:px-8 py-4 w-full">
-      <div className="max-w-screen mx-auto flex flex-col md:flex-row gap-3 lg:gap-4">
-
-      
+      {/* Changed items-center to items-stretch so the left side matches the right side's height */}
+      <div className="max-w-screen-2xl mx-auto flex flex-col md:flex-row gap-3 lg:gap-4 items-stretch">
+        
         <Link
           href={banners[0].link}
-          className="block overflow-hidden rounded-lg shadow-sm hover:shadow-md transition-shadow md:w-4/5"
+          className="block overflow-hidden rounded-lg shadow-sm hover:shadow-md transition-shadow md:w-3/5"
         >
-          <div className="relative w-full h-[135px] sm:h-[260px] md:h-[320px] lg:h-[350px]">
+          <div className="relative w-full h-full h-[135px]">
             <img
               src={banners[0].img}
               alt={banners[0].alt}
@@ -49,8 +49,7 @@ const DoubleBanner = () => {
               key={banner.id}
               className="block overflow-hidden rounded-lg shadow-sm hover:shadow-md transition-shadow flex-1"
             >
-              {/* Height perfectly matches the left image */}
-              <div className="relative w-full h-[180px] sm:h-[260px] md:h-[320px] lg:h-[350px]">
+              <div className="relative w-full aspect-square">
                 <img
                   src={banner.img}
                   alt={banner.alt}

@@ -574,7 +574,7 @@ export default function CategoryPage() {
               }
               alt={categoryData.category.banners[currentCategoryBannerIndex].banner_name || "Category Banner"}
               fill
-              className="object-cover w-full h-full"
+              className="object-contain w-full h-full"
               unoptimized
             />
       
