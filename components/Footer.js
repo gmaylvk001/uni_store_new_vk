@@ -310,8 +310,8 @@ const capitalizeFirstLetter = (str) =>
 
   return (
     <>
-      <footer className="bg-[#2e2a2a] text-gray-300 text-sm py-5 md:px-4  px-6">
-        <div className="bg-[#2e2a2a] text-gray-400  border-white ">
+      <footer className="bg-[#2e2a2a] text-gray-300 text-sm py-5 md:px-4  px-6 ">
+        <div className="bg-[#2e2a2a] text-gray-400  border-white p-6">
           <div className="w-full flex justify-center">
             <div className="w-full container mx-auto px-3  grid grid-cols-1 md:grid-cols-3 gap-16 justify-between">
               {/* Corporate Office */}
@@ -427,7 +427,7 @@ const capitalizeFirstLetter = (str) =>
           </div>
         </div>
       {/* Bottom Section */}
-      <div className="bg-[#2e2a2a] text-gray-400 mt-10 pt-5 border-t border-white">
+      <div className="bg-[#2e2a2a] text-gray-400 mt-10 pt-5 border-t border-white p-6">
         <div className="container mx-auto px-2 grid grid-cols-1 md:grid-cols-[70%_30%] gap-8">
           {/* LEFT SECTION (Categories + Brands) */}
           <div>

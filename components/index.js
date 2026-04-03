@@ -43,6 +43,78 @@ export default function HomeComponent() {
         .replace(/[^\w\-]+/g, "")
         .replace(/\-\-+/g, "-");
     }
+    const normalizeBrandName = (text = "") =>
+      text
+        .toString()
+        .toLowerCase()
+        .replace(/&/g, "and")
+        .replace(/[^a-z0-9]+/g, "");
+    const selectedBrandNames = [
+      "Apple",
+      "Aroma",
+      "Asus",
+      "Bajaj",
+      "Belkin",
+      "Blue Star",
+      "Bosch",
+      "BPL",
+      "BUTTERFLY",
+      "CELLECOR",
+      "Crompton",
+      "Daikin",
+      "Dell",
+      "Dyson",
+      "Elica",
+      "Eureka Forbes",
+      "Faber",
+      "Fire Boltt",
+      "Godrej",
+      "Google Pixel",
+      "Haier",
+      "HAVELLS",
+      "Hisense",
+      "Hitachi",
+      "HP",
+      "IFB",
+      "JBL",
+      "Kelvinator",
+      "Kenstar",
+      "Kent",
+      "Lenovo",
+      "LG",
+      "LLYOD",
+      "Lumiford",
+      "Maharaja",
+      "MI",
+      "Motorola",
+      "One Plus",
+      "Oppo",
+      "Panasonic",
+      "Preethi",
+      "PREMIER",
+      "Prestige",
+      "Racold",
+      "Realme",
+      "Redmi",
+      "Samsung",
+      "Sony",
+      "Symphony",
+      "Ultra",
+      "Urbn",
+      "Usha",
+      "Vguard",
+      "Vijayalakshmi",
+      "Vivo",
+      "Voltas",
+      "Whirlpool",
+      "Xiaomi",
+    ];
+    const selectedBrandSet = new Set(
+      selectedBrandNames.flatMap((brand) => {
+        const normalized = normalizeBrandName(brand);
+        return brand === "LLYOD" ? [normalized, "lloyd"] : [normalized];
+      })
+    );
     const features = [
       { image: "/images/delivery-truck.png", title: "Free Delivery", description: "Free delivery for all Products" },
       { image: "/images/reputation.png", title: "100% Satisfaction", description: "Guaranteed satisfaction with every order" },
@@ -1218,7 +1290,10 @@ case 'brands':
                                         .filter(
                                           (brand) =>
                                             brand.brand_name &&
-                                            brand.brand_name.toLowerCase() !== "no brand"
+                                            brand.brand_name.toLowerCase() !== "no brand" &&
+                                            selectedBrandSet.has(
+                                              normalizeBrandName(brand.brand_name)
+                                            )
                                         ).map((brand) => (
                                               <motion.div
                                                   key={brand.id}
@@ -1289,7 +1364,7 @@ case 'brands':
                 {/* Banner Section start */}
 
                 <motion.section  id="topbanner" ref={refs.banner} initial="hidden" animate="visible" variants={containerVariants} className="overflow-hidden pt-0 m-0">
-                  <div className="relative px-6">
+                  <div className="relative px-2 sm:px-4 md:px-6">
                     {isBannerLoading ? (
                       <div className="p-6 flex justify-center items-center h-64">
                         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600"></div>
@@ -1300,7 +1375,7 @@ case 'brands':
                           {bannerData.banner.items.map((banner) => (
                             <motion.div
                               key={banner.id}
-                              className="relative w-full aspect-[2000/867] max-h-auto"
+                              className="relative w-full overflow-hidden rounded-2xl h-[180px] sm:h-[240px] md:h-[300px] lg:h-[360px] xl:h-[410px]"
                               variants={itemVariants}
                             >
                               <div className="absolute inset-0 overflow-hidden">
@@ -1357,7 +1432,7 @@ case 'brands':
                         </Slider>
                       ) : (
                         <motion.div
-                          className="p-4 md:p-6 relative aspect-[2000/667] max-h-auto"
+                          className="relative overflow-hidden rounded-2xl h-[180px] sm:h-[240px] md:h-[300px] lg:h-[360px] xl:h-[410px]"
                           variants={itemVariants}
                         >
                           <div className="absolute inset-0 flex justify-center items-center bg-white">
@@ -1376,7 +1451,7 @@ case 'brands':
                     )}
                   </div>
                   {/* ================= ROUND CATEGORY ICONS ================= */}
-                  <div className="relative py-2 px-6">
+                  <div className="relative pt-3 pb-1 px-2 sm:px-4 md:px-6">
                     {/* LEFT ARROW */}
                     {(showArrows || true) && (
                       <button
@@ -1414,17 +1489,17 @@ case 'brands':
                       </button>
                     )}
                     {/* <div ref={scrollContainerRef} className="flex items-start lg:justify-center justify-start gap-8 overflow-x-hidden no-scrollbar px-4 md:px-10">  */}
-                    <div ref={scrollContainerRef} className="flex items-start lg:justify-center justify-start overflow-x-hidden no-scrollbar px-6 md:px-10" style={{ columnGap: "5%" }}>
+                    <div ref={scrollContainerRef} className="flex items-start lg:justify-center justify-start overflow-x-hidden no-scrollbar px-8 md:px-10" style={{ columnGap: "4%" }}>
                       {categories.map((cat) => (
                         <Link key={cat._id} href={`/category/${cat.category_slug}`}>
-                          <div className="flex flex-col items-center min-w-[70px] sm:min-w-[100px] cursor-pointer">
+                          <div className="flex flex-col items-center min-w-[64px] sm:min-w-[92px] cursor-pointer">
                             {/* ICON TILE */}
-                            <div className="w-14 h-14 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-2xl bg-gradient-to-br from-[#0369a1] to-[#0ea5e9] flex items-center justify-center shadow-lg transition-transform duration-300 group-hover:scale-105">
+                            <div className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-2xl bg-gradient-to-br from-[#0369a1] to-[#0ea5e9] flex items-center justify-center shadow-lg transition-transform duration-300 group-hover:scale-105">
                               {cat.image ? (
                                 <img
                                   src={cat.image}
                                   alt={cat.category_name}
-                                  className="h-9 w-11 sm:h-12 sm:w-14 object-contain [filter:invert(1)_drop-shadow(0_0_2px_rgba(255,255,255,0.9))_drop-shadow(0_0_1px_rgba(255,255,255,0.9))]"
+                                  className="h-8 w-9 sm:h-10 sm:w-12 md:h-12 md:w-14 object-contain [filter:invert(1)_drop-shadow(0_0_2px_rgba(255,255,255,0.9))_drop-shadow(0_0_1px_rgba(255,255,255,0.9))]"
                                 />
                               ) : (
                                 <div className="w-8 h-8 sm:w-10 sm:h-10 bg-white/30 rounded-full" />
@@ -1433,7 +1508,7 @@ case 'brands':
 
                             {/* TEXT */}
                             <span
-                              className="mt-2 text-[10px] sm:text-xs md:text-sm font-medium text-gray-600 group-hover:text-black text-center break-words w-[70px] sm:w-[100px] leading-tight">
+                              className="mt-2 text-[10px] sm:text-xs md:text-sm font-medium text-gray-600 group-hover:text-black text-center break-normal whitespace-normal w-[64px] sm:w-[92px] leading-tight">
                               {cat.category_name}
                             </span>
                           </div>
@@ -1983,8 +2058,10 @@ case 'brands':
                 {/* <RecentlyViewedProducts />  */}
 
            </div>
+           <section className="px-4 md:px-8 py-10">
             <StatusBar /> 
             <DetailsPageFooter /> 
+</section>
         </>
     ); 
 }

@@ -2064,7 +2064,7 @@ const shouldShowArrow = (item, allItems = []) => {
     }, [isMobileMenuOpen, categories, ensureSubcategories]);
   return (
     <>
-    <header className="w-full sticky top-0 z-40">
+    <header className="w-full sticky top-0 z-40 px-8" style={{ backgroundColor: "#1689C8" }}>
 
 
       {/* Main Header bg-white */}
