@@ -599,7 +599,7 @@ const fetchInitialData = async () => {
               }
               alt={categoryData.main_category.banners[currentCategoryBannerIndex].banner_name}
               fill
-              className="object-cover w-full h-full"
+              className="object-fill w-full h-full"
               unoptimized
             />
       
