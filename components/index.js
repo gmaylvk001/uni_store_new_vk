@@ -1363,7 +1363,7 @@ case 'brands':
                 
                 {/* Banner Section start */}
 
-                <motion.section  id="topbanner" ref={refs.banner} initial="hidden" animate="visible" variants={containerVariants} className="overflow-hidden pt-0 m-0">
+                <motion.section  id="topbanner" ref={refs.banner} initial="hidden" animate="visible" variants={containerVariants} className="overflow-hidden pt-0 m-0 py-2">
                   <div className="relative px-2 sm:px-4 md:px-6">
                     {isBannerLoading ? (
                       <div className="p-6 flex justify-center items-center h-64">
@@ -1375,7 +1375,7 @@ case 'brands':
                           {bannerData.banner.items.map((banner) => (
                             <motion.div
                               key={banner.id}
-                              className="relative w-full overflow-hidden rounded-2xl h-[180px] sm:h-[240px] md:h-[300px] lg:h-[360px] xl:h-[410px]"
+                              className="relative w-full overflow-hidden rounded-2xl h-[220px] sm:h-[280px] md:h-[360px] lg:h-[430px] xl:h-[500px]"
                               variants={itemVariants}
                             >
                               <div className="absolute inset-0 overflow-hidden">
@@ -1432,7 +1432,7 @@ case 'brands':
                         </Slider>
                       ) : (
                         <motion.div
-                          className="relative overflow-hidden rounded-2xl h-[180px] sm:h-[240px] md:h-[300px] lg:h-[360px] xl:h-[410px]"
+                          className="relative overflow-hidden rounded-2xl h-[220px] sm:h-[280px] md:h-[360px] lg:h-[430px] xl:h-[500px]"
                           variants={itemVariants}
                         >
                           <div className="absolute inset-0 flex justify-center items-center bg-white">
