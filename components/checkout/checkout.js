@@ -507,16 +507,19 @@ const [isSubmitting, setIsSubmitting] = useState(false);
       const res = await fetch("/api/useraddress/add", { method: "POST", body: fd });
       if (!res.ok) throw new Error("Failed to save address");
       const data = await res.json();
+      let nextSelectedAddressIndex = 0;
       setUseraddress(prev => {
         const existing = prev.findIndex(a => a._id === data.userAddress._id);
         if (existing !== -1) {
           const updated = [...prev];
           updated[existing] = data.userAddress;
+          nextSelectedAddressIndex = existing;
           return updated;
         }
+        nextSelectedAddressIndex = prev.length;
         return [...prev, data.userAddress];
       });
-      setSelectedAddress(0);
+      setSelectedAddress(nextSelectedAddressIndex);
       setUseSavedAddress(true);
       setIsAddressSaved(true);
       toast.success("Address saved successfully!");
@@ -945,8 +948,8 @@ const canPlaceOrder = !isSubmitting && !loading && cartItems.length > 0 && isDel
       <ToastContainer position="top-right" autoClose={5000} />
       
       {/* Checkout Header Bar */}
-      <div className="bg-white py-6 px-8 flex border-b justify-between items-center">
-        <h2 className="text-2xl font-bold text-orange-500 " style={{marginLeft: "64px"}}>Checkout</h2>
+      <div className="border-b bg-white px-4 py-5 sm:px-6 lg:px-8">
+        <h2 className="text-2xl font-bold text-orange-500">Checkout</h2>
         {/* <div className="flex items-center space-x-2" style={{marginRight: "100px"}}>
           <span className="text-2xl text-gray-600">🏠 Home</span>
           <span className="text-gray-500">›</span>
@@ -955,35 +958,60 @@ const canPlaceOrder = !isSubmitting && !loading && cartItems.length > 0 && isDel
       </div>
 
       {/* <div className="max-w-9xl mx-auto rounded-lg p-8 pt-0  container"> */}
-        <div className="w-full  rounded-lg  pt-0">
+        <div className="w-full rounded-lg pt-0">
 
-        <div className="flex flex-col lg:flex-row " style={{marginLeft: "100px"}}>
+        <div className="mx-auto flex w-full max-w-7xl flex-col gap-8 px-4 py-6 sm:px-6 lg:flex-row lg:items-start lg:px-8">
           {/* Left - Checkout Form */}
-         <div className="w-full lg:w-2/4 bg-white p-0 pt-6">
+         <div className="w-full bg-white pt-0 lg:w-2/4 lg:pt-2">
 
     {error && <p className="text-red-500 text-bold-sm mb-4">{error}</p>}
 
     {useSavedAddress && selectedAddress !== null ? (
-      <div className="bg-gray-50 p-4 rounded-lg">
-        <div className="grid grid-cols-2 gap-4">
-          <p><span className="font-medium">Name:</span> {useraddress[selectedAddress].firstName} {useraddress[selectedAddress].lastName}</p>
-          <p><span className="font-medium">Phone:</span> {useraddress[selectedAddress].phonenumber}</p>
-          <p><span className="font-medium">Address:</span> {useraddress[selectedAddress].address}</p>
-          <p><span className="font-medium">City:</span> {useraddress[selectedAddress].city}</p>
-          <p><span className="font-medium">State:</span> {useraddress[selectedAddress].state}</p>
-          <p><span className="font-medium">Country:</span> {useraddress[selectedAddress].country}</p>
-          <p><span className="font-medium">Postal Code:</span> {useraddress[selectedAddress].postCode}</p>
+      <div className="space-y-6">
+        <div className="rounded-lg bg-gray-50 p-4">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4">
+              <p><span className="font-medium">Name:</span> {useraddress[selectedAddress].firstName} {useraddress[selectedAddress].lastName}</p>
+              <p><span className="font-medium">Phone:</span> {useraddress[selectedAddress].phonenumber}</p>
+              <p><span className="font-medium">Address:</span> {useraddress[selectedAddress].address}</p>
+              <p><span className="font-medium">City:</span> {useraddress[selectedAddress].city}</p>
+              <p><span className="font-medium">State:</span> {useraddress[selectedAddress].state}</p>
+              <p><span className="font-medium">Country:</span> {useraddress[selectedAddress].country}</p>
+              <p><span className="font-medium">Postal Code:</span> {useraddress[selectedAddress].postCode}</p>
+            </div>
+            <button
+              type="button"
+              onClick={() => setUseSavedAddress(false)}
+              className="text-sm font-medium text-orange-500 hover:text-orange-700"
+            >
+              Edit Address
+            </button>
+          </div>
+        </div>
+
+        <div>
+          <h2 className="mb-2 mt-6 text-xl font-semibold text-black">
+            Shipping Method
+          </h2>
+
+          <DeliveryOptions
+            formData={formData}
+            handleChange={handleChange}
+            isDeliverySaved={isDeliverySaved}
+            setIsDeliverySaved={setIsDeliverySaved}
+            stores={stores}
+          />
         </div>
       </div>
     ) : (
       
-      <form onSubmit={handleSubmit} className="mr-2">
+      <form onSubmit={handleSubmit} className="w-full">
   {/* Contact Section */}
   <div className="mb-8">
     <h2 className="text-xl font-semibold text-black mb-3">
       Contact
     </h2>
-   <div className="grid grid-cols-2 gap-4 mt-3">
+   <div className="mt-3 grid grid-cols-1 gap-4 sm:grid-cols-2">
       <div className="relative mt-3">
   <input
     type="text"
@@ -1107,7 +1135,7 @@ const canPlaceOrder = !isSubmitting && !loading && cartItems.length > 0 && isDel
   </span>
 </div>
 
-    <div className="grid grid-cols-2 gap-4 mt-3">
+    <div className="mt-3 grid grid-cols-1 gap-4 sm:grid-cols-2">
       <div className="relative mt-3">
   <input
     type="text"
@@ -1200,7 +1228,7 @@ const canPlaceOrder = !isSubmitting && !loading && cartItems.length > 0 && isDel
   </span>
 </div>
 
-    <div className="grid grid-cols-2 gap-4 mt-3">
+    <div className="mt-3 grid grid-cols-1 gap-4 sm:grid-cols-2">
     <div className="relative mt-3 w-full">
       <select
         name="state"
@@ -1272,12 +1300,12 @@ const canPlaceOrder = !isSubmitting && !loading && cartItems.length > 0 && isDel
     </span>
   </div>
 
-  <div className="mt-4 flex justify-end">
+  <div className="mt-4 flex justify-stretch sm:justify-end">
     <button
       type="button"
       onClick={handleSaveAddress}
       disabled={isSavingAddress || (isGuestCheckout && !isPhoneVerified)}
-      className="bg-orange-500 text-white px-5 py-2 rounded-md text-sm font-medium hover:bg-orange-600 disabled:opacity-60"
+      className="w-full rounded-md bg-orange-500 px-5 py-2 text-sm font-medium text-white hover:bg-orange-600 disabled:opacity-60 sm:w-auto"
     >
       {isSavingAddress ? "Saving..." : isGuestCheckout ? (isPhoneVerified ? "Save Guest Address" : "Verify Mobile to Save Address") : "Save Address"}
     </button>
@@ -1312,7 +1340,7 @@ const canPlaceOrder = !isSubmitting && !loading && cartItems.length > 0 && isDel
                       className={`border p-4 rounded-lg cursor-pointer transition-all ${selectedAddress === index ? 'border-orange-500 bg-orange-50' : 'hover:border-gray-300'}`}
                       onClick={() => setSelectedAddress(index)}
                     >
-                      <div className="flex justify-between items-start">
+                      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                         <div>
                           <p className="font-medium">{item.firstName} {item.lastName}</p>
                           <p className="text-sm text-gray-600">{item.address}</p>
@@ -1351,10 +1379,10 @@ const canPlaceOrder = !isSubmitting && !loading && cartItems.length > 0 && isDel
       className="border p-2 rounded-md w-full h-20 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-200"
     ></textarea>
   </div>
- <div className="mt-3 mb-4 text-sm">
+ <div className="mb-4 mt-3 flex flex-col gap-2 text-sm sm:flex-row sm:flex-wrap sm:gap-4">
   <a
     href="/privacypolicy"
-    className="text-orange-500 hover:underline mr-4 underline"
+    className="text-orange-500 underline hover:underline"
     target="_blank"
     rel="noopener noreferrer"
   >
@@ -1362,7 +1390,7 @@ const canPlaceOrder = !isSubmitting && !loading && cartItems.length > 0 && isDel
   </a>
   <a
     href="/terms-and-condition"
-    className="text-orange-500 hover:underline mr-4 underline"
+    className="text-orange-500 underline hover:underline"
     target="_blank"
     rel="noopener noreferrer"
   >
@@ -1370,7 +1398,7 @@ const canPlaceOrder = !isSubmitting && !loading && cartItems.length > 0 && isDel
   </a>
   <a
     href="/shipping"
-    className="text-orange-500 hover:underline mr-4 underline"
+    className="text-orange-500 underline hover:underline"
     target="_blank"
     rel="noopener noreferrer"
   >
@@ -1378,7 +1406,7 @@ const canPlaceOrder = !isSubmitting && !loading && cartItems.length > 0 && isDel
   </a>
   <a
     href="/cancellation-refund-policy"
-    className="text-orange-500 hover:underline underline"
+    className="text-orange-500 underline hover:underline"
     target="_blank"
     rel="noopener noreferrer"
   >
@@ -1394,8 +1422,8 @@ const canPlaceOrder = !isSubmitting && !loading && cartItems.length > 0 && isDel
   </div>
 
           {/* Right - Order Summary */}
-          <div className="w-full lg:w-2/4 p-6 sticky top-6 self-start" style={{backgroundColor: "#F7F4F2", height: "100vh"}}>
-            <div className="mt-1" style={{marginRight: "100px"}}>
+          <div className="w-full self-start rounded-xl p-4 sm:p-6 lg:sticky lg:top-6 lg:w-2/4" style={{backgroundColor: "#F7F4F2"}}>
+            <div className="mt-1">
               <h3 className="text-lg font-semibold text-gray-800 mb-4">Your Orders</h3>
 
               {/* <div className="border-b pb-3 mb-3">
@@ -1450,7 +1478,7 @@ const canPlaceOrder = !isSubmitting && !loading && cartItems.length > 0 && isDel
                       </div>
 
                       {/* Price */}
-                      <div className="text-sm whitespace-nowrap text-base font-semibold text-red-600">
+                      <div className="whitespace-nowrap text-sm font-semibold text-red-600">
                         {/* ₹{(item.price > 0 ? item.price : item.actual_price) * item.quantity.toFixed(2)} */}
                         ₹{((item.price > 0 ? item.price : item.actual_price) * item.quantity).toLocaleString("en-IN", {minimumFractionDigits: 2,maximumFractionDigits: 2,})}
 
@@ -1484,7 +1512,7 @@ const canPlaceOrder = !isSubmitting && !loading && cartItems.length > 0 && isDel
               {cartItems.some(item => item.warranty > 0) && (
                 <div className="flex justify-between text-gray-800 font-semibold">
                   <span className="text-[#0069c6] hover:text-[#00badb] text-xs sm:text-sm font-medium">Warranty:</span>
-                  <span className="text-sm whitespace-nowrap text-base font-semibold text-red-600">
+                  <span className="whitespace-nowrap text-sm font-semibold text-red-600">
                     ₹{cartItems.reduce((sum, item) => sum + (item.warranty || 0), 0).toFixed(2)}
                   </span>
                 </div>
@@ -1492,7 +1520,7 @@ const canPlaceOrder = !isSubmitting && !loading && cartItems.length > 0 && isDel
               {cartItems.some(item => item.extendedWarranty > 0) && (
                 <div className="flex justify-between text-gray-800 font-semibold pt-2 mt-2">
                   <span className="text-[#0069c6] hover:text-[#00badb] text-xs sm:text-sm font-medium">Extended Warranty:</span>
-                  <span className="text-sm whitespace-nowrap text-base font-semibold text-red-600">
+                  <span className="whitespace-nowrap text-sm font-semibold text-red-600">
                     ₹{cartItems.reduce((sum, item) => sum + (item.extendedWarranty || 0), 0).toFixed(2)}
                   </span>
                 </div>
@@ -1543,7 +1571,7 @@ const canPlaceOrder = !isSubmitting && !loading && cartItems.length > 0 && isDel
              <button 
   onClick={handleSubmit} 
   disabled={!canPlaceOrder}
-  className={`mt-6 w-1/2 md:w-1/3 text-white font-semibold py-2 rounded-lg transition ${
+  className={`mt-6 w-full rounded-lg py-3 font-semibold text-white transition sm:w-auto sm:min-w-[180px] ${
     !canPlaceOrder
       ? 'bg-gray-400 cursor-not-allowed' 
       : 'bg-red-500 hover:bg-red-600'
