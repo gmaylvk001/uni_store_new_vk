@@ -280,7 +280,7 @@ const scrollRight = (categoryId) => {
     flex scroll-smooth
     overflow-x-auto scrollbar-hide
     snap-x snap-mandatory
-    space-x-4
+    space-x-2 sm:space-x-4
     px-0
   "
 >
@@ -297,7 +297,7 @@ const scrollRight = (categoryId) => {
     hover:border-[#0069c1] hover:shadow-md transition
     cursor-pointer
 
-    w-1/2
+    w-[calc(50%-0.25rem)]
     md:w-[calc(33.333%-0.75rem)]
   " style={{ background: "linear-gradient(90deg, rgb(180, 223, 255) 0%, rgb(193 218 255) 50%, rgb(212 212 212) 100%)" }}
 >
