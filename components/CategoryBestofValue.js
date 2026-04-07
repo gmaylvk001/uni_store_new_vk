@@ -299,7 +299,7 @@ const scrollRight = (categoryId) => {
                                       <div key={product._id} className="snap-start flex-none shrink-0 flex flex-col justify-between p-1 rounded-lg border border-gray-200 hover:border-[#0069c1] hover:shadow-md transition cursor-pointer h-full w-1/2 md:w-[25%] lg:w-[24.1%]" style={{ background: "linear-gradient(90deg, rgb(180, 223, 255) 0%, rgb(193 218 255) 50%, rgb(212 212 212) 100%)" }} >
                                         {/* linear-gradient(90deg, rgb(180 223 255) 0%, rgb(220 236 255) 50%, rgb(158 203 235) 100%);" linear-gradient(90deg,rgba(180, 223, 255, 1) 0%, rgba(255, 255, 255, 1) 50%, rgba(158, 203, 235, 1) 100%)*/}
                                         {/* Image */}
-                                        <div className="relative aspect-square bg-white overflow-hidden">
+                                        <div className="relative h-[210px] sm:aspect-square bg-white overflow-hidden">
                                           <Link href={`/product/${product.slug}`} onClick={() => handleProductClick(product)} className="block mb-1">
                                           {product.images?.[0] && (
                                             <>
@@ -308,7 +308,7 @@ const scrollRight = (categoryId) => {
                                                 alt={product.name}
                                                 fill
                                                 // ensure the image fits without stretching
-                                                className="object-contain p-2 sm:p-3"
+                                                className="object-contain p-1 sm:p-3"
                                                 sizes="(max-width: 640px) 90vw, (max-width: 1024px) 45vw, 18vw"
                                                 unoptimized
                                               />
@@ -326,8 +326,8 @@ const scrollRight = (categoryId) => {
                                         </div>
 
                                         {/* Info */}
-                                        <div className="p-2 flex flex-col h-full">
-                                          <h4 className="text-[10px] sm:text-xs text-gray-500 mb-1 uppercase">
+                                        <div className="p-1 sm:p-2 flex flex-col h-full text-left">
+                                          <h4 className="text-[9px] sm:text-xs text-gray-500 mb-0.5 uppercase">
                                             <Link href={`/brand/${brandMap[product.brand]?.toLowerCase().replace(/\s+/g, "-") || ""}`} className="hover:text-blue-600">
                                               {brandMap[product.brand] || ""}
                                             </Link>
@@ -336,10 +336,10 @@ const scrollRight = (categoryId) => {
                                           <Link
                                             href={`/product/${product.slug}`}
                                             onClick={() => handleProductClick(product)}
-                                            className="block mb-1"
+                                            className="block mb-0.5"
                                           >
                                             {/* 0069c6 */}
-                                            <h3 className="text-xs sm:text-sm font-medium text-black hover:text-gray-700 min-h-[32px] sm:min-h-[40px]">
+                                            <h3 className="text-[10px] sm:text-sm font-medium text-black hover:text-gray-700 min-h-[22px] sm:min-h-[40px] leading-[1.2]">
                                               {(() => {
                                                 const model = product.model_number ? `(${product.model_number.trim()})` : "";
                                                 const name = product.name ? product.name.trim() : "";
@@ -372,7 +372,7 @@ const scrollRight = (categoryId) => {
                                           </div> */}
 
                                           <Link href={`/product/${product.slug}`} onClick={() => handleProductClick(product)} className="block mb-1">
-                                          <div className="flex flex-col sm:flex-row items-center md:gap-2 mb-2 sm:mb-3">
+                                          <div className="flex flex-col sm:flex-row items-start sm:items-center md:gap-2 mb-2 sm:mb-3">
                                             <div>
                                               <span className="text-sm sm:text-base font-semibold text-red-600">
                                               ₹ {(product.special_price > 0 && product.special_price < product.price
