@@ -45,7 +45,7 @@ export default function BlogDetailsImageHomeComponent() {
 
   return (
     <div className="relative px-4 md:px-8 py-3">
-  <div className="relative h-[400px] rounded-2xl overflow-hidden">
+    <div className="relative min-h-[400px] md:h-[400px] rounded-2xl overflow-hidden">
 
     {/* GRADIENT BACKGROUND */}
     <div className="absolute inset-0 bg-gradient-to-r from-black via-gray-900 to-[#ff6e6e]"></div>
@@ -55,16 +55,16 @@ export default function BlogDetailsImageHomeComponent() {
 
       {/* LEFT IMAGE */}
       {/* LEFT IMAGE CARD */}
-      <div className="w-[45%] flex items-center justify-center pl-8">
+      <div className="w-full md:w-[45%] flex items-start md:items-center justify-center px-4 pt-4 md:pl-8 md:pr-0 md:pt-0">
         <img
           src={blog.image || "/default-blog.jpg"}
           alt={blog.blog_name}
-          className="h-[85%] w-full object-cover rounded-2xl shadow-2xl"
+          className="h-[220px] w-full rounded-2xl shadow-2xl object-cover md:h-[85%] md:object-contain"
         />
       </div>
 
       {/* RIGHT CONTENT */}
-      <div className="md:w-1/2 w-full flex flex-col justify-center p-6 sm:p-10">
+      <div className="w-full md:w-1/2 flex flex-col justify-center p-5 sm:p-6 md:p-10">
         <span className="text-orange-400 text-xs mb-3">
           {new Date(blog.createdAt).toLocaleDateString("en-GB")}
         </span>
