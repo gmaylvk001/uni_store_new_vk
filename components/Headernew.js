@@ -896,7 +896,8 @@ const RightMegaMenu = ({ hoveredCategory }) => {
     const slideRefs = useRef({});
     const [suggestions, setSuggestions] = useState([]);
     // refs & state for search dropdown positioning
-    const searchInputRef = useRef(null);
+    const mobileSearchInputRef = useRef(null);
+    const desktopSearchInputRef = useRef(null);
     // ADD missing state
     const [searchContext, setSearchContext] = useState(null);
     const debounceRef = useRef(null);
@@ -905,6 +906,11 @@ const RightMegaMenu = ({ hoveredCategory }) => {
     const [searchDropdownLeft, setSearchDropdownLeft] = useState(0);
     const [searchDropdownTop, setSearchDropdownTop] = useState(0);
     const [searchDropdownWidth, setSearchDropdownWidth] = useState(0);
+    const getActiveSearchInput = useCallback((context = searchContext) => {
+      if (context === 'mobileTop') return mobileSearchInputRef.current;
+      if (context === 'desktop') return desktopSearchInputRef.current;
+      return desktopSearchInputRef.current || mobileSearchInputRef.current;
+    }, [searchContext]);
     // Toggle mobile menu
     const toggleMobileMenu = () => {
         setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -1018,8 +1024,9 @@ const RightMegaMenu = ({ hoveredCategory }) => {
       setSuggestions([]);
       setTypedPreview('');
       setSearchDropdownVisible(false);
-      if (searchInputRef.current) searchInputRef.current.blur();
-    }, []);
+      const activeInput = getActiveSearchInput();
+      if (activeInput) activeInput.blur();
+    }, [getActiveSearchInput]);
 
     // helper to fetch suggestions (safe JSON handling) - now uses local products for instant results
     const fetchSuggestions = useCallback(async (q) => {
@@ -1042,8 +1049,9 @@ const RightMegaMenu = ({ hoveredCategory }) => {
           setSuggestions(filtered);
           setSearchDropdownVisible(true);
 
-          if (searchInputRef.current) {
-            const rect = searchInputRef.current.getBoundingClientRect();
+          const activeInput = getActiveSearchInput();
+          if (activeInput) {
+            const rect = activeInput.getBoundingClientRect();
             setSearchDropdownLeft(rect.left);
             setSearchDropdownTop(rect.bottom + window.scrollY);
             setSearchDropdownWidth(rect.width);
@@ -1069,8 +1077,9 @@ const RightMegaMenu = ({ hoveredCategory }) => {
         setSuggestions(items.slice(0, 12));
         setSearchDropdownVisible(true);
 
-        if (searchInputRef.current) {
-          const rect = searchInputRef.current.getBoundingClientRect();
+        const activeInput = getActiveSearchInput();
+        if (activeInput) {
+          const rect = activeInput.getBoundingClientRect();
           setSearchDropdownLeft(rect.left);
           setSearchDropdownTop(rect.bottom + window.scrollY);
           setSearchDropdownWidth(rect.width);
@@ -1079,7 +1088,7 @@ const RightMegaMenu = ({ hoveredCategory }) => {
         console.error('Error fetching suggestions:', err);
         setSuggestions([]);
       }
-    }, [sortedProducts]);
+    }, [getActiveSearchInput, sortedProducts]);
   
     // Debounced effect: call fetchSuggestions while typing
     useEffect(() => {
@@ -1108,11 +1117,12 @@ const RightMegaMenu = ({ hoveredCategory }) => {
     useEffect(() => {
       const handler = (e) => {
         const target = e.target;
+        const activeInput = getActiveSearchInput();
         if (
           searchDropdownVisible &&
-          searchInputRef.current &&
+          activeInput &&
           searchDropdownRef.current &&
-          !searchInputRef.current.contains(target) &&
+          !activeInput.contains(target) &&
           !searchDropdownRef.current.contains(target)
         ) {
           setSearchDropdownVisible(false);
@@ -1120,7 +1130,7 @@ const RightMegaMenu = ({ hoveredCategory }) => {
       };
       document.addEventListener('mousedown', handler);
       return () => document.removeEventListener('mousedown', handler);
-    }, [searchDropdownVisible]);
+    }, [getActiveSearchInput, searchDropdownVisible]);
     // Modify the search button to use the handler
     // Also make the search work when pressing Enter in the input field
     const handleKeyPress = (e) => {
@@ -2062,9 +2072,18 @@ const shouldShowArrow = (item, allItems = []) => {
       ids.forEach((id) => { ensureSubcategories(id); });
     
     }, [isMobileMenuOpen, categories, ensureSubcategories]);
+    useEffect(() => {
+      const previousOverflow = document.body.style.overflow;
+      if (isMobileMenuOpen) {
+        document.body.style.overflow = 'hidden';
+      }
+      return () => {
+        document.body.style.overflow = previousOverflow;
+      };
+    }, [isMobileMenuOpen]);
   return (
     <>
-    <header className="w-full sticky top-0 z-40 px-8" style={{ backgroundColor: "#1689C8" }}>
+    <header className="w-full sticky top-0 z-40 overflow-x-clip" style={{ backgroundColor: "#1689C8" }}>
 
 
       {/* Main Header bg-white */}
@@ -2077,11 +2096,11 @@ const shouldShowArrow = (item, allItems = []) => {
   style={{ backgroundColor: "#1689C8" }}
 >
                       {/* NEW MOBILE TOP ROW (from reference) */}
-                      <div className="lg:hidden flex items-center justify-between relative md:mx-4">
-                          <Link href="/" className="p-1 rounded-lg">
+      <div className="lg:hidden flex items-start justify-between gap-3 px-3 py-2 sm:px-4 relative">
+                          <Link href="/" className="p-1 rounded-lg flex-shrink-0">
                             <img src="/user/logo-mobile-view-res.png" alt="Logo" width={70} height={45} className="h-auto" />
                           </Link>
-                          <div className="flex items-center gap-3 pr-1 text-white">
+                          <div className="flex min-w-0 flex-wrap items-center justify-end gap-x-2 gap-y-2 pr-1 text-white">
                             {/* Feedback Icon */}
                             <Link href="/feedback" className="relative">
                                 <FiMessageSquare size={16} />
@@ -2141,15 +2160,15 @@ const shouldShowArrow = (item, allItems = []) => {
                                   </div>
                                 )}
                               </div>
-                              <button onClick={toggleMobileMenu} aria-label="Menu" className="relative">
+                              <button onClick={toggleMobileMenu} aria-label="Menu" className="relative flex-shrink-0">
                                 {isMobileMenuOpen ? <FiX size={16} /> : <FaBars size={16} />}
                               </button>
                           </div>
                       </div>
                       {/* NEW MOBILE SEARCH BAR */}
-                      <div className="lg:hidden mt-2 md:mx-4 px-0">
+                      <div className="lg:hidden px-3 pb-3 sm:px-4">
                         {/* <div className="bg-[#2453D3] w-full px-3 py-3" className="bg-black w-full md:px-3 py-3"> */}
-                        <div className="w-full md:px-3 py-3">
+                        <div className="w-full py-2">
                           <div className="flex items-center bg-white h-12 rounded-xl border border-gray-300 shadow-sm overflow-hidden w-full transition-all duration-150 focus-within:border-[#2453d3] focus-within:shadow-[0_0_0_2px_rgba(36,83,211,0.15)] flex-nowrap">
                             
                             {/* <select
@@ -2173,11 +2192,11 @@ const shouldShowArrow = (item, allItems = []) => {
                                 onKeyDown={handleKeyPress}
                                 placeholder=" "
                                 className="w-full h-full text-sm outline-none bg-transparent px-1 focus:text-[#111] placeholder-transparent"
-                                ref={searchInputRef}
+                                ref={mobileSearchInputRef}
                                 onFocus={() => {
                                   setSearchContext('mobileTop'); // ADDED
-                                  if (searchInputRef.current) {
-                                    const rect = searchInputRef.current.getBoundingClientRect();
+                                  if (mobileSearchInputRef.current) {
+                                    const rect = mobileSearchInputRef.current.getBoundingClientRect();
                                     setSearchDropdownLeft(rect.left);
                                     setSearchDropdownTop(rect.bottom + window.scrollY);
                                     setSearchDropdownWidth(rect.width);
@@ -2206,7 +2225,11 @@ const shouldShowArrow = (item, allItems = []) => {
                       </div>
                       {/* MOBILE TOP SUGGESTIONS (outside menu) */}
                       {searchDropdownVisible && searchContext === 'mobileTop' && !isMobileMenuOpen && (
-                        <div ref={searchDropdownRef} className="sm:hidden absolute z-[70] left-0 right-0 px-3 mt-1">
+                        <div
+                          ref={searchDropdownRef}
+                          className="lg:hidden fixed z-[70] left-0 right-0 px-3 sm:px-4"
+                          style={{ top: `${searchDropdownTop}px` }}
+                        >
                           <div className="bg-white rounded-lg shadow-lg border max-h-72 overflow-y-auto">
                             <div className="px-3 pt-2 pb-1 text-[11px] font-semibold tracking-wide text-gray-500">
                               PRODUCTS
@@ -2250,8 +2273,8 @@ const shouldShowArrow = (item, allItems = []) => {
       {/* ================= SEARCH BAR ROW ================= */}
       {/* <div className="bg-gradient-to-r from-[#1688C8] to-[#33a7b5]"> */}
       <div className="hidden lg:block" style={{ backgroundColor: "#1689C8" }}>
-        <div className="max-w-7xl mx-auto px-4 py-4 flex items-center gap-4">
-          <Link href="/" className="text-lg font-semibold">
+        <div className="max-w-7xl mx-auto px-4 xl:px-0 py-4 flex items-center gap-4">
+          <Link href="/" className="text-lg font-semibold flex-shrink-0">
            <img src="/user/logo-mobile-view-res.png" alt="Logo" width={100} height={70} className="h-auto" />
           </Link>
           {/* <div className="relative" ref={menuWrapperRef}> */}
@@ -2369,7 +2392,7 @@ const shouldShowArrow = (item, allItems = []) => {
     </div>
 
           {/* Search */}
-          <div className="flex-1 flex bg-white rounded-md overflow-hidden">
+          <div className="flex-1 min-w-0 flex bg-white rounded-md overflow-hidden">
             {/* <select className="px-4 text-sm outline-none border-r">
               <option>All Categories</option>
               {categories.map((cat) => (
@@ -2397,11 +2420,11 @@ const shouldShowArrow = (item, allItems = []) => {
 		id="q"
 		value={searchQuery}
 		onChange={(e) => setSearchQuery(e.target.value)}
-		ref={searchInputRef}
+		ref={desktopSearchInputRef}
 		onFocus={() => {
 		  setSearchContext('desktop'); // ADDED
-		  if (searchInputRef.current) {
-			const rect = searchInputRef.current.getBoundingClientRect();
+		  if (desktopSearchInputRef.current) {
+			const rect = desktopSearchInputRef.current.getBoundingClientRect();
 			setSearchDropdownLeft(rect.left);
 			setSearchDropdownTop(rect.bottom + window.scrollY);
 			setSearchDropdownWidth(rect.width);
@@ -2410,7 +2433,7 @@ const shouldShowArrow = (item, allItems = []) => {
 		  setSearchDropdownVisible(true);
 		}}
 		onKeyDown={handleDesktopKeyDown}  // correct usage
-		className={`px-4 py-2 outline-none search-input w-48 ${searchQuery.trim() ? 'has-value' : ''}`}
+		className={`min-w-0 flex-1 px-4 py-2 outline-none search-input ${searchQuery.trim() ? 'has-value' : ''}`}
 		placeholder="Search"
 		aria-label="Search query"
 	  />
@@ -2422,7 +2445,7 @@ const shouldShowArrow = (item, allItems = []) => {
           </div>
 
           {/* Right Icons */}
-          <div className="hidden md:flex items-center gap-4 text-white">
+          <div className="hidden md:flex shrink-0 items-center gap-4 text-white">
             <div className="w-9 h-9 rounded-full bg-[#2f2f2f] hover:bg-[#1688c8] flex items-center justify-center cursor-pointer transition-all duration-300">
               <Link href="/wishlist" className="relative w-9 h-9 flex items-center justify-center rounded-full
                bg-[#2b2b2b] border border-[#4a4a4a]

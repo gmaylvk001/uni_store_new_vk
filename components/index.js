@@ -1285,7 +1285,10 @@ case 'brands':
                                   </div>
                               ) : (
                                   <motion.div variants={itemVariants}>
-                                      <Slider {...brandSettings} className="brand-slider px-0 relative">
+                                      <Slider
+                                        {...brandSettings}
+                                        className="brand-slider relative px-0 [&_.slick-slide]:px-1 sm:[&_.slick-slide]:px-0.5"
+                                      >
                                           {brands
                                         .filter(
                                           (brand) =>
@@ -1297,10 +1300,10 @@ case 'brands':
                                         ).map((brand) => (
                                               <motion.div
                                                   key={brand.id}
-                                                  className="p-1 flex justify-center items-center"
+                                                  className="py-1 flex justify-center items-center"
                                                   whileHover={{ scale: 1.1 }}
                                               >
-                                              <div className="w-32 h-24 flex items-center justify-center overflow-hidden">
+                                              <div className=" flex items-center justify-center overflow-hidden">
                                                 <Link href={`/brand/${slugify(brand.brand_name)}`}>
                                                   <Image
                                                     src={`/uploads/Brands/${brand.image}`}
@@ -1359,7 +1362,7 @@ case 'brands':
                 </div>
             )}
             {/* main div start */}
-            <div className={`relative transition-opacity duration-300 overflow-hidden ${isLoading ? 'opacity-0 h-0 overflow-hidden' : 'opacity-100'}`} ref={containerRef} >
+            <div className={`relative transition-opacity duration-300 overflow-hidden py-4 ${isLoading ? 'opacity-0 h-0 overflow-hidden' : 'opacity-100'}`} ref={containerRef} >
                 
                 {/* Banner Section start */}
 
@@ -1489,10 +1492,17 @@ case 'brands':
                       </button>
                     )}
                     {/* <div ref={scrollContainerRef} className="flex items-start lg:justify-center justify-start gap-8 overflow-x-hidden no-scrollbar px-4 md:px-10">  */}
-                    <div ref={scrollContainerRef} className="flex items-start lg:justify-center justify-start overflow-x-hidden no-scrollbar px-8 md:px-10" style={{ columnGap: "4%" }}>
+                    <div
+                      ref={scrollContainerRef}
+                      className="flex items-start justify-start gap-3 overflow-x-auto no-scrollbar px-3 sm:px-6 md:px-10 lg:justify-center"
+                    >
                       {categories.map((cat) => (
-                        <Link key={cat._id} href={`/category/${cat.category_slug}`}>
-                          <div className="flex flex-col items-center min-w-[64px] sm:min-w-[92px] cursor-pointer">
+                        <Link
+                          key={cat._id}
+                          href={`/category/${cat.category_slug}`}
+                          className="w-[calc((100%-2.25rem)/4)] shrink-0 sm:w-auto"
+                        >
+                          <div className="flex flex-col items-center w-full min-w-0 sm:min-w-[92px] cursor-pointer">
                             {/* ICON TILE */}
                             <div className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-2xl bg-gradient-to-br from-[#0369a1] to-[#0ea5e9] flex items-center justify-center shadow-lg transition-transform duration-300 group-hover:scale-105">
                               {cat.image ? (
@@ -1508,7 +1518,7 @@ case 'brands':
 
                             {/* TEXT */}
                             <span
-                              className="mt-2 text-[10px] sm:text-xs md:text-sm font-medium text-gray-600 group-hover:text-black text-center break-normal whitespace-normal w-[64px] sm:w-[92px] leading-tight">
+                              className="mt-2 w-full text-[10px] sm:w-[92px] sm:text-xs md:text-sm font-medium text-center leading-tight text-gray-600 break-normal whitespace-normal group-hover:text-black">
                               {cat.category_name}
                             </span>
                           </div>
