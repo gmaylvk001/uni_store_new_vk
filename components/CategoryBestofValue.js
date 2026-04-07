@@ -296,7 +296,7 @@ const scrollRight = (categoryId) => {
                               > */}
                                   <div ref={(el) => (categoryScrollRefs.current[categoryProduct._id] = el)} className="flex overflow-x-auto scroll-smooth scrollbar-hide snap-x snap-mandatory gap-2 md:gap-4 lg:gap-4 py-1 pr-2">
                                     {products.slice(0, 15).map((product) => (
-                                      <div key={product._id} className="snap-start flex-none shrink-0 flex flex-col justify-between p-1 rounded-lg border border-gray-200 hover:border-[#0069c1] hover:shadow-md transition cursor-pointer h-full w-[calc(50%-0.5rem)] sm:w-[50%] md:w-[25%] lg:w-[24.1%]" style={{ background: "linear-gradient(90deg, rgb(180, 223, 255) 0%, rgb(193 218 255) 50%, rgb(212 212 212) 100%)" }} >
+                                      <div key={product._id} className="snap-start flex-none shrink-0 flex flex-col justify-between p-1 rounded-lg border border-gray-200 hover:border-[#0069c1] hover:shadow-md transition cursor-pointer h-full w-1/2 md:w-[25%] lg:w-[24.1%]" style={{ background: "linear-gradient(90deg, rgb(180, 223, 255) 0%, rgb(193 218 255) 50%, rgb(212 212 212) 100%)" }} >
                                         {/* linear-gradient(90deg, rgb(180 223 255) 0%, rgb(220 236 255) 50%, rgb(158 203 235) 100%);" linear-gradient(90deg,rgba(180, 223, 255, 1) 0%, rgba(255, 255, 255, 1) 50%, rgba(158, 203, 235, 1) 100%)*/}
                                         {/* Image */}
                                         <div className="relative aspect-square bg-white overflow-hidden">

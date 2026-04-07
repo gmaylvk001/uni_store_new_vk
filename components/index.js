@@ -1689,7 +1689,7 @@ case 'brands':
                       <CategoryBestofValue/>
                     </div>
                     <div className="w-full py-4 px-0"> {/* Removed the extra px-4 md:px-8 to fix the squeeze */}
-  <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-3 lg:gap-4">
+  <div className="w-full grid grid-cols-2 gap-3 lg:gap-4">
     
     <Link 
       href="/category/tv-entertainment" 
