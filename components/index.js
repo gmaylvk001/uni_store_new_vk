@@ -1628,17 +1628,17 @@ case 'brands':
             {/* Google Pixel 9 Banner Section */}
 <section className="px-4 md:px-8 py-8"> {/* Increased vertical padding (py-8) for breathing room */}
   <Link 
-    href="/product/google-pixel-mobile-pixel-xl-9-pro-256gb" 
+    href="/product/google-pixel-mobile-pixel-9-pro-256gb" 
     className="block overflow-hidden rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300"
   >
-    <div className="relative w-full h-[180px] sm:h-[250px] md:h-[320px] lg:h-[385px]"> 
+    <div className="relative w-full h-[140px] sm:h-[220px] md:h-[300px] lg:h-[345px]"> 
       {/* Height logic:
          - Mobile: 180px (keeps it from looking like a thin line)
          - Tablet: 250px
          - Desktop: 380px (large and impactful)
       */}
       <img
-        src="/uploads/aboutus/Google-Pixel.png" 
+        src="/uploads/aboutus/Google-Pixel-banner.png" 
         alt="Google Pixel 9 Pro XL"
         className="w-full h-full object-fill rounded-2xl" 
         /* 'object-cover' ensures the image fills the space without stretching the faces/phones */
@@ -1652,11 +1652,11 @@ case 'brands':
 
   <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">  
     {[
-      { href: "/brand/preethi", src: "uploads/aboutus/whats-hot-unilet-mg.png" },
-      { href: "/brand/voltas", src: "uploads/aboutus/whats-hot-unilet-ac.png" },
-      { href: "/brand/lg", src: "uploads/aboutus/whats-hot-unilet.png" },
-      { href: "/brand/apple", src: "uploads/aboutus/whats-hot-unilet-mb.png" },
-      { href: "/brand/zebronics", src: "uploads/aboutus/zebronics.jpeg" }
+      { href: "/brand/lg", src: "uploads/aboutus/lg-brand-banner-port.png" },
+      { href: "/brand/asus", src: "uploads/aboutus/azuz-brand-banner.png" },
+      { href: "/brand/eureka-forbes", src: "uploads/aboutus/aqua-brand-banner.png" },
+      { href: "/brand/apple", src: "uploads/aboutus/iphone-brand-banner.png" },
+      { href: "/brand/samsung", src: "uploads/aboutus/samsung-brand-banner.png" }
     ].map((item, i) => (
        <div
         key={i}
