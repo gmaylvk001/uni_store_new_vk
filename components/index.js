@@ -1638,7 +1638,7 @@ case 'brands':
          - Desktop: 380px (large and impactful)
       */}
       <img
-        src="/uploads/aboutus/Google-Pixel-banner.png" 
+        src="/uploads/aboutus/Google-Pixel-banner-new.png" 
         alt="Google Pixel 9 Pro XL"
         className="w-full h-full object-fill rounded-2xl" 
         /* 'object-cover' ensures the image fills the space without stretching the faces/phones */
@@ -1652,11 +1652,11 @@ case 'brands':
 
   <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">  
     {[
-      { href: "/brand/lg", src: "uploads/aboutus/lg-brand-banner-port.png" },
-      { href: "/brand/asus", src: "uploads/aboutus/azuz-brand-banner.png" },
-      { href: "/brand/eureka-forbes", src: "uploads/aboutus/aqua-brand-banner.png" },
-      { href: "/brand/apple", src: "uploads/aboutus/iphone-brand-banner.png" },
-      { href: "/brand/samsung", src: "uploads/aboutus/samsung-brand-banner.png" }
+      { href: "/brand/lg", src: "uploads/aboutus/brand-lg-p-banner.png" },
+      { href: "/brand/asus", src: "uploads/aboutus/brand-asus-p-banner.png" },
+      { href: "/brand/eureka-forbes", src: "uploads/aboutus/brand-aqua-p-banner.png" },
+      { href: "/brand/samsung", src: "uploads/aboutus/brand-samsung-p-banner.png" },
+      { href: "/brand/apple", src: "uploads/aboutus/iphone-brand-banner.png" }
     ].map((item, i) => (
        <div
         key={i}
