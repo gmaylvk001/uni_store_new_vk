@@ -1820,11 +1820,11 @@ case 'brands':
 
   <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">
     {[
-      { href: "/brand/realme", src: "uploads/aboutus/HP_What'sHot_RealmeP4x_02Jan2026_ZNy77FWpt.webp" },
-      { href: "/category/tv-entertainment", src: "uploads/aboutus/HP_What'sHot_TVs_02Jan2026_8MouoeMk4B.webp" },
-      { href: "/category/home-appliances", src: "uploads/aboutus/HP_What'sHot_WM_02Jan2026_Yt-KWCCDR.webp" },
-      { href: "/category/mobiles-tablets/iphone", src: "uploads/aboutus/HP_What'sHot_iPad11_02Jan2026_PhoUjE9mF.webp" },
-       { href: "/category/accessories/stabilizer", src: "uploads/aboutus/Stabilizer.png" }
+      { href: "/category/kitchen-appliances/small-appliance/air-coolers", src: "uploads/aboutus/aircooler-categ-banner.png" },
+      { href: "/category/tv-entertainment", src: "uploads/aboutus/tv-categ-banner.png" },
+      { href: "/category/home-appliances/washing-machine", src: "uploads/aboutus/washing-categ-banner.png" },
+      { href: "/category/mobiles-tablets/iphone", src: "uploads/aboutus/mobile-categ-banner.png" },
+       { href: "/category/home-appliances/refrigerator", src: "uploads/aboutus/ref-categ-banner.png" }
 
     ].map((item, i) => (
      <div
