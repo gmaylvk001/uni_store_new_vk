@@ -1711,7 +1711,7 @@ case 'brands':
     >
       <div className="relative w-full h-[100px] sm:h-[120px] md:h-[140px] lg:h-[180px]">
         <img
-          src="uploads/aboutus/Banner-Image-1.jpeg" /* Make sure this matches your filename */
+          src="uploads/aboutus/home-appli-banner.png" /* Make sure this matches your filename */
           alt="Get More Value"
           className="w-full h-full object-stretch object-center"
         />
