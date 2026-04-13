@@ -2,7 +2,8 @@ import dbConnect from "@/lib/db";
 import Brand from "@/models/ecom_brand_info";
 import { NextResponse } from "next/server";
 import path from "path";
-import { writeFile, unlink } from "fs/promises";
+import { mkdir, unlink } from "fs/promises";
+import sharp from "sharp";
 // app/api/brand/route.js
 export async function PUT(req) {
   try {
@@ -35,25 +36,42 @@ export async function PUT(req) {
     // Handle image upload
     let imagePath = existingBrand.image;
     if (image && image.name) {
+      const uploadDir = path.join(process.cwd(), "public", "uploads", "Brands");
+
       // Delete old image if it exists
       if (existingImage) {
         try {
-          const oldImagePath = path.join(process.cwd(), "public", existingImage);
+          const normalizedExistingImage = existingImage
+            .replace(/^\/+/, "")
+            .replace(/^uploads[\\/]+Brands[\\/]+/i, "")
+            .replace(/^uploads[\\/]+brands[\\/]+/i, "");
+          const oldImagePath = path.join(uploadDir, normalizedExistingImage);
           await unlink(oldImagePath);
         } catch (err) {
-          console.error("Error deleting old image:", err);
+          if (err.code !== "ENOENT") {
+            console.error("Error deleting old image:", err);
+          }
         }
       }
 
-      // Save new image
-      const bytes = await image.arrayBuffer();
-      const buffer = Buffer.from(bytes);
-      const ext = path.extname(image.name);
-      const fileName = `brand_${Date.now()}${ext}`;
-      const filePath = path.join(process.cwd(), "public/uploads/brands", fileName);
+      // Save new image in the same location/format used by the add route
+      await mkdir(uploadDir, { recursive: true });
+      const buffer = Buffer.from(await image.arrayBuffer());
+      const fileName = `brand-${Date.now()}.webp`;
+      const filePath = path.join(uploadDir, fileName);
 
-      await writeFile(filePath, buffer);
-      imagePath = `${fileName}`;
+      await sharp(buffer)
+        .resize({
+          width: 140,
+          height: 60,
+          fit: "cover",
+          position: "center",
+          background: { r: 255, g: 255, b: 255, alpha: 1 }
+        })
+        .toFormat("webp")
+        .toFile(filePath);
+
+      imagePath = fileName;
     }
 
     // Update the brand

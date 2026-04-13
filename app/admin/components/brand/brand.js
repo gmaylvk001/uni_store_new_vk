@@ -68,7 +68,7 @@ export default function BrandComponent() {
       const img = new Image();
       img.src = URL.createObjectURL(file);
       img.onload = () => {
-        const valid = img.width === 140 && img.height === 60;
+        const valid = img.width <= 140 && img.height <= 140;
         URL.revokeObjectURL(img.src);
         resolve(valid);
       };
@@ -82,7 +82,7 @@ export default function BrandComponent() {
     if (file) {
       const isValid = await validateImageDimensions(file);
       if (!isValid) {
-        setImageError("Image must be exactly 140px width and 60px height");
+        setImageError("Image must be 140px x 140px or smaller");
         e.target.value = "";
         return;
       }
@@ -98,7 +98,7 @@ export default function BrandComponent() {
     if (file) {
       const isValid = await validateImageDimensions(file);
       if (!isValid) {
-        setImageError("Image must be exactly 140px width and 60px height");
+        setImageError("Image must be 140px x 140px or smaller");
         e.target.value = "";
         return;
       }
@@ -158,7 +158,7 @@ const handleAddBrand = async (e) => {
     if (newBrand.image) {
         const isValid = await validateImageDimensions(newBrand.image);
         if (!isValid) {
-            setImageError("Image must be exactly 140px width and 60px height");
+            setImageError("Image must be 140px x 140px or smaller");
             return;
         }
     }
@@ -261,7 +261,7 @@ const handleAddBrand = async (e) => {
     if (editingBrand.image instanceof File) {
         const isValid = await validateImageDimensions(editingBrand.image);
         if (!isValid) {
-            setImageError("Image must be exactly 140px width and 60px height");
+            setImageError("Image must be 140px x 140px or smaller");
             return;
         }
     }
@@ -635,7 +635,7 @@ const handleDeleteBrand = async (brandId) => {
                 {/* Upload Image */}
                 <div>
                   <label className="block mb-1 text-sm font-semibold text-gray-700">
-                    Upload Image (Required: 140px width × 60px height)
+                    Upload Image (Max: 140px width x 140px height)
                   </label>
                   <input
                     type="file"
@@ -741,7 +741,7 @@ const handleDeleteBrand = async (brandId) => {
                 {/* Upload Image */}
                 <div>
                   <label className="block mb-1 text-sm font-semibold text-gray-700">
-                    Upload Image (Required: 140px width × 60px height)
+                    Upload Image (Max: 140px width x 140px height)
                   </label>
                   <input
                     type="file"
