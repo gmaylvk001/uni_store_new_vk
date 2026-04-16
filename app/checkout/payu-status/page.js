@@ -1,11 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCart } from "@/context/CartContext";
 
-export default function PayUStatusPage() {
+function PayUStatusContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { updateCartCount } = useCart();
@@ -78,5 +78,21 @@ export default function PayUStatusPage() {
         )}
       </div>
     </div>
+  );
+}
+
+export default function PayUStatusPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-[#f7f4f2] flex items-center justify-center px-4">
+          <div className="max-w-lg w-full bg-white rounded-2xl shadow-lg p-8 text-center">
+            <p className="text-sm text-gray-600">Loading payment status...</p>
+          </div>
+        </div>
+      }
+    >
+      <PayUStatusContent />
+    </Suspense>
   );
 }
