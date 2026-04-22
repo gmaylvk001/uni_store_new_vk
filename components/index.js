@@ -1638,7 +1638,7 @@ case 'brands':
          - Desktop: 380px (large and impactful)
       */}
       <img
-        src="/uploads/aboutus/Google-Pixel-banner-new.png" 
+        src="/uploads/aboutus/Google.jpeg" 
         alt="Google Pixel 9 Pro XL"
         className="w-full h-full object-fill rounded-2xl" 
         /* 'object-cover' ensures the image fills the space without stretching the faces/phones */
