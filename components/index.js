@@ -1820,11 +1820,11 @@ case 'brands':
 
   <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">
     {[
-      { href: "/category/kitchen-appliances/small-appliance/air-coolers", src: "uploads/aboutus/aircooler-categ-banner.png" },
-      { href: "/category/tv-entertainment", src: "uploads/aboutus/tv-categ-banner.png" },
-      { href: "/category/home-appliances/washing-machine", src: "uploads/aboutus/washing-categ-banner.png" },
-      { href: "/category/mobiles-tablets/iphone", src: "uploads/aboutus/mobile-categ-banner.png" },
-       { href: "/category/home-appliances/refrigerator", src: "uploads/aboutus/ref-categ-banner.png" }
+      { href: "/category/kitchen-appliances/small-appliance/air-coolers", src: "uploads/aboutus/air-coolerr.jpeg" },
+      { href: "/category/tv-entertainment", src: "uploads/aboutus/Led-tvv.jpeg" },
+      { href: "/category/home-appliances/washing-machine", src: "uploads/aboutus/washing-machinee.jpeg" },
+      { href: "/category/mobiles-tablets/iphone", src: "uploads/aboutus/mobile-phonee.jpeg" },
+       { href: "/category/home-appliances/refrigerator", src: "uploads/aboutus/refrigeratorr.jpeg" }
 
     ].map((item, i) => (
      <div
