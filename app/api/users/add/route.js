@@ -7,7 +7,7 @@ export async function POST(req) {
   try {
     await dbConnect();
     
-    const { name, mobile, email, password, user_type, status } = await req.json();
+    const { name, mobile, email, password, user_type, status, communication_consent } = await req.json();
     
     if (!name || !mobile || !email || !password || !status) {
       return NextResponse.json({ error: "All fields are required" }, { status: 400 });
@@ -55,6 +55,7 @@ export async function POST(req) {
       mobile, // ✅ Allow duplicate mobile numbers
       email,
       password: hashedPassword,
+      communication_consent: Boolean(communication_consent),
       user_type: finalUserType,
       status, // Include status field
     });

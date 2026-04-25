@@ -1151,12 +1151,12 @@ const RightMegaMenu = ({ hoveredCategory }) => {
     const [error, setError] = useState('');
     const [errors, setErrors] = useState({
       login: { email: "", password: "" },
-      register: { name: "", email: "", mobile: "", password: "" },
+      register: { name: "", email: "", mobile: "", password: "", communication_consent: "" },
     });
 
     // ADD: define missing auth states to avoid ReferenceError
     const [loginData, setLoginData] = useState({ email: "", password: "" });
-    const [registerData, setRegisterData] = useState({ name: "", email: "", mobile: "", password: "" });
+    const [registerData, setRegisterData] = useState({ name: "", email: "", mobile: "", password: "", communication_consent: false });
 
     // Phone OTP login states
     const [otpPhone, setOtpPhone] = useState("");
@@ -1186,7 +1186,7 @@ const RightMegaMenu = ({ hoveredCategory }) => {
       // reset errors for current tab only
       setErrors((prev) => ({
         ...prev,
-        [activeTab]: { name: "", email: "", mobile: "", password: "" },
+        [activeTab]: { name: "", email: "", mobile: "", password: "", communication_consent: "" },
       }));
 
       let newErrors = {};
@@ -1199,6 +1199,9 @@ const RightMegaMenu = ({ hoveredCategory }) => {
           newErrors.mobile = "Mobile must be filled";
         } else if (!isValidMobile(currentData.mobile)) {
           newErrors.mobile = "Enter a valid mobile number";
+        }
+        if (!currentData.communication_consent) {
+          newErrors.communication_consent = "Please accept the communication consent";
         }
       }
 
@@ -1268,7 +1271,7 @@ const RightMegaMenu = ({ hoveredCategory }) => {
 
             // reset states
             setLoginData({ email: "", password: "" });
-            setRegisterData({ name: "", email: "", mobile: "", password: "" });
+            setRegisterData({ name: "", email: "", mobile: "", password: "", communication_consent: false });
 
             // update cart
             const cartResponse = await fetch("/api/cart/count", {
@@ -2645,7 +2648,7 @@ const shouldShowArrow = (item, allItems = []) => {
                       {showAuthModal && (
                           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
                               <div className="bg-white rounded-lg p-8 w-96 max-w-full relative">
-                                  <button onClick={() => { setShowAuthModal(false); setFormError(''); setError(''); setErrors({ login: {}, register: {} }); setLoginData({ email: "", password: "" }); setRegisterData({ name: "", email: "", mobile: "", password: "" }); setOtpPhone(""); setOtpValue(""); setOtpPhoneStep(1); setOtpPhoneError(""); setOtpPhoneMessage(""); }} className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 text-2xl">
+                                  <button onClick={() => { setShowAuthModal(false); setFormError(''); setError(''); setErrors({ login: {}, register: {} }); setLoginData({ email: "", password: "" }); setRegisterData({ name: "", email: "", mobile: "", password: "", communication_consent: false }); setOtpPhone(""); setOtpValue(""); setOtpPhoneStep(1); setOtpPhoneError(""); setOtpPhoneMessage(""); }} className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 text-2xl">
                                       &times;
                                   </button>
                                   <div className="flex gap-4 mb-6 border-b">
@@ -2793,6 +2796,30 @@ const shouldShowArrow = (item, allItems = []) => {
                                     />
                                     {errors?.[activeTab]?.password && (
                                       <p className="text-red-500 text-sm">{errors[activeTab].password}</p>
+                                    )}
+
+                                    {activeTab === "register" && (
+                                      <>
+                                        <label className="flex items-start gap-2 text-sm text-gray-700">
+                                          <input
+                                            type="checkbox"
+                                            checked={registerData.communication_consent}
+                                            onChange={(e) =>
+                                              setRegisterData({
+                                                ...registerData,
+                                                communication_consent: e.target.checked,
+                                              })
+                                            }
+                                            className="mt-1"
+                                          />
+                                          <span>
+                                            I agree to receive SMS, RCS, Whatsapp and Email from Unilet Store on My Registered Mobile Number
+                                          </span>
+                                        </label>
+                                        {errors?.register?.communication_consent && (
+                                          <p className="text-red-500 text-sm">{errors.register.communication_consent}</p>
+                                        )}
+                                      </>
                                     )}
 
                                     {/* Global Form Error */}

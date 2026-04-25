@@ -8,9 +8,16 @@ export async function POST(req) {
     const body = await req.json();
     console.log("Received body:", body); // Debug log
 
-    const { name, mobile, email, password } = body;
+    const { name, mobile, email, password, communication_consent } = body;
     if (!name || !email || !password) {
       return NextResponse.json({ error: "All fields are required" }, { status: 400 });
+    }
+
+    if (communication_consent !== true) {
+      return NextResponse.json(
+        { error: "Please accept the communication consent to continue" },
+        { status: 400 }
+      );
     }
 
     await connectDB();
@@ -24,7 +31,13 @@ export async function POST(req) {
     const hashedPassword = await bcrypt.hash(password, 10);
     console.log("Password hashed successfully"); // Debug log
 
-    const newUser = new User({ name, mobile, email, password: hashedPassword });
+    const newUser = new User({
+      name,
+      mobile,
+      email,
+      password: hashedPassword,
+      communication_consent: true,
+    });
     await newUser.save();
     console.log("User saved successfully"); // Debug log
 

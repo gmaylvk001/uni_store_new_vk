@@ -12,6 +12,7 @@ export const AuthModal = ({ onClose, onSuccess, error, message }) => {
     email: "",
     mobile: "",
     password: "",
+    communication_consent: false,
   });
   const [loading, setLoading] = useState(false);
   const [formError, setFormError] = useState("");
@@ -20,6 +21,7 @@ export const AuthModal = ({ onClose, onSuccess, error, message }) => {
     email: "",
     mobile: "",
     password: "",
+    communication_consent: "",
   });
   const [otpPhone, setOtpPhone] = useState("");
   const [otpPhoneStep, setOtpPhoneStep] = useState(1);
@@ -42,6 +44,7 @@ export const AuthModal = ({ onClose, onSuccess, error, message }) => {
       email: "",
       mobile: "",
       password: "",
+      communication_consent: "",
     });
   };
 
@@ -119,6 +122,7 @@ export const AuthModal = ({ onClose, onSuccess, error, message }) => {
       email: "",
       mobile: "",
       password: "",
+      communication_consent: "",
     };
 
     if (!registerData.name.trim()) {
@@ -138,6 +142,9 @@ export const AuthModal = ({ onClose, onSuccess, error, message }) => {
       errors.password = "Password is required";
     } else if (registerData.password.length < 6) {
       errors.password = "Password must be at least 6 characters";
+    }
+    if (!registerData.communication_consent) {
+      errors.communication_consent = "Please accept the communication consent";
     }
 
     if (Object.values(errors).some(Boolean)) {
@@ -455,6 +462,31 @@ export const AuthModal = ({ onClose, onSuccess, error, message }) => {
               {fieldErrors.password && (
                 <p className="mt-1 text-sm text-red-500">
                   {fieldErrors.password}
+                </p>
+              )}
+            </div>
+
+            <div>
+              <label className="flex items-start gap-2 text-sm text-gray-700">
+                <input
+                  type="checkbox"
+                  checked={registerData.communication_consent}
+                  onChange={(e) =>
+                    setRegisterData({
+                      ...registerData,
+                      communication_consent: e.target.checked,
+                    })
+                  }
+                  className="mt-1"
+                />
+                <span>
+                  I agree to receive SMS, RCS, Whatsapp and Email from Unilet
+                  Store on My Registered Mobile Number
+                </span>
+              </label>
+              {fieldErrors.communication_consent && (
+                <p className="mt-1 text-sm text-red-500">
+                  {fieldErrors.communication_consent}
                 </p>
               )}
             </div>

@@ -7,12 +7,23 @@ import { NextResponse } from "next/server";
 export async function POST(req) {
   try {
     const body = await req.json();
-    const { name, mobile, email, password } = body;
+    const { name, mobile, email, password, communication_consent } = body;
 
     // Validate required fields
     if (!name || !email || !mobile || !password) {
       return NextResponse.json(
         { message: "All fields are required" },
+        { status: 400 }
+      );
+    }
+
+    if (communication_consent !== true) {
+      return NextResponse.json(
+        {
+          message: "Please accept the communication consent to continue",
+          errorType: "communication_consent",
+          error: "Please accept the communication consent to continue",
+        },
         { status: 400 }
       );
     }
@@ -46,6 +57,7 @@ export async function POST(req) {
       mobile,
       email,
       password: hashedPassword,
+      communication_consent: true,
     });
 
     await newUser.save();
