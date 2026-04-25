@@ -131,10 +131,10 @@ const inputClass = "w-full border rounded-md px-3 py-2 focus:outline-none";
           
           <h4 className="text-center mb-6">
             If you have any questions concerning our products / delivery, please call our customer service department at 
-            <b>+91 98423 44323</b>.
+            <b>+91 98805 82002</b>.
           </h4>
           
-          <a href="tel:9865555000" className="inline-block bg-green-600 text-white px-4 py-2 rounded hover:bg-[#2453d3] transition">
+          <a href="tel:9880582002" className="inline-block bg-green-600 text-white px-4 py-2 rounded hover:bg-[#2453d3] transition">
             Click to Call
           </a>
         </div>
@@ -143,7 +143,7 @@ const inputClass = "w-full border rounded-md px-3 py-2 focus:outline-none";
         {/* Write Us Form (Now on Right) */}
         <div className="p-5 border border-2 rounded">
           <h2 className="text-3xl font-bold mb-4 pb-2 text-center border-b-2">Unilet Stores – Feedback</h2>
-          <form onSubmit={handleSubmit} className="px-8 mt-6 grid grid-cols-2 md:grid-cols-2 gap-4">
+          <form onSubmit={handleSubmit} className="px-4 md:px-8 mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Name */}
             <div >
               <label className="block font-medium mb-1">
@@ -229,7 +229,7 @@ const inputClass = "w-full border rounded-md px-3 py-2 focus:outline-none";
             </div>
 
             {/* Message - Full Width */}
-            <div className="col-span-full md:col-span-2">
+            <div className="md:col-span-2">
               <label className="block font-medium mb-1">
                 Feedback<span className="text-red-600">*</span>
               </label>

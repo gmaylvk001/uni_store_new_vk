@@ -734,6 +734,28 @@ const scroll = (direction) => {
     <span className="text-2xl font-bold text-gray-700">{`›`}</span>
   </button> */}
 
+  {categoryData?.categoryTree?.length > 3 && (
+    <>
+      <button
+        type="button"
+        onClick={() => scroll("left")}
+        className="absolute left-0 top-1/2 -translate-y-1/2 z-10 hidden md:flex items-center justify-center rounded-full border border-gray-200 bg-white/95 p-3 shadow-md hover:bg-gray-100"
+        aria-label="Scroll categories left"
+      >
+        <ChevronLeft size={20} className="text-gray-700" />
+      </button>
+
+      <button
+        type="button"
+        onClick={() => scroll("right")}
+        className="absolute right-0 top-1/2 -translate-y-1/2 z-10 hidden md:flex items-center justify-center rounded-full border border-gray-200 bg-white/95 p-3 shadow-md hover:bg-gray-100"
+        aria-label="Scroll categories right"
+      >
+        <ChevronRight size={20} className="text-gray-700" />
+      </button>
+    </>
+  )}
+
   {/* Scroll container */}
   <div
     ref={scrollRef}
