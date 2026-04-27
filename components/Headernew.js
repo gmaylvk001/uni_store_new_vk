@@ -2450,6 +2450,14 @@ const shouldShowArrow = (item, allItems = []) => {
           {/* Right Icons */}
           <div className="hidden md:flex shrink-0 items-center gap-4 text-white">
             <div className="w-9 h-9 rounded-full bg-[#2f2f2f] hover:bg-[#1688c8] flex items-center justify-center cursor-pointer transition-all duration-300">
+              <Link href="/feedback" className="w-9 h-9 flex items-center justify-center rounded-full
+               bg-[#2b2b2b] border border-[#4a4a4a]
+               text-white shadow-md
+               hover:bg-[#1688c8] transition-all">
+                <FiMessageSquare />
+              </Link>
+            </div>
+            <div className="w-9 h-9 rounded-full bg-[#2f2f2f] hover:bg-[#1688c8] flex items-center justify-center cursor-pointer transition-all duration-300">
               <Link href="/wishlist" className="relative w-9 h-9 flex items-center justify-center rounded-full
                bg-[#2b2b2b] border border-[#4a4a4a]
                text-white shadow-md
