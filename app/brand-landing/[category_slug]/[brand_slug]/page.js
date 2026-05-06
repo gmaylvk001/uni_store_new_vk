@@ -268,6 +268,25 @@ const fetchFilteredProducts = useCallback(async (data, pageNum = 1, initialLoad 
       filters: []
     });
   };
+  const handleFilterChange = (type, value) => {
+  setSelectedFilters((prev) => {
+    const currentFilters = [...prev.filters];
+    const index = currentFilters.indexOf(value);
+
+    if (index > -1) {
+      // If already selected, remove it
+      currentFilters.splice(index, 1);
+    } else {
+      // If not selected, add it
+      currentFilters.push(value);
+    }
+
+    return {
+      ...prev,
+      filters: currentFilters,
+    };
+  });
+};
 
   const handlePageChange = (page) => {
     if (page >= 1 && page <= pagination.totalPages) {
