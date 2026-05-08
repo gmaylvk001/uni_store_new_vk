@@ -48,9 +48,9 @@ export default async function BlogPost({ params }) {
         {/* Header */}
         <header className="mb-10">
           
-          <h5 className="text-4xl md:text-3xl font-bold text-gray-900 mb-4 leading-tight">
+          <h1 className="text-4xl md:text-3xl font-bold text-gray-900 mb-4 leading-tight">
             {blog.blog_name}
-          </h5>
+          </h1>
           <div className="flex items-center text-gray-500">
             <span>
               Published on {new Date(blog.createdAt).toLocaleDateString('en-GB', {
