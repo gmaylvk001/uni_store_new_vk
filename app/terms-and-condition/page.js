@@ -13,7 +13,7 @@ export default function Dashboard() {
 
   return (
     <div>
-      
+      <h1 className="sr-only">Terms and Conditions</h1>
       <TermsandcoditionComponent /> 
     </div>
   );

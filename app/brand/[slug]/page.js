@@ -13,6 +13,7 @@ export default function Dashboard({ params }) {
 
   return (
     <div>
+      <h1 className="sr-only">Brand Products</h1>
       {/* Pass the resolved params to the BrandComponent */}
       <BrandComponent params={resolvedParams} />
     </div>

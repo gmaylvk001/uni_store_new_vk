@@ -13,7 +13,7 @@ export default function Dashboard() {
 
   return (
     <div>
-      
+      <h1 className="sr-only">Store Locations</h1>
       <LocationComponent /> {/* Use the ProfileComponent here */}
     </div>
   );

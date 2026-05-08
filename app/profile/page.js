@@ -13,7 +13,7 @@ export default function Dashboard() {
 
   return (
     <div>
-      
+      <h1 className="sr-only">My Profile</h1>
       <ProfileComponent /> {/* Use the ProfileComponent here */}
     </div>
   );

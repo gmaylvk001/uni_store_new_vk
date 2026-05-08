@@ -673,7 +673,7 @@ export default function CreateStoreForm({ storeId = null }) {
               <div className="flex gap-2 mt-3 flex-wrap">
                 {bannerPreviews.map((b, idx) => (
                   <div key={idx} className="relative">
-                    <img src={b} className="h-24 w-40 object-cover rounded" />
+                    <img src={b} alt={`Banner preview ${idx + 1}`} className="h-24 w-40 object-cover rounded" />
                     <button
                       type="button"
                       onClick={() => handleRemoveImage("banners", idx)}
@@ -705,7 +705,7 @@ export default function CreateStoreForm({ storeId = null }) {
                   <input type="file" accept="image/*" onChange={(e) => handleFileChange(e, "featured_image", idx)} />
                   <input type="text" placeholder="Product Title" value={p.title} onChange={(e) => updateListField("featuredProducts", idx, "title", e.target.value)} className="p-2 border rounded" />
                   <div className="flex items-center">
-                    {featuredPreviews[idx] && <img src={featuredPreviews[idx]} className="h-16 w-16 rounded object-cover" />}
+                    {featuredPreviews[idx] && <img src={featuredPreviews[idx]} alt={`Featured product preview ${idx + 1}`} className="h-16 w-16 rounded object-cover" />}
                     <button type="button" onClick={() => handleRemoveImage("featured", idx)} className="ml-2 bg-red-600 text-white rounded p-2"><FaTimes /></button>
                   </div>
                 </div>
@@ -728,7 +728,7 @@ export default function CreateStoreForm({ storeId = null }) {
                     <textarea placeholder="Description" value={o.description} onChange={(e) => updateListField("offers", idx, "description", e.target.value)} className="p-2 border rounded w-full" />
                   </div>
                   <div className="flex items-center">
-                    {offerPreviews[idx] && <img src={offerPreviews[idx]} className="h-20 w-28 rounded object-cover" />}
+                    {offerPreviews[idx] && <img src={offerPreviews[idx]} alt={`Offer preview ${idx + 1}`} className="h-20 w-28 rounded object-cover" />}
                     <button type="button" onClick={() => handleRemoveImage("offers", idx)} className="ml-2 bg-red-600 text-white rounded p-2"><FaTimes /></button>
                   </div>
                 </div>
@@ -747,7 +747,7 @@ export default function CreateStoreForm({ storeId = null }) {
                   <input type="file" accept="image/*" onChange={(e) => handleFileChange(e, "highlight_image", idx)} />
                   <input type="text" placeholder="Label" value={h.label} onChange={(e) => updateListField("highlights", idx, "label", e.target.value)} className="p-2 border rounded" />
                   <div className="flex items-center">
-                    {highlightPreviews[idx] && <img src={highlightPreviews[idx]} className="h-16 w-16 rounded object-cover" />}
+                    {highlightPreviews[idx] && <img src={highlightPreviews[idx]} alt={`Highlight preview ${idx + 1}`} className="h-16 w-16 rounded object-cover" />}
                     <button type="button" onClick={() => handleRemoveImage("highlights", idx)} className="ml-2 bg-red-600 text-white rounded p-2"><FaTimes /></button>
                   </div>
                 </div>
@@ -808,9 +808,9 @@ export default function CreateStoreForm({ storeId = null }) {
                     <label className="text-sm font-medium block mb-1">Thumbnail Image</label>
                     <input type="file" accept="image/*" onChange={(e) => handleFileChange(e, "social_thumbnail", idx)} />
                     {item.thumbnailPreview ? (
-                      <img src={item.thumbnailPreview} className="mt-2 w-24 h-24 rounded object-cover border" />
+                      <img src={item.thumbnailPreview} alt={`Social timeline thumbnail ${idx + 1}`} className="mt-2 w-24 h-24 rounded object-cover border" />
                     ) : item.thumbnail ? (
-                      <img src={item.thumbnail} className="mt-2 w-24 h-24 rounded object-cover border" />
+                      <img src={item.thumbnail} alt={`Social timeline thumbnail ${idx + 1}`} className="mt-2 w-24 h-24 rounded object-cover border" />
                     ) : null}
                   </div>
                 </div>

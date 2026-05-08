@@ -84,7 +84,7 @@ export default function StoreDetail() {
               <Swiper modules={[Navigation]} navigation slidesPerView={1}>
                 {store.banners.map((img, idx) => (
                   <SwiperSlide key={idx}>
-                    <img src={img} className="w-full h-72 object-cover" />
+                    <img src={img} alt={`${store.organisation_name} store banner ${idx + 1}`} className="w-full h-72 object-cover" />
                   </SwiperSlide>
                 ))}
               </Swiper>
@@ -186,7 +186,7 @@ export default function StoreDetail() {
               {store.offers.map((offer, idx) => (
                 <SwiperSlide key={idx}>
                   <div className="bg-white rounded-xl shadow-sm overflow-hidden grid lg:grid-cols-[4fr_2fr]">
-                    <img src={offer.image} className="w-full h-52 object-cover" />
+                    <img src={offer.image} alt={offer.title} className="w-full h-52 object-cover" />
 
                     <div className="p-4 flex flex-col justify-around">
                       <div className="text-center space-y-2">
@@ -354,6 +354,7 @@ export default function StoreDetail() {
                   <div className="relative">
                     <img
                       src={item.thumbnail || "/images/default-thumb.png"}
+                      alt={item.text ? item.text.slice(0, 50) : "Social media update"}
                       className="w-full h-96 object-cover"
                     />
 

@@ -13,7 +13,7 @@ export default function Dashboard() {
 
   return (
     <div>
-      
+      <h1 className="sr-only">Product Categories</h1>
       <CategoryComponent /> {/* Use the category component here */}
     </div>
   );

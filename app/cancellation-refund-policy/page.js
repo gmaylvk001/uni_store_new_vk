@@ -13,7 +13,7 @@ export default function Dashboard() {
 
   return (
     <div>
-      
+      <h1 className="sr-only">Cancellation and Refund Policy</h1>
       <CancellationrefundComponent /> {/* Use the Home component here */}
     </div>
   );

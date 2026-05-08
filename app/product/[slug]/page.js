@@ -60,5 +60,10 @@ export async function generateMetadata({ params }) {
 }
 
 export default function ProductNew() {
-  return <ProductClient />;
+  return (
+    <>
+      <h1 className="sr-only">Product Details</h1>
+      <ProductClient />
+    </>
+  );
 }
