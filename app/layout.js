@@ -27,6 +27,7 @@ export default function RootLayout({ children }) {
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <ClientLayout>{children}</ClientLayout>
         {/* ✅ Tracking Script */}
+        {/*
         <Script id="adtarbo-tracking" strategy="afterInteractive">
           {`(function(dd, ss, idd) {
               var js, ajs = dd.getElementsByTagName(ss)[0];
@@ -38,6 +39,7 @@ export default function RootLayout({ children }) {
               ajs.parentNode.insertBefore(js, ajs);
           }(document, 'script', 'adtarbo-js-v2'));`}
         </Script>
+        */}
       </body>
     </html>
   );
