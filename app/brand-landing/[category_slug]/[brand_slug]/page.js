@@ -28,6 +28,7 @@ export default function BrandCategoryLandingPage() {
   const [isFilterPanelOpen, setIsFilterPanelOpen] = useState(false);
   const [isSortPanelOpen, setIsSortPanelOpen] = useState(false);
   const [priceRange, setPriceRange] = useState([0, 100000]);
+
   const [filterGroups, setFilterGroups] = useState({});
   const [loading, setLoading] = useState(true);
   const [isBrandsExpanded, setIsBrandsExpanded] = useState(true);
@@ -268,6 +269,25 @@ const fetchFilteredProducts = useCallback(async (data, pageNum = 1, initialLoad 
       filters: []
     });
   };
+  const handleFilterChange = (type, value) => {
+  setSelectedFilters((prev) => {
+    const currentFilters = [...prev.filters];
+    const index = currentFilters.indexOf(value);
+
+    if (index > -1) {
+      // If already selected, remove it
+      currentFilters.splice(index, 1);
+    } else {
+      // If not selected, add it
+      currentFilters.push(value);
+    }
+
+    return {
+      ...prev,
+      filters: currentFilters,
+    };
+  });
+};
 
   const handlePageChange = (page) => {
     if (page >= 1 && page <= pagination.totalPages) {
@@ -370,6 +390,7 @@ const fetchFilteredProducts = useCallback(async (data, pageNum = 1, initialLoad 
  
   return(
     <div className="container mx-auto px-4 py-2 pb-3 max-w-7xl">
+      <h1 className="sr-only">Brand Category Products</h1>
       {/* Banner System */}
       {categoryData.category.banners && categoryData.category.banners.length > 0 && (
         <div className="relative w-full mb-8 rounded-lg overflow-hidden shadow-md">

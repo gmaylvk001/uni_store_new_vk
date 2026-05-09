@@ -12,7 +12,7 @@ export default function Dashboard() {
 
   return (
     <div>
-      
+      <h1 className="sr-only">Return and Cancellation Policy</h1>
       <ReturnCancellationComponent /> 
     </div>
   );

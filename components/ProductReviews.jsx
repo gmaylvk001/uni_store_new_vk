@@ -73,7 +73,7 @@ export default function ProductReviews({ productId }) {
                   <img
                     key={i}
                     src={`/uploads/reviews/${img}`}
-                    alt=""
+                    alt={`${r.reviews_title} - Customer Image ${i + 1}`}
                     className="w-20 h-20 object-cover rounded border"
                   />
                 ))}

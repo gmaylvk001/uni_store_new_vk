@@ -13,7 +13,7 @@ export default function Dashboard() {
 
   return (
     <div>
-      
+      <h1 className="sr-only">Manage Addresses</h1>
       <AddressComponent /> {/* Use the ProfileComponent here */}
     </div>
   );

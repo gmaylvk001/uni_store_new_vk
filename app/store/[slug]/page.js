@@ -13,6 +13,7 @@ export default function Dashboard({ params }) {
 
   return (
     <div>
+      <h1 className="sr-only">Store Details</h1>
       {/* Pass the resolved params to the CategoryComponent */}
       <CategoryComponent params={resolvedParams} />
     </div>

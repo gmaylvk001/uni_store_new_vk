@@ -15,6 +15,7 @@ import {
 export default function OpenBox() {
   return (
     <div>
+        <h1 className="sr-only">Open Box Products</h1>
         <div className="bg-blue-50 py-6 px-8 flex justify-between items-center">
             {/* <h2 className="text-xl font-bold text-gray-800"><FiBox className="text-xl" />Open Box</h2> */}
             <h2 className="flex items-center gap-2 text-xl font-bold text-gray-800"><FiBox className="text-xl" />Open Box</h2>

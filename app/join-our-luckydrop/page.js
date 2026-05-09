@@ -10,8 +10,7 @@ export const metadata = {
 export default function JoinOurLuckyDropPage() {
 
     return (
-    <>
-    <LandingHeader />
+    <>    <h1 className="sr-only">Join Our Lucky Drop</h1>    <LandingHeader />
       <LuckyDrop />
       <LandingFooter />
     </>

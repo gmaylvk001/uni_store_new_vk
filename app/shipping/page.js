@@ -13,7 +13,7 @@ export default function Dashboard() {
 
   return (
     <div>
-      
+      <h1 className="sr-only">Shipping Information</h1>
       <ShippingComponent /> 
     </div>
   );

@@ -13,7 +13,7 @@ export default function Dashboard() {
 
   return (
     <div>
-      
+      <h1 className="sr-only">My Orders</h1>
       <OrderComponent /> {/* Use the OrderComponent here */}
     </div>
   );

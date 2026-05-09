@@ -13,7 +13,7 @@ export default function Dashboard() {
 
   return (
     <div>
-      
+      <h1 className="sr-only">Checkout</h1>
       <CheckoutComponent /> {/* Use the Home component here */}
     </div>
   );

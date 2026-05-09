@@ -13,7 +13,7 @@ export default function Dashboard() {
 
   return (
     <div>
-      
+      <h1 className="sr-only">My Wishlist</h1>
       <Wishlistpage /> 
     </div>
   );
