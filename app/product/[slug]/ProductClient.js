@@ -2551,9 +2551,9 @@ const fetchBrand = async () => {
           <div className="flex items-center justify-between gap-6">
             {/* LEFT: Product name + price */}
             <div className="flex flex-col min-w-0">
-              <h1 className="text-sm font-semibold text-gray-800 truncate max-w-[420px]">
+              <h2 className="text-sm font-semibold text-gray-800 truncate max-w-[420px]">
                 {product.name}
-              </h1>
+              </h2>
               {(Number(product.special_price) > 0 || Number(product.price) > 0) && (
                 <span className="text-base font-bold text-blue-800">
                   Rs.{Math.round(
