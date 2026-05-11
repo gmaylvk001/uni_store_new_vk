@@ -1,27 +1,29 @@
-
 import CategoryClient from "@/components/category/[slug]/[sub_slug]/page";
+import {
+  buildCategorySchemas,
+  getBaseUrl,
+  getCategoryBySlug,
+  toJsonLd,
+} from "@/app/category/schema-utils";
+
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata({ params }) {
   const awaitedParams = await params;
   const sub_slug = awaitedParams.sub_slug;
-  
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+  const baseUrl = getBaseUrl();
 
   try {
-    const res = await fetch(`${baseUrl}/api/categories/${sub_slug}`, {
-      cache: "no-store",
-    });
-    
-    if (!res.ok) {
+    const data = await getCategoryBySlug(sub_slug);
+
+    if (!data?.main_category) {
       return {
         title: "Category Not Found",
         description: "This category does not exist",
       };
     }
 
-    const data = await res.json();
     const category = data.main_category;
-    //console.log('category',category);
     return {
       title:
   category.meta_title && category.meta_title !== "none"
@@ -69,6 +71,43 @@ export async function generateMetadata({ params }) {
   }
 }
 
-export default function Page() {
-  return <CategoryClient />;
+export default async function Page({ params }) {
+  const awaitedParams = await params;
+  const slug = awaitedParams.slug;
+  const sub_slug = awaitedParams.sub_slug;
+  const baseUrl = getBaseUrl();
+  const data = await getCategoryBySlug(sub_slug);
+  const { categorySchema, breadcrumbSchema } = buildCategorySchemas({
+    data,
+    baseUrl,
+    segments: [slug, sub_slug],
+  });
+
+  return (
+    <>
+      {categorySchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: toJsonLd({
+              "@context": "https://schema.org",
+              ...categorySchema,
+            }),
+          }}
+        />
+      )}
+      {breadcrumbSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: toJsonLd({
+              "@context": "https://schema.org",
+              ...breadcrumbSchema,
+            }),
+          }}
+        />
+      )}
+      <CategoryClient />
+    </>
+  );
 }

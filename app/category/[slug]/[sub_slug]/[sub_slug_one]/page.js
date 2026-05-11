@@ -1,32 +1,31 @@
-
 import CategoryClient from "@/components/category/[slug]/[sub_slug]/[sub_slug_one]/page";
+import {
+  buildCategorySchemas,
+  getBaseUrl,
+  getCategoryBySlug,
+  toJsonLd,
+} from "@/app/category/schema-utils";
+
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata({ params }) {
   const awaitedParams = await params;
   const sub_slug_one = awaitedParams.sub_slug_one;
   const sub_slug = awaitedParams.sub_slug;
-  //console.log('sub_slug_one',sub_slug_one);
-  //console.log('sub_slug',sub_slug);
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+  const slug = awaitedParams.slug;
+  const baseUrl = getBaseUrl();
 
   try {
-    const res = await fetch(`${baseUrl}/api/categories/${sub_slug_one}`, {
-      cache: "no-store",
-    });
+    const data = await getCategoryBySlug(sub_slug_one);
 
-    //console.log('res',res);
-
-    if (!res.ok) {
+    if (!data?.main_category) {
       return {
         title: "Category Not Found",
         description: "This category does not exist",
       };
     }
 
-    const data = await res.json();
-    //console.log('data',data);
     const category = data.main_category;
-    //console.log('category',category);
     return {
       title:
   category.meta_title && category.meta_title !== "none"
@@ -48,7 +47,7 @@ export async function generateMetadata({ params }) {
         category.meta_description && category.meta_description !== "none"
     ? category.meta_description
     : `Browse products in ${category.category_name}`,
-        url: `${baseUrl}/category/${sub_slug}`,
+        url: `${baseUrl}/category/${slug}/${sub_slug}/${sub_slug_one}`,
         images: category.image ? [`${baseUrl}${category.image}`] : [],
         type: "website",
       },
@@ -65,8 +64,7 @@ export async function generateMetadata({ params }) {
     : `Browse products in ${category.category_name}`,
       },
     };
-  } catch  {
-    console.log('error:');
+  } catch {
     return {
       title: "Category",
       description: "Browse products by category",
@@ -74,6 +72,44 @@ export async function generateMetadata({ params }) {
   }
 }
 
-export default function Page() {
-  return <CategoryClient />;
+export default async function Page({ params }) {
+  const awaitedParams = await params;
+  const slug = awaitedParams.slug;
+  const sub_slug = awaitedParams.sub_slug;
+  const sub_slug_one = awaitedParams.sub_slug_one;
+  const baseUrl = getBaseUrl();
+  const data = await getCategoryBySlug(sub_slug_one);
+  const { categorySchema, breadcrumbSchema } = buildCategorySchemas({
+    data,
+    baseUrl,
+    segments: [slug, sub_slug, sub_slug_one],
+  });
+
+  return (
+    <>
+      {categorySchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: toJsonLd({
+              "@context": "https://schema.org",
+              ...categorySchema,
+            }),
+          }}
+        />
+      )}
+      {breadcrumbSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: toJsonLd({
+              "@context": "https://schema.org",
+              ...breadcrumbSchema,
+            }),
+          }}
+        />
+      )}
+      <CategoryClient />
+    </>
+  );
 }
