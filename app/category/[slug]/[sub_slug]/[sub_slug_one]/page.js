@@ -35,7 +35,9 @@ export async function generateMetadata({ params }) {
         category.meta_description && category.meta_description !== "none"
     ? category.meta_description
     : `Browse products in ${category.category_name}`,
-
+      alternates: {
+      canonical: `${baseUrl}/category/${slug}/${sub_slug}`,
+    },
       keywords: category.meta_keyword || "",
 
       openGraph: {

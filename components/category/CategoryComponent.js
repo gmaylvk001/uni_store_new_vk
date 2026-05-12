@@ -806,7 +806,7 @@ const fetchInitialData = async () => {
 
      <div className="grid grid-cols-1 lg:grid-cols-4 gap-2 lg:gap-8">
   <div className="lg:col-span-1 space-y-6">
-    <h1 className="text-3xl font-bold mb-3 text-gray-600 pl-1">{categoryData.main_category.category_name}</h1>
+    <div className="text-3xl font-bold mb-3 text-gray-600 pl-1">{categoryData.main_category.category_name}</div>
   </div>
   <div className="lg:col-span-3">
     {/* Mobile: Products count at top */}

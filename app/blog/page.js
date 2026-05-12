@@ -13,7 +13,6 @@ export default function Dashboard() {
 
   return (
     <div>
-      <h1 className="sr-only">Blog</h1>
       <BlogComponent /> 
     </div>
   );

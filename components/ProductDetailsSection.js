@@ -71,15 +71,29 @@ useEffect(() => {
 }, [product?._id]);
 */
 
-if (!user_Id) {
-const token = localStorage.getItem("token");
-      if (token) {
+// if (!user_Id) {
+// const token = localStorage.getItem("token");
+//       if (token) {
+//         const decoded = jwtDecode(token);
+//         const userId = decoded.userId;
+//         console.log('userId:', userId);
+//         setUserId(userId);
+//       }
+//     }
+
+useEffect(() => {
+  if (typeof window !== "undefined") {
+    const token = localStorage.getItem("token");
+    if (token) {
+      try {
         const decoded = jwtDecode(token);
-        const userId = decoded.userId;
-        console.log('userId:', userId);
-        setUserId(userId);
+        setUserId(decoded.userId);
+      } catch (err) {
+        console.error("Invalid token", err);
       }
     }
+  }
+}, []);
 
   const tabData = {
     overview: product.overview || "No overview available.",
@@ -792,7 +806,12 @@ const removeImage = (index) => {
   const decodeAndClean = (str) => {
     if (!str) return "";
 
-    // Create a temporary element to decode HTML entities
+    // SERVER-SIDE CHECK: If document isn't available, do a basic string clean
+    if (typeof window === "undefined") {
+      return str.replace(/\u200E/g, "").replace(/&lrm;/gi, "").trim();
+    }
+
+    // CLIENT-SIDE: Original logic using the DOM
     const temp = document.createElement("textarea");
     temp.innerHTML = str;
     let decoded = temp.value;

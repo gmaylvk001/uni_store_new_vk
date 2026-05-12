@@ -13,7 +13,7 @@ export default function Dashboard() {
 
   return (
     <div>
-      <h1 className="sr-only">LG Exclusive Products</h1>
+
       <LocationComponent /> {/* Use the ProfileComponent here */}
     </div>
   );

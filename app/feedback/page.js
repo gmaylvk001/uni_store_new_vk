@@ -13,7 +13,7 @@ export default function Dashboard() {
 
   return (
     <div>
-      <h1 className="sr-only">Send Feedback</h1>
+
       <FeedbackComponent /> {/* Use the Home component here */}
     </div>
   );

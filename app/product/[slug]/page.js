@@ -30,6 +30,7 @@ export async function generateMetadata({ params }) {
       return {
         title: "Product not found",
         description: "This product is unavailable",
+        robots: { index: false, follow: false },
       };
     }
 
@@ -49,12 +50,32 @@ export async function generateMetadata({ params }) {
       description,
       keywords: product.search_keywords || "",
 
+      // ✅ FIX 1: Canonical tag — prevents duplicate content penalty
+      alternates: {
+        canonical: `${baseUrl}/product/${slug}`,
+      },
+
+      // ✅ FIX 2: Robots — tells Google to index all product pages
+      robots: {
+        index: true,
+        follow: true,
+        googleBot: {
+          index: true,
+          follow: true,
+        },
+      },
+
       openGraph: {
         title,
         description,
         url: `${baseUrl}/product/${slug}`,
-        images: [image],
-        type: "website", // ✅ FIXED
+        images: [
+          {
+            url: image,
+            alt: product.name, // ✅ FIX 3: OG image alt text
+          },
+        ],
+        type: "website",
       },
 
       twitter: {
@@ -86,10 +107,16 @@ export default async function ProductNew({ params }) {
   ).slice(0, 5000);
 
   const productUrl = `${baseUrl}/product/${slug}`;
+
+  // ✅ FIX 4: Alt text for every product image automatically
   const productImages =
     product?.images?.length > 0
-      ? product.images.map((image) => `${baseUrl}/uploads/products/${image}`)
+      ? product.images.map((image) => ({
+          src: `${baseUrl}/uploads/products/${image}`,
+          alt: product.image_alt || `${product.name} - Buy Online`,
+        }))
       : [];
+
   const productPrice = product?.special_price || product?.price || 0;
 
   const productSchema = product
@@ -100,7 +127,7 @@ export default async function ProductNew({ params }) {
         name: product.name,
         description: cleanDescription,
         url: productUrl,
-        image: productImages,
+        image: productImages.map((img) => img.src),
         sku: product.item_code || undefined,
         mpn: product.model_number || undefined,
         brand:
@@ -124,6 +151,7 @@ export default async function ProductNew({ params }) {
       }
     : null;
 
+  // ✅ FIX 5: Breadcrumb now includes category if available
   const breadcrumbSchema = product
     ? {
         "@context": "https://schema.org",
@@ -135,12 +163,29 @@ export default async function ProductNew({ params }) {
             name: "Home",
             item: baseUrl,
           },
-          {
-            "@type": "ListItem",
-            position: 2,
-            name: product.name,
-            item: productUrl,
-          },
+          ...(product.category
+            ? [
+                {
+                  "@type": "ListItem",
+                  position: 2,
+                  name: product.category,
+                  item: `${baseUrl}/category/${product.category_slug || product.category?.toLowerCase().replace(/\s+/g, "-")}`,
+                },
+                {
+                  "@type": "ListItem",
+                  position: 3,
+                  name: product.name,
+                  item: productUrl,
+                },
+              ]
+            : [
+                {
+                  "@type": "ListItem",
+                  position: 2,
+                  name: product.name,
+                  item: productUrl,
+                },
+              ]),
         ],
       }
     : null;
@@ -159,7 +204,8 @@ export default async function ProductNew({ params }) {
           dangerouslySetInnerHTML={{ __html: toJsonLd(breadcrumbSchema) }}
         />
       )}
-      <ProductClient />
+      {/* ✅ FIX 6: Pass product + images with alt text to client component */}
+      <ProductClient product={product} productImages={productImages} />
     </>
   );
 }
